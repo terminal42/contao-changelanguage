@@ -148,12 +148,16 @@ class tl_page_changelanguage extends Backend
 
 			if($objFallback->numRows && $objPage->rootId != 0 && $objFallback->id != $objPage->rootId)
 			{
-				$GLOBALS['TL_DCA']['tl_page']['palettes']['regular'] = preg_replace('@([,|;])language([,|;])@','$1language,languageMain$2', $GLOBALS['TL_DCA']['tl_page']['palettes']['regular']);
+				$GLOBALS['TL_DCA']['tl_page']['fields']['title']['eval']['tl_class'] = 'w50';
+				$GLOBALS['TL_DCA']['tl_page']['fields']['alias']['eval']['tl_class'] = 'clr w50';
+				$GLOBALS['TL_DCA']['tl_page']['palettes']['regular'] = preg_replace('@([,|;]title)([,|;])@','$1,languageMain$2', $GLOBALS['TL_DCA']['tl_page']['palettes']['regular']);
 			}
 		}
 		else if($this->Input->get('act') == "editAll")
 		{
-			$GLOBALS['TL_DCA']['tl_page']['palettes']['regular'] = preg_replace('@([,|;])language([,|;])@','$1language,languageMain$2', $GLOBALS['TL_DCA']['tl_page']['palettes']['regular']);
+			$GLOBALS['TL_DCA']['tl_page']['fields']['title']['eval']['tl_class'] = 'w50';
+			$GLOBALS['TL_DCA']['tl_page']['fields']['alias']['eval']['tl_class'] = 'clr w50';
+			$GLOBALS['TL_DCA']['tl_page']['palettes']['regular'] = preg_replace('@([,|;]title)([,|;])@','$1,languageMain$2', $GLOBALS['TL_DCA']['tl_page']['palettes']['regular']);
 		}
 	}
 	
@@ -185,18 +189,18 @@ class tl_page_changelanguage extends Backend
 	/**
 	 * Show notice if no fallback page is set
 	 */
-	public function addFallbackNotice($row, $label, $imageAttribute, DataContainer $dc)
+	public function addFallbackNotice($row, $label, $imageAttribute, DataContainer $dc, $blnReturnImage=false)
 	{
 		if (in_array('cacheicon', $this->Config->getActiveModules()))
 		{
 			$objPage = new tl_page_cacheicon();
+			$label = $objPage->addImage($row, $label, $imageAttribute, $dc);
 		}
 		else
 		{
 			$objPage = new tl_page();
+			$label = version_compare(VERSION, '2.7.5', '>') ? $objPage->addIcon($row, $label, $imageAttribute, $dc, $blnReturnImage) : $objPage->addImage($row, $label, $imageAttribute, $dc);
 		}
-		
-		$label = $objPage->addImage($row, $label, $imageAttribute, $dc);
 		
 		if (!$row['languageMain'])
 		{
