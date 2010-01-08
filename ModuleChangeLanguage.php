@@ -38,6 +38,34 @@ class ModuleChangelanguage extends Module
 	 * @var string
 	 */
 	protected $strTemplate = 'mod_changelanguage';
+	
+	
+	public function generate()
+	{
+		if (TL_MODE == 'BE')
+		{
+			$objTemplate = new BackendTemplate('be_wildcard');
+
+			$objTemplate->wildcard = '### CHANGE LANGUAGE ###';
+			$objTemplate->title = $this->headline;
+			$objTemplate->id = $this->id;
+			$objTemplate->link = $this->name;
+			$objTemplate->href = 'typolight/main.php?do=modules&amp;act=edit&amp;id=' . $this->id;
+
+			return $objTemplate->parse();
+		}
+		
+		// Prepare custom language texts
+		$this->customLanguageText = deserialize($this->customLanguageText, true);
+		$customLanguageText = array();
+		foreach ($this->customLanguageText as $arrText)
+		{
+			$customLanguageText[strtolower($arrText['value'])] = $arrText['label'];
+		}
+		$this->customLanguageText = $customLanguageText;
+		
+		return parent::generate();
+	}
 
 
 	/**
@@ -47,17 +75,20 @@ class ModuleChangelanguage extends Module
 	{
         global $objPage;
         $blnHasNews = false;
-        
-		$this->customLanguageText = deserialize($this->customLanguageText);
-		if (!is_array($this->customLanguageText)) $this->customLanguageText = array();
 		
-		// Find active root page
+		// Required for the current pagetree language
 		$objRootPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($objPage->rootId);
+		
+		// Search associated root pages
+		$objFallbackRoot = $this->Database->prepare("SELECT * FROM tl_page WHERE type='root' AND fallback='1' AND dns=?")->limit(1)->execute($objPage->domain);
+		$objLanguageRoots = $this->Database->prepare("SELECT * FROM tl_page WHERE type='root' AND fallback='1' AND (id=? OR languageRoot=?)")->limit(1)->execute($objFallbackRoot->languageRoot, $objFallbackRoot->id);
+		$arrDomains = $objLanguageRoots->fetchEach('dns');
+		$arrDomains[] = $objFallbackRoot->dns;
+		
+		$objRootPages = $this->Database->prepare("SELECT DISTINCT * FROM tl_page WHERE type='root' AND dns IN ('" . implode("','", $arrDomains) . "') ORDER BY sorting")->execute($objPage->domain, $objLanguageRoot->dns);
         
         // Get root pages
         $arrRootPages = array();
-        $objRootPages = $this->Database->prepare("SELECT DISTINCT * FROM tl_page WHERE type=? AND dns=? ORDER BY sorting")
-        							   ->execute('root', $objPage->domain);
         								   
 		while ($objRootPages->next())
 		{
@@ -87,14 +118,6 @@ class ModuleChangelanguage extends Module
 			if ($arrRootPages[$objLanguagePage->rootId])
 				$arrLanguagePages[$arrRootPages[$objLanguagePage->rootId]['language']] = $objLanguagePage->row();
 		}
-        
-        // Prepare custom language texts
-		$customLanguageText = array();
-		foreach ($this->customLanguageText as $arrText)
-		{
-			$customLanguageText[strtolower($arrText['value'])] = $arrText;
-		}
-		$this->customLanguageText = $customLanguageText;
 		
 		
 		// Switch news item language
@@ -129,6 +152,18 @@ class ModuleChangelanguage extends Module
         
         foreach ($arrRootPages as $arrRootPage)
         {
+        	$domain = '';
+        	if ($objPage->domain != $arrRootPage['dns'])
+            {
+            	$domain  = ($this->Environment->ssl ? 'https://' : 'http://') . $arrRootPage['dns'] . '/';
+            	
+            	if (strlen(TL_PATH))
+            	{
+            		$domain .= TL_PATH . '/';
+            	}
+            }
+            
+            
         	$blnDirectFallback = true;
         	
         	// If the root isn't published, continue with the next page
@@ -300,8 +335,8 @@ class ModuleChangelanguage extends Module
 				'pageAlias' => $pageAlias,
 				'pageTitle' => strip_tags($pageTitle),
 				'target'	=> $target,
-				'label'		=> ($this->customLanguage ? (isset($customLanguageText[$arrRootPage['language']]) ? $customLanguageText[$arrRootPage['language']]['label'] : strtoupper($arrRootPage['language'])) : strtoupper($arrRootPage['language'])),
-				'href'		=> $href,
+				'label'		=> $this->getLabel($arrRootPage['language']),
+				'href'		=> ($domain . $href),
 				'language'	=> $arrRootPage['language'],
 				'class'		=> 'lang-' . $arrRootPage['language'] . ($blnDirectFallback ? '' : ' nofallback') . ($c == 0 ? ' first' : '') . ($c == $count-1 ? ' last' : ''),
 				'icon'		=> 'system/modules/changelanguage/media/images/'.$arrRootPage['language'].'.gif',
@@ -319,7 +354,7 @@ class ModuleChangelanguage extends Module
             $c++;
         }
         
-        if ($this->customLanguage && count($this->customLanguageText))
+        if ($this->customLanguage)
         {
 	        usort($arrLang, array($this, 'orderByCustom'));
        	}
@@ -348,11 +383,18 @@ class ModuleChangelanguage extends Module
 		$key1 = array_search($a['language'], $arrCustom);
 		$key2 = array_search($b['language'], $arrCustom);
 		
-		if ($key1 == $key2)
-		{
-        	return 0;
-	    }
 	    return ($key1 < $key2) ? -1 : 1;
+	}
+	
+	
+	private function getLabel($strLanguage)
+	{
+		if ($this->customLanguage && strlen($this->customLanguageText[$strLanguage]))
+		{
+			return $this->replaceInsertTags($this->customLanguageText[$strLanguage]);
+		}
+		 
+		return strtoupper($strLanguage);
 	}
 }
 
