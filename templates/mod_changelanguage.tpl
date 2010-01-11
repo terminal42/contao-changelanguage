@@ -18,7 +18,7 @@
 <?php else: ?>
 
 <li<?php if(strlen($this->class)): ?> class="<?php echo $arrLang['class']; ?>"<?php endif; ?>>
-<a href="<?php echo $arrLang['href']; ?>"<?php echo $arrLang['target']; ?> title="<?php echo $arrLang['pageTitle']; ?>"><?php if ($this->useImages): ?><img src="<?php echo $arrLang['icon']; ?>" alt="<?php echo $arrLang['pageTitle']; ?>" />
+<a href="<?php echo $arrLang['href']; ?>"<?php echo $arrLang['target']; ?> title="<?php echo $arrLang['pageTitle']; ?>"><?php if ($this->useImages): ?><img src="<?php echo $arrLang['icon']; ?>" alt="<?php echo $arrLang['pageTitle']; ?>"<?php echo $arrLang['iconsize']; ?> />
 <?php else: echo $arrLang['label']; endif; ?></a>
 </li>
 
