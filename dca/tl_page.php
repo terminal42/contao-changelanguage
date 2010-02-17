@@ -217,8 +217,20 @@ class tl_page_changelanguage extends Backend
 	/**
 	 * Show notice if no fallback page is set
 	 */
-	public function addFallbackNotice($row, $label, $imageAttribute, DataContainer $dc, $blnReturnImage=false)
+	public function addFallbackNotice($row, $label, $param3, $param4, $blnReturnImage=false)
 	{
+		// Parameter sorting has been changed in 2.8: http://dev.typolight.org/issues/show/1488
+		if (version_compare(VERSION.BUILD, '2.7.6', '>'))
+		{
+			$dc = $param3;
+			$imageAttribute = $param4;
+		}
+		else
+		{
+			$dc = $prama4;
+			$imageAttribute = $param3;
+		}
+		
 		if (in_array('cacheicon', $this->Config->getActiveModules()))
 		{
 			$objPage = new tl_page_cacheicon();
@@ -227,7 +239,7 @@ class tl_page_changelanguage extends Backend
 		else
 		{
 			$objPage = new tl_page();
-			$label = version_compare(VERSION, '2.7.5', '>') ? $objPage->addIcon($row, $label, $imageAttribute, $dc, $blnReturnImage) : $objPage->addImage($row, $label, $imageAttribute, $dc);
+			$label = version_compare(VERSION.BUILD, '2.7.6', '>') ? $objPage->addIcon($row, $label, $imageAttribute, $dc, $blnReturnImage) : $objPage->addImage($row, $label, $imageAttribute, $dc);
 		}
 		
 		if (!$row['languageMain'])
