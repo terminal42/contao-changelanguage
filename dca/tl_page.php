@@ -19,11 +19,12 @@
  * Software Foundation website at http://www.gnu.org/licenses/.
  *
  * PHP version 5
- * @copyright  Felix Pfeiffer : Neue Medien 2008 / Andreas Schempp 2009
+ * @copyright  Felix Pfeiffer : Neue Medien 2008 / Andreas Schempp 2008-2010
  * @author 	   Felix Pfeiffer <info@felixpfeiffer.com>, Andreas Schempp <andreas@schempp.ch>
- * @license	   LGPL
+ * @license	   http://opensource.org/licenses/lgpl-3.0.html
+ * @version    $Id$
  */
-
+ 
 
 /**
  * Config
@@ -220,7 +221,7 @@ class tl_page_changelanguage extends Backend
 	public function addFallbackNotice($row, $label, $param3, $param4, $blnReturnImage=false)
 	{
 		// Parameter sorting has been changed in 2.8: http://dev.typolight.org/issues/show/1488
-		if (version_compare(VERSION.BUILD, '2.7.6', '>'))
+		if (version_compare(VERSION.'.'.BUILD, '2.7.6', '>'))
 		{
 			$dc = $param3;
 			$imageAttribute = $param4;
@@ -234,12 +235,12 @@ class tl_page_changelanguage extends Backend
 		if (in_array('cacheicon', $this->Config->getActiveModules()))
 		{
 			$objPage = new tl_page_cacheicon();
-			$label = $objPage->addImage($row, $label, $imageAttribute, $dc);
+			$label = version_compare(VERSION.'.'.BUILD, '2.7.6', '>') ? $objPage->addImage($row, $label, $dc, $imageAttribute, $blnReturnImage) : $objPage->addImage($row, $label, $imageAttribute, $dc);
 		}
 		else
 		{
 			$objPage = new tl_page();
-			$label = version_compare(VERSION.BUILD, '2.7.6', '>') ? $objPage->addIcon($row, $label, $imageAttribute, $dc, $blnReturnImage) : $objPage->addImage($row, $label, $imageAttribute, $dc);
+			$label = version_compare(VERSION.'.'.BUILD, '2.7.6', '>') ? $objPage->addIcon($row, $label, $dc, $imageAttribute, $blnReturnImage) : $objPage->addImage($row, $label, $imageAttribute, $dc);
 		}
 		
 		if (!$row['languageMain'])
