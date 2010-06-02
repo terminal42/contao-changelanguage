@@ -1,13 +1,15 @@
 <?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
 
 /**
- * TYPOlight webCMS
- * Copyright (C) 2005 Leo Feyer
+ * Contao Open Source CMS
+ * Copyright (C) 2005-2010 Leo Feyer
+ *
+ * Formerly known as TYPOlight Open Source CMS.
  *
  * This program is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
- * version 2.1 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -16,12 +18,12 @@
  * 
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
- * Software Foundation website at http://www.gnu.org/licenses/.
+ * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Felix Pfeiffer : Neue Medien 2008 / Andreas Schempp 2008-2010
- * @author 	   Felix Pfeiffer <info@felixpfeiffer.com>, Andreas Schempp <andreas@schempp.ch>
- * @license	   http://opensource.org/licenses/lgpl-3.0.html
+ * @copyright  Felix Pfeiffer 2008, Andreas Schempp 2008-2010
+ * @author     Andreas Schempp <andreas@schempp.ch>, Felix Pfeiffer <info@felixpfeiffer.com>
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  * @version    $Id$
  */
  
@@ -58,11 +60,6 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['languageRoot'] = array
 );
 
 
-/**
- * Provides miscellaneous functions for backend data container.
- * 
- * @extends Backend
- */
 class tl_page_changelanguage extends Backend 
 {
 	
@@ -88,7 +85,7 @@ class tl_page_changelanguage extends Backend
 			$objFallback = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->limit(1)->execute($objFallback->languageRoot);
 		}
 
-		$this->arrPages[0] = $GLOBALS['TL_LANG']['tl_page']['no_subpage'];
+		$this->arrPages[''] = $GLOBALS['TL_LANG']['tl_page']['no_subpage'];
 		
 		if ($objFallback->numRows)
 		{
@@ -221,26 +218,26 @@ class tl_page_changelanguage extends Backend
 	public function addFallbackNotice($row, $label, $param3, $param4, $blnReturnImage=false)
 	{
 		// Parameter sorting has been changed in 2.8: http://dev.typolight.org/issues/show/1488
-		if (version_compare(VERSION.'.'.BUILD, '2.7.6', '>'))
+		if (version_compare(VERSION.'.'.BUILD, '2.7.7', '>'))
 		{
 			$dc = $param3;
 			$imageAttribute = $param4;
 		}
 		else
 		{
-			$dc = $prama4;
+			$dc = $param4;
 			$imageAttribute = $param3;
 		}
 		
 		if (in_array('cacheicon', $this->Config->getActiveModules()))
 		{
 			$objPage = new tl_page_cacheicon();
-			$label = version_compare(VERSION.'.'.BUILD, '2.7.6', '>') ? $objPage->addImage($row, $label, $dc, $imageAttribute, $blnReturnImage) : $objPage->addImage($row, $label, $imageAttribute, $dc);
+			$label = version_compare(VERSION.'.'.BUILD, '2.7.7', '>') ? $objPage->addImage($row, $label, $dc, $imageAttribute, $blnReturnImage) : $objPage->addImage($row, $label, $imageAttribute, $dc);
 		}
 		else
 		{
 			$objPage = new tl_page();
-			$label = version_compare(VERSION.'.'.BUILD, '2.7.6', '>') ? $objPage->addIcon($row, $label, $dc, $imageAttribute, $blnReturnImage) : $objPage->addImage($row, $label, $imageAttribute, $dc);
+			$label = version_compare(VERSION.'.'.BUILD, '2.7.7', '>') ? $objPage->addIcon($row, $label, $dc, $imageAttribute, $blnReturnImage) : $objPage->addImage($row, $label, $imageAttribute, $dc);
 		}
 		
 		if (!$row['languageMain'])

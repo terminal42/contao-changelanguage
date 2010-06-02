@@ -31,3 +31,4 @@ CREATE TABLE `tl_page` (
   `languageRoot` int(10) unsigned NOT NULL default '0',
   `languageMain` int(10) unsigned NOT NULL default '0',
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+

@@ -1,13 +1,15 @@
 <?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
 
 /**
- * TYPOlight webCMS
- * Copyright (C) 2005 Leo Feyer
+ * Contao Open Source CMS
+ * Copyright (C) 2005-2010 Leo Feyer
+ *
+ * Formerly known as TYPOlight Open Source CMS.
  *
  * This program is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
- * version 2.1 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -16,12 +18,13 @@
  * 
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
- * Software Foundation website at http://www.gnu.org/licenses/.
+ * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Felix Pfeiffer : Neue Medien 2008 / Andreas Schempp 2009
- * @author 	   Felix Pfeiffer <info@felixpfeiffer.com>, Andreas Schempp <andreas@schempp.ch>
- * @license	   LGPL
+ * @copyright  Felix Pfeiffer 2008, Andreas Schempp 2008-2010
+ * @author     Andreas Schempp <andreas@schempp.ch>, Felix Pfeiffer <info@felixpfeiffer.com>
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @version    $Id$
  */
 
 
@@ -32,7 +35,7 @@ $GLOBALS['TL_LANG']['tl_module']['useImages']			= array('Bilder verwenden', 'Kli
 $GLOBALS['TL_LANG']['tl_module']['hideActiveLanguage']	= array('Aktive Sprache ausblenden', 'Klicken Sie hier, wenn die aktive Sprache in der Auswahl nicht erscheinen soll.');
 $GLOBALS['TL_LANG']['tl_module']['keepUrlParams']		= array('URL-Parameter beibehalten', 'Klicken Sie hier wenn beim Wechsel der Sprache die URL-Parameter beibehalten werden sollen.');
 $GLOBALS['TL_LANG']['tl_module']['customLanguage']		= array('Eigene Sprachtexte', 'Klicken Sie hier, wenn Sie anstelle der Sprachkürzel eigene Texte verwenden wollen. Bitte beachten Sie dass diese Option ignoriert wird, wenn Sie die Landesflaggen aktivieren.');
-$GLOBALS['TL_LANG']['tl_module']['customLanguageText']	= array(' ', 'Bitte geben Sie einen Ersatz für jede Sprache ein. Die Reihenfolge wird nicht beachtet.');
+$GLOBALS['TL_LANG']['tl_module']['customLanguageText']	= array(' ', 'Bitte geben Sie einen Ersatz für jede Sprache ein.');
 
 
 /**
