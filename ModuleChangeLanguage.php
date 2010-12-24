@@ -1,8 +1,10 @@
 <?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
 
 /**
- * TYPOlight Open Source CMS
+ * Contao Open Source CMS
  * Copyright (C) 2005-2010 Leo Feyer
+ *
+ * Formerly known as TYPOlight Open Source CMS.
  *
  * This program is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -77,7 +79,7 @@ class ModuleChangelanguage extends Module
 		
 		// Search associated root pages
 		$objFallbackRoot = $this->Database->prepare("SELECT * FROM tl_page WHERE type='root' AND fallback='1' AND dns=?")->limit(1)->execute($objPage->domain);
-		$objLanguageRoots = $this->Database->prepare("SELECT * FROM tl_page WHERE type='root' AND fallback='1' AND (id=? OR languageRoot=?)")->limit(1)->execute($objFallbackRoot->languageRoot, $objFallbackRoot->id);
+		$objLanguageRoots = $this->Database->prepare("SELECT * FROM tl_page WHERE type='root' AND fallback='1' AND (id=? OR languageRoot=? OR languageRoot=?)")->execute($objFallbackRoot->languageRoot, $objFallbackRoot->id, $objFallbackRoot->languageRoot);
 		$arrDomains = $objLanguageRoots->fetchEach('dns');
 		$arrDomains[] = $objFallbackRoot->dns;
 		
