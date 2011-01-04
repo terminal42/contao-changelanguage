@@ -79,7 +79,7 @@ class ModuleChangelanguage extends Module
 		
 		// Search associated root pages
 		$objFallbackRoot = $this->Database->prepare("SELECT * FROM tl_page WHERE type='root' AND fallback='1' AND dns=?")->limit(1)->execute($objPage->domain);
-		$objLanguageRoots = $this->Database->prepare("SELECT * FROM tl_page WHERE type='root' AND fallback='1' AND (id=? OR languageRoot=? OR languageRoot=?)")->execute($objFallbackRoot->languageRoot, $objFallbackRoot->id, $objFallbackRoot->languageRoot);
+		$objLanguageRoots = $this->Database->prepare("SELECT * FROM tl_page WHERE type='root' AND fallback='1' AND (id=? OR languageRoot=? OR (languageRoot>0 && languageRoot=?))")->execute($objFallbackRoot->languageRoot, $objFallbackRoot->id, $objFallbackRoot->languageRoot);
 		$arrDomains = $objLanguageRoots->fetchEach('dns');
 		$arrDomains[] = $objFallbackRoot->dns;
 		
