@@ -2,6 +2,11 @@
 changelanguage
 ==============
 
+Version 1.0.1 stable (2010-12-24)
+------------------------------
+- fix a problem with multiple languages domains
+
+
 Version 1.0.0 stable (2010-06-02)
 ------------------------------
 - allow the user to change the language in a multi domain setup
