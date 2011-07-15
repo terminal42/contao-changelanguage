@@ -2,69 +2,63 @@
 changelanguage
 ==============
 
+Version 1.0.2 stable (2011-??-??)
+---------------------------------
+- Fixed flag for "ca" (catalonian not canada)
+
 Version 1.0.1 stable (2010-12-24)
-------------------------------
+---------------------------------
 - fix a problem with multiple languages domains
 
-
 Version 1.0.0 stable (2010-06-02)
-------------------------------
+---------------------------------
 - allow the user to change the language in a multi domain setup
 
-
 Version 0.7.2 stable (2010-02-17)
-------------------------------
+---------------------------------
 - fix a problem with TYPOlight 2.8
 
-
 Version 0.7.1 stable (2009-11-30)
-------------------------------
+---------------------------------
 - improve the position of the select menu
 - add support for TYPOlight 2.8
 - add compatibility to the extension "cacheicon"
 
-
 Version 0.7.0 stable (2009-10-14)
-------------------------------
+---------------------------------
 - generate the active element in a <span> tag
 - see in the page tree witch page misses a fallback language
 - add the css class "nofallback"
 - add with and hidth to the images in the template (flaggs)
 
-
 Version 0.6.3 stable (2009-07-06)
-------------------------------
+---------------------------------
 - change the language order (own language texts)
 
-
 Version 0.6.2 stable (2009-05-04)
-------------------------------
+---------------------------------
 - add support for TYPOlight 2.7
 - keep the url parameters on change
 - add some code documentation
 - optimize the code base
 
-
 Version 0.6.1 stable (2009-03-31)
-------------------------------
+---------------------------------
 - set the sub pages as 0
 
-
 Version 0.6.0 stable (2009-09-20)
-------------------------------
+---------------------------------
 - get the parent page as fallback
 - add support for the extension "newslanguage"
 - the imput field allows now html code
 - add the default palette to tl_module
 
-
 Version 0.5.4 stable (2009-01-30)
-------------------------------
+---------------------------------
 - fix the wrong fallback page
 - fix the language order (same as the page tree)
 - fix a wrong date format
 
-
 Version 0.5.3 stable (2008-11-03)
-------------------------------
+---------------------------------
 - Initial stable release
