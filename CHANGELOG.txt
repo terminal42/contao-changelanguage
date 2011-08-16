@@ -2,7 +2,7 @@
 changelanguage
 ==============
 
-Version 2.0.0 rc1 (2011-08-16)
+Version 2.0.0 stable (2011-08-16)
 ---------------------------------
 - Switched to nav_default templates for navigation listing
 - Added hook to customize the fallback URLs (Ticket #1460)
