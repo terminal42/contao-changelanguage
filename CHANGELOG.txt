@@ -2,9 +2,16 @@
 changelanguage
 ==============
 
-Version 1.0.2 stable (2011-??-??)
+Version 2.0.0 rc1 (2011-08-16)
 ---------------------------------
-- Fixed flag for "ca" (catalonian not canada)
+- Switched to nav_default templates for navigation listing
+- Added hook to customize the fallback URLs (Ticket #1460)
+- Added css class to li and anchor/span tag to match the contao standard
+- Added .html5 and .xhtml templates for Contao 2.10
+- Moved module "language redirect" from extension "redirect" to "changelanguage"
+- Fixed issue in "edit all" mode
+- Removed compatibility with Contao 2.7
+- Removed country flag icons, they can be added using CSS background images
 
 Version 1.0.1 stable (2010-12-24)
 ---------------------------------

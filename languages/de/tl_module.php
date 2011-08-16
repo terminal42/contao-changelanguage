@@ -21,8 +21,9 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Felix Pfeiffer 2008, Andreas Schempp 2008-2010
- * @author     Andreas Schempp <andreas@schempp.ch>, Felix Pfeiffer <info@felixpfeiffer.com>
+ * @copyright  Felix Pfeiffer 2008, Andreas Schempp 2008-2011
+ * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Felix Pfeiffer <info@felixpfeiffer.com>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  * @version    $Id$
  */
@@ -31,7 +32,6 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_module']['useImages']			= array('Bilder verwenden', 'Klicken Sie hier, wenn Landesflaggen verwendet werden sollen. Ansonsten werden die Sprach-Kürzel verwendet (Grossschreibung).');
 $GLOBALS['TL_LANG']['tl_module']['hideActiveLanguage']	= array('Aktive Sprache ausblenden', 'Klicken Sie hier, wenn die aktive Sprache in der Auswahl nicht erscheinen soll.');
 $GLOBALS['TL_LANG']['tl_module']['keepUrlParams']		= array('URL-Parameter beibehalten', 'Klicken Sie hier wenn beim Wechsel der Sprache die URL-Parameter beibehalten werden sollen.');
 $GLOBALS['TL_LANG']['tl_module']['customLanguage']		= array('Eigene Sprachtexte', 'Klicken Sie hier, wenn Sie anstelle der Sprachkürzel eigene Texte verwenden wollen. Bitte beachten Sie dass diese Option ignoriert wird, wenn Sie die Landesflaggen aktivieren.');

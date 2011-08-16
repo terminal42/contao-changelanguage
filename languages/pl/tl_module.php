@@ -31,7 +31,6 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_module']['useImages']			= array('Użyj obrazki', 'Wybierz tę opcję jeśli chcesz użyć  obrazki flag. W przeciwnym wypadku zostaną wyświetlone skrótowe nazwy języków (wielkimi literami).');
 $GLOBALS['TL_LANG']['tl_module']['hideActiveLanguage']	= array('Ukryj aktywny język', 'Jeśli wybierzesz tę opcję, ukryjesz aktywny język.');
 $GLOBALS['TL_LANG']['tl_module']['keepUrlParams']		= array('Zachowaj parametry URL', 'Jeśli wybierzesz tę opcję,  zachowasz parametry URL podczas zamiany języka.');
 $GLOBALS['TL_LANG']['tl_module']['customLanguage']		= array('Własne etykiety języków', 'Wybierzesz tę opcję,  jeżeli chcesz użyć własne etykiety języków (skróty pisane małymi literami). Ustawienie jest ignorowana jeżeli korzystasz z opcji "Użyj obrazki".');

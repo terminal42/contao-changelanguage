@@ -21,8 +21,9 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Felix Pfeiffer 2008, Andreas Schempp 2008-2010
- * @author     Andreas Schempp <andreas@schempp.ch>, Felix Pfeiffer <info@felixpfeiffer.com>
+ * @copyright  Felix Pfeiffer 2008, Andreas Schempp 2008-2011
+ * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Felix Pfeiffer <info@felixpfeiffer.com>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  * @version    $Id$
  */
@@ -151,7 +152,7 @@ class tl_page_changelanguage extends Backend
 	 */
 	public function showSelectbox($dc)
 	{
-		if($this->Input->get('act') == "edit")
+		if ($this->Input->get('act') == "edit")
 		{
 			$objPage = $this->getPageDetails($dc->id);
 			
@@ -161,7 +162,7 @@ class tl_page_changelanguage extends Backend
 				$GLOBALS['TL_DCA']['tl_page']['fields']['dns']['eval']['tl_class'] = 'clr w50';
 				$GLOBALS['TL_DCA']['tl_page']['palettes']['root'] = preg_replace('@([,|;]fallback)([,|;])@','$1,languageRoot$2', $GLOBALS['TL_DCA']['tl_page']['palettes']['root']);
 			}
-			elseif ($objPage->type == 'regular')
+			else
 			{
 				$objRootPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->limit(1)->execute($objPage->rootId);
 				
@@ -171,15 +172,19 @@ class tl_page_changelanguage extends Backend
 				{
 					$GLOBALS['TL_DCA']['tl_page']['fields']['title']['eval']['tl_class'] = 'w50';
 					$GLOBALS['TL_DCA']['tl_page']['fields']['alias']['eval']['tl_class'] = 'clr w50';
-					$GLOBALS['TL_DCA']['tl_page']['palettes']['regular'] = preg_replace('@([,|;]title)([,|;])@','$1,languageMain$2', $GLOBALS['TL_DCA']['tl_page']['palettes']['regular']);
+					$GLOBALS['TL_DCA']['tl_page']['palettes'][$objPage->type] = preg_replace('@([,|;]title)([,|;])@','$1,languageMain$2', $GLOBALS['TL_DCA']['tl_page']['palettes'][$objPage->type]);
 				}
 			}
 		}
-		else if($this->Input->get('act') == "editAll")
+		elseif ($this->Input->get('act') == "editAll")
 		{
-			$GLOBALS['TL_DCA']['tl_page']['fields']['title']['eval']['tl_class'] = 'w50';
-			$GLOBALS['TL_DCA']['tl_page']['fields']['alias']['eval']['tl_class'] = 'clr w50';
-			$GLOBALS['TL_DCA']['tl_page']['palettes']['regular'] = preg_replace('@([,|;]title)([,|;])@','$1,languageMain$2', $GLOBALS['TL_DCA']['tl_page']['palettes']['regular']);
+			foreach( $GLOBALS['TL_DCA']['tl_page']['palettes'] as $name => $palette )
+			{
+				if ($name == '__selector__' || $name == 'root')
+					continue;
+					
+				$GLOBALS['TL_DCA']['tl_page']['palettes'][$name] = preg_replace('@([,|;]title)([,|;])@','$1,languageMain$2', $palette);
+			}
 		}
 	}
 	
@@ -215,29 +220,17 @@ class tl_page_changelanguage extends Backend
 	/**
 	 * Show notice if no fallback page is set
 	 */
-	public function addFallbackNotice($row, $label, $param3, $param4, $blnReturnImage=false)
+	public function addFallbackNotice($row, $label, $dc, $imageAttribute, $blnReturnImage=false)
 	{
-		// Parameter sorting has been changed in 2.8: http://dev.typolight.org/issues/show/1488
-		if (version_compare(VERSION.'.'.BUILD, '2.7.7', '>'))
-		{
-			$dc = $param3;
-			$imageAttribute = $param4;
-		}
-		else
-		{
-			$dc = $param4;
-			$imageAttribute = $param3;
-		}
-		
 		if (in_array('cacheicon', $this->Config->getActiveModules()))
 		{
 			$objPage = new tl_page_cacheicon();
-			$label = version_compare(VERSION.'.'.BUILD, '2.7.7', '>') ? $objPage->addImage($row, $label, $dc, $imageAttribute, $blnReturnImage) : $objPage->addImage($row, $label, $imageAttribute, $dc);
+			$label = $objPage->addImage($row, $label, $dc, $imageAttribute, $blnReturnImage);
 		}
 		else
 		{
 			$objPage = new tl_page();
-			$label = version_compare(VERSION.'.'.BUILD, '2.7.7', '>') ? $objPage->addIcon($row, $label, $dc, $imageAttribute, $blnReturnImage) : $objPage->addImage($row, $label, $imageAttribute, $dc);
+			$label = $objPage->addIcon($row, $label, $dc, $imageAttribute, $blnReturnImage);
 		}
 		
 		if (!$row['languageMain'])

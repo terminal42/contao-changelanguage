@@ -13,7 +13,6 @@
 -- 
 
 CREATE TABLE `tl_module` (
-  `useImages` char(1) NOT NULL default '',
   `hideActiveLanguage` char(1) NOT NULL default '',
   `keepUrlParams` char(1) NOT NULL default '',
   `customLanguage` char(1) NOT NULL default '',

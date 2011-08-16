@@ -21,8 +21,9 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Felix Pfeiffer 2008, Andreas Schempp 2008-2010
- * @author     Andreas Schempp <andreas@schempp.ch>, Felix Pfeiffer <info@felixpfeiffer.com>
+ * @copyright  Felix Pfeiffer 2008, Andreas Schempp 2008-2011
+ * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Felix Pfeiffer <info@felixpfeiffer.com>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  * @version    $Id$
  */
@@ -37,5 +38,6 @@ $GLOBALS['TL_LANG']['MOD']['changelanguage'] = array('Sprachenwechsler');
 /**
  * Front end modules
  */
-$GLOBALS['TL_LANG']['FMD']['changelanguage'] = array('Sprachenwechsler', 'Mit diesem Modul könen Sie zwischen mehreren Sprachversionen einer Seite wechseln.');
+$GLOBALS['TL_LANG']['FMD']['changelanguage']	= array('Sprachenwechsler', 'Mit diesem Modul könen Sie zwischen mehreren Sprachversionen einer Seite wechseln.');
+$GLOBALS['TL_LANG']['FMD']['languageRedirect']	= array('Weiterleitung zur Benutzersprache', 'Leitet ein Mitglied zur Seite in seiner Sprache (Sprachenwechsler/Changelanguage) um.');
 

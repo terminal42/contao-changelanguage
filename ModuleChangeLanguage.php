@@ -21,8 +21,9 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Felix Pfeiffer 2008, Andreas Schempp 2008-2010
- * @author     Andreas Schempp <andreas@schempp.ch>, Felix Pfeiffer <info@felixpfeiffer.com>
+ * @copyright  Felix Pfeiffer 2008, Andreas Schempp 2008-2011
+ * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Felix Pfeiffer <info@felixpfeiffer.com>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  * @version    $Id$
  */
@@ -48,7 +49,7 @@ class ModuleChangelanguage extends Module
 			$objTemplate->title = $this->headline;
 			$objTemplate->id = $this->id;
 			$objTemplate->link = $this->name;
-			$objTemplate->href = 'typolight/main.php?do=modules&amp;act=edit&amp;id=' . $this->id;
+			$objTemplate->href = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
 
 			return $objTemplate->parse();
 		}
@@ -62,6 +63,11 @@ class ModuleChangelanguage extends Module
 		}
 		$this->customLanguageText = $customLanguageText;
 		
+		if ($this->navigationTpl == '')
+		{
+			$this->navigationTpl = 'nav_default';
+		}
+		
 		return parent::generate();
 	}
 
@@ -72,7 +78,6 @@ class ModuleChangelanguage extends Module
 	protected function compile()
 	{
         global $objPage;
-        $blnHasNews = false;
 		
 		// Required for the current pagetree language
 		$objRootPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($objPage->rootId);
@@ -116,35 +121,37 @@ class ModuleChangelanguage extends Module
 			if ($arrRootPages[$objLanguagePage->rootId])
 				$arrLanguagePages[$arrRootPages[$objLanguagePage->rootId]['language']] = $objLanguagePage->row();
 		}
+        
+        $arrParams = array('url'=>array(), 'get'=>array());
+        if ($this->keepUrlParams)
+    	{
+    		foreach( array_keys($_GET) as $strKey )
+    		{
+    			$strValue = $this->Input->get($strKey);
+    			
+    			// Do not keep empty parameters and arrays
+    			if ($strValue != '')
+    			{
+    				// Parameter passed after "?"
+    				if (strpos($this->Environment->request, $strKey.'='.$strValue) !== false)
+    				{
+    					$arrParams['get'][$strKey] = $strValue;
+    				}
+    				else
+    				{
+    					$arrParams['url'][$strKey] = $strValue;
+    				}
+    			}
+    		}
+    	}
+    	
+    	// Always keep search parameters
+    	if ($this->Input->get('keywords') != '')
+    	{
+    		$arrParams['get']['keywords'] = $this->Input->get('keywords');
+    	}
 		
-		
-		// Switch news item language
-        if (in_array('newslanguage', $this->Config->getActiveModules()) && strlen($this->Input->get('items')))
-        {
-        	$objNews = $this->Database->prepare("SELECT tl_news.*, tl_news_archive.master FROM tl_news LEFT OUTER JOIN tl_news_archive ON tl_news.pid=tl_news_archive.id WHERE tl_news.id=? OR tl_news.alias=?")
-        							  ->limit(1)
-        							  ->execute($this->Input->get('items'), $this->Input->get('items'));
-        	
-        	// We found a news item!!
-        	if ($objNews->numRows)
-        	{
-        		$arrNews = array();
-        		$id = ($objNews->master > 0) ? $objNews->languageMain : $objNews->id;
-        		$objItems = $this->Database->prepare("SELECT tl_news.*, tl_news_archive.language FROM tl_news LEFT OUTER JOIN tl_news_archive ON tl_news.pid=tl_news_archive.id WHERE tl_news.id=? OR languageMain=?")
-        								   ->execute($id, $id);
-        								   
-        		while( $objItems->next() )
-        		{
-        			$arrNews[$objItems->language] = $objItems->row();
-        		}
-        		
-        		if (count($arrNews))
-	        		$blnHasNews = true;
-        	}
-        }
-		
-		
-		$arrLang = array();
+		$arrItems = array();
         $c = 0;
         $count = count($arrRootPages);
         
@@ -165,8 +172,8 @@ class ModuleChangelanguage extends Module
         	$blnDirectFallback = true;
         	
         	// If the root isn't published, continue with the next page
-            if ((!$arrRootPage['published'] || ($arrRootPage['start'] > 0 && $arrRootPage['start'] > time()) || ($arrRootPage['stop'] > 0 && $arrRootPage['stop'] < time())) && !BE_USER_LOGGED_IN) {
-                    
+            if ((!$arrRootPage['published'] || ($arrRootPage['start'] > 0 && $arrRootPage['start'] > time()) || ($arrRootPage['stop'] > 0 && $arrRootPage['stop'] < time())) && !BE_USER_LOGGED_IN)
+            {
                 continue;
             }
             
@@ -178,7 +185,6 @@ class ModuleChangelanguage extends Module
             		continue;
             	
 				$active = true;
-	        	$pageAlias = $arrRootPage['alias'];
             	$pageTitle = $arrRootPage['title'];
             	$href = "";
             	
@@ -208,45 +214,40 @@ class ModuleChangelanguage extends Module
             	$active = false;
             	$target = '';
             	
+            	// HOOK: allow extensions to modify url parameters
+				if (isset($GLOBALS['TL_HOOKS']['translateUrlParameters']) && is_array($GLOBALS['TL_HOOKS']['translateUrlParameters']))
+				{
+					foreach ($GLOBALS['TL_HOOKS']['translateUrlParameters'] as $callback)
+					{
+						$this->import($callback[0]);
+						$arrParams = $this->$callback[0]->$callback[1]($arrParams, $arrRootPage['language'], $arrRootPage);
+					}
+				}
+            	
             	// Make sure $strParam is empty, otherwise previous pages could affect url
             	$strParam = '';
-            	$arrGet = array();
-            	if ($blnHasNews && isset($arrNews[$arrRootPage['language']]))
+            	$arrRequest = array();
+            	
+            	foreach( $arrParams['url'] as $k => $v )
             	{
-            		$strParam = '/items/' . $arrNews[$arrRootPage['language']]['alias'];
+            		$strParam .= '/' . $k . '/' . $v;
             	}
-            	elseif ($this->keepUrlParams)
+            	
+            	foreach( $arrParams['get'] as $k => $v )
             	{
-            		foreach( array_keys($_GET) as $strKey )
-            		{
-            			$strValue = $this->Input->get($strKey);
-            			
-            			// Do not keep empty parameters and arrays (what for...)
-            			if (is_string($strValue) && strlen($strValue))
-            			{
-            				// Parameter passed after "?"
-            				if (strpos($this->Environment->request, $strKey.'='.$strValue) !== false)
-            				{
-            					$arrGet[] = $strKey.'='.$strValue;
-            				}
-            				else
-            				{
-            					$strParam .= '/'.$strKey.'/'.$strValue;
-            				}
-            			}
-            		}
+            		$arrRequest[] = $k . '=' . $v;
             	}
+            	
             	
             	// Matching language page found
 	            if(array_key_exists($arrRootPage['language'], $arrLanguagePages)) 
 	            {
-	            	$pageAlias = $arrLanguagePages[$arrRootPage['language']]['alias'];
 	            	$pageTitle = $arrLanguagePages[$arrRootPage['language']]['title'];
-	            	$href = $this->generateFrontendUrl($arrLanguagePages[$arrRootPage['language']], $strParam) . (count($arrGet) ? ('?'.implode('&amp;', $arrGet)) : '');
+	            	$href = $this->generateFrontendUrl($arrLanguagePages[$arrRootPage['language']], $strParam) . (count($arrRequest) ? ('?'.implode('&amp;', $arrRequest)) : '');
 	            	
 	            	if ($arrLanguagePages[$arrRootPage['language']]['target'])
 	            	{
-	            		$target = ' onclick="window.open(this.href); return false;"';
+	            		$target = ($objPage->outputFormat == 'html5') ? ' target="_blank"' : ' onclick="window.open(this.href); return false;"';
 	            	}
 	            }
 	            
@@ -307,19 +308,17 @@ class ModuleChangelanguage extends Module
 	            	// We found a trail page
 	            	if ($blnFound)
 	            	{
-	            		$pageAlias = $objTrailPage->alias;
 		            	$pageTitle = $objTrailPage->title;
 		            	$href = $this->generateFrontendUrl($objTrailPage->row(), $strParam);
 		            	
 	        	    	if ($objTrailPage->target)
 	    	        	{
-		            		$target = ' onclick="window.open(this.href); return false;"';
+		            		$target = ($objPage->outputFormat == 'html5') ? ' target="_blank"' : ' onclick="window.open(this.href); return false;"';
 		            	}
 	            	}
 	            	
 	            	else
 	            	{
-	    	        	$pageAlias = $arrRootPage['alias'];
 		            	$pageTitle = $arrRootPage['title'];
 		            	$href = $this->generateFrontendUrl($arrRootPage);
 	            	}
@@ -327,41 +326,36 @@ class ModuleChangelanguage extends Module
             }
             
             // Build template array
-			$arrLang[$c] = array
+			$arrItems[$c] = array
 			(
-				'active'	=> $active,
-				'pageAlias' => $pageAlias,
-				'pageTitle' => strip_tags($pageTitle),
-				'target'	=> $target,
-				'label'		=> $this->getLabel($arrRootPage['language']),
-				'href'		=> ($domain . $href),
-				'language'	=> $arrRootPage['language'],
+				'isActive'	=> $active,
 				'class'		=> 'lang-' . $arrRootPage['language'] . ($blnDirectFallback ? '' : ' nofallback') . ($c == 0 ? ' first' : '') . ($c == $count-1 ? ' last' : ''),
-				'icon'		=> 'system/modules/changelanguage/media/images/'.$arrRootPage['language'].'.gif',
-				'iconsize'	=> '',
-				'direct'	=> $blnDirectFallback,
+				'link'		=> $this->getLabel($arrRootPage['language']),
+				'subitems'	=> '',
+				'href'		=> ($domain . $href),
+				'pageTitle' => strip_tags($pageTitle),
+				'accesskey'	=> '',
+				'tabindex'	=> '',
+				'nofollow'	=> false,
+				'target'	=> $target,
 			);
-			
-			if (is_file(TL_ROOT . '/system/modules/changelanguage/media/images/'.$arrRootPage['language'].'.gif'))
-			{
-				$arrSize = getimagesize('system/modules/changelanguage/media/images/'.$arrRootPage['language'].'.gif');
-				
-				$arrLang[$c]['iconsize'] = ' '.$arrSize[3];
-			}
 			
             $c++;
         }
         
         if ($this->customLanguage)
         {
-	        usort($arrLang, array($this, 'orderByCustom'));
+	        usort($arrItems, array($this, 'orderByCustom'));
        	}
         
-
-        $this->Template->useImages = $this->useImages;
-        $this->Template->languages = (!is_array($arrLang) || empty($arrLang)) ? array() : $arrLang;
         
-        // Fix TYPOlight problem with date/time formats...
+        $objTemplate = new FrontendTemplate($this->navigationTpl);
+        $objTemplate->level = 'level_1';
+        $objTemplate->items = $arrItems;
+
+        $this->Template->items = $objTemplate->parse();
+        
+        // Fix contao problem with date/time formats...
         $this->getPageDetails($objPage->id);
 	}
 	

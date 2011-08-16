@@ -21,8 +21,9 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Felix Pfeiffer 2008, Andreas Schempp 2008-2010
- * @author     Andreas Schempp <andreas@schempp.ch>, Felix Pfeiffer <info@felixpfeiffer.com>
+ * @copyright  Felix Pfeiffer 2008, Andreas Schempp 2008-2011
+ * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Felix Pfeiffer <info@felixpfeiffer.com>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  * @version    $Id$
  */
@@ -31,22 +32,15 @@
 /**
  * Palettes
  */
-$GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'customLanguage';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['changelanguage'] = '{title_legend},name,headline,type;{config_legend},useImages,hideActiveLanguage,keepUrlParams,customLanguage;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
-$GLOBALS['TL_DCA']['tl_module']['subpalettes']['customLanguage'] = 'customLanguageText';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][]		= 'customLanguage';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['changelanguage'] 		= '{title_legend},name,headline,type;{config_legend},hideActiveLanguage,keepUrlParams,customLanguage;{template_legend:hide},navigationTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['languageRedirect']		= '{title_legend},name,type;{protected_legend:hide},guests,protected';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['customLanguage']	= 'customLanguageText';
  
  
 /**
  * Fields
  */
-$GLOBALS['TL_DCA']['tl_module']['fields']['useImages'] = array
-(
-	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['useImages'],
-	'exclude'                 => true,
-	'inputType'               => 'checkbox',
-	'eval'					  => array('tl_class'=>'w50'),
-);
-
 $GLOBALS['TL_DCA']['tl_module']['fields']['hideActiveLanguage'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['hideActiveLanguage'],

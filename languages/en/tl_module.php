@@ -21,8 +21,9 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Felix Pfeiffer 2008, Andreas Schempp 2008-2010
- * @author     Andreas Schempp <andreas@schempp.ch>, Felix Pfeiffer <info@felixpfeiffer.com>
+ * @copyright  Felix Pfeiffer 2008, Andreas Schempp 2008-2011
+ * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Felix Pfeiffer <info@felixpfeiffer.com>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  * @version    $Id$
  */
@@ -31,7 +32,6 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_module']['useImages']			= array('Use images', 'Click here if you want to use country flags. Otherwise the language shortcut will be used (upper case).');
 $GLOBALS['TL_LANG']['tl_module']['hideActiveLanguage']	= array('Hide active language', 'Please check here if you want to hide the active language on your site.');
 $GLOBALS['TL_LANG']['tl_module']['keepUrlParams']		= array('Keep URL parameters', 'Please check here if you want to preserve URL parameters when switching the language.');
 $GLOBALS['TL_LANG']['tl_module']['customLanguage']		= array('Custom language texts', 'Please check here if you want to have custom texts for your languages (not uppercase language shortcuts). Please be aware that this will be ignored if you enable country flags.');
