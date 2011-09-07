@@ -207,11 +207,15 @@ class tl_page_changelanguage extends Backend
 				$arrIds = $this->getChildRecords($objPage->id, 'tl_page');
 				$arrIds[] = $objPage->id;
 				
-				$this->Database->execute("UPDATE tl_page SET languageMain=0 WHERE id IN (" . implode(',', $arrIds) . ")");
+				$this->Database->query("UPDATE tl_page SET languageMain=0 WHERE id IN (" . implode(',', $arrIds) . ")");
 			}
 			elseif ($objPage->numRows && $objPage->type == 'root' && !$objPage->fallback && $objPage->languageRoot)
 			{
-				$this->Database->prepare("UPDATE tl_page SET languageRoot=0 WHERE id=?")->execute($objPage->id);
+				$this->Database->query("UPDATE tl_page SET languageRoot=0 WHERE id=".$objPage->id);
+			}
+			elseif ($objPage->numRows && ($objPage->type == 'redirect' || $objPage->type == 'forward'))
+			{
+				$this->Database->query("UPDATE tl_page SET languageMain=0 WHERE id=".$objPage->id);
 			}
 		}
 	}
