@@ -338,6 +338,7 @@ class ModuleChangelanguage extends Module
 				'tabindex'	=> '',
 				'nofollow'	=> false,
 				'target'	=> $target,
+				'language'	=> $arrRootPage['language'],
 			);
 			
             $c++;
