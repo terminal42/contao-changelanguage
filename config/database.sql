@@ -29,5 +29,7 @@ CREATE TABLE `tl_module` (
 CREATE TABLE `tl_page` (
   `languageRoot` int(10) unsigned NOT NULL default '0',
   `languageMain` int(10) unsigned NOT NULL default '0',
+  KEY `type` (`type`),
+  KEY `languageMain` (`languageMain`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
