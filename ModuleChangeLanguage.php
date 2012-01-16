@@ -99,7 +99,6 @@ class ModuleChangelanguage extends Module
 		}
         
         
-        
         // Check if there are foreign languages of this page
         $arrLanguagePages = array();
         $mainLanguageID = $objPage->languageMain != 0 ? $objPage->languageMain : $objPage->id;
@@ -119,7 +118,9 @@ class ModuleChangelanguage extends Module
 			
 			// Do not add pages without root pages
 			if ($arrRootPages[$objLanguagePage->rootId])
+			{
 				$arrLanguagePages[$arrRootPages[$objLanguagePage->rootId]['language']] = $objLanguagePage->row();
+			}
 		}
         
         $arrParams = array('url'=>array(), 'get'=>array());
@@ -130,7 +131,7 @@ class ModuleChangelanguage extends Module
     			$strValue = $this->Input->get($strKey);
     			
     			// Do not keep empty parameters and arrays
-    			if ($strValue != '')
+    			if ($strValue != '' && $strKey != 'language')
     			{
     				// Parameter passed after "?"
     				if (strpos($this->Environment->request, $strKey.'='.$strValue) !== false)
@@ -243,7 +244,7 @@ class ModuleChangelanguage extends Module
 	            if(array_key_exists($arrRootPage['language'], $arrLanguagePages)) 
 	            {
 	            	$pageTitle = $arrLanguagePages[$arrRootPage['language']]['title'];
-	            	$href = $this->generateFrontendUrl($arrLanguagePages[$arrRootPage['language']], $strParam) . (count($arrRequest) ? ('?'.implode('&amp;', $arrRequest)) : '');
+	            	$href = $this->generateFrontendUrl($arrLanguagePages[$arrRootPage['language']], $strParam, $arrRootPage['language']) . (count($arrRequest) ? ('?'.implode('&amp;', $arrRequest)) : '');
 	            	
 	            	if ($arrLanguagePages[$arrRootPage['language']]['target'])
 	            	{
