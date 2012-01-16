@@ -122,7 +122,7 @@ class tl_page_changelanguage extends Backend
 	public function createPageList($intId=0, $level=-1)
 	{
 		// Add child pages
-		$objPages = $this->Database->prepare("SELECT id, title FROM tl_page WHERE pid=? AND ( type = 'regular' OR type = 'redirect' OR type = 'forward') ORDER BY sorting")
+		$objPages = $this->Database->prepare("SELECT id, title FROM tl_page WHERE pid=? AND type != 'root' AND type != 'error_403' AND type != 'error_404' ORDER BY sorting")
 								   ->execute($intId);
 								   
 		if ($objPages->numRows < 1)

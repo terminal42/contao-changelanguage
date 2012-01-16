@@ -4,6 +4,7 @@ changelanguage
 
 Version 2.0.1 stable (2011-??-??)
 ---------------------------------
+- Improved: Added support for unknown page types (e.g. folderpage)
 - Fixed: forward & redirect pages should not have a fallback assigned
 - Fixed: Custom sorting did not work, added language to array (#2369 & #1917)
 
