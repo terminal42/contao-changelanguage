@@ -289,16 +289,25 @@ class ModuleChangelanguage extends Module
 	            		{
 	            			while( $objTrailPage->next() )
 							{
+								if ($objTrailPage->type == 'root')
+								{
+									if ($objTrailPage->id == $arrRootPage['id'])
+									{
+										$blnFound = true;
+										break;
+									}
+									
+									continue;
+								}
+								
 								$objPageDetails = $this->getPageDetails($objTrailPage->id);
 
 								// We found a page in the correct page tree
 								if ($objPageDetails->rootId == $arrRootPage['id'])
 								{
 									$blnFound = true;
-								}
-								
-								if ($blnFound)
 									break;
+								}
 							}
 	            		}
 	            		
