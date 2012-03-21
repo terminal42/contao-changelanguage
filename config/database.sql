@@ -14,6 +14,7 @@
 
 CREATE TABLE `tl_module` (
   `hideActiveLanguage` char(1) NOT NULL default '',
+  `hideNoFallback` char(1) NOT NULL default '',
   `keepUrlParams` char(1) NOT NULL default '',
   `customLanguage` char(1) NOT NULL default '',
   `customLanguageText` mediumtext NULL,

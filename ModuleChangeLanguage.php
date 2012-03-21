@@ -335,6 +335,12 @@ class ModuleChangelanguage extends Module
 	            }
             }
             
+            // Hide languages without direct fallback
+            if ($this->hideNoFallback && !$blnDirectFallback)
+            {
+            	continue;
+            }
+            
             // Build template array
 			$arrItems[$c] = array
 			(
