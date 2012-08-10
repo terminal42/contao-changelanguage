@@ -34,6 +34,7 @@
  */
 $GLOBALS['TL_DCA']['tl_page']['config']['onload_callback'][] = array('tl_page_changelanguage','showSelectbox');
 $GLOBALS['TL_DCA']['tl_page']['config']['onsubmit_callback'][] = array('tl_page_changelanguage','resetFallback');
+$GLOBALS['TL_DCA']['tl_page']['list']['label']['changelanguage'] = $GLOBALS['TL_DCA']['tl_page']['list']['label']['label_callback'];
 $GLOBALS['TL_DCA']['tl_page']['list']['label']['label_callback'] = array('tl_page_changelanguage', 'addFallbackNotice');
 
 
@@ -224,18 +225,11 @@ class tl_page_changelanguage extends Backend
 	/**
 	 * Show notice if no fallback page is set
 	 */
-	public function addFallbackNotice($row, $label, $dc, $imageAttribute, $blnReturnImage=false)
+	public function addFallbackNotice($row, $label, $dc, $imageAttribute, $blnReturnImage=false, $blnProtected=false)
 	{
-		if (in_array('cacheicon', $this->Config->getActiveModules()))
-		{
-			$objPage = new tl_page_cacheicon();
-			$label = $objPage->addImage($row, $label, $dc, $imageAttribute, $blnReturnImage);
-		}
-		else
-		{
-			$objPage = new tl_page();
-			$label = $objPage->addIcon($row, $label, $dc, $imageAttribute, $blnReturnImage);
-		}
+		$arrCallback = $GLOBALS['TL_DCA']['tl_page']['list']['label']['changelanguage'];
+		$this->import($arrCallback[0]);
+		$label = $this->$arrCallback[0]->$arrCallback[1]($row, $label, $dc, $imageAttribute, $blnReturnImage, $blnProtected);
 		
 		if (!$row['languageMain'])
 		{
