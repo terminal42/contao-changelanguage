@@ -131,16 +131,12 @@ class ModuleChangelanguage extends Module
     			$strValue = $this->Input->get($strKey);
     			
     			// Do not keep empty parameters and arrays
-    			if ($strValue != '' && $strKey != 'language')
+    			if ($strValue != '' && $strKey != 'language' && $strKey !== 'auto_item')
     			{
     				// Parameter passed after "?"
     				if (strpos($this->Environment->request, $strKey.'='.$strValue) !== false)
     				{
     					$arrParams['get'][$strKey] = $strValue;
-    				}
-    				else
-    				{
-    					$arrParams['url'][$strKey] = $strValue;
     				}
     			}
     		}
@@ -228,10 +224,17 @@ class ModuleChangelanguage extends Module
             	// Make sure $strParam is empty, otherwise previous pages could affect url
             	$strParam = '';
             	$arrRequest = array();
-            	
+
             	foreach( $arrParams['url'] as $k => $v )
             	{
-            		$strParam .= '/' . $k . '/' . $v;
+					if ($GLOBALS['TL_CONFIG']['useAutoItem'] && in_array($k, $GLOBALS['TL_AUTO_ITEM']))
+					{
+						$strParam .= '/' . $v;
+					}
+					else
+					{
+						$strParam .= '/' . $k . '/' . $v;
+					}
             	}
             	
             	foreach( $arrParams['get'] as $k => $v )
