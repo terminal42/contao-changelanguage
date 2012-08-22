@@ -138,6 +138,10 @@ class ModuleChangelanguage extends Module
     				{
     					$arrParams['get'][$strKey] = $strValue;
     				}
+    				else
+    				{
+    					$arrParams['url'][$strKey] = $strValue;
+    				}
     			}
     		}
     	}
