@@ -2,7 +2,20 @@
 changelanguage
 ==============
 
-Version 2.0.1 stable (2011-??-??)
+Version 2.1.0 stable (2012-??-??)
+---------------------------------
+- Option to hide languages without direct fallback
+
+Version 2.0.3 stable (2012-02-20)
+---------------------------------
+- Fixed issue in Contao 2.11 if the pag eon the first level did not have a fallback
+
+Version 2.0.2 stable (2012-01-16)
+---------------------------------
+- Added support for unknown page types (e.g. folderpage)
+- Now supports Contao 2.11 "language in URL" feature
+
+Version 2.0.1 stable (2011-11-20)
 ---------------------------------
 - Improved: Now supports Contao 2.11 "language in URL" feature
 - Improved: Added support for unknown page types (e.g. folderpage)
