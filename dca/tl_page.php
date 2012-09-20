@@ -213,10 +213,6 @@ class tl_page_changelanguage extends Backend
 			{
 				$this->Database->query("UPDATE tl_page SET languageRoot=0 WHERE id=".$objPage->id);
 			}
-			elseif ($objPage->numRows && ($objPage->type == 'redirect' || $objPage->type == 'forward'))
-			{
-				$this->Database->query("UPDATE tl_page SET languageMain=0 WHERE id=".$objPage->id);
-			}
 		}
 	}
 	
@@ -239,12 +235,12 @@ class tl_page_changelanguage extends Backend
 		
 		if (!$row['languageMain'])
 		{
-			$objPage = $this->getPageDetails($row['id']);
-				
 			// Save resources if we are not a regular page
-			if ($objPage->type !== 'regular')
+			if ($row['type'] == 'root' || $row['type'] == 'folder')
 				return $label;
 				
+			$objPage = $this->getPageDetails($row['id']);
+
 			$objRootPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->limit(1)->execute($objPage->rootId);
 				
 			$objFallback = $this->Database->prepare("SELECT id FROM tl_page WHERE type='root' AND fallback='1' AND id!=? AND (dns=? OR id=?)")->limit(1)->execute($objRootPage->id, $objPage->domain, ($objRootPage->fallback ? $objRootPage->languageRoot : 0));

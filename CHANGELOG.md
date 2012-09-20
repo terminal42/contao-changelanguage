@@ -5,6 +5,7 @@ changelanguage
 ### Version 2.1.0 stable (2012-??-??) ###
 
 - Option to hide languages without direct fallback
+- Redirect and forward pages can now have fallback assigned
 
 ### Version 2.0.3 stable (2012-02-20) ###
 
