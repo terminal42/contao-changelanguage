@@ -7,6 +7,8 @@ changelanguage
 - Option to hide languages without direct fallback
 - Redirect and forward pages can now have fallback assigned
 - Added compatibility with Avisota
+- Fixed issues with language parameter if no direct fallback was available (#4)
+
 
 ### Version 2.0.3 stable (2012-02-20) ###
 
