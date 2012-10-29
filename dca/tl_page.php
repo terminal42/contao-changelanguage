@@ -48,7 +48,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['languageMain'] = array
 	'exclude'                 => true,
 	'inputType'               => 'select',
 	'options_callback'        => array('tl_page_changelanguage', 'getFallbackPages'),
-	'eval'                    => array('includeBlankOption'=>true, 'blankOptionLabel'=>$GLOBALS['TL_LANG']['tl_page']['no_subpage'], 'tl_class'=>'w50'),
+	'eval'                    => array('includeBlankOption'=>true, 'blankOptionLabel'=>&$GLOBALS['TL_LANG']['tl_page']['no_subpage'], 'tl_class'=>'w50'),
 );
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['languageRoot'] = array
@@ -63,6 +63,13 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['languageRoot'] = array
 
 class tl_page_changelanguage extends Backend
 {
+
+	/**
+	 * ChangeLanguage object instance
+	 * @var object
+	 */
+	protected $ChangeLanguage;
+
 
 	/**
 	 * Inject fields if appropriate.
@@ -188,22 +195,14 @@ class tl_page_changelanguage extends Backend
 	 */
 	public function getFallbackPages($dc)
 	{
-		$objPage = $this->getPageDetails($dc->id);
-
-		$objRootPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->limit(1)->execute($objPage->rootId);
-
-		$objFallback = $this->Database->prepare("SELECT * FROM tl_page WHERE type='root' AND fallback=1 AND id!=? AND (dns=? OR id=?)")->limit(1)->execute($objRootPage->id, $objPage->domain, $objRootPage->languageRoot, $objRootPage->languageRoot);
-
-		if ($objFallback->languageRoot)
-		{
-			$objFallback = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->limit(1)->execute($objFallback->languageRoot);
-		}
+		$this->import('ChangeLanguage');
 
 		$arrPages = array();
+		$arrRoot = $this->ChangeLanguage->findMainLanguageRootForPage($dc->id);
 
-		if ($objFallback->numRows)
+		if ($arrRoot !== false)
 		{
-			$this->generatePageOptions($arrPages, $objFallback->id, 0);
+			$this->generatePageOptions($arrPages, $arrRoot['id'], 0);
 		}
 
 		return $arrPages;

@@ -38,6 +38,12 @@ class ModuleChangelanguage extends Module
 	 */
 	protected $strTemplate = 'mod_changelanguage';
 
+	/**
+	 * ChangeLanguage object instance
+	 * @var object
+	 */
+	protected $ChangeLanguage;
+
 
 	public function generate()
 	{
@@ -82,21 +88,7 @@ class ModuleChangelanguage extends Module
 		// Required for the current pagetree language
 		$objRootPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($objPage->rootId);
 
-		// Search associated root pages
-		$objFallbackRoot = $this->Database->prepare("SELECT * FROM tl_page WHERE type='root' AND fallback='1' AND dns=?")->limit(1)->execute($objPage->domain);
-		$objLanguageRoots = $this->Database->prepare("SELECT * FROM tl_page WHERE type='root' AND fallback='1' AND (id=? OR languageRoot=? OR (languageRoot>0 && languageRoot=?))")->execute($objFallbackRoot->languageRoot, $objFallbackRoot->id, $objFallbackRoot->languageRoot);
-		$arrDomains = $objLanguageRoots->fetchEach('dns');
-		$arrDomains[] = $objFallbackRoot->dns;
-
-		$objRootPages = $this->Database->prepare("SELECT DISTINCT * FROM tl_page WHERE type='root' AND dns IN ('" . implode("','", $arrDomains) . "') ORDER BY sorting")->execute($objPage->domain, $objLanguageRoot->dns);
-
-        // Get root pages
-        $arrRootPages = array();
-
-		while ($objRootPages->next())
-		{
-			$arrRootPages[$objRootPages->id] = $objRootPages->row();
-		}
+		$arrRootPages = $this->ChangeLanguage->findLanguageRootsForDomain($objPage->domain);
 
 
         // Check if there are foreign languages of this page
@@ -340,7 +332,7 @@ class ModuleChangelanguage extends Module
             {
             	continue;
             }
-            
+
             // Build template array
 			$arrItems[$c] = array
 			(
