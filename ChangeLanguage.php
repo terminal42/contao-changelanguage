@@ -40,15 +40,15 @@ class ChangeLanguage extends Controller
 
 	public function translateArticles($arrParams, $strLanguage, $arrRootPage)
 	{
-		if ($arrParams['article'] != '')
+		if ($arrParams['url']['article'] != '')
 		{
 			global $objPage;
 
-			$objArticle = $this->Database->prepare("SELECT id, alias FROM tl_article WHERE WHERE id=(SELECT languageMain FROM tl_article WHERE pid=? AND alias=?)")->execute($objPage->id, $arrParams['article']);
+			$objArticle = $this->Database->prepare("SELECT id, alias FROM tl_article WHERE WHERE id=(SELECT languageMain FROM tl_article WHERE pid=? AND alias=?)")->execute($objPage->id, $arrParams['url']['article']);
 
 			if ($objArticle->numRows)
 			{
-				$arrParams['article'] = $objArticle->alias ? $objArticle->alias : $objArticle->id;
+				$arrParams['url']['article'] = $objArticle->alias ? $objArticle->alias : $objArticle->id;
 			}
 		}
 
