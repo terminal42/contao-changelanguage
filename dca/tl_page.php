@@ -48,7 +48,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['languageMain'] = array
 	'exclude'                 => true,
 	'inputType'               => 'select',
 	'options_callback'        => array('tl_page_changelanguage', 'getFallbackPages'),
-	'eval'                    => array('tl_class'=>'w50'),
+	'eval'                    => array('includeBlankOption'=>true, 'blankOptionLabel'=>$GLOBALS['TL_LANG']['tl_page']['no_subpage'], 'tl_class'=>'w50'),
 );
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['languageRoot'] = array
@@ -63,86 +63,6 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['languageRoot'] = array
 
 class tl_page_changelanguage extends Backend
 {
-
-	public $arrPages = array();
-
-
-	/**
-	 * Return all fallback pages for the current page (used as options_callback).
-	 *
-	 * @access public
-	 * @return array
-	 */
-	public function getFallbackPages($dc)
-	{
-		$objPage = $this->getPageDetails($dc->id);
-
-		$objRootPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->limit(1)->execute($objPage->rootId);
-
-		$objFallback = $this->Database->prepare("SELECT * FROM tl_page WHERE type='root' AND fallback=1 AND id!=? AND (dns=? OR id=?)")->limit(1)->execute($objRootPage->id, $objPage->domain, $objRootPage->languageRoot, $objRootPage->languageRoot);
-
-		if ($objFallback->languageRoot)
-		{
-			$objFallback = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->limit(1)->execute($objFallback->languageRoot);
-		}
-
-		$this->arrPages[''] = $GLOBALS['TL_LANG']['tl_page']['no_subpage'];
-
-		if ($objFallback->numRows)
-		{
-			$this->createPageList($objFallback->id, 0);
-		}
-
-		return $this->arrPages;
-	}
-
-
-	public function getRootPages($dc)
-	{
-		$arrPages = array();
-		$objPages = $this->Database->prepare("SELECT * FROM tl_page WHERE type='root' AND fallback='1' AND languageRoot=0 AND language!=(SELECT language FROM tl_page WHERE id=?) AND id!=?")->execute($dc->id, $dc->id);
-
-		while( $objPages->next() )
-		{
-			$arrPages[$objPages->id] = $objPages->title . (strlen($objPages->dns) ? (' (' . $objPages->dns . ')') : '') . ' [' . $objPages->language . ']';
-		}
-
-		return $arrPages;
-	}
-
-
-	/**
-	 * Generates a list of all subpages and fill into $this->arrPages.
-	 *
-	 * @access public
-	 * @param int $intId. (default: 0)
-	 * @param int $level. (default: -1)
-	 * @return void
-	 */
-	public function createPageList($intId=0, $level=-1)
-	{
-		// Add child pages
-		$objPages = $this->Database->prepare("SELECT id, title FROM tl_page WHERE pid=? AND type != 'root' AND type != 'error_403' AND type != 'error_404' ORDER BY sorting")
-								   ->execute($intId);
-
-		if ($objPages->numRows < 1)
-		{
-			return;
-		}
-
-		++$level;
-		$strOptions = '';
-
-		while ($objPages->next())
-		{
-			$fallbackID = $objPages->id;
-			$fallbackTitle = str_repeat("&nbsp;", (3 * $level)) . $objPages->title;
-			$this->arrPages[$fallbackID] = $fallbackTitle;
-
-			$this->createPageList($objPages->id, $level);
-		}
-	}
-
 
 	/**
 	 * Inject fields if appropriate.
@@ -257,6 +177,80 @@ class tl_page_changelanguage extends Backend
 		}
 
 		return $label;
+	}
+
+
+	/**
+	 * Return all fallback pages for the current page (used as options_callback).
+	 *
+	 * @access public
+	 * @return array
+	 */
+	public function getFallbackPages($dc)
+	{
+		$objPage = $this->getPageDetails($dc->id);
+
+		$objRootPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->limit(1)->execute($objPage->rootId);
+
+		$objFallback = $this->Database->prepare("SELECT * FROM tl_page WHERE type='root' AND fallback=1 AND id!=? AND (dns=? OR id=?)")->limit(1)->execute($objRootPage->id, $objPage->domain, $objRootPage->languageRoot, $objRootPage->languageRoot);
+
+		if ($objFallback->languageRoot)
+		{
+			$objFallback = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->limit(1)->execute($objFallback->languageRoot);
+		}
+
+		$arrPages = array();
+
+		if ($objFallback->numRows)
+		{
+			$this->generatePageOptions($arrPages, $objFallback->id, 0);
+		}
+
+		return $arrPages;
+	}
+
+
+	public function getRootPages($dc)
+	{
+		$arrPages = array();
+		$objPages = $this->Database->prepare("SELECT * FROM tl_page WHERE type='root' AND fallback='1' AND languageRoot=0 AND language!=(SELECT language FROM tl_page WHERE id=?) AND id!=?")->execute($dc->id, $dc->id);
+
+		while( $objPages->next() )
+		{
+			$arrPages[$objPages->id] = $objPages->title . (strlen($objPages->dns) ? (' (' . $objPages->dns . ')') : '') . ' [' . $objPages->language . ']';
+		}
+
+		return $arrPages;
+	}
+
+
+	/**
+	 * Generates a list of all subpages
+	 *
+	 * @param array
+	 * @param int
+	 * @param int
+	 */
+	protected function generatePageOptions(&$arrPages, $intId=0, $level=-1)
+	{
+		// Add child pages
+		$objPages = $this->Database->prepare("SELECT id, title FROM tl_page WHERE pid=? AND type != 'root' AND type != 'error_403' AND type != 'error_404' ORDER BY sorting")
+								   ->execute($intId);
+
+		if ($objPages->numRows < 1)
+		{
+			return;
+		}
+
+		++$level;
+		$strOptions = '';
+
+		while ($objPages->next())
+		{
+			$arrPages[$objPages->id] = str_repeat("&nbsp;", (3 * $level)) . $objPages->title;
+
+			$this->generatePageOptions($arrPages, $objPages->id, $level);
+		}
 	}
 }
 
