@@ -74,6 +74,8 @@ class ModuleChangelanguage extends Module
 			$this->navigationTpl = 'nav_default';
 		}
 
+		$this->import('ChangeLanguage');
+
 		return parent::generate();
 	}
 

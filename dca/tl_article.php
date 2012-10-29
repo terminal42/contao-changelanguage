@@ -88,13 +88,7 @@ class tl_article_changelanguage extends Backend
 		}
 		elseif ($this->Input->get('act') == 'editAll')
 		{
-			foreach( $GLOBALS['TL_DCA']['tl_page']['palettes'] as $name => $palette )
-			{
-				if ($name == '__selector__' || $name == 'root')
-					continue;
-
-				$GLOBALS['TL_DCA']['tl_page']['palettes'][$name] = preg_replace('@([,|;]title)([,|;])@','$1,languageMain$2', $palette);
-			}
+			$GLOBALS['TL_DCA']['tl_page']['palettes']['default'] = preg_replace('@([,|;]title)([,|;])@','$1,languageMain$2', $GLOBALS['TL_DCA']['tl_page']['palettes']['default']);
 		}
 	}
 
