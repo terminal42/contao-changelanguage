@@ -1,8 +1,8 @@
-<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
+<?php
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2010 Leo Feyer
+ * Copyright (C) 2005-2012 Leo Feyer
  *
  * Formerly known as TYPOlight Open Source CMS.
  *
@@ -21,23 +21,28 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Felix Pfeiffer 2008, Andreas Schempp 2008-2011
- * @author     Andreas Schempp <andreas@schempp.ch>
- * @author     Felix Pfeiffer <info@felixpfeiffer.com>
+ * @copyright  terminal42 gmbh 2012
+ * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
- * @version    $Id$
  */
 
 
 /**
- * Frontend modules
+ * Register the classes
  */
-$GLOBALS['FE_MOD']['miscellaneous']['changelanguage']		= 'ModuleChangeLanguage';
-$GLOBALS['FE_MOD']['miscellaneous']['languageRedirect']		= 'ModuleLanguageRedirect';
+ClassLoader::addClasses(array
+(
+	'ChangeLanguage'               => 'system/modules/changelanguage/ChangeLanguage.php',
+	'ModuleChangeLanguage'         => 'system/modules/changelanguage/ModuleChangeLanguage.php',
+	'ModuleLanguageRedirect'       => 'system/modules/changelanguage/ModuleLanguageRedirect.php',
+));
 
 
-/***
- * Hooks
+/**
+ * Register the templates
  */
-$GLOBALS['TL_HOOKS']['translateUrlParameters'][] = array('ChangeLanguage', 'translateArticles');
+TemplateLoader::addFiles(array
+(
+	'mod_changelanguage'    => 'system/modules/changelanguage/templates',
+));
 

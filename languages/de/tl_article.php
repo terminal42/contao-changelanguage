@@ -1,8 +1,8 @@
-<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
+<?php
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2010 Leo Feyer
+ * Copyright (C) 2005-2012 Leo Feyer
  *
  * Formerly known as TYPOlight Open Source CMS.
  *
@@ -21,23 +21,20 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Felix Pfeiffer 2008, Andreas Schempp 2008-2011
- * @author     Andreas Schempp <andreas@schempp.ch>
- * @author     Felix Pfeiffer <info@felixpfeiffer.com>
+ * @copyright  terminal42 gmbh 2012
+ * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
- * @version    $Id$
  */
 
 
 /**
- * Frontend modules
+ * Fields
  */
-$GLOBALS['FE_MOD']['miscellaneous']['changelanguage']		= 'ModuleChangeLanguage';
-$GLOBALS['FE_MOD']['miscellaneous']['languageRedirect']		= 'ModuleLanguageRedirect';
+$GLOBALS['TL_LANG']['tl_article']['languageMain']	= array('Fallback-Artikel', 'Wählen Sie den Artikel in der Fallback-Sprache aus, welcher diesem hier entspricht. So ist es für den Sprachenwechsler möglich, einen Artikel direkt zu verlinken.');
 
 
-/***
- * Hooks
+/**
+ * References
  */
-$GLOBALS['TL_HOOKS']['translateUrlParameters'][] = array('ChangeLanguage', 'translateArticles');
+$GLOBALS['TL_LANG']['tl_article']['no_subarticle']	= 'Kein passender Artikel';
 
