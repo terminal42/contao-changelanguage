@@ -4,8 +4,11 @@ changelanguage
 
 ### Version 2.1.0 stable (2012-??-??) ###
 
+- Added support for Contao 3
 - Option to hide languages without direct fallback
 - Redirect and forward pages can now have fallback assigned
+- Can now assign translations of articles (for article teasers)
+- Added hreflang=".." to the navigation links
 - Added compatibility with Avisota
 - Fixed issues with language parameter if no direct fallback was available (#4)
 
