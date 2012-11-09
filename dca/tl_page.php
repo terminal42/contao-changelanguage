@@ -79,7 +79,7 @@ class tl_page_changelanguage extends Backend
 	 */
 	public function showSelectbox($dc)
 	{
-		if ($this->Input->get('act') == "edit")
+		if ($this->Input->get('act') == 'edit')
 		{
 			$objPage = $this->getPageDetails($dc->id);
 
@@ -89,7 +89,7 @@ class tl_page_changelanguage extends Backend
 				$GLOBALS['TL_DCA']['tl_page']['fields']['dns']['eval']['tl_class'] = 'clr w50';
 				$GLOBALS['TL_DCA']['tl_page']['palettes']['root'] = preg_replace('@([,|;]fallback)([,|;])@','$1,languageRoot$2', $GLOBALS['TL_DCA']['tl_page']['palettes']['root']);
 			}
-			else
+			elseif ($objPage->type != 'root')
 			{
 				$objRootPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->limit(1)->execute($objPage->rootId);
 
@@ -103,7 +103,7 @@ class tl_page_changelanguage extends Backend
 				}
 			}
 		}
-		elseif ($this->Input->get('act') == "editAll")
+		elseif ($this->Input->get('act') == 'editAll')
 		{
 			foreach( $GLOBALS['TL_DCA']['tl_page']['palettes'] as $name => $palette )
 			{
@@ -195,7 +195,10 @@ class tl_page_changelanguage extends Backend
 	 */
 	public function getFallbackPages($dc)
 	{
-		$this->import('ChangeLanguage');
+		if ($this->ChangeLanguage === null)
+		{
+			$this->ChangeLanguage = new ChangeLanguage();
+		}
 
 		$arrPages = array();
 		$arrRoot = $this->ChangeLanguage->findMainLanguageRootForPage($dc->id);
