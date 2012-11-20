@@ -37,12 +37,6 @@ class ModuleChangelanguage extends Module
 	 */
 	protected $strTemplate = 'mod_changelanguage';
 
-	/**
-	 * ChangeLanguage object instance
-	 * @var object
-	 */
-	protected $ChangeLanguage;
-
 
 	public function generate()
 	{
@@ -73,7 +67,7 @@ class ModuleChangelanguage extends Module
 			$this->navigationTpl = 'nav_default';
 		}
 
-		$this->ChangeLanguage = new ChangeLanguage();
+		$this->import('ChangeLanguage');
 
 		return parent::generate();
 	}

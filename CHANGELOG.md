@@ -2,6 +2,12 @@
 changelanguage
 ==============
 
+### Version 2.1.1 stable (2012-11-20) ###
+
+- Fixed exception in Contao 3 (#6)
+- Updated copyright statement
+
+
 ### Version 2.1.0 stable (2012-11-09) ###
 
 - Added support for Contao 3

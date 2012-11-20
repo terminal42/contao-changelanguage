@@ -50,12 +50,8 @@ class tl_article_changelanguage extends Backend
 {
 
 	/**
-	 * ChangeLanguage object instance
-	 * @var object
+	 * Initialize the class
 	 */
-	protected $ChangeLanguage;
-
-
 	public function __construct()
 	{
 		parent::__construct();
@@ -74,8 +70,6 @@ class tl_article_changelanguage extends Backend
 	{
 		if ($this->Input->get('act') == 'edit')
 		{
-			$this->import('ChangeLanguage');
-
 			$objPage = $this->Database->prepare("SELECT p.* FROM tl_page p LEFT JOIN tl_article a ON a.pid=p.id WHERE a.id=? GROUP BY a.pid")->execute($dc->id);
 			$arrMain = $this->ChangeLanguage->findMainLanguagePageForPage($objPage);
 

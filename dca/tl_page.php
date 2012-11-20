@@ -64,13 +64,6 @@ class tl_page_changelanguage extends Backend
 {
 
 	/**
-	 * ChangeLanguage object instance
-	 * @var object
-	 */
-	protected $ChangeLanguage;
-
-
-	/**
 	 * Inject fields if appropriate.
 	 *
 	 * @access public
@@ -194,11 +187,8 @@ class tl_page_changelanguage extends Backend
 	 */
 	public function getFallbackPages($dc)
 	{
-		if ($this->ChangeLanguage === null)
-		{
-			$this->ChangeLanguage = new ChangeLanguage();
-		}
-
+		$this->import('ChangeLanguage');
+		
 		$arrPages = array();
 		$arrRoot = $this->ChangeLanguage->findMainLanguageRootForPage($dc->id);
 
