@@ -1,8 +1,8 @@
-<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
+<?php
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2010 Leo Feyer
+ * Copyright (C) 2005-2012 Leo Feyer
  *
  * Formerly known as TYPOlight Open Source CMS.
  *
@@ -21,11 +21,10 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Felix Pfeiffer 2008, Andreas Schempp 2008-2011
- * @author     Andreas Schempp <andreas@schempp.ch>
+ * @copyright  Felix Pfeiffer 2008, terminal42 gmbh 2008-2012
+ * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Felix Pfeiffer <info@felixpfeiffer.com>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
- * @version    $Id$
  */
 
 
@@ -63,13 +62,6 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['languageRoot'] = array
 
 class tl_page_changelanguage extends Backend
 {
-
-	/**
-	 * ChangeLanguage object instance
-	 * @var object
-	 */
-	protected $ChangeLanguage;
-
 
 	/**
 	 * Inject fields if appropriate.
@@ -195,11 +187,8 @@ class tl_page_changelanguage extends Backend
 	 */
 	public function getFallbackPages($dc)
 	{
-		if ($this->ChangeLanguage === null)
-		{
-			$this->ChangeLanguage = new ChangeLanguage();
-		}
-
+		$this->import('ChangeLanguage');
+		
 		$arrPages = array();
 		$arrRoot = $this->ChangeLanguage->findMainLanguageRootForPage($dc->id);
 
