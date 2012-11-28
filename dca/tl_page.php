@@ -73,7 +73,7 @@ class tl_page_changelanguage extends Backend
 	{
 		if ($this->Input->get('act') == 'edit')
 		{
-			$objPage = $this->getPageDetails($dc->id);
+			$objPage = $this->getPageDetails($dc->activeRecord->id);
 
 			if ($objPage->type == 'root' && $objPage->fallback)
 			{
