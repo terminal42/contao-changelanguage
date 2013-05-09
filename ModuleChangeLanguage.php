@@ -218,7 +218,17 @@ class ModuleChangelanguage extends Module
 
             	foreach( $arrParams['url'] as $k => $v )
             	{
-            		$strParam .= '/' . $k . '/' . $v;
+					if ($GLOBALS['TL_CONFIG']['useAutoItem'])
+					{
+						if ($k === 'auto_item')
+						{
+							$strParam .= '/' . $v;
+						}
+					}
+					else
+					{
+						$strParam .= '/' . $k . '/' . $v;
+					}
             	}
 
             	foreach( $arrParams['get'] as $k => $v )
