@@ -60,32 +60,32 @@ class ModuleLanguageRedirect extends Module
 				global $objPage;
 				$mainLanguageID = $objPage->languageMain != 0 ? $objPage->languageMain : $objPage->id;
 				$objPages =  $this->Database->prepare("SELECT * FROM tl_page WHERE languageMain=? OR id=? AND published=?")
-		        							->execute($mainLanguageID, $mainLanguageID, 1);
+											->execute($mainLanguageID, $mainLanguageID, 1);
 
-		        while( $objPages->next() )
-		        {
-		        	// redirect
-		        	if ($objPages->language == $this->User->language)
-		        	{
-		        		$strParam = '';
-		        		$strGet = '?';
-		        		foreach( $_GET as $key => $value )
-		        		{
-		        			switch( $key )
-		        			{
-		        				case 'page':
-		        				case 'keywords':
-		        					$strGet .= $key.'='.$value.'&';
-		        					break;
+				while( $objPages->next() )
+				{
+					// redirect
+					if ($objPages->language == $this->User->language)
+					{
+						$strParam = '';
+						$strGet = '?';
+						foreach( $_GET as $key => $value )
+						{
+							switch( $key )
+							{
+								case 'page':
+								case 'keywords':
+									$strGet .= $key.'='.$value.'&';
+									break;
 
-		        				default:
-				        			$strParam .= '/'.$key.'/'.$value;
-		        			}
-		        		}
+								default:
+									$strParam .= '/'.$key.'/'.$value;
+							}
+						}
 
-		        		$this->redirect($this->generateFrontendUrl($objPages->row(), $strParam).$strGet);
-		        	}
-		        }
+						$this->redirect($this->generateFrontendUrl($objPages->row(), $strParam).$strGet);
+					}
+				}
 			}
 		}
 

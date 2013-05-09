@@ -78,7 +78,7 @@ class ModuleChangelanguage extends Module
 	 */
 	protected function compile()
 	{
-        global $objPage;
+		global $objPage;
 
 		// Required for the current pagetree language
 		$objRootPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($objPage->rootId);
@@ -86,12 +86,12 @@ class ModuleChangelanguage extends Module
 		$arrRootPages = $this->ChangeLanguage->findLanguageRootsForDomain($objPage->domain);
 
 
-        // Check if there are foreign languages of this page
-        $arrLanguagePages = array();
-        $mainLanguageID = $objPage->languageMain != 0 ? $objPage->languageMain : $objPage->id;
-        $arrPageIds =  $this->Database->prepare("SELECT id FROM tl_page WHERE languageMain=? OR id=?")
-        							  ->execute($mainLanguageID, $mainLanguageID)
-        							  ->fetchEach('id');
+		// Check if there are foreign languages of this page
+		$arrLanguagePages = array();
+		$mainLanguageID = $objPage->languageMain != 0 ? $objPage->languageMain : $objPage->id;
+		$arrPageIds =  $this->Database->prepare("SELECT id FROM tl_page WHERE languageMain=? OR id=?")
+									  ->execute($mainLanguageID, $mainLanguageID)
+									  ->fetchEach('id');
 
 		foreach ($arrPageIds as $intId)
 		{
@@ -110,99 +110,99 @@ class ModuleChangelanguage extends Module
 			}
 		}
 
-        $arrParams = array('url'=>array(), 'get'=>array());
-        if ($this->keepUrlParams)
-    	{
-    		foreach( array_keys($_GET) as $strKey )
-    		{
-    			$strValue = $this->Input->get($strKey);
+		$arrParams = array('url'=>array(), 'get'=>array());
+		if ($this->keepUrlParams)
+		{
+			foreach( array_keys($_GET) as $strKey )
+			{
+				$strValue = $this->Input->get($strKey);
 
-    			// Do not keep empty parameters and arrays
-    			if ($strValue != '' && $strKey != 'language')
-    			{
-    				// Parameter passed after "?"
-    				if (strpos($this->Environment->request, $strKey.'='.$strValue) !== false)
-    				{
-    					$arrParams['get'][$strKey] = $strValue;
-    				}
-    				else
-    				{
-    					$arrParams['url'][$strKey] = $strValue;
-    				}
-    			}
-    		}
-    	}
+				// Do not keep empty parameters and arrays
+				if ($strValue != '' && $strKey != 'language')
+				{
+					// Parameter passed after "?"
+					if (strpos($this->Environment->request, $strKey.'='.$strValue) !== false)
+					{
+						$arrParams['get'][$strKey] = $strValue;
+					}
+					else
+					{
+						$arrParams['url'][$strKey] = $strValue;
+					}
+				}
+			}
+		}
 
-    	// Always keep search parameters
-    	if ($this->Input->get('keywords') != '')
-    	{
-    		$arrParams['get']['keywords'] = $this->Input->get('keywords');
-    	}
+		// Always keep search parameters
+		if ($this->Input->get('keywords') != '')
+		{
+			$arrParams['get']['keywords'] = $this->Input->get('keywords');
+		}
 
 		$arrItems = array();
-        $c = 0;
-        $count = count($arrRootPages);
+		$c = 0;
+		$count = count($arrRootPages);
 
-        foreach ($arrRootPages as $arrRootPage)
-        {
-        	$domain = '';
-        	if ($objPage->domain != $arrRootPage['dns'])
-            {
-            	$domain  = ($this->Environment->ssl ? 'https://' : 'http://') . $arrRootPage['dns'] . '/';
+		foreach ($arrRootPages as $arrRootPage)
+		{
+			$domain = '';
+			if ($objPage->domain != $arrRootPage['dns'])
+			{
+				$domain  = ($this->Environment->ssl ? 'https://' : 'http://') . $arrRootPage['dns'] . '/';
 
-            	if (strlen(TL_PATH))
-            	{
-            		$domain .= TL_PATH . '/';
-            	}
-            }
+				if (strlen(TL_PATH))
+				{
+					$domain .= TL_PATH . '/';
+				}
+			}
 
 
-        	$blnDirectFallback = true;
+			$blnDirectFallback = true;
 
-        	// If the root isn't published, continue with the next page
-            if ((!$arrRootPage['published'] || ($arrRootPage['start'] > 0 && $arrRootPage['start'] > time()) || ($arrRootPage['stop'] > 0 && $arrRootPage['stop'] < time())) && !BE_USER_LOGGED_IN)
-            {
-                continue;
-            }
+			// If the root isn't published, continue with the next page
+			if ((!$arrRootPage['published'] || ($arrRootPage['start'] > 0 && $arrRootPage['start'] > time()) || ($arrRootPage['stop'] > 0 && $arrRootPage['stop'] < time())) && !BE_USER_LOGGED_IN)
+			{
+				continue;
+			}
 
-            // Active page
-            else if($arrRootPage['language'] == $objRootPage->language)
-            {
-            	// If it is the active page, and we want to hide this, continue with the next page
-            	if ($this->hideActiveLanguage)
-            		continue;
+			// Active page
+			else if($arrRootPage['language'] == $objRootPage->language)
+			{
+				// If it is the active page, and we want to hide this, continue with the next page
+				if ($this->hideActiveLanguage)
+					continue;
 
 				$active = true;
-            	$pageTitle = $arrRootPage['title'];
-            	$href = "";
+				$pageTitle = $arrRootPage['title'];
+				$href = "";
 
-            	if (in_array('articlelanguage', $this->Config->getActiveModules()) && strlen($_SESSION['ARTICLE_LANGUAGE']))
-            	{
-            		$objArticle = $this->Database->prepare("SELECT * FROM tl_article WHERE (pid=? OR pid=?) AND language=?")
-            									 ->execute($objPage->id, $objPage->languageMain, $_SESSION['ARTICLE_LANGUAGE']);
+				if (in_array('articlelanguage', $this->Config->getActiveModules()) && strlen($_SESSION['ARTICLE_LANGUAGE']))
+				{
+					$objArticle = $this->Database->prepare("SELECT * FROM tl_article WHERE (pid=? OR pid=?) AND language=?")
+												 ->execute($objPage->id, $objPage->languageMain, $_SESSION['ARTICLE_LANGUAGE']);
 
-            		if ($objArticle->numRows)
-            		{
-            			$objPage->cssClass = trim($objPage->cssClass . ' lang-' . $_SESSION['ARTICLE_LANGUAGE']);
-            		}
-            		else
-            		{
-            			$objPage->cssClass = trim($objPage->cssClass . ' lang-' . $arrRootPage['language']);
-            		}
-            	}
-            	else
-            	{
-            		$objPage->cssClass = trim($objPage->cssClass . ' lang-' . $arrRootPage['language']);
-            	}
-            }
+					if ($objArticle->numRows)
+					{
+						$objPage->cssClass = trim($objPage->cssClass . ' lang-' . $_SESSION['ARTICLE_LANGUAGE']);
+					}
+					else
+					{
+						$objPage->cssClass = trim($objPage->cssClass . ' lang-' . $arrRootPage['language']);
+					}
+				}
+				else
+				{
+					$objPage->cssClass = trim($objPage->cssClass . ' lang-' . $arrRootPage['language']);
+				}
+			}
 
-            // Search for foreign language
-            else
-            {
-            	$active = false;
-            	$target = '';
+			// Search for foreign language
+			else
+			{
+				$active = false;
+				$target = '';
 
-            	// HOOK: allow extensions to modify url parameters
+				// HOOK: allow extensions to modify url parameters
 				if (isset($GLOBALS['TL_HOOKS']['translateUrlParameters']) && is_array($GLOBALS['TL_HOOKS']['translateUrlParameters']))
 				{
 					foreach ($GLOBALS['TL_HOOKS']['translateUrlParameters'] as $callback)
@@ -212,69 +212,79 @@ class ModuleChangelanguage extends Module
 					}
 				}
 
-            	// Make sure $strParam is empty, otherwise previous pages could affect url
-            	$strParam = '';
-            	$arrRequest = array();
+				// Make sure $strParam is empty, otherwise previous pages could affect url
+				$strParam = '';
+				$arrRequest = array();
 
-            	foreach( $arrParams['url'] as $k => $v )
-            	{
-            		$strParam .= '/' . $k . '/' . $v;
-            	}
+				foreach( $arrParams['url'] as $k => $v )
+				{
+					if ($GLOBALS['TL_CONFIG']['useAutoItem'])
+					{
+						if ($k === 'auto_item')
+						{
+							$strParam .= '/' . $v;
+						}
+					}
+					else
+					{
+						$strParam .= '/' . $k . '/' . $v;
+					}
+				}
 
-            	foreach( $arrParams['get'] as $k => $v )
-            	{
-            		$arrRequest[] = $k . '=' . $v;
-            	}
+				foreach( $arrParams['get'] as $k => $v )
+				{
+					$arrRequest[] = $k . '=' . $v;
+				}
 
 
-            	// Matching language page found
-	            if(array_key_exists($arrRootPage['language'], $arrLanguagePages))
-	            {
-	            	$pageTitle = $arrLanguagePages[$arrRootPage['language']]['title'];
-	            	$href = $this->generateFrontendUrl($arrLanguagePages[$arrRootPage['language']], $strParam, $arrRootPage['language']) . (count($arrRequest) ? ('?'.implode('&amp;', $arrRequest)) : '');
+				// Matching language page found
+				if(array_key_exists($arrRootPage['language'], $arrLanguagePages))
+				{
+					$pageTitle = $arrLanguagePages[$arrRootPage['language']]['title'];
+					$href = $this->generateFrontendUrl($arrLanguagePages[$arrRootPage['language']], $strParam, $arrRootPage['language']) . (count($arrRequest) ? ('?'.implode('&amp;', $arrRequest)) : '');
 
-	            	if ($arrLanguagePages[$arrRootPage['language']]['target'])
-	            	{
-	            		$target = ($objPage->outputFormat == 'html5') ? ' target="_blank"' : ' onclick="window.open(this.href); return false;"';
-	            	}
-	            }
+					if ($arrLanguagePages[$arrRootPage['language']]['target'])
+					{
+						$target = ($objPage->outputFormat == 'html5') ? ' target="_blank"' : ' onclick="window.open(this.href); return false;"';
+					}
+				}
 
-	            // Step up in the current page trail until we find a page with valid languageMain
-	            else
-	            {
-	            	$blnDirectFallback = false;
-	            	$blnFound = false;
-	            	$arrTrail = $objPage->trail;
+				// Step up in the current page trail until we find a page with valid languageMain
+				else
+				{
+					$blnDirectFallback = false;
+					$blnFound = false;
+					$arrTrail = $objPage->trail;
 
-	            	// last id in trail is the current page, we don't need to search that
-	            	for ($i=count($arrTrail)-2; $i>=0; $i--)
-	            	{
-	            		// Fallback tree, search for trail id
-	            		if ($objRootPage->fallback)
-	            		{
-	            			$objTrailPage = $this->Database->prepare("SELECT * FROM tl_page WHERE (id=? OR languageMain=?)")
-		            									   ->execute($arrTrail[$i], $arrTrail[$i]);
-	            		}
+					// last id in trail is the current page, we don't need to search that
+					for ($i=count($arrTrail)-2; $i>=0; $i--)
+					{
+						// Fallback tree, search for trail id
+						if ($objRootPage->fallback)
+						{
+							$objTrailPage = $this->Database->prepare("SELECT * FROM tl_page WHERE (id=? OR languageMain=?)")
+														   ->execute($arrTrail[$i], $arrTrail[$i]);
+						}
 
-	            		// not fallback tree, search for trail languageMain
-	            		else
-	            		{
-	            			$objTPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($arrTrail[$i]);
+						// not fallback tree, search for trail languageMain
+						else
+						{
+							$objTPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($arrTrail[$i]);
 
-	            			// Basically impossible, but DB would throw exception
-	            			if (!$objTPage->numRows)
-	            				continue;
+							// Basically impossible, but DB would throw exception
+							if (!$objTPage->numRows)
+								continue;
 
-	            			if ($objTPage->languageMain == 0)
-	            				continue;
+							if ($objTPage->languageMain == 0)
+								continue;
 
-	            			$objTrailPage = $this->Database->prepare("SELECT * FROM tl_page WHERE (id=? OR languageMain=?)")
-		            									   ->execute($objTPage->languageMain, $objTPage->languageMain);
-	            		}
+							$objTrailPage = $this->Database->prepare("SELECT * FROM tl_page WHERE (id=? OR languageMain=?)")
+														   ->execute($objTPage->languageMain, $objTPage->languageMain);
+						}
 
-	            		if ($objTrailPage->numRows)
-	            		{
-	            			while( $objTrailPage->next() )
+						if ($objTrailPage->numRows)
+						{
+							while( $objTrailPage->next() )
 							{
 								if ($objTrailPage->type == 'root')
 								{
@@ -296,39 +306,39 @@ class ModuleChangelanguage extends Module
 									break;
 								}
 							}
-	            		}
+						}
 
-	            		if ($blnFound)
-	            			break;
-	            	}
+						if ($blnFound)
+							break;
+					}
 
-	            	// We found a trail page
-	            	if ($blnFound)
-	            	{
-		            	$pageTitle = $objTrailPage->title;
-		            	$href = $this->generateFrontendUrl($objTrailPage->row(), $strParam, $arrRootPage['language']);
+					// We found a trail page
+					if ($blnFound)
+					{
+						$pageTitle = $objTrailPage->title;
+						$href = $this->generateFrontendUrl($objTrailPage->row(), $strParam, $arrRootPage['language']);
 
-	        	    	if ($objTrailPage->target)
-	    	        	{
-		            		$target = ($objPage->outputFormat == 'html5') ? ' target="_blank"' : ' onclick="window.open(this.href); return false;"';
-		            	}
-	            	}
+						if ($objTrailPage->target)
+						{
+							$target = ($objPage->outputFormat == 'html5') ? ' target="_blank"' : ' onclick="window.open(this.href); return false;"';
+						}
+					}
 
-	            	else
-	            	{
-		            	$pageTitle = $arrRootPage['title'];
-		            	$href = $this->generateFrontendUrl($arrRootPage, null, $arrRootPage['language']);
-	            	}
-	            }
-            }
+					else
+					{
+						$pageTitle = $arrRootPage['title'];
+						$href = $this->generateFrontendUrl($arrRootPage, null, $arrRootPage['language']);
+					}
+				}
+			}
 
-            // Hide languages without direct fallback
-            if ($this->hideNoFallback && !$blnDirectFallback)
-            {
-            	continue;
-            }
+			// Hide languages without direct fallback
+			if ($this->hideNoFallback && !$blnDirectFallback)
+			{
+				continue;
+			}
 
-            // Build template array
+			// Build template array
 			$arrItems[$c] = array
 			(
 				'isActive'	=> $active,
@@ -350,23 +360,23 @@ class ModuleChangelanguage extends Module
 				$GLOBALS['TL_HEAD'][] = '<link rel="alternate" hreflang="' . $arrRootPage['language'] . '" lang="' . $arrRootPage['language'] . '" href="' . ($domain . $href) . '" title="' . specialchars($pageTitle, true) . '"' . ($objPage->outputFormat == 'html5' ? '>' : ' />');
 			}
 
-            $c++;
-        }
+			$c++;
+		}
 
-        if ($this->customLanguage)
-        {
-	        usort($arrItems, array($this, 'orderByCustom'));
-       	}
+		if ($this->customLanguage)
+		{
+			usort($arrItems, array($this, 'orderByCustom'));
+		}
 
 
-        $objTemplate = new FrontendTemplate($this->navigationTpl);
-        $objTemplate->level = 'level_1';
-        $objTemplate->items = $arrItems;
+		$objTemplate = new FrontendTemplate($this->navigationTpl);
+		$objTemplate->level = 'level_1';
+		$objTemplate->items = $arrItems;
 
-        $this->Template->items = $objTemplate->parse();
+		$this->Template->items = $objTemplate->parse();
 
-        // Fix contao problem with date/time formats...
-        $this->getPageDetails($objPage->id);
+		// Fix contao problem with date/time formats...
+		$this->getPageDetails($objPage->id);
 	}
 
 
@@ -385,7 +395,7 @@ class ModuleChangelanguage extends Module
 		$key1 = array_search($a['language'], $arrCustom);
 		$key2 = array_search($b['language'], $arrCustom);
 
-	    return ($key1 < $key2) ? -1 : 1;
+		return ($key1 < $key2) ? -1 : 1;
 	}
 
 
