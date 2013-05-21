@@ -2,6 +2,11 @@
 changelanguage
 ==============
 
+### Version 2.2.0 stable (2013-05-21) ###
+
+- Added support for auto_item parameter
+
+
 ### Version 2.1.1 stable (2012-11-20) ###
 
 - Fixed exception in Contao 3 (#6)
