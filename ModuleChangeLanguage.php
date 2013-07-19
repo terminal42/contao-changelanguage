@@ -339,7 +339,7 @@ class ModuleChangelanguage extends Module
 			$arrItems[$c] = array
 			(
 				'isActive'	=> $active,
-				'class'		=> 'lang-' . $arrRootPage['language'] . ($blnDirectFallback ? '' : ' nofallback') . ($c == 0 ? ' first' : '') . ($c == $count-1 ? ' last' : ''),
+				'class'		=> 'lang-' . $arrRootPage['language'] . ($blnDirectFallback ? '' : ' nofallback') . (($active && version_compare(VERSION, '3.0', '>=')) ? ' active' : '') . ($c == 0 ? ' first' : '') . ($c == $count-1 ? ' last' : ''),
 				'link'		=> $this->getLabel($arrRootPage['language']),
 				'subitems'	=> '',
 				'href'		=> ($domain . $href),
