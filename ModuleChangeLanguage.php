@@ -58,7 +58,16 @@ class ModuleChangelanguage extends Module
 		$customLanguageText = array();
 		foreach ($this->customLanguageText as $arrText)
 		{
-			$customLanguageText[strtolower($arrText['value'])] = $arrText['label'];
+			$strKey = $arrText['value'];
+
+			// Lowercase the value if the language is two characters long (e.g. en)
+			// This prevents from modifying the country specific languages like en_US
+			if (strlen($strKey) == 2)
+			{
+				$strKey = strtolower($arrText['value']);
+			}
+
+			$customLanguageText[$strKey] = $arrText['label'];
 		}
 		$this->customLanguageText = $customLanguageText;
 
