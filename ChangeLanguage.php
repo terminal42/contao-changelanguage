@@ -44,20 +44,22 @@ class ChangeLanguage extends Controller
 		{
 			global $objPage;
 
-			$currentArticle = $this->Database->prepare("SELECT id, languageMain FROM tl_article WHERE pid = ? AND alias = ?")->execute( $objPage->id, $arrParams['url']['articles'] );
+			// get gurrent article properties
+			$currentArticle = $this->Database->prepare("SELECT id, languageMain FROM tl_article WHERE pid = ? AND alias = ?")->execute($objPage->id, $arrParams['url']['articles']);
 
-			// if languageMain zero, search for other article referencing current article
+			// if languageMain is zero, search for other article referencing current article
 			if ($currentArticle->languageMain == 0)
 			{
-				$otherArticle = $this->Database->prepare("SELECT id, alias FROM tl_article WHERE languageMain = ?")->execute( $currentArticle->id );
+				$otherArticle = $this->Database->prepare("SELECT id, alias FROM tl_article WHERE languageMain = ?")->execute($currentArticle->id);
 			}
 			else
-				$otherArticle = $this->Database->prepare("SELECT id, alias FROM tl_article WHERE id = ?")->execute( $currentArticle->languageMain );
+			{
+				$otherArticle = $this->Database->prepare("SELECT id, alias FROM tl_article WHERE id = ?")->execute($currentArticle->languageMain);
 			}
 
-			if ($objArticle->numRows)
+			if ($otherArticle->numRows)
 			{
-				$arrParams['url']['articles'] = $objArticle->alias ? $objArticle->alias : $objArticle->id;
+				$arrParams['url']['articles'] = $otherArticle->alias ? $otherArticle->alias : $otherArticle->id;
 			}
 		}
 
