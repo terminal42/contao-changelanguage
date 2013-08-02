@@ -327,6 +327,12 @@ class ModuleChangelanguage extends Module
 		            	$href = $this->generateFrontendUrl($arrRootPage, null, $arrRootPage['language']);
 	            	}
 	            }
+
+                    // Now that we have $href:
+                    // Clear $domain if domain already in $href, see #11
+                    if( preg_match( '/'.urlencode($domain).'/', urlencode($href) )) {
+                        $domain = '';
+                    }
             }
 
             // Hide languages without direct fallback
