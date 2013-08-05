@@ -146,7 +146,7 @@ class ModuleChangelanguage extends Module
         foreach ($arrRootPages as $arrRootPage)
         {
         	$domain = '';
-        	if ($objPage->domain != $arrRootPage['dns'])
+        	if ($arrRootPage['dns'] && ($objPage->domain != $arrRootPage['dns']))
             {
             	$domain  = ($this->Environment->ssl ? 'https://' : 'http://') . $arrRootPage['dns'] . '/';
 
