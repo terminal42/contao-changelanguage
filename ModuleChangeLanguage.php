@@ -368,17 +368,18 @@ class ModuleChangelanguage extends Module
 
         if ($c > 0)
         {
-        if ($this->customLanguage)
-        {
-	        usort($arrItems, array($this, 'orderByCustom'));
-       	}
+            if ($this->customLanguage)
+            {
+                usort($arrItems, array($this, 'orderByCustom'));
+            }
 
 
-        $objTemplate = new FrontendTemplate($this->navigationTpl);
-        $objTemplate->level = 'level_1';
-        $objTemplate->items = $arrItems;
+            $objTemplate = new FrontendTemplate($this->navigationTpl);
+            $objTemplate->setData($this->arrData);
+            $objTemplate->level = 'level_1';
+            $objTemplate->items = $arrItems;
 
-        $this->Template->items = $objTemplate->parse();
+            $this->Template->items = $objTemplate->parse();
         }
 
         // Fix contao problem with date/time formats...
