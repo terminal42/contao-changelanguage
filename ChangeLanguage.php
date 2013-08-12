@@ -44,7 +44,7 @@ class ChangeLanguage extends Controller
 		{
 			global $objPage;
 
-			$objArticle = $this->Database->prepare("SELECT id, alias FROM tl_article WHERE WHERE id=(SELECT languageMain FROM tl_article WHERE pid=? AND alias=?)")->execute($objPage->id, $arrParams['url']['article']);
+			$objArticle = $this->Database->prepare("SELECT id, alias FROM tl_article WHERE id=(SELECT languageMain FROM tl_article WHERE pid=? AND alias=?)")->execute($objPage->id, $arrParams['url']['article']);
 
 			if ($objArticle->numRows)
 			{
