@@ -69,7 +69,13 @@ class ModuleChangelanguage extends Module
 
 		$this->import('ChangeLanguage');
 
-		return parent::generate();
+		$strBuffer = parent::generate();
+
+        if ($this->Template->items == '') {
+            return '';
+        }
+
+        return $strBuffer;
 	}
 
 
@@ -360,6 +366,8 @@ class ModuleChangelanguage extends Module
             $c++;
         }
 
+        if ($c > 0)
+        {
         if ($this->customLanguage)
         {
 	        usort($arrItems, array($this, 'orderByCustom'));
@@ -371,6 +379,7 @@ class ModuleChangelanguage extends Module
         $objTemplate->items = $arrItems;
 
         $this->Template->items = $objTemplate->parse();
+        }
 
         // Fix contao problem with date/time formats...
         $this->getPageDetails($objPage->id);
