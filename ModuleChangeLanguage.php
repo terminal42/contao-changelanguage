@@ -345,7 +345,7 @@ class ModuleChangelanguage extends Module
 			$arrItems[$c] = array
 			(
 				'isActive'	=> $active,
-				'class'		=> 'lang-' . $arrRootPage['language'] . ($blnDirectFallback ? '' : ' nofallback') . ($c == 0 ? ' first' : '') . ($c == $count-1 ? ' last' : ''),
+				'class'		=> 'lang-' . $arrRootPage['language'] . ($blnDirectFallback ? '' : ' nofallback') . (($active && version_compare(VERSION, '3.0', '>=')) ? ' active' : '') . ($c == 0 ? ' first' : '') . ($c == $count-1 ? ' last' : ''),
 				'link'		=> $this->getLabel($arrRootPage['language']),
 				'subitems'	=> '',
 				'href'		=> ($domain . $href),
@@ -408,9 +408,9 @@ class ModuleChangelanguage extends Module
 
 	private function getLabel($strLanguage)
 	{
-		if ($this->customLanguage && strlen($this->customLanguageText[$strLanguage]))
+		if ($this->customLanguage && strlen($this->customLanguageText[strtolower($strLanguage)]))
 		{
-			return $this->replaceInsertTags($this->customLanguageText[$strLanguage]);
+			return $this->replaceInsertTags($this->customLanguageText[strtolower($strLanguage)]);
 		}
 
 		return strtoupper($strLanguage);
