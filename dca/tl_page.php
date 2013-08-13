@@ -204,7 +204,7 @@ class tl_page_changelanguage extends Backend
 	public function getRootPages($dc)
 	{
 		$arrPages = array();
-		$objPages = $this->Database->prepare("SELECT * FROM tl_page WHERE type='root' AND fallback='1' AND languageRoot=0 AND language!=(SELECT language FROM tl_page WHERE id=?) AND id!=?")->execute($dc->id, $dc->id);
+		$objPages = $this->Database->prepare("SELECT * FROM tl_page WHERE type='root' AND fallback='1' AND languageRoot=0 AND id!=?")->execute($dc->id);
 
 		while( $objPages->next() )
 		{
