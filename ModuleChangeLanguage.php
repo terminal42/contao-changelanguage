@@ -175,6 +175,7 @@ class ModuleChangelanguage extends Module
 				$active = true;
             	$pageTitle = $arrRootPage['title'];
             	$href = "";
+                $strCssClass = 'lang-' . $arrRootPage['language'];
 
             	if (in_array('articlelanguage', $this->Config->getActiveModules()) && strlen($_SESSION['ARTICLE_LANGUAGE']))
             	{
@@ -183,17 +184,14 @@ class ModuleChangelanguage extends Module
 
             		if ($objArticle->numRows)
             		{
-            			$objPage->cssClass = trim($objPage->cssClass . ' lang-' . $_SESSION['ARTICLE_LANGUAGE']);
-            		}
-            		else
-            		{
-            			$objPage->cssClass = trim($objPage->cssClass . ' lang-' . $arrRootPage['language']);
+                        $strCssClass = 'lang-' . $_SESSION['ARTICLE_LANGUAGE'];
             		}
             	}
-            	else
-            	{
-            		$objPage->cssClass = trim($objPage->cssClass . ' lang-' . $arrRootPage['language']);
-            	}
+            }
+
+            // make sure that the class is only added once
+            if (strpos($objPage->cssClass, $strCssClass) === false) {
+                $objPage->cssClass = trim($objPage->cssClass . ' ' . $strCssClass);
             }
 
             // Search for foreign language
