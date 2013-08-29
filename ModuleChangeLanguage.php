@@ -158,6 +158,7 @@ class ModuleChangelanguage extends Module
 
 
         	$blnDirectFallback = true;
+            $strCssClass = 'lang-' . $arrRootPage['language'];
 
         	// If the root isn't published, continue with the next page
             if ((!$arrRootPage['published'] || ($arrRootPage['start'] > 0 && $arrRootPage['start'] > time()) || ($arrRootPage['stop'] > 0 && $arrRootPage['stop'] < time())) && !BE_USER_LOGGED_IN)
@@ -175,7 +176,6 @@ class ModuleChangelanguage extends Module
 				$active = true;
             	$pageTitle = $arrRootPage['title'];
             	$href = "";
-                $strCssClass = 'lang-' . $arrRootPage['language'];
 
             	if (in_array('articlelanguage', $this->Config->getActiveModules()) && strlen($_SESSION['ARTICLE_LANGUAGE']))
             	{
