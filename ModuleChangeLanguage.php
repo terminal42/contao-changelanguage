@@ -155,7 +155,7 @@ class ModuleChangelanguage extends Module
             		$domain .= TL_PATH;
             	}
 
-				$domain . '/';
+				$domain .= '/';
             }
 
         	$blnDirectFallback = true;
