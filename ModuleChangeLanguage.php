@@ -148,14 +148,15 @@ class ModuleChangelanguage extends Module
         	$domain = '';
         	if ($objPage->domain != $arrRootPage['dns'])
             {
-            	$domain  = ($this->Environment->ssl ? 'https://' : 'http://') . $arrRootPage['dns'] . '/';
+            	$domain  = ($this->Environment->ssl ? 'https://' : 'http://') . $arrRootPage['dns'];
 
             	if (strlen(TL_PATH))
             	{
-            		$domain .= TL_PATH . '/';
+            		$domain .= TL_PATH;
             	}
-            }
 
+				$domain . '/';
+            }
 
         	$blnDirectFallback = true;
             $strCssClass = 'lang-' . $arrRootPage['language'];
