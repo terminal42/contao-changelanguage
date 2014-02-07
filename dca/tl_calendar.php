@@ -28,6 +28,15 @@
 
 
 /**
+ * Return if the module is not active
+ */
+if (!in_array('calendar', \ModuleLoader::getActive()))
+{
+    return;
+}
+
+
+/**
  * Palettes
  */
 $GLOBALS['TL_DCA']['tl_calendar']['palettes']['default'] = str_replace('jumpTo;', 'jumpTo;{language_legend},language,master;', $GLOBALS['TL_DCA']['tl_calendar']['palettes']['default']);

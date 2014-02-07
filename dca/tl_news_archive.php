@@ -28,6 +28,15 @@
 
 
 /**
+ * Return if the module is not active
+ */
+if (!in_array('news', \ModuleLoader::getActive()))
+{
+    return;
+}
+
+
+/**
  * Palettes
  */
 $GLOBALS['TL_DCA']['tl_news_archive']['palettes']['default'] = str_replace('jumpTo;', 'jumpTo;{language_legend},language,master;', $GLOBALS['TL_DCA']['tl_news_archive']['palettes']['default']);

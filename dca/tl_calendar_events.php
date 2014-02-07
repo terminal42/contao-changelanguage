@@ -28,6 +28,15 @@
 
 
 /**
+ * Return if the module is not active
+ */
+if (!in_array('calendar', \ModuleLoader::getActive()))
+{
+    return;
+}
+
+
+/**
  * Config
  */
 $GLOBALS['TL_DCA']['tl_calendar_events']['config']['onload_callback'][] = array('tl_calendar_events_language', 'showSelectbox');

@@ -28,6 +28,15 @@
 
 
 /**
+ * Return if the module is not active
+ */
+if (!in_array('news', \ModuleLoader::getActive()))
+{
+    return;
+}
+
+
+/**
  * Config
  */
 $GLOBALS['TL_DCA']['tl_news']['config']['onload_callback'][] = array('tl_news_language', 'showSelectbox');

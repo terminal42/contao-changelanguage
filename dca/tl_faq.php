@@ -28,6 +28,15 @@
 
 
 /**
+ * Return if the module is not active
+ */
+if (!in_array('faq', \ModuleLoader::getActive()))
+{
+    return;
+}
+
+
+/**
  * Config
  */
 $GLOBALS['TL_DCA']['tl_faq']['config']['onload_callback'][] = array('tl_faq_language', 'showSelectbox');
