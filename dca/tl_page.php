@@ -33,6 +33,7 @@
  */
 $GLOBALS['TL_DCA']['tl_page']['config']['onload_callback'][] = array('tl_page_changelanguage','showSelectbox');
 $GLOBALS['TL_DCA']['tl_page']['config']['onsubmit_callback'][] = array('tl_page_changelanguage','resetFallback');
+$GLOBALS['TL_DCA']['tl_page']['config']['sql']['keys']['languageMain'] = 'index';
 $GLOBALS['TL_DCA']['tl_page']['list']['label']['label_callback'] = array('tl_page_changelanguage', 'addFallbackNotice');
 
 
@@ -45,9 +46,9 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['languageMain'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_page']['languageMain'],
 	'exclude'                 => true,
-	'inputType'               => 'select',
-	'options_callback'        => array('tl_page_changelanguage', 'getFallbackPages'),
-	'eval'                    => array('includeBlankOption'=>true, 'blankOptionLabel'=>&$GLOBALS['TL_LANG']['tl_page']['no_subpage'], 'tl_class'=>'w50'),
+	'inputType'               => 'pageTree',
+	'eval'                    => array('fieldType'=>'radio', 'rootNodes'=>array(1)),
+	'sql'                     => "int(10) unsigned NOT NULL default '0'"
 );
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['languageRoot'] = array
@@ -57,6 +58,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['languageRoot'] = array
 	'inputType'               => 'select',
 	'options_callback'        => array('tl_page_changelanguage', 'getRootPages'),
 	'eval'                    => array('includeBlankOption'=>true, 'blankOptionLabel'=>&$GLOBALS['TL_LANG']['tl_page']['no_rootpage'], 'tl_class'=>'w50'),
+	'sql'                     => "int(10) unsigned NOT NULL default '0'"
 );
 
 
@@ -71,14 +73,12 @@ class tl_page_changelanguage extends Backend
 	 */
 	public function showSelectbox($dc)
 	{
-		if ($this->Input->get('act') == 'edit')
+		if (\Input::get('act') == 'edit')
 		{
 			$objPage = $this->getPageDetails($dc->id);
 
 			if ($objPage->type == 'root' && $objPage->fallback)
 			{
-				$GLOBALS['TL_DCA']['tl_page']['fields']['fallback']['eval']['tl_class'] = 'm12 w50';
-				$GLOBALS['TL_DCA']['tl_page']['fields']['dns']['eval']['tl_class'] = 'clr w50';
 				$GLOBALS['TL_DCA']['tl_page']['palettes']['root'] = preg_replace('@([,|;]fallback)([,|;])@','$1,languageRoot$2', $GLOBALS['TL_DCA']['tl_page']['palettes']['root']);
 			}
 			elseif ($objPage->type != 'root')
@@ -89,20 +89,18 @@ class tl_page_changelanguage extends Backend
 
 				if($objFallback->numRows)
 				{
-					$GLOBALS['TL_DCA']['tl_page']['fields']['title']['eval']['tl_class'] = 'w50';
-					$GLOBALS['TL_DCA']['tl_page']['fields']['alias']['eval']['tl_class'] = 'clr w50';
-					$GLOBALS['TL_DCA']['tl_page']['palettes'][$objPage->type] = preg_replace('@([,|;]title)([,|;])@','$1,languageMain$2', $GLOBALS['TL_DCA']['tl_page']['palettes'][$objPage->type]);
+					$GLOBALS['TL_DCA']['tl_page']['palettes'][$objPage->type] = str_replace('type;', 'type;{language_legend},languageMain;', $GLOBALS['TL_DCA']['tl_page']['palettes'][$objPage->type]);
 				}
 			}
 		}
-		elseif ($this->Input->get('act') == 'editAll')
+		elseif (\Input::get('act') == 'editAll')
 		{
 			foreach( $GLOBALS['TL_DCA']['tl_page']['palettes'] as $name => $palette )
 			{
 				if ($name == '__selector__' || $name == 'root')
 					continue;
 
-				$GLOBALS['TL_DCA']['tl_page']['palettes'][$name] = preg_replace('@([,|;]title)([,|;])@','$1,languageMain$2', $palette);
+				$GLOBALS['TL_DCA']['tl_page']['palettes'][$name] = str_replace('type;', 'type;{language_legend},languageMain;', $palette);
 			}
 		}
 	}
@@ -188,7 +186,7 @@ class tl_page_changelanguage extends Backend
 	public function getFallbackPages($dc)
 	{
 		$this->import('ChangeLanguage');
-		
+
 		$arrPages = array();
 		$arrRoot = $this->ChangeLanguage->findMainLanguageRootForPage($dc->id);
 

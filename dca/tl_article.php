@@ -42,7 +42,8 @@ $GLOBALS['TL_DCA']['tl_article']['fields']['languageMain'] = array
 	'exclude'                 => true,
 	'inputType'               => 'select',
 	'options_callback'        => array('tl_article_changelanguage', 'getFallbackArticles'),
-	'eval'                    => array('includeBlankOption'=>true, 'blankOptionLabel'=>&$GLOBALS['TL_LANG']['tl_article']['no_subarticle'], 'tl_class'=>'w50'),
+	'eval'                    => array('includeBlankOption'=>true, 'blankOptionLabel'=>&$GLOBALS['TL_LANG']['tl_article']['no_subarticle'], 'chosen'=>true, 'tl_class'=>'w50'),
+	'sql'                     => "int(10) unsigned NOT NULL default '0'"
 );
 
 
@@ -68,7 +69,7 @@ class tl_article_changelanguage extends Backend
 	 */
 	public function showSelectbox($dc)
 	{
-		if ($this->Input->get('act') == 'edit')
+		if (\Input::get('act') == 'edit')
 		{
 			$objPage = $this->Database->prepare("SELECT p.* FROM tl_page p LEFT JOIN tl_article a ON a.pid=p.id WHERE a.id=? GROUP BY a.pid")->execute($dc->id);
 			$arrMain = $this->ChangeLanguage->findMainLanguagePageForPage($objPage);
@@ -80,7 +81,7 @@ class tl_article_changelanguage extends Backend
 				$GLOBALS['TL_DCA']['tl_article']['palettes']['default'] = preg_replace('@([,|;]title)([,|;])@','$1,languageMain$2', $GLOBALS['TL_DCA']['tl_article']['palettes']['default']);
 			}
 		}
-		elseif ($this->Input->get('act') == 'editAll')
+		elseif (\Input::get('act') == 'editAll')
 		{
 			$GLOBALS['TL_DCA']['tl_page']['palettes']['default'] = preg_replace('@([,|;]title)([,|;])@','$1,languageMain$2', $GLOBALS['TL_DCA']['tl_page']['palettes']['default']);
 		}
@@ -107,7 +108,7 @@ class tl_article_changelanguage extends Backend
 
 		while ($objArticles->next())
 		{
-			$arrArticles[$objArticles->id] = $objArticles->title;
+			$arrArticles[$objArticles->id] = $objArticles->title . ' [ID ' . $objArticles->id . ']';
 		}
 
 		return $arrArticles;

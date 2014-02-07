@@ -121,13 +121,13 @@ class ModuleChangelanguage extends Module
     	{
     		foreach( array_keys($_GET) as $strKey )
     		{
-    			$strValue = $this->Input->get($strKey);
+    			$strValue = \Input::get($strKey);
 
     			// Do not keep empty parameters and arrays
     			if ($strValue != '' && $strKey != 'language' && $strKey !== 'auto_item')
     			{
     				// Parameter passed after "?"
-    				if (strpos($this->Environment->request, $strKey.'='.$strValue) !== false)
+    				if (strpos(\Environment::get('request'), $strKey.'='.$strValue) !== false)
     				{
     					$arrParams['get'][$strKey] = $strValue;
     				}
@@ -140,9 +140,9 @@ class ModuleChangelanguage extends Module
     	}
 
     	// Always keep search parameters
-    	if ($this->Input->get('keywords') != '')
+    	if (\Input::get('keywords') != '')
     	{
-    		$arrParams['get']['keywords'] = $this->Input->get('keywords');
+    		$arrParams['get']['keywords'] = \Input::get('keywords');
     	}
 
 		$arrItems = array();
@@ -154,7 +154,7 @@ class ModuleChangelanguage extends Module
         	$domain = '';
         	if ($objPage->domain != $arrRootPage['dns'])
             {
-            	$domain  = ($this->Environment->ssl ? 'https://' : 'http://') . $arrRootPage['dns'] . '/';
+            	$domain  = (\Environment::get('ssl') ? 'https://' : 'http://') . $arrRootPage['dns'] . '/';
 
             	if (strlen(TL_PATH))
             	{
@@ -173,7 +173,7 @@ class ModuleChangelanguage extends Module
             }
 
             // Active page
-            else if($arrRootPage['language'] == $objRootPage->language)
+            if($arrRootPage['language'] == $objRootPage->language)
             {
             	// If it is the active page, and we want to hide this, continue with the next page
             	if ($this->hideActiveLanguage)
@@ -343,7 +343,7 @@ class ModuleChangelanguage extends Module
 			$arrItems[$c] = array
 			(
 				'isActive'	=> $active,
-				'class'		=> 'lang-' . $arrRootPage['language'] . ($blnDirectFallback ? '' : ' nofallback') . (($active && version_compare(VERSION, '3.0', '>=')) ? ' active' : '') . ($c == 0 ? ' first' : '') . ($c == $count-1 ? ' last' : ''),
+				'class'		=> 'lang-' . $arrRootPage['language'] . ($blnDirectFallback ? '' : ' nofallback') . ($active ? ' active' : '') . ($c == 0 ? ' first' : '') . ($c == $count-1 ? ' last' : ''),
 				'link'		=> $this->getLabel($arrRootPage['language']),
 				'subitems'	=> '',
 				'href'		=> ($domain . $href),

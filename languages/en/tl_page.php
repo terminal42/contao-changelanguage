@@ -36,6 +36,12 @@ $GLOBALS['TL_LANG']['tl_page']['languageRoot']	= array('Foreign-Domain Root Page
 
 
 /**
+ * Legends
+ */
+$GLOBALS['TL_LANG']['tl_page']['language_legend'] = 'Language settings';
+
+
+/**
  * References
  */
 $GLOBALS['TL_LANG']['tl_page']['no_subpage']	= 'No equal page';
