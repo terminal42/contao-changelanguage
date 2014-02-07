@@ -30,8 +30,8 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_faq_category']['master']	= array('Master category', 'Please define the master category to allow language switching.');
-$GLOBALS['TL_LANG']['tl_faq_category']['language']	= array('Language', 'Please enter the language according to the RFC3066 format (e.g. en, en-us or en-cockney).');
+$GLOBALS['TL_LANG']['tl_faq_category']['master']    = array('Master category', 'Please define the master category to allow language switching.');
+$GLOBALS['TL_LANG']['tl_faq_category']['language']    = array('Language', 'Please enter the language according to the RFC3066 format (e.g. en, en-us or en-cockney).');
 
 
 /**
@@ -43,5 +43,5 @@ $GLOBALS['TL_LANG']['tl_faq_category']['language_legend'] = 'Language settings';
 /**
  * References
  */
-$GLOBALS['TL_LANG']['tl_faq_category']['isMaster']	= 'This is a master category';
-$GLOBALS['TL_LANG']['tl_faq_category']['isSlave']	= 'Master category is "%s"';
+$GLOBALS['TL_LANG']['tl_faq_category']['isMaster']    = 'This is a master category';
+$GLOBALS['TL_LANG']['tl_faq_category']['isSlave']    = 'Master category is "%s"';

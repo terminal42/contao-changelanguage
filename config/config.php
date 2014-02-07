@@ -31,6 +31,6 @@
 /**
  * Frontend modules
  */
-$GLOBALS['FE_MOD']['miscellaneous']['changelanguage']		= 'ModuleChangeLanguage';
-$GLOBALS['FE_MOD']['miscellaneous']['languageRedirect']		= 'ModuleLanguageRedirect';
+$GLOBALS['FE_MOD']['miscellaneous']['changelanguage']        = 'ModuleChangeLanguage';
+$GLOBALS['FE_MOD']['miscellaneous']['languageRedirect']        = 'ModuleLanguageRedirect';
 

@@ -37,6 +37,6 @@ $GLOBALS['TL_LANG']['MOD']['changelanguage'] = array('Sprachenwechsler');
 /**
  * Front end modules
  */
-$GLOBALS['TL_LANG']['FMD']['changelanguage']	= array('Sprachenwechsler', 'Mit diesem Modul könen Sie zwischen mehreren Sprachversionen einer Seite wechseln.');
-$GLOBALS['TL_LANG']['FMD']['languageRedirect']	= array('Weiterleitung zur Benutzersprache', 'Leitet ein Mitglied zur Seite in seiner Sprache (Sprachenwechsler/Changelanguage) um.');
+$GLOBALS['TL_LANG']['FMD']['changelanguage']    = array('Sprachenwechsler', 'Mit diesem Modul könen Sie zwischen mehreren Sprachversionen einer Seite wechseln.');
+$GLOBALS['TL_LANG']['FMD']['languageRedirect']    = array('Weiterleitung zur Benutzersprache', 'Leitet ein Mitglied zur Seite in seiner Sprache (Sprachenwechsler/Changelanguage) um.');
 

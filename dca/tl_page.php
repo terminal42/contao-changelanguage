@@ -46,75 +46,75 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['fallback']['eval']['submitOnChange'] = 
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['languageMain'] = array
 (
-	'label'                   => &$GLOBALS['TL_LANG']['tl_page']['languageMain'],
-	'exclude'                 => true,
-	'inputType'               => 'pageTree',
-	'eval'                    => array('fieldType'=>'radio', 'rootNodes'=>array(1)),
-	'sql'                     => "int(10) unsigned NOT NULL default '0'"
+    'label'                   => &$GLOBALS['TL_LANG']['tl_page']['languageMain'],
+    'exclude'                 => true,
+    'inputType'               => 'pageTree',
+    'eval'                    => array('fieldType'=>'radio', 'rootNodes'=>array(1)),
+    'sql'                     => "int(10) unsigned NOT NULL default '0'"
 );
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['languageRoot'] = array
 (
-	'label'                   => &$GLOBALS['TL_LANG']['tl_page']['languageRoot'],
-	'exclude'                 => true,
-	'inputType'               => 'select',
-	'options_callback'        => array('tl_page_changelanguage', 'getRootPages'),
-	'eval'                    => array('includeBlankOption'=>true, 'blankOptionLabel'=>&$GLOBALS['TL_LANG']['tl_page']['no_rootpage'], 'tl_class'=>'w50'),
-	'sql'                     => "int(10) unsigned NOT NULL default '0'"
+    'label'                   => &$GLOBALS['TL_LANG']['tl_page']['languageRoot'],
+    'exclude'                 => true,
+    'inputType'               => 'select',
+    'options_callback'        => array('tl_page_changelanguage', 'getRootPages'),
+    'eval'                    => array('includeBlankOption'=>true, 'blankOptionLabel'=>&$GLOBALS['TL_LANG']['tl_page']['no_rootpage'], 'tl_class'=>'w50'),
+    'sql'                     => "int(10) unsigned NOT NULL default '0'"
 );
 
 
 class tl_page_changelanguage extends Backend
 {
 
-	/**
-	 * Inject fields if appropriate.
-	 *
-	 * @access public
-	 * @return void
-	 */
-	public function showSelectbox($dc)
-	{
-		if (\Input::get('act') == 'edit')
-		{
-			$objPage = $this->getPageDetails($dc->id);
+    /**
+     * Inject fields if appropriate.
+     *
+     * @access public
+     * @return void
+     */
+    public function showSelectbox($dc)
+    {
+        if (\Input::get('act') == 'edit')
+        {
+            $objPage = $this->getPageDetails($dc->id);
 
-			if ($objPage->type == 'root' && $objPage->fallback)
-			{
-				$GLOBALS['TL_DCA']['tl_page']['palettes']['root'] = preg_replace('@([,|;]fallback)([,|;])@','$1,languageRoot$2', $GLOBALS['TL_DCA']['tl_page']['palettes']['root']);
-			}
-			elseif ($objPage->type != 'root')
-			{
-				$objRootPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->limit(1)->execute($objPage->rootId);
+            if ($objPage->type == 'root' && $objPage->fallback)
+            {
+                $GLOBALS['TL_DCA']['tl_page']['palettes']['root'] = preg_replace('@([,|;]fallback)([,|;])@','$1,languageRoot$2', $GLOBALS['TL_DCA']['tl_page']['palettes']['root']);
+            }
+            elseif ($objPage->type != 'root')
+            {
+                $objRootPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->limit(1)->execute($objPage->rootId);
 
-				$objFallback = $this->Database->prepare("SELECT id FROM tl_page WHERE type='root' AND fallback='1' AND id!=? AND (dns=? OR id=?)")->limit(1)->execute($objRootPage->id, $objPage->domain, ($objRootPage->fallback ? $objRootPage->languageRoot : 0));
+                $objFallback = $this->Database->prepare("SELECT id FROM tl_page WHERE type='root' AND fallback='1' AND id!=? AND (dns=? OR id=?)")->limit(1)->execute($objRootPage->id, $objPage->domain, ($objRootPage->fallback ? $objRootPage->languageRoot : 0));
 
-				if($objFallback->numRows)
-				{
-					$GLOBALS['TL_DCA']['tl_page']['palettes'][$objPage->type] = str_replace('type;', 'type;{language_legend},languageMain;', $GLOBALS['TL_DCA']['tl_page']['palettes'][$objPage->type]);
-				}
-			}
-		}
-		elseif (\Input::get('act') == 'editAll')
-		{
-			foreach( $GLOBALS['TL_DCA']['tl_page']['palettes'] as $name => $palette )
-			{
-				if ($name == '__selector__' || $name == 'root')
-					continue;
+                if($objFallback->numRows)
+                {
+                    $GLOBALS['TL_DCA']['tl_page']['palettes'][$objPage->type] = str_replace('type;', 'type;{language_legend},languageMain;', $GLOBALS['TL_DCA']['tl_page']['palettes'][$objPage->type]);
+                }
+            }
+        }
+        elseif (\Input::get('act') == 'editAll')
+        {
+            foreach( $GLOBALS['TL_DCA']['tl_page']['palettes'] as $name => $palette )
+            {
+                if ($name == '__selector__' || $name == 'root')
+                    continue;
 
-				$GLOBALS['TL_DCA']['tl_page']['palettes'][$name] = str_replace('type;', 'type;{language_legend},languageMain;', $palette);
-			}
-		}
-	}
+                $GLOBALS['TL_DCA']['tl_page']['palettes'][$name] = str_replace('type;', 'type;{language_legend},languageMain;', $palette);
+            }
+        }
+    }
 
 
-	/**
-	 * Reset the fallback assignment if it's moved to the fallback root
-	 * @param integer
-	 */
-	public function resetFallback($intId)
-	{
-	    $objPage = \PageModel::findWithDetails($intId);
+    /**
+     * Reset the fallback assignment if it's moved to the fallback root
+     * @param integer
+     */
+    public function resetFallback($intId)
+    {
+        $objPage = \PageModel::findWithDetails($intId);
         $objRoot = \PageModel::findByPk($objPage->rootId);
 
         if ($objRoot->fallback)
@@ -123,135 +123,135 @@ class tl_page_changelanguage extends Backend
             $arrSubpages[] = $objPage->id;
             $this->Database->execute("UPDATE tl_page SET languageMain=0 WHERE id IN(" . implode(',', $arrSubpages) . ")");
         }
-	}
+    }
 
 
-	/**
-	 * Reset fallback with other callbacks
-	 * @param object
-	 */
-	public function resetFallbackAll($dc)
-	{
-    	$this->resetFallback($dc->id);
-	}
+    /**
+     * Reset fallback with other callbacks
+     * @param object
+     */
+    public function resetFallbackAll($dc)
+    {
+        $this->resetFallback($dc->id);
+    }
 
 
-	/**
-	 * Reset fallback with oncopy_callback
-	 * @param integer
-	 */
-	public function resetFallbackCopy($intId)
-	{
-    	$this->resetFallback($intId);
-	}
+    /**
+     * Reset fallback with oncopy_callback
+     * @param integer
+     */
+    public function resetFallbackCopy($intId)
+    {
+        $this->resetFallback($intId);
+    }
 
 
-	/**
-	 * Show notice if no fallback page is set
-	 */
-	public function addFallbackNotice($row, $label, $dc=null, $imageAttribute='', $blnReturnImage=false, $blnProtected=false)
-	{
-		if (in_array('cacheicon', $this->Config->getActiveModules()))
-		{
-			$objPage = new tl_page_cacheicon();
-			$label = $objPage->addImage($row, $label, $dc, $imageAttribute, $blnReturnImage, $blnProtected);
-		}
-		elseif (in_array('Avisota', $this->Config->getActiveModules()))
-		{
-			$objPage = new tl_page_avisota();
-			$label = $objPage->addIcon($row, $label, $dc, $imageAttribute, $blnReturnImage, $blnProtected);
-		}
-		else
-		{
-			$objPage = new tl_page();
-			$label = $objPage->addIcon($row, $label, $dc, $imageAttribute, $blnReturnImage, $blnProtected);
-		}
+    /**
+     * Show notice if no fallback page is set
+     */
+    public function addFallbackNotice($row, $label, $dc=null, $imageAttribute='', $blnReturnImage=false, $blnProtected=false)
+    {
+        if (in_array('cacheicon', $this->Config->getActiveModules()))
+        {
+            $objPage = new tl_page_cacheicon();
+            $label = $objPage->addImage($row, $label, $dc, $imageAttribute, $blnReturnImage, $blnProtected);
+        }
+        elseif (in_array('Avisota', $this->Config->getActiveModules()))
+        {
+            $objPage = new tl_page_avisota();
+            $label = $objPage->addIcon($row, $label, $dc, $imageAttribute, $blnReturnImage, $blnProtected);
+        }
+        else
+        {
+            $objPage = new tl_page();
+            $label = $objPage->addIcon($row, $label, $dc, $imageAttribute, $blnReturnImage, $blnProtected);
+        }
 
-		if (!$row['languageMain'])
-		{
-			// Save resources if we are not a regular page
-			if ($row['type'] == 'root' || $row['type'] == 'folder')
-				return $label;
+        if (!$row['languageMain'])
+        {
+            // Save resources if we are not a regular page
+            if ($row['type'] == 'root' || $row['type'] == 'folder')
+                return $label;
 
-			$objPage = $this->getPageDetails($row['id']);
+            $objPage = $this->getPageDetails($row['id']);
 
-			$objRootPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->limit(1)->execute($objPage->rootId);
+            $objRootPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->limit(1)->execute($objPage->rootId);
 
-			$objFallback = $this->Database->prepare("SELECT id FROM tl_page WHERE type='root' AND fallback='1' AND id!=? AND (dns=? OR id=?)")->limit(1)->execute($objRootPage->id, $objPage->domain, ($objRootPage->fallback ? $objRootPage->languageRoot : 0));
+            $objFallback = $this->Database->prepare("SELECT id FROM tl_page WHERE type='root' AND fallback='1' AND id!=? AND (dns=? OR id=?)")->limit(1)->execute($objRootPage->id, $objPage->domain, ($objRootPage->fallback ? $objRootPage->languageRoot : 0));
 
-			if ($objFallback->numRows)
-			{
-				$label .= '<span style="color:#b3b3b3; padding-left:3px;">[' . $GLOBALS['TL_LANG']['MSC']['noMainLanguage'] . ']</span>';
-			}
-		}
+            if ($objFallback->numRows)
+            {
+                $label .= '<span style="color:#b3b3b3; padding-left:3px;">[' . $GLOBALS['TL_LANG']['MSC']['noMainLanguage'] . ']</span>';
+            }
+        }
 
-		return $label;
-	}
-
-
-	/**
-	 * Return all fallback pages for the current page (used as options_callback).
-	 *
-	 * @access public
-	 * @return array
-	 */
-	public function getFallbackPages($dc)
-	{
-		$this->import('ChangeLanguage');
-
-		$arrPages = array();
-		$arrRoot = $this->ChangeLanguage->findMainLanguageRootForPage($dc->id);
-
-		if ($arrRoot !== false)
-		{
-			$this->generatePageOptions($arrPages, $arrRoot['id'], 0);
-		}
-
-		return $arrPages;
-	}
+        return $label;
+    }
 
 
-	public function getRootPages($dc)
-	{
-		$arrPages = array();
-		$objPages = $this->Database->prepare("SELECT * FROM tl_page WHERE type='root' AND fallback='1' AND languageRoot=0 AND id!=?")->execute($dc->id);
+    /**
+     * Return all fallback pages for the current page (used as options_callback).
+     *
+     * @access public
+     * @return array
+     */
+    public function getFallbackPages($dc)
+    {
+        $this->import('ChangeLanguage');
 
-		while( $objPages->next() )
-		{
-			$arrPages[$objPages->id] = $objPages->title . (strlen($objPages->dns) ? (' (' . $objPages->dns . ')') : '') . ' [' . $objPages->language . ']';
-		}
+        $arrPages = array();
+        $arrRoot = $this->ChangeLanguage->findMainLanguageRootForPage($dc->id);
 
-		return $arrPages;
-	}
+        if ($arrRoot !== false)
+        {
+            $this->generatePageOptions($arrPages, $arrRoot['id'], 0);
+        }
+
+        return $arrPages;
+    }
 
 
-	/**
-	 * Generates a list of all subpages
-	 *
-	 * @param array
-	 * @param int
-	 * @param int
-	 */
-	protected function generatePageOptions(&$arrPages, $intId=0, $level=-1)
-	{
-		// Add child pages
-		$objPages = $this->Database->prepare("SELECT id, title FROM tl_page WHERE pid=? AND type != 'root' AND type != 'error_403' AND type != 'error_404' ORDER BY sorting")
-								   ->execute($intId);
+    public function getRootPages($dc)
+    {
+        $arrPages = array();
+        $objPages = $this->Database->prepare("SELECT * FROM tl_page WHERE type='root' AND fallback='1' AND languageRoot=0 AND id!=?")->execute($dc->id);
 
-		if ($objPages->numRows < 1)
-		{
-			return;
-		}
+        while( $objPages->next() )
+        {
+            $arrPages[$objPages->id] = $objPages->title . (strlen($objPages->dns) ? (' (' . $objPages->dns . ')') : '') . ' [' . $objPages->language . ']';
+        }
 
-		++$level;
-		$strOptions = '';
+        return $arrPages;
+    }
 
-		while ($objPages->next())
-		{
-			$arrPages[$objPages->id] = str_repeat("&nbsp;", (3 * $level)) . $objPages->title;
 
-			$this->generatePageOptions($arrPages, $objPages->id, $level);
-		}
-	}
+    /**
+     * Generates a list of all subpages
+     *
+     * @param array
+     * @param int
+     * @param int
+     */
+    protected function generatePageOptions(&$arrPages, $intId=0, $level=-1)
+    {
+        // Add child pages
+        $objPages = $this->Database->prepare("SELECT id, title FROM tl_page WHERE pid=? AND type != 'root' AND type != 'error_403' AND type != 'error_404' ORDER BY sorting")
+                                   ->execute($intId);
+
+        if ($objPages->numRows < 1)
+        {
+            return;
+        }
+
+        ++$level;
+        $strOptions = '';
+
+        while ($objPages->next())
+        {
+            $arrPages[$objPages->id] = str_repeat("&nbsp;", (3 * $level)) . $objPages->title;
+
+            $this->generatePageOptions($arrPages, $objPages->id, $level);
+        }
+    }
 }
 

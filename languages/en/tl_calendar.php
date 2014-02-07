@@ -30,8 +30,8 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_calendar']['master']	= array('Master calendar', 'Please define the master calendar to allow language switching.');
-$GLOBALS['TL_LANG']['tl_calendar']['language']	= array('Language', 'Please enter the language according to the RFC3066 format (e.g. en, en-us or en-cockney).');
+$GLOBALS['TL_LANG']['tl_calendar']['master']    = array('Master calendar', 'Please define the master calendar to allow language switching.');
+$GLOBALS['TL_LANG']['tl_calendar']['language']    = array('Language', 'Please enter the language according to the RFC3066 format (e.g. en, en-us or en-cockney).');
 
 
 /**
@@ -43,5 +43,5 @@ $GLOBALS['TL_LANG']['tl_calendar']['language_legend'] = 'Language settings';
 /**
  * References
  */
-$GLOBALS['TL_LANG']['tl_calendar']['isMaster']	= 'This is a master calendar';
-$GLOBALS['TL_LANG']['tl_calendar']['isSlave']	= 'Master calendar is "%s"';
+$GLOBALS['TL_LANG']['tl_calendar']['isMaster']    = 'This is a master calendar';
+$GLOBALS['TL_LANG']['tl_calendar']['isSlave']    = 'Master calendar is "%s"';

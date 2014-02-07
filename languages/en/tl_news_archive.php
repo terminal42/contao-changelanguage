@@ -30,8 +30,8 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_news_archive']['master']	= array('Master archive', 'Please define the master archive to allow language switching.');
-$GLOBALS['TL_LANG']['tl_news_archive']['language']	= array('Language', 'Please enter the language according to the RFC3066 format (e.g. en, en-us or en-cockney).');
+$GLOBALS['TL_LANG']['tl_news_archive']['master']    = array('Master archive', 'Please define the master archive to allow language switching.');
+$GLOBALS['TL_LANG']['tl_news_archive']['language']    = array('Language', 'Please enter the language according to the RFC3066 format (e.g. en, en-us or en-cockney).');
 
 
 /**
@@ -43,5 +43,5 @@ $GLOBALS['TL_LANG']['tl_news_archive']['language_legend'] = 'Language settings';
 /**
  * References
  */
-$GLOBALS['TL_LANG']['tl_news_archive']['isMaster']	= 'This is a master archive';
-$GLOBALS['TL_LANG']['tl_news_archive']['isSlave']	= 'Master archive is "%s"';
+$GLOBALS['TL_LANG']['tl_news_archive']['isMaster']    = 'This is a master archive';
+$GLOBALS['TL_LANG']['tl_news_archive']['isSlave']    = 'Master archive is "%s"';

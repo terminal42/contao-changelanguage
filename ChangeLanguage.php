@@ -30,115 +30,115 @@
 class ChangeLanguage extends Controller
 {
 
-	public function __construct()
-	{
-		parent::__construct();
+    public function __construct()
+    {
+        parent::__construct();
 
-		$this->import('Database');
-	}
-
-
-	/**
-	 * Find the main language page associated with the given page ID or page object
-	 * @param Database_Result|int
-	 * @return array|false
-	 */
-	public function findMainLanguagePageForPage($objPage)
-	{
-		if (is_numeric($objPage))
-		{
-			$objPage = $this->getPageDetails($objPage);
-		}
-
-		// If main langugae is not set, either this is the fallback or we have no fallback
-		if ($objPage->languageMain == 0)
-		{
-			return false;
-		}
-
-		$objMain = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($objPage->languageMain);
-
-		return $objMain->row();
-	}
+        $this->import('Database');
+    }
 
 
-	/**
-	 * Find the main language root page for a page ID or page object
-	 * @param Database_Result|int
-	 * @return array|false
-	 */
-	public function findMainLanguageRootForPage($objPage)
-	{
-		if (is_numeric($objPage))
-		{
-			$objPage = $this->getPageDetails($objPage);
-		}
+    /**
+     * Find the main language page associated with the given page ID or page object
+     * @param Database_Result|int
+     * @return array|false
+     */
+    public function findMainLanguagePageForPage($objPage)
+    {
+        if (is_numeric($objPage))
+        {
+            $objPage = $this->getPageDetails($objPage);
+        }
 
-		$arrRoot = self::findFallbackRootForDomain($objPage->domain);
+        // If main langugae is not set, either this is the fallback or we have no fallback
+        if ($objPage->languageMain == 0)
+        {
+            return false;
+        }
 
-		if ($arrRoot === false)
-		{
-			return false;
-		}
+        $objMain = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($objPage->languageMain);
 
-		if ($arrRoot['languageRoot'] > 0)
-		{
-			$objRoot = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($arrRoot['languageRoot']);
-
-			return $objRoot->numRows ? $objRoot->row() : false;
-		}
-		elseif ($arrRoot['fallback'])
-		{
-			return $arrRoot;
-		}
-
-		return false;
-	}
+        return $objMain->row();
+    }
 
 
-	/**
-	 * Find all associated root pages for a given domain (use $objPage->domain)
-	 * @param string
-	 * @return array
-	 */
-	public function findLanguageRootsForDomain($strDomain)
-	{
-		$arrFallback = $this->findFallbackRootForDomain($strDomain);
+    /**
+     * Find the main language root page for a page ID or page object
+     * @param Database_Result|int
+     * @return array|false
+     */
+    public function findMainLanguageRootForPage($objPage)
+    {
+        if (is_numeric($objPage))
+        {
+            $objPage = $this->getPageDetails($objPage);
+        }
 
-		if ($arrFallback === false)
-		{
-			return array();
-		}
+        $arrRoot = self::findFallbackRootForDomain($objPage->domain);
 
-		$arrPages = array();
-		$objPages = $this->Database->prepare("SELECT DISTINCT * FROM tl_page WHERE type='root' AND (dns=? OR dns IN (SELECT dns FROM tl_page WHERE type='root' AND fallback='1' AND (id=? OR languageRoot=? OR (languageRoot>0 && languageRoot=?)))) ORDER BY sorting")->execute($arrFallback['dns'], $arrFallback['languageRoot'], $arrFallback['id'], $arrFallback['languageRoot']);
+        if ($arrRoot === false)
+        {
+            return false;
+        }
 
-		while ($objPages->next())
-		{
-			$arrPages[$objPages->id] = $objPages->row();
-		}
+        if ($arrRoot['languageRoot'] > 0)
+        {
+            $objRoot = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($arrRoot['languageRoot']);
 
-		return $arrPages;
-	}
+            return $objRoot->numRows ? $objRoot->row() : false;
+        }
+        elseif ($arrRoot['fallback'])
+        {
+            return $arrRoot;
+        }
+
+        return false;
+    }
 
 
-	/**
-	 * Find the fallback page for a given domain (use $objPage->domain)
-	 * @param string
-	 * @return array|false
-	 */
-	public function findFallbackRootForDomain($strDomain)
-	{
-		$objPage = $this->Database->prepare("SELECT * FROM tl_page WHERE type='root' AND fallback='1' AND dns=?")
-										  ->limit(1)
-										  ->execute($strDomain);
+    /**
+     * Find all associated root pages for a given domain (use $objPage->domain)
+     * @param string
+     * @return array
+     */
+    public function findLanguageRootsForDomain($strDomain)
+    {
+        $arrFallback = $this->findFallbackRootForDomain($strDomain);
 
-		if ($objPage->numRows)
-		{
-			return $objPage->row();
-		}
+        if ($arrFallback === false)
+        {
+            return array();
+        }
 
-		return false;
-	}
+        $arrPages = array();
+        $objPages = $this->Database->prepare("SELECT DISTINCT * FROM tl_page WHERE type='root' AND (dns=? OR dns IN (SELECT dns FROM tl_page WHERE type='root' AND fallback='1' AND (id=? OR languageRoot=? OR (languageRoot>0 && languageRoot=?)))) ORDER BY sorting")->execute($arrFallback['dns'], $arrFallback['languageRoot'], $arrFallback['id'], $arrFallback['languageRoot']);
+
+        while ($objPages->next())
+        {
+            $arrPages[$objPages->id] = $objPages->row();
+        }
+
+        return $arrPages;
+    }
+
+
+    /**
+     * Find the fallback page for a given domain (use $objPage->domain)
+     * @param string
+     * @return array|false
+     */
+    public function findFallbackRootForDomain($strDomain)
+    {
+        $objPage = $this->Database->prepare("SELECT * FROM tl_page WHERE type='root' AND fallback='1' AND dns=?")
+                                          ->limit(1)
+                                          ->execute($strDomain);
+
+        if ($objPage->numRows)
+        {
+            return $objPage->row();
+        }
+
+        return false;
+    }
 }
 

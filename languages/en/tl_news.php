@@ -36,5 +36,5 @@ $GLOBALS['TL_LANG']['tl_news']['languageMain'] = array('Master article', 'Choose
 /**
  * References
  */
-$GLOBALS['TL_LANG']['tl_news']['sameDay']	= 'Same day';
-$GLOBALS['TL_LANG']['tl_news']['otherDay']	= 'Other days';
+$GLOBALS['TL_LANG']['tl_news']['sameDay']    = 'Same day';
+$GLOBALS['TL_LANG']['tl_news']['otherDay']    = 'Other days';

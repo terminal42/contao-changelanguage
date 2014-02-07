@@ -31,5 +31,5 @@
 /**
  * Miscellaneous
  */
-$GLOBALS['TL_LANG']['MSC']['noMainLanguage']	= 'Hauptsprache fehlt';
+$GLOBALS['TL_LANG']['MSC']['noMainLanguage']    = 'Hauptsprache fehlt';
 

@@ -32,9 +32,9 @@
  */
 ClassLoader::addClasses(array
 (
-	'ChangeLanguage'               => 'system/modules/changelanguage/ChangeLanguage.php',
-	'ModuleChangeLanguage'         => 'system/modules/changelanguage/ModuleChangeLanguage.php',
-	'ModuleLanguageRedirect'       => 'system/modules/changelanguage/ModuleLanguageRedirect.php',
+    'ChangeLanguage'               => 'system/modules/changelanguage/ChangeLanguage.php',
+    'ModuleChangeLanguage'         => 'system/modules/changelanguage/ModuleChangeLanguage.php',
+    'ModuleLanguageRedirect'       => 'system/modules/changelanguage/ModuleLanguageRedirect.php',
 ));
 
 
@@ -43,7 +43,7 @@ ClassLoader::addClasses(array
  */
 TemplateLoader::addFiles(array
 (
-	'mod_changelanguage'            => 'system/modules/changelanguage/templates',
+    'mod_changelanguage'            => 'system/modules/changelanguage/templates',
     'nav_changelanguage_dropdown'   => 'system/modules/changelanguage/templates',
 ));
 

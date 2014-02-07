@@ -22,7 +22,7 @@
  *
  * PHP version 5
  * @copyright  Felix Pfeiffer 2008, terminal42 gmbh 2008-2012
- * @author 	   Bartosz Talarek <bartosz.talarek@gmail.com>
+ * @author        Bartosz Talarek <bartosz.talarek@gmail.com>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
  

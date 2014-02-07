@@ -31,8 +31,8 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_page']['languageMain']	= array('Fallback-Page', 'Choose the page in the language marked as fallback equals this page.');
-$GLOBALS['TL_LANG']['tl_page']['languageRoot']	= array('Foreign-Domain Root Page', 'Select the root page if this page tree is related to another domain.');
+$GLOBALS['TL_LANG']['tl_page']['languageMain']    = array('Fallback-Page', 'Choose the page in the language marked as fallback equals this page.');
+$GLOBALS['TL_LANG']['tl_page']['languageRoot']    = array('Foreign-Domain Root Page', 'Select the root page if this page tree is related to another domain.');
 
 
 /**
@@ -44,6 +44,6 @@ $GLOBALS['TL_LANG']['tl_page']['language_legend'] = 'Language settings';
 /**
  * References
  */
-$GLOBALS['TL_LANG']['tl_page']['no_subpage']	= 'No equal page';
-$GLOBALS['TL_LANG']['tl_page']['no_rootpage']	= 'This is a main language root site';
+$GLOBALS['TL_LANG']['tl_page']['no_subpage']    = 'No equal page';
+$GLOBALS['TL_LANG']['tl_page']['no_rootpage']    = 'This is a main language root site';
 

@@ -30,12 +30,12 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_news_archive']['master']	= array('Hauptarchiv', 'Wählen Sie das Hauptarchive um Sprachenwechel zu ermöglichen.');
-$GLOBALS['TL_LANG']['tl_news_archive']['language']	= array('Sprache', 'Bitte geben Sie die Sprache im RFC3066-Format ein (z.B. en, en-us oder en-cockney).');
+$GLOBALS['TL_LANG']['tl_news_archive']['master']    = array('Hauptarchiv', 'Wählen Sie das Hauptarchive um Sprachenwechel zu ermöglichen.');
+$GLOBALS['TL_LANG']['tl_news_archive']['language']    = array('Sprache', 'Bitte geben Sie die Sprache im RFC3066-Format ein (z.B. en, en-us oder en-cockney).');
 
 
 /**
  * References
  */
-$GLOBALS['TL_LANG']['tl_news_archive']['isMaster']	= 'Dies ist ein Hauptarchiv';
-$GLOBALS['TL_LANG']['tl_news_archive']['isSlave']	= 'Das Hauptachiv ist "%s"';
+$GLOBALS['TL_LANG']['tl_news_archive']['isMaster']    = 'Dies ist ein Hauptarchiv';
+$GLOBALS['TL_LANG']['tl_news_archive']['isSlave']    = 'Das Hauptachiv ist "%s"';
