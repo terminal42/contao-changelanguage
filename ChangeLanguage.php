@@ -38,24 +38,6 @@ class ChangeLanguage extends Controller
 	}
 
 
-	public function translateArticles($arrParams, $strLanguage, $arrRootPage)
-	{
-		if ($arrParams['url']['article'] != '')
-		{
-			global $objPage;
-
-			$objArticle = $this->Database->prepare("SELECT id, alias FROM tl_article WHERE id=(SELECT languageMain FROM tl_article WHERE pid=? AND alias=?)")->execute($objPage->id, $arrParams['url']['article']);
-
-			if ($objArticle->numRows)
-			{
-				$arrParams['url']['article'] = $objArticle->alias ? $objArticle->alias : $objArticle->id;
-			}
-		}
-
-		return $arrParams;
-	}
-
-
 	/**
 	 * Find the main language page associated with the given page ID or page object
 	 * @param Database_Result|int

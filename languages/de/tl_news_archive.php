@@ -21,16 +21,21 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Felix Pfeiffer 2008, terminal42 gmbh 2008-2012
+ * @copyright  terminal42 gmbh 2009-2013
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Felix Pfeiffer <info@felixpfeiffer.com>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
 /**
- * Frontend modules
+ * Fields
  */
-$GLOBALS['FE_MOD']['miscellaneous']['changelanguage']		= 'ModuleChangeLanguage';
-$GLOBALS['FE_MOD']['miscellaneous']['languageRedirect']		= 'ModuleLanguageRedirect';
+$GLOBALS['TL_LANG']['tl_news_archive']['master']	= array('Hauptarchiv', 'Wählen Sie das Hauptarchive um Sprachenwechel zu ermöglichen.');
+$GLOBALS['TL_LANG']['tl_news_archive']['language']	= array('Sprache', 'Bitte geben Sie die Sprache im RFC3066-Format ein (z.B. en, en-us oder en-cockney).');
 
+
+/**
+ * References
+ */
+$GLOBALS['TL_LANG']['tl_news_archive']['isMaster']	= 'Dies ist ein Hauptarchiv';
+$GLOBALS['TL_LANG']['tl_news_archive']['isSlave']	= 'Das Hauptachiv ist "%s"';

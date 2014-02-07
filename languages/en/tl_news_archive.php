@@ -21,16 +21,27 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Felix Pfeiffer 2008, terminal42 gmbh 2008-2012
+ * @copyright  terminal42 gmbh 2009-2013
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Felix Pfeiffer <info@felixpfeiffer.com>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
 /**
- * Frontend modules
+ * Fields
  */
-$GLOBALS['FE_MOD']['miscellaneous']['changelanguage']		= 'ModuleChangeLanguage';
-$GLOBALS['FE_MOD']['miscellaneous']['languageRedirect']		= 'ModuleLanguageRedirect';
+$GLOBALS['TL_LANG']['tl_news_archive']['master']	= array('Master archive', 'Please define the master archive to allow language switching.');
+$GLOBALS['TL_LANG']['tl_news_archive']['language']	= array('Language', 'Please enter the language according to the RFC3066 format (e.g. en, en-us or en-cockney).');
 
+
+/**
+ * Legends
+ */
+$GLOBALS['TL_LANG']['tl_news_archive']['language_legend'] = 'Language settings';
+
+
+/**
+ * References
+ */
+$GLOBALS['TL_LANG']['tl_news_archive']['isMaster']	= 'This is a master archive';
+$GLOBALS['TL_LANG']['tl_news_archive']['isSlave']	= 'Master archive is "%s"';

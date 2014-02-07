@@ -21,16 +21,20 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Felix Pfeiffer 2008, terminal42 gmbh 2008-2012
+ * @copyright  terminal42 gmbh 2009-2013
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Felix Pfeiffer <info@felixpfeiffer.com>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
 /**
- * Frontend modules
+ * Fields
  */
-$GLOBALS['FE_MOD']['miscellaneous']['changelanguage']		= 'ModuleChangeLanguage';
-$GLOBALS['FE_MOD']['miscellaneous']['languageRedirect']		= 'ModuleLanguageRedirect';
+$GLOBALS['TL_LANG']['tl_news']['languageMain'] = array('Master article', 'Choose the article in the master archive equaling this article.');
 
+
+/**
+ * References
+ */
+$GLOBALS['TL_LANG']['tl_news']['sameDay']	= 'Same day';
+$GLOBALS['TL_LANG']['tl_news']['otherDay']	= 'Other days';

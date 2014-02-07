@@ -71,7 +71,8 @@ class ModuleChangelanguage extends Module
 
 		$strBuffer = parent::generate();
 
-        if ($this->Template->items == '') {
+        if ($this->Template->items == '')
+        {
             return '';
         }
 
@@ -117,14 +118,16 @@ class ModuleChangelanguage extends Module
 		}
 
         $arrParams = array('url'=>array(), 'get'=>array());
+
+        // Keep the URL parameters
         if ($this->keepUrlParams)
     	{
-    		foreach( array_keys($_GET) as $strKey )
+    		foreach (array_keys($_GET) as $strKey)
     		{
     			$strValue = \Input::get($strKey);
 
     			// Do not keep empty parameters and arrays
-    			if ($strValue != '' && $strKey != 'language' && $strKey !== 'auto_item')
+    			if ($strValue != '' && $strKey != 'language' && $strKey != 'auto_item')
     			{
     				// Parameter passed after "?"
     				if (strpos(\Environment::get('request'), $strKey.'='.$strValue) !== false)
@@ -145,6 +148,7 @@ class ModuleChangelanguage extends Module
     		$arrParams['get']['keywords'] = \Input::get('keywords');
     	}
 
+        $time = time();
 		$arrItems = array();
         $c = 0;
         $count = count($arrRootPages);
@@ -152,6 +156,8 @@ class ModuleChangelanguage extends Module
         foreach ($arrRootPages as $arrRootPage)
         {
         	$domain = '';
+
+        	// Get the new domain if it differs from the current one
         	if ($objPage->domain != $arrRootPage['dns'])
             {
             	$domain  = (\Environment::get('ssl') ? 'https://' : 'http://') . $arrRootPage['dns'] . '/';
@@ -161,7 +167,6 @@ class ModuleChangelanguage extends Module
             		$domain .= TL_PATH . '/';
             	}
             }
-
 
         	$blnDirectFallback = true;
             $strCssClass = 'lang-' . $arrRootPage['language'];
@@ -173,17 +178,21 @@ class ModuleChangelanguage extends Module
             }
 
             // Active page
-            if($arrRootPage['language'] == $objRootPage->language)
+            if ($arrRootPage['language'] == $objRootPage->language)
             {
             	// If it is the active page, and we want to hide this, continue with the next page
             	if ($this->hideActiveLanguage)
+            	{
             		continue;
+                }
 
 				$active = true;
             	$pageTitle = $arrRootPage['title'];
             	$href = "";
 
-            	if (in_array('articlelanguage', $this->Config->getActiveModules()) && strlen($_SESSION['ARTICLE_LANGUAGE']))
+                // Support the articlelanguage extension
+                // @todo - does it work? do we need it?
+            	if (in_array('articlelanguage', \ModuleLoader::getActive()) && strlen($_SESSION['ARTICLE_LANGUAGE']))
             	{
             		$objArticle = $this->Database->prepare("SELECT * FROM tl_article WHERE (pid=? OR pid=?) AND language=?")
             									 ->execute($objPage->id, $objPage->languageMain, $_SESSION['ARTICLE_LANGUAGE']);
@@ -194,8 +203,9 @@ class ModuleChangelanguage extends Module
             		}
             	}
 
-                // make sure that the class is only added once
-                if (strpos($objPage->cssClass, $strCssClass) === false) {
+                // Make sure that the class is only added once
+                if (strpos($objPage->cssClass, $strCssClass) === false)
+                {
                     $objPage->cssClass = trim($objPage->cssClass . ' ' . $strCssClass);
                 }
             }
@@ -205,6 +215,7 @@ class ModuleChangelanguage extends Module
             {
             	$active = false;
             	$target = '';
+				$arrTranslatedParams = $arrParams;
 
             	// HOOK: allow extensions to modify url parameters
 				if (isset($GLOBALS['TL_HOOKS']['translateUrlParameters']) && is_array($GLOBALS['TL_HOOKS']['translateUrlParameters']))
@@ -212,15 +223,95 @@ class ModuleChangelanguage extends Module
 					foreach ($GLOBALS['TL_HOOKS']['translateUrlParameters'] as $callback)
 					{
 						$this->import($callback[0]);
-						$arrParams = $this->$callback[0]->$callback[1]($arrParams, $arrRootPage['language'], $arrRootPage);
+						$arrTranslatedParams = $this->$callback[0]->$callback[1]($arrParams, $arrRootPage['language'], $arrRootPage);
 					}
 				}
 
-            	// Make sure $strParam is empty, otherwise previous pages could affect url
-            	$strParam = '';
+                // Try to find matching article
+				if (isset($arrParams['url']['articles']))
+				{
+				    $objArticle = null;
+
+                    // Get the fallback article
+				    if ($arrRootPage['fallback'])
+				    {
+    				    $objArticle = $this->Database->prepare("SELECT id, alias FROM tl_article WHERE id=(SELECT languageMain FROM tl_article WHERE pid=? AND alias=?)")
+    				                                 ->execute($objPage->id, $arrParams['url']['articles']);
+    				}
+    				else
+    				{
+    				    $arrSubpages = $this->Database->getChildRecords($arrRootPage['id'], 'tl_page', true);
+
+                        if (!empty($arrSubpages))
+                        {
+                            // Find foreign article by fallback alias
+                            if ($objRootPage->fallback)
+                            {
+            				    $objArticle = $this->Database->prepare("SELECT id, alias FROM tl_article WHERE languageMain=(SELECT id FROM tl_article WHERE alias=?) AND pid IN (" . implode(',', $arrSubpages) . ")")
+            				                                 ->execute($arrParams['url']['articles']);
+                            }
+                            // Find foreign article by current article alias
+                            else
+                            {
+            				    $objArticle = $this->Database->prepare("SELECT id, alias FROM tl_article WHERE languageMain=(SELECT languageMain FROM tl_article WHERE pid=? AND alias=?) AND pid IN (" . implode(',', $arrSubpages) . ")")
+            				                                 ->execute($objPage->id, $arrParams['url']['articles']);
+            				}
+        				}
+    				}
+
+				    if ($objArticle->numRows)
+				    {
+    				    $arrTranslatedParams['url']['articles'] = $objArticle->alias;
+				    }
+				}
+
+				// Check for other modules
+				if (($GLOBALS['TL_CONFIG']['useAutoItem'] && isset($_GET['auto_item'])) || isset($arrTranslatedParams['url']['items']))
+				{
+				    $blnFound = false;
+
+                    // News
+                    if (in_array('news', \ModuleLoader::getActive()))
+                    {
+                        $objNewsArchive = \NewsArchiveModel::findByJumpTo($objPage->id);
+
+                        if ($objNewsArchive !== null)
+                        {
+                            $objNews = \NewsModel::findPublishedByParentAndIdOrAlias(($GLOBALS['TL_CONFIG']['useAutoItem'] ? \Input::get('auto_item') : \Input::get('items')), array($objNewsArchive->id));
+
+                            // News item exists, find foreign item
+                            if ($objNews !== null)
+                            {
+                                if (!$objNewsArchive->master)
+                                {
+                                    $objNewsForeign = $this->Database->prepare("SELECT * FROM tl_news WHERE languageMain=? AND pid=(SELECT id FROM tl_news_archive WHERE language=?)" . (!BE_USER_LOGGED_IN ? " AND (start='' OR start<$time) AND (stop='' OR stop>$time) AND published=1" : ""))
+                                                                     ->limit(1)
+                                                                     ->execute($objNews->id, $arrRootPage['language']);
+                                }
+                                else
+                                {
+                                    $objNewsForeign = $this->Database->prepare("SELECT * FROM tl_news WHERE (id=? OR languageMain=?) AND pid=(SELECT id FROM tl_news_archive WHERE language=?)" . (!BE_USER_LOGGED_IN ? " AND (start='' OR start<$time) AND (stop='' OR stop>$time) AND published=1" : ""))
+                                                                     ->limit(1)
+                                                                     ->execute($objNews->languageMain, $objNews->languageMain, $arrRootPage['language']);
+                                }
+
+                                if ($objNewsForeign->numRows)
+                                {
+                                    $blnFound = true;
+                                    $arrTranslatedParams['url']['items'] = (($objNewsForeign->alias != '' && !$GLOBALS['TL_CONFIG']['disableAlias']) ? $objNewsForeign->alias : $objNewsForeign->id);
+                                }
+                            }
+                        }
+                    }
+				}
+
             	$arrRequest = array();
 
-            	foreach( $arrParams['url'] as $k => $v )
+            	// Make sure $strParam is empty, otherwise previous pages could affect url
+            	$strParam = '';
+
+                // Build the URL
+            	foreach ($arrTranslatedParams['url'] as $k => $v)
             	{
 					if ($GLOBALS['TL_CONFIG']['useAutoItem'] && in_array($k, $GLOBALS['TL_AUTO_ITEM']))
 					{
@@ -232,14 +323,14 @@ class ModuleChangelanguage extends Module
 					}
             	}
 
-            	foreach( $arrParams['get'] as $k => $v )
+                // Append the query
+            	foreach ($arrTranslatedParams['get'] as $k => $v)
             	{
             		$arrRequest[] = $k . '=' . $v;
             	}
 
-
             	// Matching language page found
-	            if(array_key_exists($arrRootPage['language'], $arrLanguagePages))
+	            if (array_key_exists($arrRootPage['language'], $arrLanguagePages))
 	            {
 	            	$pageTitle = $arrLanguagePages[$arrRootPage['language']]['title'];
 	            	$href = $this->generateFrontendUrl($arrLanguagePages[$arrRootPage['language']], $strParam, $arrRootPage['language']) . (count($arrRequest) ? ('?'.implode('&amp;', $arrRequest)) : '');
