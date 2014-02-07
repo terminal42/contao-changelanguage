@@ -32,7 +32,9 @@
  * Config
  */
 $GLOBALS['TL_DCA']['tl_page']['config']['onload_callback'][] = array('tl_page_changelanguage','showSelectbox');
-$GLOBALS['TL_DCA']['tl_page']['config']['onsubmit_callback'][] = array('tl_page_changelanguage','resetFallback');
+$GLOBALS['TL_DCA']['tl_page']['config']['oncopy_callback'][] = array('tl_page_changelanguage','resetFallbackCopy');
+$GLOBALS['TL_DCA']['tl_page']['config']['oncut_callback'][] = array('tl_page_changelanguage','resetFallbackAll');
+$GLOBALS['TL_DCA']['tl_page']['config']['onsubmit_callback'][] = array('tl_page_changelanguage','resetFallbackAll');
 $GLOBALS['TL_DCA']['tl_page']['config']['sql']['keys']['languageMain'] = 'index';
 $GLOBALS['TL_DCA']['tl_page']['list']['label']['label_callback'] = array('tl_page_changelanguage', 'addFallbackNotice');
 
@@ -107,30 +109,40 @@ class tl_page_changelanguage extends Backend
 
 
 	/**
-	 * Make sure languageMain is "0" on fallback tree. Otherwise unknown behaviour could occure.
-	 *
-	 * @access public
-	 * @param mixed $dc
-	 * @return void
+	 * Reset the fallback assignment if it's moved to the fallback root
+	 * @param integer
 	 */
-	public function resetFallback($dc)
+	public function resetFallback($intId)
 	{
-		if ($dc->id > 0)
-		{
-			$objPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->limit(1)->execute($dc->id);
+	    $objPage = \PageModel::findWithDetails($intId);
+        $objRoot = \PageModel::findByPk($objPage->rootId);
 
-			if ($objPage->numRows && $objPage->type == 'root' && $objPage->fallback && !$objPage->languageRoot)
-			{
-				$arrIds = $this->getChildRecords($objPage->id, 'tl_page');
-				$arrIds[] = $objPage->id;
+        if ($objRoot->fallback)
+        {
+            $arrSubpages = $this->Database->getChildRecords($objPage->id, 'tl_page', true);
+            $arrSubpages[] = $objPage->id;
+            $this->Database->execute("UPDATE tl_page SET languageMain=0 WHERE id IN(" . implode(',', $arrSubpages) . ")");
+        }
+	}
 
-				$this->Database->query("UPDATE tl_page SET languageMain=0 WHERE id IN (" . implode(',', $arrIds) . ")");
-			}
-			elseif ($objPage->numRows && $objPage->type == 'root' && !$objPage->fallback && $objPage->languageRoot)
-			{
-				$this->Database->query("UPDATE tl_page SET languageRoot=0 WHERE id=".$objPage->id);
-			}
-		}
+
+	/**
+	 * Reset fallback with other callbacks
+	 * @param object
+	 */
+	public function resetFallbackAll($dc)
+	{
+    	$this->resetFallback($dc->id);
+	}
+
+
+	/**
+	 * Reset fallback with oncopy_callback
+	 * @param integer
+	 */
+	public function resetFallbackCopy($intId)
+	{
+    	$this->resetFallback($intId);
 	}
 
 
