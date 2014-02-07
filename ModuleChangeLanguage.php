@@ -187,11 +187,11 @@ class ModuleChangelanguage extends Module
                         $strCssClass = 'lang-' . $_SESSION['ARTICLE_LANGUAGE'];
             		}
             	}
-            }
 
-            // make sure that the class is only added once
-            if (strpos($objPage->cssClass, $strCssClass) === false) {
-                $objPage->cssClass = trim($objPage->cssClass . ' ' . $strCssClass);
+                // make sure that the class is only added once
+                if (strpos($objPage->cssClass, $strCssClass) === false) {
+                    $objPage->cssClass = trim($objPage->cssClass . ' ' . $strCssClass);
+                }
             }
 
             // Search for foreign language
