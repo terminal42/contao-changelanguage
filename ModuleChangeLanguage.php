@@ -164,6 +164,7 @@ class ModuleChangelanguage extends Module
 
 
         	$blnDirectFallback = true;
+            $strCssClass = 'lang-' . $arrRootPage['language'];
 
         	// If the root isn't published, continue with the next page
             if ((!$arrRootPage['published'] || ($arrRootPage['start'] > 0 && $arrRootPage['start'] > time()) || ($arrRootPage['stop'] > 0 && $arrRootPage['stop'] < time())) && !BE_USER_LOGGED_IN)
@@ -189,17 +190,14 @@ class ModuleChangelanguage extends Module
 
             		if ($objArticle->numRows)
             		{
-            			$objPage->cssClass = trim($objPage->cssClass . ' lang-' . $_SESSION['ARTICLE_LANGUAGE']);
-            		}
-            		else
-            		{
-            			$objPage->cssClass = trim($objPage->cssClass . ' lang-' . $arrRootPage['language']);
+                        $strCssClass = 'lang-' . $_SESSION['ARTICLE_LANGUAGE'];
             		}
             	}
-            	else
-            	{
-            		$objPage->cssClass = trim($objPage->cssClass . ' lang-' . $arrRootPage['language']);
-            	}
+            }
+
+            // make sure that the class is only added once
+            if (strpos($objPage->cssClass, $strCssClass) === false) {
+                $objPage->cssClass = trim($objPage->cssClass . ' ' . $strCssClass);
             }
 
             // Search for foreign language
