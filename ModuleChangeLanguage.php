@@ -303,6 +303,40 @@ class ModuleChangelanguage extends Module
                             }
                         }
                     }
+
+                    // Events
+                    if (!$blnFound && in_array('calendar', \ModuleLoader::getActive()))
+                    {
+                        $objCalendar = \CalendarModel::findByJumpTo($objPage->id);
+
+                        if ($objCalendar !== null)
+                        {
+                            $objEvent = \CalendarEventsModel::findPublishedByParentAndIdOrAlias(($GLOBALS['TL_CONFIG']['useAutoItem'] ? \Input::get('auto_item') : \Input::get('items')), array($objCalendar->id));
+
+                            // Event exists, find foreign item
+                            if ($objEvent !== null)
+                            {
+                                if (!$objCalendar->master)
+                                {
+                                    $objEventForeign = $this->Database->prepare("SELECT * FROM tl_calendar_events WHERE languageMain=? AND pid=(SELECT id FROM tl_calendar WHERE language=?)" . (!BE_USER_LOGGED_IN ? " AND (start='' OR start<$time) AND (stop='' OR stop>$time) AND published=1" : ""))
+                                                                     ->limit(1)
+                                                                     ->execute($objEvent->id, $arrRootPage['language']);
+                                }
+                                else
+                                {
+                                    $objEventForeign = $this->Database->prepare("SELECT * FROM tl_calendar_events WHERE (id=? OR languageMain=?) AND pid=(SELECT id FROM tl_calendar WHERE language=?)" . (!BE_USER_LOGGED_IN ? " AND (start='' OR start<$time) AND (stop='' OR stop>$time) AND published=1" : ""))
+                                                                     ->limit(1)
+                                                                     ->execute($objEvent->languageMain, $objEvent->languageMain, $arrRootPage['language']);
+                                }
+
+                                if ($objEventForeign->numRows)
+                                {
+                                    $blnFound = true;
+                                    $arrTranslatedParams['url']['items'] = ((!$GLOBALS['TL_CONFIG']['disableAlias'] && $objEventForeign->alias != '') ? $objEventForeign->alias : $objEventForeign->id);
+                                }
+                            }
+                        }
+                    }
 				}
 
             	$arrRequest = array();
