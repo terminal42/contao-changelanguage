@@ -30,7 +30,7 @@
 /**
  * Config
  */
-$GLOBALS['TL_DCA']['tl_news']['config']['onload_callback'][] = array('tl_news_changelanguage', 'showSelectbox');
+$GLOBALS['TL_DCA']['tl_news']['config']['onload_callback'][] = array('tl_news_language', 'showSelectbox');
 
 
 /**
@@ -41,13 +41,13 @@ $GLOBALS['TL_DCA']['tl_news']['fields']['languageMain'] = array
 	'label'                   => &$GLOBALS['TL_LANG']['tl_news']['languageMain'],
 	'exclude'                 => false,
 	'inputType'               => 'select',
-	'options_callback'        => array('tl_news_changelanguage', 'getMasterArchive'),
+	'options_callback'        => array('tl_news_language', 'getMasterArchive'),
 	'eval'					  => array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
 	'sql'                     => "int(10) unsigned NOT NULL default '0'"
 );
 
 
-class tl_news_changelanguage extends Backend
+class tl_news_language extends Backend
 {
 
 	/**

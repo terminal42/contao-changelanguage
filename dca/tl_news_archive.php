@@ -41,7 +41,7 @@ $GLOBALS['TL_DCA']['tl_news_archive']['fields']['master'] = array
 	'label'				=> &$GLOBALS['TL_LANG']['tl_news_archive']['master'],
 	'exclude'			=> true,
 	'inputType'			=> 'select',
-	'options_callback'	=> array('tl_newslanguage', 'getArchives'),
+	'options_callback'	=> array('tl_news_archive_language', 'getArchives'),
 	'eval'				=> array('includeBlankOption'=>true, 'blankOptionLabel'=>&$GLOBALS['TL_LANG']['tl_news_archive']['isMaster']),
 	'sql'               => "int(10) unsigned NOT NULL default '0'"
 );
@@ -58,7 +58,7 @@ $GLOBALS['TL_DCA']['tl_news_archive']['fields']['language'] = array
 );
 
 
-class tl_newslanguage extends Backend
+class tl_news_archive_language extends Backend
 {
 
 	/**
