@@ -337,6 +337,40 @@ class ModuleChangelanguage extends Module
                             }
                         }
                     }
+
+                    // FAQ
+                    if (!$blnFound && in_array('faq', \ModuleLoader::getActive()))
+                    {
+                        $objFaqCategory = \FaqCategoryModel::findByJumpTo($objPage->id);
+
+                        if ($objFaqCategory !== null)
+                        {
+                            $objFaq = \FaqModel::findPublishedByParentAndIdOrAlias(($GLOBALS['TL_CONFIG']['useAutoItem'] ? \Input::get('auto_item') : \Input::get('items')), array($objFaqCategory->id));
+
+                            // FAQ item exists, find foreign item
+                            if ($objFaq !== null)
+                            {
+                                if (!$objFaqCategory->master)
+                                {
+                                    $objFaqForeign = $this->Database->prepare("SELECT * FROM tl_faq WHERE languageMain=? AND pid=(SELECT id FROM tl_faq_category WHERE language=?)" . (!BE_USER_LOGGED_IN ? " AND published=1" : ""))
+                                                                     ->limit(1)
+                                                                     ->execute($objFaq->id, $arrRootPage['language']);
+                                }
+                                else
+                                {
+                                    $objFaqForeign = $this->Database->prepare("SELECT * FROM tl_faq WHERE (id=? OR languageMain=?) AND pid=(SELECT id FROM tl_faq_category WHERE language=?)" . (!BE_USER_LOGGED_IN ? " AND published=1" : ""))
+                                                                     ->limit(1)
+                                                                     ->execute($objFaq->languageMain, $objFaq->languageMain, $arrRootPage['language']);
+                                }
+
+                                if ($objFaqForeign->numRows)
+                                {
+                                    $blnFound = true;
+                                    $arrTranslatedParams['url']['items'] = ((!$GLOBALS['TL_CONFIG']['disableAlias'] && $objFaqForeign->alias != '') ? $objFaqForeign->alias : $objFaqForeign->id);
+                                }
+                            }
+                        }
+                    }
 				}
 
             	$arrRequest = array();
