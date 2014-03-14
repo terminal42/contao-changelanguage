@@ -43,7 +43,7 @@ ClassLoader::addClasses(array
  */
 TemplateLoader::addFiles(array
 (
-    'mod_changelanguage'            => 'system/modules/changelanguage/templates',
-    'nav_changelanguage_dropdown'   => 'system/modules/changelanguage/templates',
+    'mod_changelanguage'           => 'system/modules/changelanguage/templates',
+    'nav_dropdown'                 => 'system/modules/changelanguage/templates',
 ));
 
