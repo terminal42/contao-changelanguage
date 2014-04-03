@@ -15,13 +15,21 @@
         "contao/core":">=3.2,<=3.3",
         "contao-community-alliance/composer-plugin":"*"
     },
+    "autoload": {
+        "psr-0": {
+            "Terminal42": "src/"
+        }
+    },
     "replace": {
         "contao-legacy/changelanguage": "self.version"
     },
     "extra":{
         "contao": {
             "sources":{
-                "": "system/modules/changelanguage"
+                "contao-module": "system/modules/changelanguage",
+                "runonce": [
+                    "runonce/updateFallbacks.php"
+                ]
             },
             "transifex": {
                 "project": "contao-changelanguage",

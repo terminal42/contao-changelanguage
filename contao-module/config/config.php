@@ -21,29 +21,21 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  terminal42 gmbh 2012
+ * @copyright  Felix Pfeiffer 2008, terminal42 gmbh 2008-2012
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
+ * @author     Felix Pfeiffer <info@felixpfeiffer.com>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
 /**
- * Register the classes
+ * Frontend modules
  */
-ClassLoader::addClasses(array
-(
-	'ChangeLanguage'               => 'system/modules/changelanguage/ChangeLanguage.php',
-	'ModuleChangeLanguage'         => 'system/modules/changelanguage/ModuleChangeLanguage.php',
-	'ModuleLanguageRedirect'       => 'system/modules/changelanguage/ModuleLanguageRedirect.php',
-));
+$GLOBALS['FE_MOD']['miscellaneous']['changelanguage']		= 'ModuleChangeLanguage';
 
 
-/**
- * Register the templates
+/***
+ * Hooks
  */
-TemplateLoader::addFiles(array
-(
-	'mod_changelanguage'            => 'system/modules/changelanguage/templates',
-    'nav_changelanguage_dropdown'   => 'system/modules/changelanguage/templates',
-));
+$GLOBALS['TL_HOOKS']['translateUrlParameters'][] = array('ChangeLanguage', 'translateArticles');
 
