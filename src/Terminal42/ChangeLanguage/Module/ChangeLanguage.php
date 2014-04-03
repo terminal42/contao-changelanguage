@@ -13,6 +13,12 @@ class Changelanguage extends \Module
      */
     protected $strTemplate = 'mod_changelanguage';
 
+    /**
+     * Custom language labels
+     * @var array
+     */
+    protected $arrCustomLanguageLabels = array();
+
 
     public function generate()
     {
@@ -31,12 +37,9 @@ class Changelanguage extends \Module
         // Prepare custom language texts
         $this->customLanguageText = deserialize($this->customLanguageText, true);
 
-        $customLanguageText = array();
         foreach ($this->customLanguageText as $arrText) {
-            $customLanguageText[strtolower($arrText['value'])] = $arrText['label'];
+            $this->arrCustomLanguageLabels[strtolower($arrText['value'])] = $arrText['label'];
         }
-
-        $this->customLanguageText = $customLanguageText;
 
         if ($this->navigationTpl == '') {
             $this->navigationTpl = 'nav_default';
@@ -81,6 +84,11 @@ class Changelanguage extends \Module
             // Active
             $blnActive = ($objRelated->rootLanguage === $objPage->rootLanguage);
 
+
+
+            // Href
+            $strHref = $objRelated->getFrontendUrl(null, $objRelated->rootLanguage);
+
             // Build template array
             $arrItems[] = array
             (
@@ -88,7 +96,7 @@ class Changelanguage extends \Module
                 'class'     => 'lang-' . $objRelated->rootLanguage . ($blnActive) ? ' active' : '',
                 'link'      => $this->getLabel($objRelated->rootLanguage),
                 'subitems'  => '',
-                'href'      => $objRelated->getFrontendUrl(null, $objRelated->rootLanguage),
+                'href'      => $strHref,
                 'pageTitle' => strip_tags($objRelated->pageTitle ?: $objRelated->title),
                 'accesskey' => '',
                 'tabindex'  => '',
@@ -98,6 +106,7 @@ class Changelanguage extends \Module
             );
 
             // Inject <link rel=""> for the alternate language
+            // @todo Implement this again
             /*if (!$active && $blnDirectFallback) {
                 $GLOBALS['TL_HEAD'][] = '<link rel="alternate" hreflang="' . $arrRootPage['language'] . '" lang="' . $arrRootPage['language'] . '" href="' . ($domain . $href) . '" title="' . specialchars($pageTitle, true) . '"' . ($objPage->outputFormat == 'html5' ? '>' : ' />');
             }*/
@@ -364,7 +373,7 @@ class Changelanguage extends \Module
      */
     private function orderByCustom($a, $b)
     {
-        $arrCustom = array_keys($this->customLanguageText);
+        $arrCustom = array_keys($this->arrCustomLanguageLabels);
 
         $key1 = array_search($a['language'], $arrCustom);
         $key2 = array_search($b['language'], $arrCustom);
@@ -380,8 +389,9 @@ class Changelanguage extends \Module
      */
     protected function getLabel($strLanguage)
     {
-        if ($this->customLanguage && strlen($this->customLanguageText[strtolower($strLanguage)])) {
-            return $this->replaceInsertTags($this->customLanguageText[strtolower($strLanguage)]);
+        $strLanguage = strtolower($strLanguage);
+        if ($this->customLanguage && $this->arrCustomLanguageLabels[$strLanguage]) {
+            return \Controller::replaceInsertTags($this->arrCustomLanguageLabels[$strLanguage]);
         }
 
         return strtoupper($strLanguage);
