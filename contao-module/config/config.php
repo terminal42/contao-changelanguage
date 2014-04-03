@@ -31,7 +31,7 @@
 /**
  * Frontend modules
  */
-$GLOBALS['FE_MOD']['miscellaneous']['changelanguage']   = 'Terminal42\\Module\\ChangeLanguage';
+$GLOBALS['FE_MOD']['miscellaneous']['changelanguage']   = 'Terminal42\\ChangeLanguage\\Module\\ChangeLanguage';
 
 
 /***
