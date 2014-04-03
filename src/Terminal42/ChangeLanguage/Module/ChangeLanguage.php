@@ -84,6 +84,10 @@ class Changelanguage extends \Module
             // Active
             $blnActive = ($objRelated->rootLanguage === $objPage->rootLanguage);
 
+            // Skip active language
+            if ($blnActive && $this->hideActiveLanguage) {
+                continue;
+            }
 
 
             // Href
