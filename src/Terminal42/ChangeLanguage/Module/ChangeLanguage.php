@@ -2,6 +2,8 @@
 
 namespace Terminal42\ChangeLanguage\Module;
 
+use ContaoCommunityAlliance\Contao\LanguageRelations\LanguageRelations;
+
 class Changelanguage extends \Module
 {
 
@@ -55,13 +57,61 @@ class Changelanguage extends \Module
      */
     protected function compile()
     {
+        $arrItems = array();
         global $objPage;
 
-        // Required for the current pagetree language
-        $objRootPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($objPage->rootId);
+        $arrRelatedPages = LanguageRelations::getRelations($objPage->id);
 
-        $arrRootPages = $this->ChangeLanguage->findLanguageRootsForDomain($objPage->domain);
+        if (empty($arrRelatedPages)) {
+            return;
+        }
 
+        foreach ($arrRelatedPages as $intRootPageId => $intRelatedId) {
+            $objRelated = \PageModel::findWithDetails($intRelatedId);
+
+            // If the page isn't published, continue with the next page
+            if ((!$objRelated->published
+                    || ($objRelated->start > 0 && $objRelated->start > time())
+                    || ($objRelated->stop > 0 && $objRelated->stop < time()))
+                && !BE_USER_LOGGED_IN
+            ) {
+                continue;
+            }
+
+            // Active
+            $blnActive = ($objRelated->rootLanguage === $objPage->rootLanguage);
+
+            // Build template array
+            $arrItems[] = array
+            (
+                'isActive'  => $blnActive,
+                'class'     => 'lang-' . $objRelated->rootLanguage . ($blnActive) ? ' active' : '',
+                'link'      => $this->getLabel($objRelated->rootLanguage),
+                'subitems'  => '',
+                'href'      => $objRelated->getFrontendUrl(null, $objRelated->rootLanguage),
+                'pageTitle' => strip_tags($objRelated->pageTitle ?: $objRelated->title),
+                'accesskey' => '',
+                'tabindex'  => '',
+                'nofollow'  => false,
+                //'target'    => $target . ' hreflang="' . $arrRootPage['language'] . '"',
+                'language'  => $objRelated->rootLanguage,
+            );
+
+            // Inject <link rel=""> for the alternate language
+            /*if (!$active && $blnDirectFallback) {
+                $GLOBALS['TL_HEAD'][] = '<link rel="alternate" hreflang="' . $arrRootPage['language'] . '" lang="' . $arrRootPage['language'] . '" href="' . ($domain . $href) . '" title="' . specialchars($pageTitle, true) . '"' . ($objPage->outputFormat == 'html5' ? '>' : ' />');
+            }*/
+
+        }
+
+        $objTemplate = new \FrontendTemplate($this->navigationTpl);
+        $objTemplate->setData($this->arrData);
+        $objTemplate->level = 'level_1';
+        $objTemplate->items = $arrItems;
+
+        $this->Template->items = $objTemplate->parse();
+
+        /*
 
         // Check if there are foreign languages of this page
         $arrLanguagePages = array();
@@ -300,7 +350,7 @@ class Changelanguage extends \Module
         }
 
         // Fix contao problem with date/time formats...
-        $this->getPageDetails($objPage->id);
+        $this->getPageDetails($objPage->id);*/
     }
 
 
@@ -323,7 +373,12 @@ class Changelanguage extends \Module
     }
 
 
-    private function getLabel($strLanguage)
+    /**
+     * Get the label for a language
+     * @param $strLanguage
+     * @return string
+     */
+    protected function getLabel($strLanguage)
     {
         if ($this->customLanguage && strlen($this->customLanguageText[strtolower($strLanguage)])) {
             return $this->replaceInsertTags($this->customLanguageText[strtolower($strLanguage)]);
