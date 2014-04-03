@@ -1,5 +1,5 @@
 {
-    "name":"terminal42/changelanguage",
+    "name":"terminal42/contao-changelanguage",
     "description":"ChangeLanguage extension for Contao Open Source CMS",
     "keywords":["contao", "change", "language"],
     "type":"contao-module",
