@@ -13,7 +13,8 @@
     "require":{
         "php":">=5.3.2",
         "contao/core":">=3.2,<=3.3",
-        "contao-community-alliance/composer-plugin":"*"
+        "contao-community-alliance/composer-plugin":"*",
+        "contao-community-alliance/language-relations": "1.x-dev"
     },
     "autoload": {
         "psr-0": {
