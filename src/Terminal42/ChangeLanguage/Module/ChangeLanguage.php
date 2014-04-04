@@ -69,7 +69,7 @@ class Changelanguage extends \Module
             return;
         }
 
-        foreach ($arrRelatedPages as $intRootPageId => $intRelatedId) {
+        foreach ($arrRelatedPages as $intRelatedId) {
             $objRelated = \PageModel::findWithDetails($intRelatedId);
 
             // If the page isn't published, continue with the next page
@@ -88,7 +88,6 @@ class Changelanguage extends \Module
             if ($blnActive && $this->hideActiveLanguage) {
                 continue;
             }
-
 
             // Href
             $strHref = $objRelated->getFrontendUrl(null, $objRelated->rootLanguage);
