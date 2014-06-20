@@ -345,7 +345,7 @@ class ModuleChangelanguage extends Module
 				'accesskey'	=> '',
 				'tabindex'	=> '',
 				'nofollow'	=> false,
-				'target'	=> $target . ' hreflang="' . $arrRootPage['language'] . '"',
+				'target'	=> $target . ' hreflang="' . $arrRootPage['language'] . '" lang="' . $arrRootPage['language'] . '"',
 				'language'	=> $arrRootPage['language'],
 			);
 
