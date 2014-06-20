@@ -33,6 +33,7 @@
  */
 $GLOBALS['TL_DCA']['tl_page']['config']['onload_callback'][] = array('tl_page_changelanguage','showSelectbox');
 $GLOBALS['TL_DCA']['tl_page']['config']['onsubmit_callback'][] = array('tl_page_changelanguage','resetFallback');
+$GLOBALS['TL_DCA']['tl_page']['config']['ondelete_callback'][] = array('tl_page_changelanguage','resetLanguageMain');
 $GLOBALS['TL_DCA']['tl_page']['list']['label']['label_callback'] = array('tl_page_changelanguage', 'addFallbackNotice');
 
 
@@ -134,6 +135,17 @@ class tl_page_changelanguage extends Backend
 			}
 		}
 	}
+
+
+	/**
+	 * Reset the language main when the fallback is deleted
+	 * @param object
+	 */
+    public function resetLanguageMain($dc)
+    {
+        $this->Database->prepare("UPDATE tl_page SET languageMain=0 WHERE languageMain=?")
+                       ->execute($dc->id);
+    }
 
 
 	/**
