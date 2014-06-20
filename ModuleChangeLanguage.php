@@ -349,11 +349,13 @@ class ModuleChangelanguage extends Module
 				'language'	=> $arrRootPage['language'],
 			);
 
-			// Inject <link rel=""> for the alternate language
-			if (!$active && $blnDirectFallback)
+			// Get the URL of the current page
+			if ($active)
 			{
-				$GLOBALS['TL_HEAD'][] = '<link rel="alternate" hreflang="' . $arrRootPage['language'] . '" lang="' . $arrRootPage['language'] . '" href="' . ($domain . $href) . '" title="' . specialchars($pageTitle, true) . '"' . ($objPage->outputFormat == 'html5' ? '>' : ' />');
+			    $href = $this->generateFrontendUrl($objPage->row());
 			}
+
+			$GLOBALS['TL_HEAD'][] = '<link rel="alternate" hreflang="' . $arrRootPage['language'] . '" lang="' . $arrRootPage['language'] . '" href="' . ($domain . $href) . '" title="' . specialchars($pageTitle, true) . '"' . ($objPage->outputFormat == 'html5' ? '>' : ' />');
 
             $c++;
         }
