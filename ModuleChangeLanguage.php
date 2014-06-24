@@ -169,7 +169,7 @@ class ModuleChangelanguage extends Module
 
 				$active = true;
             	$pageTitle = $arrRootPage['title'];
-            	$href = "";
+            	$href = $this->generateFrontendUrl($objPage->row());
 
             	if (in_array('articlelanguage', $this->Config->getActiveModules()) && strlen($_SESSION['ARTICLE_LANGUAGE']))
             	{
@@ -343,13 +343,10 @@ class ModuleChangelanguage extends Module
 				'language'	=> $arrRootPage['language'],
 			);
 
-			// Get the URL of the current page
-			if ($active)
-			{
-			    $href = $this->generateFrontendUrl($objPage->row());
+            if ($active || $blnDirectFallback)
+            {
+                $GLOBALS['TL_HEAD'][] = '<link rel="alternate" hreflang="' . $arrRootPage['language'] . '" lang="' . $arrRootPage['language'] . '" href="' . ($domain . $href) . '" title="' . specialchars($pageTitle, true) . '"' . ($objPage->outputFormat == 'html5' ? '>' : ' />');
 			}
-
-			$GLOBALS['TL_HEAD'][] = '<link rel="alternate" hreflang="' . $arrRootPage['language'] . '" lang="' . $arrRootPage['language'] . '" href="' . ($domain . $href) . '" title="' . specialchars($pageTitle, true) . '"' . ($objPage->outputFormat == 'html5' ? '>' : ' />');
 
             $c++;
         }
