@@ -143,8 +143,13 @@ class tl_page_changelanguage extends Backend
 	 */
     public function resetLanguageMain($dc)
     {
-        $this->Database->prepare("UPDATE tl_page SET languageMain=0 WHERE languageMain=?")
-                       ->execute($dc->id);
+        $arrIds = $this->getChildRecords($dc->id, 'tl_page');
+        $arrIds[] = $dc->id;
+
+        foreach ($arrIds as $intId) {
+            $this->Database->prepare("UPDATE tl_page SET languageMain=0 WHERE languageMain=?")
+                           ->execute($intId);
+        }
     }
 
 
