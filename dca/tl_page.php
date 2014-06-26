@@ -146,10 +146,7 @@ class tl_page_changelanguage extends Backend
         $arrIds = $this->getChildRecords($dc->id, 'tl_page');
         $arrIds[] = $dc->id;
 
-        foreach ($arrIds as $intId) {
-            $this->Database->prepare("UPDATE tl_page SET languageMain=0 WHERE languageMain=?")
-                           ->execute($intId);
-        }
+        $this->Database->execute("UPDATE tl_page SET languageMain=0 WHERE languageMain IN (" . implode(',', $arrIds) . ")");
     }
 
 
@@ -205,7 +202,7 @@ class tl_page_changelanguage extends Backend
 	public function getFallbackPages($dc)
 	{
 		$this->import('ChangeLanguage');
-		
+
 		$arrPages = array();
 		$arrRoot = $this->ChangeLanguage->findMainLanguageRootForPage($dc->id);
 
