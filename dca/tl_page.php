@@ -33,6 +33,7 @@
  */
 $GLOBALS['TL_DCA']['tl_page']['config']['onload_callback'][] = array('tl_page_changelanguage','showSelectbox');
 $GLOBALS['TL_DCA']['tl_page']['config']['onsubmit_callback'][] = array('tl_page_changelanguage','resetFallback');
+$GLOBALS['TL_DCA']['tl_page']['config']['ondelete_callback'][] = array('tl_page_changelanguage','resetLanguageMain');
 $GLOBALS['TL_DCA']['tl_page']['list']['label']['label_callback'] = array('tl_page_changelanguage', 'addFallbackNotice');
 
 
@@ -137,6 +138,19 @@ class tl_page_changelanguage extends Backend
 
 
 	/**
+	 * Reset the language main when the fallback is deleted
+	 * @param object
+	 */
+    public function resetLanguageMain($dc)
+    {
+        $arrIds = $this->getChildRecords($dc->id, 'tl_page');
+        $arrIds[] = $dc->id;
+
+        $this->Database->execute("UPDATE tl_page SET languageMain=0 WHERE languageMain IN (" . implode(',', $arrIds) . ")");
+    }
+
+
+	/**
 	 * Show notice if no fallback page is set
 	 */
 	public function addFallbackNotice($row, $label, $dc=null, $imageAttribute='', $blnReturnImage=false, $blnProtected=false)
@@ -188,7 +202,7 @@ class tl_page_changelanguage extends Backend
 	public function getFallbackPages($dc)
 	{
 		$this->import('ChangeLanguage');
-		
+
 		$arrPages = array();
 		$arrRoot = $this->ChangeLanguage->findMainLanguageRootForPage($dc->id);
 
@@ -225,7 +239,7 @@ class tl_page_changelanguage extends Backend
 	protected function generatePageOptions(&$arrPages, $intId=0, $level=-1)
 	{
 		// Add child pages
-		$objPages = $this->Database->prepare("SELECT id, title FROM tl_page WHERE pid=? AND type != 'root' AND type != 'error_403' AND type != 'error_404' ORDER BY sorting")
+		$objPages = $this->Database->prepare("SELECT id, title FROM tl_page WHERE pid=? AND type != 'root' ORDER BY sorting")
 								   ->execute($intId);
 
 		if ($objPages->numRows < 1)
