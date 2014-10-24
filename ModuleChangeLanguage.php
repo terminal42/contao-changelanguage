@@ -284,15 +284,15 @@ class ModuleChangelanguage extends Module
                             {
                                 if (!$objNewsArchive->master)
                                 {
-                                    $objNewsForeign = $this->Database->prepare("SELECT * FROM tl_news WHERE languageMain=? AND pid=(SELECT id FROM tl_news_archive WHERE language=?)" . (!BE_USER_LOGGED_IN ? " AND (start='' OR start<$time) AND (stop='' OR stop>$time) AND published=1" : ""))
+                                    $objNewsForeign = $this->Database->prepare("SELECT * FROM tl_news WHERE languageMain=? AND pid=(SELECT id FROM tl_news_archive WHERE jumpTo=? AND language=?)" . (!BE_USER_LOGGED_IN ? " AND (start='' OR start<$time) AND (stop='' OR stop>$time) AND published=1" : ""))
                                                                      ->limit(1)
-                                                                     ->execute($objNews->id, $arrRootPage['language']);
+                                                                     ->execute($objNews->id, $objNewsArchive->jumpTo, $arrRootPage['language']);
                                 }
                                 else
                                 {
-                                    $objNewsForeign = $this->Database->prepare("SELECT * FROM tl_news WHERE (id=? OR languageMain=?) AND pid=(SELECT id FROM tl_news_archive WHERE language=?)" . (!BE_USER_LOGGED_IN ? " AND (start='' OR start<$time) AND (stop='' OR stop>$time) AND published=1" : ""))
+                                    $objNewsForeign = $this->Database->prepare("SELECT * FROM tl_news WHERE (id=? OR languageMain=?) AND pid=(SELECT id FROM tl_news_archive WHERE jumpTo=? AND language=?)" . (!BE_USER_LOGGED_IN ? " AND (start='' OR start<$time) AND (stop='' OR stop>$time) AND published=1" : ""))
                                                                      ->limit(1)
-                                                                     ->execute($objNews->languageMain, $objNews->languageMain, $arrRootPage['language']);
+                                                                     ->execute($objNews->languageMain, $objNews->languageMain, $objNewsArchive->jumpTo, $arrRootPage['language']);
                                 }
 
                                 if ($objNewsForeign->numRows)
@@ -318,15 +318,15 @@ class ModuleChangelanguage extends Module
                             {
                                 if (!$objCalendar->master)
                                 {
-                                    $objEventForeign = $this->Database->prepare("SELECT * FROM tl_calendar_events WHERE languageMain=? AND pid=(SELECT id FROM tl_calendar WHERE language=?)" . (!BE_USER_LOGGED_IN ? " AND (start='' OR start<$time) AND (stop='' OR stop>$time) AND published=1" : ""))
+                                    $objEventForeign = $this->Database->prepare("SELECT * FROM tl_calendar_events WHERE languageMain=? AND pid=(SELECT id FROM tl_calendar WHERE jumpTo=? AND language=?)" . (!BE_USER_LOGGED_IN ? " AND (start='' OR start<$time) AND (stop='' OR stop>$time) AND published=1" : ""))
                                                                      ->limit(1)
-                                                                     ->execute($objEvent->id, $arrRootPage['language']);
+                                                                     ->execute($objEvent->id, $objCalendar->jumpTo, $arrRootPage['language']);
                                 }
                                 else
                                 {
-                                    $objEventForeign = $this->Database->prepare("SELECT * FROM tl_calendar_events WHERE (id=? OR languageMain=?) AND pid=(SELECT id FROM tl_calendar WHERE language=?)" . (!BE_USER_LOGGED_IN ? " AND (start='' OR start<$time) AND (stop='' OR stop>$time) AND published=1" : ""))
+                                    $objEventForeign = $this->Database->prepare("SELECT * FROM tl_calendar_events WHERE (id=? OR languageMain=?) AND pid=(SELECT id FROM tl_calendar WHERE jumpTo=? AND language=?)" . (!BE_USER_LOGGED_IN ? " AND (start='' OR start<$time) AND (stop='' OR stop>$time) AND published=1" : ""))
                                                                      ->limit(1)
-                                                                     ->execute($objEvent->languageMain, $objEvent->languageMain, $arrRootPage['language']);
+                                                                     ->execute($objEvent->languageMain, $objEvent->languageMain, $objCalendar->jumpTo, $arrRootPage['language']);
                                 }
 
                                 if ($objEventForeign->numRows)
@@ -352,15 +352,15 @@ class ModuleChangelanguage extends Module
                             {
                                 if (!$objFaqCategory->master)
                                 {
-                                    $objFaqForeign = $this->Database->prepare("SELECT * FROM tl_faq WHERE languageMain=? AND pid=(SELECT id FROM tl_faq_category WHERE language=?)" . (!BE_USER_LOGGED_IN ? " AND published=1" : ""))
+                                    $objFaqForeign = $this->Database->prepare("SELECT * FROM tl_faq WHERE languageMain=? AND pid=(SELECT id FROM tl_faq_category WHERE jumpTo=? AND language=?)" . (!BE_USER_LOGGED_IN ? " AND published=1" : ""))
                                                                      ->limit(1)
-                                                                     ->execute($objFaq->id, $arrRootPage['language']);
+                                                                     ->execute($objFaq->id, $objFaqCategory->jumpTo, $arrRootPage['language']);
                                 }
                                 else
                                 {
-                                    $objFaqForeign = $this->Database->prepare("SELECT * FROM tl_faq WHERE (id=? OR languageMain=?) AND pid=(SELECT id FROM tl_faq_category WHERE language=?)" . (!BE_USER_LOGGED_IN ? " AND published=1" : ""))
+                                    $objFaqForeign = $this->Database->prepare("SELECT * FROM tl_faq WHERE (id=? OR languageMain=?) AND pid=(SELECT id FROM tl_faq_category WHERE jumpTo=? AND language=?)" . (!BE_USER_LOGGED_IN ? " AND published=1" : ""))
                                                                      ->limit(1)
-                                                                     ->execute($objFaq->languageMain, $objFaq->languageMain, $arrRootPage['language']);
+                                                                     ->execute($objFaq->languageMain, $objFaq->languageMain, $objFaqCategory->jumpTo, $arrRootPage['language']);
                                 }
 
                                 if ($objFaqForeign->numRows)
