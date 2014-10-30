@@ -74,7 +74,12 @@ class ChangeLanguage extends Controller
 			return false;
 		}
 
-		$objMain = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($objPage->languageMain);
+		$objMain = $this->getPageDetails($objPage->languageMain);
+
+		// Check permission
+        if (!$this->checkPagePermission($objMain)) {
+            return false;
+        }
 
 		return $objMain->row();
 	}
@@ -101,7 +106,12 @@ class ChangeLanguage extends Controller
 
 		if ($arrRoot['languageRoot'] > 0)
 		{
-			$objRoot = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($arrRoot['languageRoot']);
+			$objRoot = $this->getPageDetails($arrRoot['languageRoot']);
+
+    		// Check permission
+    		if (!$this->checkPagePermission($objRoot)) {
+    		    return false;
+    		}
 
 			return $objRoot->numRows ? $objRoot->row() : false;
 		}
@@ -133,6 +143,11 @@ class ChangeLanguage extends Controller
 
 		while ($objPages->next())
 		{
+    		// Check permission
+    		if (!$this->checkPagePermission($objPages)) {
+        		continue;
+    		}
+
 			$arrPages[$objPages->id] = $objPages->row();
 		}
 
@@ -151,12 +166,44 @@ class ChangeLanguage extends Controller
 										  ->limit(1)
 										  ->execute($strDomain);
 
-		if ($objPage->numRows)
+		if (!$objPage->numRows || !$this->checkPagePermission($objPage))
 		{
-			return $objPage->row();
+		    return false;
 		}
 
-		return false;
+		return $objPage->row();
 	}
+
+	/**
+	 * Check the page permission
+	 * @param object
+	 * @return boolean
+	 */
+    protected function checkPagePermission($objPage)
+    {
+        $objPage = $this->getPageDetails($objPage->id);
+
+		if ($objPage->protected && !BE_USER_LOGGED_IN) {
+
+		    // User not logged in
+    		if (!FE_USER_LOGGED_IN) {
+        		return false;
+    		}
+
+    		$arrGroups = $objPage->groups;
+
+    		if (empty($arrGroups)) {
+        		return false;
+    		}
+
+    		$this->import('FrontendUser', 'User');
+
+    		if (count(array_intersect($this->User->groups, $arrGroups)) < 0) {
+        		return false;
+    		}
+		}
+
+		return true;
+    }
 }
 
