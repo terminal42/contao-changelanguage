@@ -17,13 +17,13 @@ class Changelanguage extends \Module
      * Custom language labels
      * @var array
      */
-    protected $arrCustomLanguageLabels = array();
+    protected $customLangLabels = array();
 
 
     public function generate()
     {
         if (TL_MODE == 'BE') {
-            $objTemplate = new BackendTemplate('be_wildcard');
+            $objTemplate = new \BackendTemplate('be_wildcard');
 
             $objTemplate->wildcard = '### CHANGE LANGUAGE ###';
             $objTemplate->title = $this->headline;
@@ -38,7 +38,7 @@ class Changelanguage extends \Module
         $this->customLanguageText = deserialize($this->customLanguageText, true);
 
         foreach ($this->customLanguageText as $arrText) {
-            $this->arrCustomLanguageLabels[strtolower($arrText['value'])] = $arrText['label'];
+            $this->customLangLabels[strtolower($arrText['value'])] = $arrText['label'];
         }
 
         if ($this->navigationTpl == '') {
@@ -60,52 +60,60 @@ class Changelanguage extends \Module
      */
     protected function compile()
     {
-        $arrItems = array();
+        $items = array();
         global $objPage;
 
-        $arrRelatedPages = LanguageRelations::getRelations($objPage->id);
+        $pages = LanguageRelations::getRelations($objPage->id);
 
-        if (empty($arrRelatedPages)) {
+        // If active language should not be hidden, include it
+        if (!$this->hideActiveLanguage) {
+            $pages = array_merge(array($objPage->id), $pages);
+        }
+
+        if (empty($pages)) {
             return;
         }
 
-        foreach ($arrRelatedPages as $intRelatedId) {
-            $objRelated = \PageModel::findWithDetails($intRelatedId);
+        // Load all the models into the registry
+        $pageModels = array();
+        foreach ($pages as $pageId) {
+            $pageModels[$pageId] = \PageModel::findWithDetails($pageId);
+        }
+
+        // Sort the models
+        $this->sortPages($pageModels);
+
+        foreach ($pageModels as $pageModel) {
 
             // If the page isn't published, continue with the next page
-            if ((!$objRelated->published
-                    || ($objRelated->start > 0 && $objRelated->start > time())
-                    || ($objRelated->stop > 0 && $objRelated->stop < time()))
+            if ((!$pageModel->published
+                    || ($pageModel->start > 0 && $pageModel->start > time())
+                    || ($pageModel->stop > 0 && $pageModel->stop < time()))
                 && !BE_USER_LOGGED_IN
             ) {
                 continue;
             }
 
             // Active
-            $blnActive = ($objRelated->rootLanguage === $objPage->rootLanguage);
-
-            // Skip active language
-            if ($blnActive && $this->hideActiveLanguage) {
-                continue;
-            }
+            $active = ($pageModel->rootLanguage === $objPage->rootLanguage);
 
             // Href
-            $strHref = $objRelated->getFrontendUrl(null, $objRelated->rootLanguage);
+            $href = $pageModel->getFrontendUrl(null, $pageModel->rootLanguage);
 
             // Build template array
-            $arrItems[] = array
+            $items[] = array
             (
-                'isActive'  => $blnActive,
-                'class'     => 'lang-' . $objRelated->rootLanguage . ($blnActive) ? ' active' : '',
-                'link'      => $this->getLabel($objRelated->rootLanguage),
+                'isActive'  => $active,
+                'class'     => 'lang-' . $pageModel->rootLanguage . (($active) ? ' active' : ''),
+                'link'      => $this->getLabel($pageModel->rootLanguage),
                 'subitems'  => '',
-                'href'      => $strHref,
-                'pageTitle' => strip_tags($objRelated->pageTitle ?: $objRelated->title),
+                'href'      => $href,
+                'pageTitle' => strip_tags($pageModel->pageTitle ?: $pageModel->title),
                 'accesskey' => '',
                 'tabindex'  => '',
                 'nofollow'  => false,
                 //'target'    => $target . ' hreflang="' . $arrRootPage['language'] . '"',
-                'language'  => $objRelated->rootLanguage,
+                'language'  => $pageModel->rootLanguage,
             );
 
             // Inject <link rel=""> for the alternate language
@@ -119,7 +127,7 @@ class Changelanguage extends \Module
         $objTemplate = new \FrontendTemplate($this->navigationTpl);
         $objTemplate->setData($this->arrData);
         $objTemplate->level = 'level_1';
-        $objTemplate->items = $arrItems;
+        $objTemplate->items = $items;
 
         $this->Template->items = $objTemplate->parse();
 
@@ -367,37 +375,39 @@ class Changelanguage extends \Module
 
 
     /**
-     * Re-order language options by custom texts.
+     * Re-order pages so the navigation stays consistent
      *
-     * @access private
-     * @param array $a
-     * @param array $b
-     * @return int
+     * @param   array
      */
-    private function orderByCustom($a, $b)
+    private function sortPages(&$pageModels)
     {
-        $arrCustom = array_keys($this->arrCustomLanguageLabels);
+        if ($this->customLangLabels) {
+            $custom = array_keys($this->customLangLabels);
 
-        $key1 = array_search($a['language'], $arrCustom);
-        $key2 = array_search($b['language'], $arrCustom);
+            usort($pageModels, function($a, $b) use ($custom) {
+                $key1 = array_search($a->language, $custom);
+                $key2 = array_search($b->language, $custom);
 
-        return ($key1 < $key2) ? -1 : 1;
+                return ($key1 < $key2) ? -1 : 1;
+            });
+        } else {
+            ksort($pageModels);
+        }
     }
 
 
     /**
      * Get the label for a language
-     * @param $strLanguage
-     * @return string
+     * @param   string
+     * @return  string
      */
-    protected function getLabel($strLanguage)
+    protected function getLabel($language)
     {
-        $strLanguage = strtolower($strLanguage);
-        if ($this->customLanguage && $this->arrCustomLanguageLabels[$strLanguage]) {
-            return \Controller::replaceInsertTags($this->arrCustomLanguageLabels[$strLanguage]);
+        $language = strtolower($language);
+        if ($this->customLanguage && $this->customLangLabels[$language]) {
+            return \Controller::replaceInsertTags($this->customLangLabels[$language]);
         }
 
-        return strtoupper($strLanguage);
+        return strtoupper($language);
     }
 }
-
