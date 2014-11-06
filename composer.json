@@ -27,11 +27,11 @@
     "extra":{
         "contao": {
             "sources":{
-                "contao-module": "system/modules/changelanguage",
-                "runonce": [
-                    "runonce/updateFallbacks.php"
-                ]
+                "contao-module": "system/modules/changelanguage"
             },
+            "runonce": [
+                "runonce/updateFallbacks.php"
+            ],
             "transifex": {
                 "project": "contao-changelanguage",
                 "prefix": "master-",
