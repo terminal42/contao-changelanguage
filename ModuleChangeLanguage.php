@@ -376,8 +376,8 @@ class ModuleChangelanguage extends Module
 	{
 		$arrCustom = array_keys($this->customLanguageText);
 
-		$key1 = array_search($a['language'], $arrCustom);
-		$key2 = array_search($b['language'], $arrCustom);
+		$key1 = array_search(strtolower($a['language']), $arrCustom);
+		$key2 = array_search(strtolower($b['language']), $arrCustom);
 
 	    return ($key1 < $key2) ? -1 : 1;
 	}
