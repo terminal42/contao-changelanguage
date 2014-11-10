@@ -162,6 +162,7 @@ class ModuleChangelanguage extends Module
             // Search for foreign language
             else
             {
+                $addToNavigation = true;
                 $active = false;
                 $target = '';
 
@@ -169,7 +170,7 @@ class ModuleChangelanguage extends Module
 
                     // If it is the active page, and we want to hide this, continue with the next page
                     if ($this->hideActiveLanguage) {
-                        continue;
+                        $addToNavigation = false;
                     }
 
                     $active = true;
@@ -320,9 +321,10 @@ class ModuleChangelanguage extends Module
             // Hide languages without direct fallback
             if ($this->hideNoFallback && !$blnDirectFallback)
             {
-            	continue;
+                $addToNavigation = false;
             }
 
+            if ($addToNavigation) {
                 // Build template array
                 $arrItems[$c] = array
                 (
@@ -338,8 +340,9 @@ class ModuleChangelanguage extends Module
                     'target'	=> $target . ' hreflang="' . $arrRootPage['language'] . '" lang="' . $arrRootPage['language'] . '"',
                     'language'	=> $arrRootPage['language'],
                 );
+            }
 
-            if ($active || $blnDirectFallback)
+            if ($blnDirectFallback)
             {
                 $GLOBALS['TL_HEAD'][] = '<link rel="alternate" hreflang="' . $arrRootPage['language'] . '" lang="' . $arrRootPage['language'] . '" href="' . ($domain . $href) . '" title="' . specialchars($pageTitle, true) . '"' . ($objPage->outputFormat == 'html5' ? '>' : ' />');
             }
