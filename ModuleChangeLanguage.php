@@ -145,10 +145,11 @@ class ModuleChangelanguage extends Module
 
         foreach ($arrRootPages as $arrRootPage)
         {
-            $domain = '';
-            if ($objPage->domain != $arrRootPage['dns'])
-            {
-                $domain  = ($this->Environment->ssl ? 'https://' : 'http://') . $arrRootPage['dns'] . TL_PATH . '/';
+            $absoluteUrl = false;
+            $domain  = ($this->Environment->ssl ? 'https://' : 'http://') . $arrRootPage['dns'] . TL_PATH . '/';
+
+            if ($objPage->domain != $arrRootPage['dns']) {
+                $absoluteUrl = true;
             }
 
             $blnDirectFallback = true;
@@ -326,7 +327,7 @@ class ModuleChangelanguage extends Module
                     'class'		=> 'lang-' . $arrRootPage['language'] . ($blnDirectFallback ? '' : ' nofallback') . (($active && version_compare(VERSION, '3.0', '>=')) ? ' active' : '') . ($c == 0 ? ' first' : '') . ($c == $count-1 ? ' last' : ''),
                     'link'		=> $this->getLabel($arrRootPage['language']),
                     'subitems'	=> '',
-                    'href'		=> ($domain . $href),
+                    'href'		=> (($absoluteUrl ? $domain : '') . $href),
                     'pageTitle' => strip_tags($pageTitle),
                     'accesskey'	=> '',
                     'tabindex'	=> '',
