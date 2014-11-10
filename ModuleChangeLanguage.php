@@ -299,19 +299,14 @@ class ModuleChangelanguage extends Module
                     }
 
                     // We found a trail page
-                    if ($blnFound)
-                    {
+                    if ($blnFound) {
                         $pageTitle = $objTrailPage->title;
                         $href = $this->generateFrontendUrl($objTrailPage->row(), $strParam, $arrRootPage['language']);
 
-                        if ($objTrailPage->target)
-                        {
+                        if ($objTrailPage->target) {
                             $target = ($objPage->outputFormat == 'html5') ? ' target="_blank"' : ' onclick="window.open(this.href); return false;"';
                         }
-                    }
-
-                    else
-                    {
+                    } else {
                         $pageTitle = $arrRootPage['title'];
                         $href = $this->generateFrontendUrl($arrRootPage, null, $arrRootPage['language']);
                     }
@@ -319,8 +314,7 @@ class ModuleChangelanguage extends Module
             }
 
             // Hide languages without direct fallback
-            if ($this->hideNoFallback && !$blnDirectFallback)
-            {
+            if ($this->hideNoFallback && !$blnDirectFallback) {
                 $addToNavigation = false;
             }
 
@@ -342,16 +336,14 @@ class ModuleChangelanguage extends Module
                 );
             }
 
-            if ($blnDirectFallback)
-            {
+            if ($blnDirectFallback) {
                 $GLOBALS['TL_HEAD'][] = '<link rel="alternate" hreflang="' . $arrRootPage['language'] . '" lang="' . $arrRootPage['language'] . '" href="' . ($domain . $href) . '" title="' . specialchars($pageTitle, true) . '"' . ($objPage->outputFormat == 'html5' ? '>' : ' />');
             }
 
             $c++;
         }
 
-        if ($this->customLanguage)
-        {
+        if ($this->customLanguage) {
             usort($arrItems, array($this, 'orderByCustom'));
         }
 
