@@ -327,7 +327,7 @@ class ModuleChangelanguage extends Module
                     'class'		=> 'lang-' . $arrRootPage['language'] . ($blnDirectFallback ? '' : ' nofallback') . (($active && version_compare(VERSION, '3.0', '>=')) ? ' active' : '') . ($c == 0 ? ' first' : '') . ($c == $count-1 ? ' last' : ''),
                     'link'		=> $this->getLabel($arrRootPage['language']),
                     'subitems'	=> '',
-                    'href'		=> (($absoluteUrl ? $domain : '') . $href),
+                    'href'		=> specialchars(($absoluteUrl ? $domain : '') . $href),
                     'pageTitle' => strip_tags($pageTitle),
                     'accesskey'	=> '',
                     'tabindex'	=> '',
@@ -338,7 +338,7 @@ class ModuleChangelanguage extends Module
             }
 
             if ($blnDirectFallback) {
-                $GLOBALS['TL_HEAD'][] = '<link rel="alternate" hreflang="' . $arrRootPage['language'] . '" lang="' . $arrRootPage['language'] . '" href="' . ($domain . $href) . '" title="' . specialchars($pageTitle, true) . '"' . ($objPage->outputFormat == 'html5' ? '>' : ' />');
+                $GLOBALS['TL_HEAD'][] = '<link rel="alternate" hreflang="' . $arrRootPage['language'] . '" lang="' . $arrRootPage['language'] . '" href="' . specialchars($domain . $href) . '" title="' . specialchars($pageTitle, true) . '"' . ($objPage->outputFormat == 'html5' ? '>' : ' />');
             }
 
             $c++;
@@ -372,8 +372,8 @@ class ModuleChangelanguage extends Module
     {
         $arrCustom = array_keys($this->customLanguageText);
 
-        $key1 = array_search($a['language'], $arrCustom);
-        $key2 = array_search($b['language'], $arrCustom);
+        $key1 = array_search(strtolower($a['language']), $arrCustom);
+        $key2 = array_search(strtolower($b['language']), $arrCustom);
 
         return ($key1 < $key2) ? -1 : 1;
     }
