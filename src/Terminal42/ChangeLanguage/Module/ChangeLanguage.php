@@ -100,6 +100,9 @@ class Changelanguage extends \Module
             // Href
             $href = $pageModel->getFrontendUrl(null, $pageModel->rootLanguage);
 
+            // Page title
+            $pageTitle = $pageModel->pageTitle ?: $pageModel->title;
+
             // Build template array
             $items[] = array
             (
@@ -108,7 +111,7 @@ class Changelanguage extends \Module
                 'link'      => $this->getLabel($pageModel->rootLanguage),
                 'subitems'  => '',
                 'href'      => $href,
-                'pageTitle' => strip_tags($pageModel->pageTitle ?: $pageModel->title),
+                'pageTitle' => strip_tags($pageTitle),
                 'accesskey' => '',
                 'tabindex'  => '',
                 'nofollow'  => false,
@@ -117,11 +120,15 @@ class Changelanguage extends \Module
             );
 
             // Inject <link rel=""> for the alternate language
-            // @todo Implement this again
-            /*if (!$active && $blnDirectFallback) {
-                $GLOBALS['TL_HEAD'][] = '<link rel="alternate" hreflang="' . $arrRootPage['language'] . '" lang="' . $arrRootPage['language'] . '" href="' . ($domain . $href) . '" title="' . specialchars($pageTitle, true) . '"' . ($objPage->outputFormat == 'html5' ? '>' : ' />');
-            }*/
-
+            if (!$active) {
+                $GLOBALS['TL_HEAD'][] = sprintf('<link rel="alternate" hreflang="%s" lang="%s" href="%s" title="%s"%s',
+                    $pageModel->rootLanguage,
+                    $pageModel->rootLanguage,
+                    $href,
+                    specialchars($pageTitle, true),
+                    ($objPage->outputFormat == 'html5') ? '>' : ' />'
+                );
+            }
         }
 
         $objTemplate = new \FrontendTemplate($this->navigationTpl);
