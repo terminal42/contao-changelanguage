@@ -108,12 +108,16 @@ class ChangeLanguage extends Controller
 		{
 			$objRoot = $this->getPageDetails($arrRoot['languageRoot']);
 
+			if (null === $objRoot) {
+				return false;
+			}
+
     		// Check permission
     		if (!$this->checkPagePermission($objRoot)) {
     		    return false;
     		}
 
-			return $objRoot->numRows ? $objRoot->row() : false;
+			return $objRoot->row();
 		}
 		elseif ($arrRoot['fallback'])
 		{
