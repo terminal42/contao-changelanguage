@@ -147,10 +147,11 @@ class ModuleChangelanguage extends Module
         {
             $absoluteUrl = false;
             $blnDirectFallback = true;
-            $domain = '';
 
             if ($arrRootPage['dns'] != '') {
                 $domain = ($this->Environment->ssl ? 'https://' : 'http://') . $arrRootPage['dns'] . TL_PATH . '/';
+            } else {
+                $domain = ($this->Environment->ssl ? 'https://' : 'http://') . $this->Environment->httpHost . TL_PATH . '/';;
             }
 
             if ($objPage->domain != $arrRootPage['dns']) {
