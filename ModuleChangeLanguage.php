@@ -201,9 +201,12 @@ class ModuleChangelanguage extends Module
                     foreach ($GLOBALS['TL_HOOKS']['translateUrlParameters'] as $callback)
                     {
                         $this->import($callback[0]);
-                        // $addToNavigation should be used as reference in the hook function
                         $arrParams = $this->$callback[0]->$callback[1](
-                            $arrParams, $arrRootPage['language'], $arrRootPage, $addToNavigation);
+                            $arrParams,
+                            $arrRootPage['language'],
+                            $arrRootPage,
+                            $addToNavigation
+                        );
                     }
                 }
 
