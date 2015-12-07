@@ -201,7 +201,7 @@ class ModuleChangelanguage extends Module
                     foreach ($GLOBALS['TL_HOOKS']['translateUrlParameters'] as $callback)
                     {
                         $this->import($callback[0]);
-                        $arrParams = $this->$callback[0]->$callback[1](
+                        $arrParams = $this->{$callback[0]}->{$callback[1]}(
                             $arrParams,
                             $arrRootPage['language'],
                             $arrRootPage,
