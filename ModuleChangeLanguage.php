@@ -81,7 +81,7 @@ class ModuleChangelanguage extends Module
         global $objPage;
 
         // Required for the current pagetree language
-        $objRootPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($objPage->rootId);
+        $objRootPage = \Database::getInstance()->prepare("SELECT * FROM tl_page WHERE id=?")->execute($objPage->rootId);
 
         $arrRootPages = $this->ChangeLanguage->findLanguageRootsForDomain($objPage->domain);
 
@@ -89,7 +89,7 @@ class ModuleChangelanguage extends Module
         // Check if there are foreign languages of this page
         $arrLanguagePages = array();
         $mainLanguageID = $objPage->languageMain != 0 ? $objPage->languageMain : $objPage->id;
-        $arrPageIds =  $this->Database->prepare("SELECT id FROM tl_page WHERE languageMain=? OR id=?")
+        $arrPageIds =  \Database::getInstance()->prepare("SELECT id FROM tl_page WHERE languageMain=? OR id=?")
                                       ->execute($mainLanguageID, $mainLanguageID)
                                       ->fetchEach('id');
 
@@ -181,7 +181,7 @@ class ModuleChangelanguage extends Module
                     $strCssClass = 'lang-' . $arrRootPage['language'];
 
                     if (in_array('articlelanguage', $this->Config->getActiveModules()) && strlen($_SESSION['ARTICLE_LANGUAGE'])) {
-                        $objArticle = $this->Database->prepare("SELECT * FROM tl_article WHERE (pid=? OR pid=?) AND language=?")
+                        $objArticle = \Database::getInstance()->prepare("SELECT * FROM tl_article WHERE (pid=? OR pid=?) AND language=?")
                                                      ->execute($objPage->id, $objPage->languageMain, $_SESSION['ARTICLE_LANGUAGE']);
 
                         if ($objArticle->numRows) {
@@ -261,14 +261,14 @@ class ModuleChangelanguage extends Module
                         // Fallback tree, search for trail id
                         if ($objRootPage->fallback)
                         {
-                            $objTrailPage = $this->Database->prepare("SELECT * FROM tl_page WHERE (id=? OR languageMain=?)")
+                            $objTrailPage = \Database::getInstance()->prepare("SELECT * FROM tl_page WHERE (id=? OR languageMain=?)")
                                                            ->execute($arrTrail[$i], $arrTrail[$i]);
                         }
 
                         // not fallback tree, search for trail languageMain
                         else
                         {
-                            $objTPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($arrTrail[$i]);
+                            $objTPage = \Database::getInstance()->prepare("SELECT * FROM tl_page WHERE id=?")->execute($arrTrail[$i]);
 
                             // Basically impossible, but DB would throw exception
                             if (!$objTPage->numRows)
@@ -277,7 +277,7 @@ class ModuleChangelanguage extends Module
                             if ($objTPage->languageMain == 0)
                                 continue;
 
-                            $objTrailPage = $this->Database->prepare("SELECT * FROM tl_page WHERE (id=? OR languageMain=?)")
+                            $objTrailPage = \Database::getInstance()->prepare("SELECT * FROM tl_page WHERE (id=? OR languageMain=?)")
                                                            ->execute($objTPage->languageMain, $objTPage->languageMain);
                         }
 

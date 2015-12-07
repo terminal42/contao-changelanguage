@@ -29,22 +29,13 @@
 
 class ChangeLanguage extends Controller
 {
-
-	public function __construct()
-	{
-		parent::__construct();
-
-		$this->import('Database');
-	}
-
-
 	public function translateArticles($arrParams, $strLanguage, $arrRootPage)
 	{
 		if ($arrParams['url']['article'] != '')
 		{
 			global $objPage;
 
-			$objArticle = $this->Database->prepare("SELECT id, alias FROM tl_article WHERE id=(SELECT languageMain FROM tl_article WHERE pid=? AND alias=?)")->execute($objPage->id, $arrParams['url']['article']);
+			$objArticle = \Database::getInstance()->prepare("SELECT id, alias FROM tl_article WHERE id=(SELECT languageMain FROM tl_article WHERE pid=? AND alias=?)")->execute($objPage->id, $arrParams['url']['article']);
 
 			if ($objArticle->numRows)
 			{
@@ -143,7 +134,7 @@ class ChangeLanguage extends Controller
 		}
 
 		$arrPages = array();
-		$objPages = $this->Database->prepare("SELECT DISTINCT * FROM tl_page WHERE type='root' AND (dns=? OR dns IN (SELECT dns FROM tl_page WHERE type='root' AND fallback='1' AND (id=? OR languageRoot=? OR (languageRoot>0 && languageRoot=?)))) ORDER BY sorting")->execute($arrFallback['dns'], $arrFallback['languageRoot'], $arrFallback['id'], $arrFallback['languageRoot']);
+		$objPages = \Database::getInstance()->prepare("SELECT DISTINCT * FROM tl_page WHERE type='root' AND (dns=? OR dns IN (SELECT dns FROM tl_page WHERE type='root' AND fallback='1' AND (id=? OR languageRoot=? OR (languageRoot>0 && languageRoot=?)))) ORDER BY sorting")->execute($arrFallback['dns'], $arrFallback['languageRoot'], $arrFallback['id'], $arrFallback['languageRoot']);
 
 		while ($objPages->next())
 		{
@@ -166,7 +157,7 @@ class ChangeLanguage extends Controller
 	 */
 	public function findFallbackRootForDomain($strDomain)
 	{
-		$objPage = $this->Database->prepare("SELECT * FROM tl_page WHERE type='root' AND fallback='1' AND dns=?")
+		$objPage = \Database::getInstance()->prepare("SELECT * FROM tl_page WHERE type='root' AND fallback='1' AND dns=?")
 										  ->limit(1)
 										  ->execute($strDomain);
 
@@ -200,9 +191,7 @@ class ChangeLanguage extends Controller
         		return false;
     		}
 
-    		$this->import('FrontendUser', 'User');
-
-    		if (count(array_intersect($this->User->groups, $arrGroups)) < 0) {
+    		if (count(array_intersect(\FrontendUser::getInstance()->groups, $arrGroups)) < 0) {
         		return false;
     		}
 		}
