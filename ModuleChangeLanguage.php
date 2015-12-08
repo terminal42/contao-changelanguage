@@ -81,7 +81,7 @@ class ModuleChangelanguage extends Module
         global $objPage;
 
         // Required for the current pagetree language
-        $objRootPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($objPage->rootId);
+        $objRootPage = \Database::getInstance()->prepare("SELECT * FROM tl_page WHERE id=?")->execute($objPage->rootId);
 
         $arrRootPages = $this->ChangeLanguage->findLanguageRootsForDomain($objPage->domain);
 
@@ -89,7 +89,7 @@ class ModuleChangelanguage extends Module
         // Check if there are foreign languages of this page
         $arrLanguagePages = array();
         $mainLanguageID = $objPage->languageMain != 0 ? $objPage->languageMain : $objPage->id;
-        $arrPageIds =  $this->Database->prepare("SELECT id FROM tl_page WHERE languageMain=? OR id=?")
+        $arrPageIds =  \Database::getInstance()->prepare("SELECT id FROM tl_page WHERE languageMain=? OR id=?")
                                       ->execute($mainLanguageID, $mainLanguageID)
                                       ->fetchEach('id');
 
@@ -118,7 +118,7 @@ class ModuleChangelanguage extends Module
                 $strValue = $this->Input->get($strKey);
 
                 // Do not keep empty parameters and arrays
-                if ($strValue != '' && $strKey != 'language' && $strKey !== 'auto_item')
+                if ($strValue != '' && $strKey != 'language')
                 {
                     // Parameter passed after "?"
                     if (strpos($this->Environment->request, $strKey.'='.$strValue) !== false)
@@ -181,7 +181,7 @@ class ModuleChangelanguage extends Module
                     $strCssClass = 'lang-' . $arrRootPage['language'];
 
                     if (in_array('articlelanguage', $this->Config->getActiveModules()) && strlen($_SESSION['ARTICLE_LANGUAGE'])) {
-                        $objArticle = $this->Database->prepare("SELECT * FROM tl_article WHERE (pid=? OR pid=?) AND language=?")
+                        $objArticle = \Database::getInstance()->prepare("SELECT * FROM tl_article WHERE (pid=? OR pid=?) AND language=?")
                                                      ->execute($objPage->id, $objPage->languageMain, $_SESSION['ARTICLE_LANGUAGE']);
 
                         if ($objArticle->numRows) {
@@ -201,7 +201,12 @@ class ModuleChangelanguage extends Module
                     foreach ($GLOBALS['TL_HOOKS']['translateUrlParameters'] as $callback)
                     {
                         $this->import($callback[0]);
-                        $arrParams = $this->$callback[0]->$callback[1]($arrParams, $arrRootPage['language'], $arrRootPage);
+                        $arrParams = $this->{$callback[0]}->{$callback[1]}(
+                            $arrParams,
+                            $arrRootPage['language'],
+                            $arrRootPage,
+                            $addToNavigation
+                        );
                     }
                 }
 
@@ -209,14 +214,18 @@ class ModuleChangelanguage extends Module
                 $strParam = '';
                 $arrRequest = array();
 
-                foreach( $arrParams['url'] as $k => $v )
-                {
-                    if ($GLOBALS['TL_CONFIG']['useAutoItem'] && in_array($k, $GLOBALS['TL_AUTO_ITEM']))
-                    {
+                foreach ($arrParams['url'] as $k => $v) {
+                    if ($GLOBALS['TL_CONFIG']['useAutoItem'] && in_array($k, $GLOBALS['TL_AUTO_ITEM'])) {
+                        if (isset($arrParams['url']['auto_item'])) {
+                            continue;
+                        }
+
                         $strParam .= '/' . $v;
-                    }
-                    else
-                    {
+
+                    } elseif ($k == 'auto_item') {
+                        $strParam .= '/' . $v;
+
+                    } else {
                         $strParam .= '/' . $k . '/' . $v;
                     }
                 }
@@ -252,14 +261,14 @@ class ModuleChangelanguage extends Module
                         // Fallback tree, search for trail id
                         if ($objRootPage->fallback)
                         {
-                            $objTrailPage = $this->Database->prepare("SELECT * FROM tl_page WHERE (id=? OR languageMain=?)")
+                            $objTrailPage = \Database::getInstance()->prepare("SELECT * FROM tl_page WHERE (id=? OR languageMain=?)")
                                                            ->execute($arrTrail[$i], $arrTrail[$i]);
                         }
 
                         // not fallback tree, search for trail languageMain
                         else
                         {
-                            $objTPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($arrTrail[$i]);
+                            $objTPage = \Database::getInstance()->prepare("SELECT * FROM tl_page WHERE id=?")->execute($arrTrail[$i]);
 
                             // Basically impossible, but DB would throw exception
                             if (!$objTPage->numRows)
@@ -268,7 +277,7 @@ class ModuleChangelanguage extends Module
                             if ($objTPage->languageMain == 0)
                                 continue;
 
-                            $objTrailPage = $this->Database->prepare("SELECT * FROM tl_page WHERE (id=? OR languageMain=?)")
+                            $objTrailPage = \Database::getInstance()->prepare("SELECT * FROM tl_page WHERE (id=? OR languageMain=?)")
                                                            ->execute($objTPage->languageMain, $objTPage->languageMain);
                         }
 

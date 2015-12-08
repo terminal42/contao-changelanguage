@@ -52,20 +52,18 @@ class ModuleLanguageRedirect extends Module
 		// If user is logged in, redirect him
 		if (FE_USER_LOGGED_IN && !BE_USER_LOGGED_IN)
 		{
-			$this->import('FrontendUser', 'User');
-
 			// try to switch the language/page
-			if ($this->User->language != $GLOBALS['TL_LANGUAGE'])
+			if (\FrontendUser::getInstance()->language != $GLOBALS['TL_LANGUAGE'])
 			{
 				global $objPage;
 				$mainLanguageID = $objPage->languageMain != 0 ? $objPage->languageMain : $objPage->id;
-				$objPages =  $this->Database->prepare("SELECT * FROM tl_page WHERE languageMain=? OR id=? AND published=?")
+				$objPages =  \Database::getInstance()->prepare("SELECT * FROM tl_page WHERE languageMain=? OR id=? AND published=?")
 		        							->execute($mainLanguageID, $mainLanguageID, 1);
 
 		        while( $objPages->next() )
 		        {
 		        	// redirect
-		        	if ($objPages->language == $this->User->language)
+		        	if ($objPages->language == \FrontendUser::getInstance()->language)
 		        	{
 		        		$strParam = '';
 		        		$strGet = '?';
@@ -90,7 +88,7 @@ class ModuleLanguageRedirect extends Module
 		}
 
 		// if user is not logged in, we have the correct language, or no page exists, we do nothing
-		// assume TYPOlight has found the right language...
+		// assume Contao has found the right language...
 		return '';
 	}
 
