@@ -72,6 +72,22 @@ class ModuleChangelanguage extends Module
         return parent::generate();
     }
 
+    /**
+     * @param $base Language base (i.e. "de")
+     * @return array Additional similar languages (de -> de, de_AT, de_CH, de_DE)
+     */
+    protected function getSimilarLanguages($base)
+    {
+        $languages = array_keys($GLOBALS['TL_LANG']['LNG']);
+        $result = array();
+        foreach($languages as $lang) {
+            if (strpos($lang, $base) === 0) {
+                $result[] = $lang;
+            }
+        }
+        return $result;
+    }
+
 
     /**
      * Generate module
@@ -350,8 +366,12 @@ class ModuleChangelanguage extends Module
             }
 
             if ($blnDirectFallback) {
-                $GLOBALS['TL_HEAD'][] = '<link rel="alternate" hreflang="' . $arrRootPage['language'] . '" lang="' . $arrRootPage['language'] . '" href="' . specialchars($domain . $href) . '" title="' . specialchars($pageTitle, true) . '"' . ($objPage->outputFormat == 'html5' ? '>' : ' />');
+                $similarLanguages = $this->getSimilarLanguages($arrRootPage['language']);
+                foreach ($similarLanguages as $languageEntry) {
+                    $GLOBALS['TL_HEAD'][] = '<link rel="alternate" hreflang="' . $languageEntry . '" lang="' . $languageEntry . '" href="' . specialchars($domain . $href) . '" title="' . specialchars($pageTitle, true) . '"' . ($objPage->outputFormat == 'html5' ? '>' : ' />');
+                }
             }
+
 
             $c++;
         }
