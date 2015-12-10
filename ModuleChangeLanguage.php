@@ -79,10 +79,10 @@ class ModuleChangelanguage extends Module
     protected function getSimilarLanguages($base)
     {
         $languages = array_keys($GLOBALS['TL_LANG']['LNG']);
-        $result = array();
+        $result = array($base);
         foreach($languages as $lang) {
-            if (strpos($lang, $base) === 0) {
-                $result[] = $lang;
+            if ($lang != $base && strpos($lang, $base) === 0) {
+                $result[] = str_replace('_', '-', $lang);
             }
         }
         return $result;
