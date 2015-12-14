@@ -78,7 +78,7 @@ class ModuleChangelanguage extends Module
      */
     protected function getSimilarLanguages($base)
     {
-        $languages = array_keys($GLOBALS['TL_LANG']['LNG']);
+        $languages = array_keys(\System::getLanguages());
         $result = array($base);
         foreach($languages as $lang) {
             if ($lang != $base && strpos($lang, $base) === 0) {
