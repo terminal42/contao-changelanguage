@@ -33,7 +33,7 @@ $GLOBALS['TL_DCA']['tl_news_archive']['fields']['master'] = array
     'label'                   => &$GLOBALS['TL_LANG']['tl_news_archive']['master'],
     'exclude'                 => true,
     'inputType'               => 'select',
-    'options_callback'        => array('tl_news_archive_language', 'getArchives'),
+    'options_callback'        => array('Terminal42\ChangeLanguage\DataContainer\NewsArchive', 'getArchives'),
     'eval'                    => array('includeBlankOption'=>true, 'blankOptionLabel'=>&$GLOBALS['TL_LANG']['tl_news_archive']['isMaster']),
     'sql'                     => "int(10) unsigned NOT NULL default '0'"
 );
@@ -48,28 +48,3 @@ $GLOBALS['TL_DCA']['tl_news_archive']['fields']['language'] = array
     'eval'                    => array('mandatory'=>true, 'rgxp'=>'language', 'maxlength'=>5, 'nospace'=>true, 'tl_class'=>'w50'),
     'sql'                     => "varchar(5) NOT NULL default ''"
 );
-
-
-class tl_news_archive_language extends Backend
-{
-
-    /**
-     * Get an array of possible news archives
-     *
-     * @param    DataContainer
-     * @return    array
-     * @link    http://www.contao.org/callbacks.html#options_callback
-     */
-    public function getArchives(DataContainer $dc)
-    {
-        $arrArchives = array();
-        $objArchives = $this->Database->prepare("SELECT * FROM tl_news_archive WHERE language!=? AND id!=? AND master=0 ORDER BY title")->execute($dc->activeRecord->language, $dc->id);
-
-        while( $objArchives->next() )
-        {
-            $arrArchives[$objArchives->id] = sprintf($GLOBALS['TL_LANG']['tl_news_archive']['isSlave'], $objArchives->title);
-        }
-
-        return $arrArchives;
-    }
-}

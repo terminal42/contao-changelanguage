@@ -11,6 +11,13 @@
 
 
 /**
+ * Register PSR-0 namespaces
+ */
+if (class_exists('NamespaceClassLoader')) {
+    NamespaceClassLoader::add('Terminal42\ChangeLanguage', 'system/modules/changelanguage/library');
+}
+
+/**
  * Register the classes
  */
 ClassLoader::addClasses(array

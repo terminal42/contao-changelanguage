@@ -18,6 +18,11 @@
     "replace": {
         "contao-legacy/changelanguage": "self.version"
     },
+    "autoload": {
+        "psr-0": {
+            "Terminal42\\ChangeLanguage\\": "library/"
+        }
+    },
     "extra":{
         "contao": {
             "sources":{

@@ -33,7 +33,7 @@ $GLOBALS['TL_DCA']['tl_calendar']['fields']['master'] = array
     'label'                   => &$GLOBALS['TL_LANG']['tl_calendar']['master'],
     'exclude'                 => true,
     'inputType'               => 'select',
-    'options_callback'        => array('tl_calendar_language', 'getCalendars'),
+    'options_callback'        => array('Terminal42\ChangeLanguage\DataContainer\Calendar', 'getCalendars'),
     'eval'                    => array('includeBlankOption'=>true, 'blankOptionLabel'=>&$GLOBALS['TL_LANG']['tl_calendar']['isMaster']),
     'sql'                     => "int(10) unsigned NOT NULL default '0'"
 );
@@ -48,24 +48,3 @@ $GLOBALS['TL_DCA']['tl_calendar']['fields']['language'] = array
     'eval'                    => array('mandatory'=>true, 'rgxp'=>'language', 'maxlength'=>5, 'nospace'=>true, 'tl_class'=>'w50'),
     'sql'                     => "varchar(5) NOT NULL default ''"
 );
-
-
-class tl_calendar_language extends Backend
-{
-
-    /**
-     * Get an array of possible calendars
-     */
-    public function getCalendars(DataContainer $dc)
-    {
-        $arrCalendars = array();
-        $objCalendars = $this->Database->prepare("SELECT * FROM tl_calendar WHERE language!=? AND id!=? AND master=0 ORDER BY title")->execute($dc->activeRecord->language, $dc->id);
-
-        while( $objCalendars->next() )
-        {
-            $arrCalendars[$objCalendars->id] = sprintf($GLOBALS['TL_LANG']['tl_calendar']['isSlave'], $objCalendars->title);
-        }
-
-        return $arrCalendars;
-    }
-}
