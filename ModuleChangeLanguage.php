@@ -160,54 +160,15 @@ class ModuleChangelanguage extends Module
             // Get the new domain if it differs from the current one
             if ($objPage->domain != $arrRootPage['dns'])
             {
-                $domain  = (\Environment::get('ssl') ? 'https://' : 'http://') . $arrRootPage['dns'] . '/';
-
-                if (strlen(TL_PATH))
-                {
-                    $domain .= TL_PATH . '/';
-                }
+                $domain  = (\Environment::get('ssl') ? 'https://' : 'http://') . $arrRootPage['dns'] . TL_PATH . '/';
             }
 
             $blnDirectFallback = true;
-            $strCssClass = 'lang-' . $arrRootPage['language'];
 
             // If the root isn't published, continue with the next page
             if ((!$arrRootPage['published'] || ($arrRootPage['start'] > 0 && $arrRootPage['start'] > time()) || ($arrRootPage['stop'] > 0 && $arrRootPage['stop'] < time())) && !BE_USER_LOGGED_IN)
             {
                 continue;
-            }
-
-            // Active page
-            if ($arrRootPage['language'] == $objRootPage->language)
-            {
-                // If it is the active page, and we want to hide this, continue with the next page
-                if ($this->hideActiveLanguage)
-                {
-                    continue;
-                }
-
-                $active = true;
-                $pageTitle = $arrRootPage['title'];
-                $href = "";
-
-                // Support the articlelanguage extension
-                // @todo - does it work? do we need it?
-                if (in_array('articlelanguage', \ModuleLoader::getActive()) && strlen($_SESSION['ARTICLE_LANGUAGE']))
-                {
-                    $objArticle = $this->Database->prepare("SELECT * FROM tl_article WHERE (pid=? OR pid=?) AND language=?")
-                                                 ->execute($objPage->id, $objPage->languageMain, $_SESSION['ARTICLE_LANGUAGE']);
-
-                    if ($objArticle->numRows)
-                    {
-                        $strCssClass = 'lang-' . $_SESSION['ARTICLE_LANGUAGE'];
-                    }
-                }
-
-                // Make sure that the class is only added once
-                if (strpos($objPage->cssClass, $strCssClass) === false)
-                {
-                    $objPage->cssClass = trim($objPage->cssClass . ' ' . $strCssClass);
-                }
             }
 
             // Search for foreign language
@@ -216,6 +177,31 @@ class ModuleChangelanguage extends Module
                 $active = false;
                 $target = '';
                 $arrTranslatedParams = $arrParams;
+
+                if ($arrRootPage['language'] == $objRootPage->language)
+                {
+                    // If it is the active page, and we want to hide this, continue with the next page
+                    if ($this->hideActiveLanguage) {
+                        continue;
+                    }
+
+                    $active = true;
+                    $strCssClass = 'lang-' . $arrRootPage['language'];
+
+                    if (in_array('articlelanguage', $this->Config->getActiveModules()) && strlen($_SESSION['ARTICLE_LANGUAGE'])) {
+                        $objArticle = $this->Database->prepare("SELECT * FROM tl_article WHERE (pid=? OR pid=?) AND language=?")
+                                                     ->execute($objPage->id, $objPage->languageMain, $_SESSION['ARTICLE_LANGUAGE']);
+
+                        if ($objArticle->numRows) {
+                            $strCssClass = 'lang-' . $_SESSION['ARTICLE_LANGUAGE'];
+                        }
+                    }
+
+                    // Add CSS class to the current page HTML
+                    if (strpos($objPage->cssClass, $strCssClass) === false) {
+                        $objPage->cssClass = trim($objPage->cssClass . ' ' . $strCssClass);
+                    }
+                }
 
                 // HOOK: allow extensions to modify url parameters
                 if (isset($GLOBALS['TL_HOOKS']['translateUrlParameters']) && is_array($GLOBALS['TL_HOOKS']['translateUrlParameters']))
@@ -510,12 +496,11 @@ class ModuleChangelanguage extends Module
                 'accesskey'    => '',
                 'tabindex'    => '',
                 'nofollow'    => false,
-                'target'    => $target . ' hreflang="' . $arrRootPage['language'] . '"',
+                'target'    => $target . ' hreflang="' . $arrRootPage['language'] . '" lang="' . $arrRootPage['language'] . '"',
                 'language'    => $arrRootPage['language'],
             );
 
-            // Inject <link rel=""> for the alternate language
-            if (!$active && $blnDirectFallback)
+            if ($active || $blnDirectFallback)
             {
                 $GLOBALS['TL_HEAD'][] = '<link rel="alternate" hreflang="' . $arrRootPage['language'] . '" lang="' . $arrRootPage['language'] . '" href="' . ($domain . $href) . '" title="' . specialchars($pageTitle, true) . '"' . ($objPage->outputFormat == 'html5' ? '>' : ' />');
             }

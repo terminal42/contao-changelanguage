@@ -35,6 +35,7 @@ $GLOBALS['TL_DCA']['tl_page']['config']['onload_callback'][] = array('tl_page_ch
 $GLOBALS['TL_DCA']['tl_page']['config']['oncopy_callback'][] = array('tl_page_changelanguage','resetFallbackCopy');
 $GLOBALS['TL_DCA']['tl_page']['config']['oncut_callback'][] = array('tl_page_changelanguage','resetFallbackAll');
 $GLOBALS['TL_DCA']['tl_page']['config']['onsubmit_callback'][] = array('tl_page_changelanguage','resetFallbackAll');
+$GLOBALS['TL_DCA']['tl_page']['config']['ondelete_callback'][] = array('tl_page_changelanguage','resetLanguageMain');
 $GLOBALS['TL_DCA']['tl_page']['config']['sql']['keys']['languageMain'] = 'index';
 $GLOBALS['TL_DCA']['tl_page']['list']['label']['label_callback'] = array('tl_page_changelanguage', 'addFallbackNotice');
 
@@ -145,6 +146,17 @@ class tl_page_changelanguage extends Backend
         $this->resetFallback($intId);
     }
 
+    /**
+     * Reset the language main when the fallback is deleted
+     * @param object
+     */
+    public function resetLanguageMain($dc)
+    {
+        $arrIds = $this->getChildRecords($dc->id, 'tl_page');
+        $arrIds[] = $dc->id;
+
+        $this->Database->execute("UPDATE tl_page SET languageMain=0 WHERE languageMain IN (" . implode(',', $arrIds) . ")");
+    }
 
     /**
      * Show notice if no fallback page is set
