@@ -18,17 +18,6 @@ if (class_exists('NamespaceClassLoader')) {
 }
 
 /**
- * Register the classes
- */
-ClassLoader::addClasses(array
-(
-    'ChangeLanguage'               => 'system/modules/changelanguage/ChangeLanguage.php',
-    'ModuleChangeLanguage'         => 'system/modules/changelanguage/ModuleChangeLanguage.php',
-    'ModuleLanguageRedirect'       => 'system/modules/changelanguage/ModuleLanguageRedirect.php',
-));
-
-
-/**
  * Register the templates
  */
 TemplateLoader::addFiles(array
@@ -36,4 +25,3 @@ TemplateLoader::addFiles(array
     'mod_changelanguage'           => 'system/modules/changelanguage/templates',
     'nav_dropdown'                 => 'system/modules/changelanguage/templates',
 ));
-

@@ -9,8 +9,12 @@
  * @link       http://github.com/terminal42/contao-changelanguage
  */
 
+namespace Terminal42\ChangeLanguage\FrontendModule;
 
-class ModuleLanguageRedirect extends Module
+use Contao\BackendTemplate;
+use Contao\Module;
+
+class LanguageRedirectModule extends Module
 {
 
     /**
@@ -83,4 +87,3 @@ class ModuleLanguageRedirect extends Module
      */
     protected function compile() {}
 }
-
