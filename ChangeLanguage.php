@@ -29,15 +29,6 @@
 
 class ChangeLanguage extends Controller
 {
-
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->import('Database');
-    }
-
-
     /**
      * Find the main language page associated with the given page ID or page object
      * @param Database_Result|int
@@ -120,7 +111,7 @@ class ChangeLanguage extends Controller
         }
 
         $arrPages = array();
-        $objPages = $this->Database->prepare("SELECT DISTINCT * FROM tl_page WHERE type='root' AND (dns=? OR dns IN (SELECT dns FROM tl_page WHERE type='root' AND fallback='1' AND (id=? OR languageRoot=? OR (languageRoot>0 && languageRoot=?)))) ORDER BY sorting")->execute($arrFallback['dns'], $arrFallback['languageRoot'], $arrFallback['id'], $arrFallback['languageRoot']);
+        $objPages = \Database::getInstance()->prepare("SELECT DISTINCT * FROM tl_page WHERE type='root' AND (dns=? OR dns IN (SELECT dns FROM tl_page WHERE type='root' AND fallback='1' AND (id=? OR languageRoot=? OR (languageRoot>0 && languageRoot=?)))) ORDER BY sorting")->execute($arrFallback['dns'], $arrFallback['languageRoot'], $arrFallback['id'], $arrFallback['languageRoot']);
 
         while ($objPages->next())
         {
@@ -143,7 +134,7 @@ class ChangeLanguage extends Controller
      */
     public function findFallbackRootForDomain($strDomain)
     {
-        $objPage = $this->Database->prepare("SELECT * FROM tl_page WHERE type='root' AND fallback='1' AND dns=?")
+        $objPage = \Database::getInstance()->prepare("SELECT * FROM tl_page WHERE type='root' AND fallback='1' AND dns=?")
                                           ->limit(1)
                                           ->execute($strDomain);
 

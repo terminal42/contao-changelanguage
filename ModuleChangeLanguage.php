@@ -212,7 +212,12 @@ class ModuleChangelanguage extends Module
                     foreach ($GLOBALS['TL_HOOKS']['translateUrlParameters'] as $callback)
                     {
                         $this->import($callback[0]);
-                        $arrTranslatedParams = $this->$callback[0]->$callback[1]($arrParams, $arrRootPage['language'], $arrRootPage);
+                        $arrTranslatedParams = $this->{$callback[0]}->$callback[1](
+                            $arrTranslatedParams,
+                            $arrRootPage['language'],
+                            $arrRootPage,
+                            $addToNavigation
+                        );
                     }
                 }
 
@@ -368,14 +373,17 @@ class ModuleChangelanguage extends Module
                 $strParam = '';
 
                 // Build the URL
-                foreach ($arrTranslatedParams['url'] as $k => $v)
-                {
-                    if ($GLOBALS['TL_CONFIG']['useAutoItem'] && in_array($k, $GLOBALS['TL_AUTO_ITEM']))
-                    {
+                foreach ($arrTranslatedParams['url'] as $k => $v) {
+                    if ($GLOBALS['TL_CONFIG']['useAutoItem'] && in_array($k, $GLOBALS['TL_AUTO_ITEM'])) {
+                        if (isset($arrParams['url']['auto_item'])) {
+                            continue;
+                        }
+
                         $strParam .= '/' . $v;
-                    }
-                    else
-                    {
+
+                    } elseif ($k == 'auto_item') {
+                        $strParam .= '/' . $v;
+                    } else {
                         $strParam .= '/' . $k . '/' . $v;
                     }
                 }
