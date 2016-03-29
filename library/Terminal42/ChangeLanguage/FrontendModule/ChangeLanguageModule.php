@@ -176,15 +176,6 @@ class ChangeLanguageModule extends Module
                     $active = true;
                     $strCssClass = 'lang-' . $arrRootPage['language'];
 
-                    if (in_array('articlelanguage', $this->Config->getActiveModules()) && strlen($_SESSION['ARTICLE_LANGUAGE'])) {
-                        $objArticle = $this->Database->prepare("SELECT * FROM tl_article WHERE (pid=? OR pid=?) AND language=?")
-                                                     ->execute($objPage->id, $objPage->languageMain, $_SESSION['ARTICLE_LANGUAGE']);
-
-                        if ($objArticle->numRows) {
-                            $strCssClass = 'lang-' . $_SESSION['ARTICLE_LANGUAGE'];
-                        }
-                    }
-
                     // Add CSS class to the current page HTML
                     if (strpos($objPage->cssClass, $strCssClass) === false) {
                         $objPage->cssClass = trim($objPage->cssClass . ' ' . $strCssClass);
