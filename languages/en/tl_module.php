@@ -34,7 +34,7 @@
 $GLOBALS['TL_LANG']['tl_module']['hideActiveLanguage']    = array('Hide active language', 'Please check here if you want to hide the active language on your site.');
 $GLOBALS['TL_LANG']['tl_module']['hideNoFallback']        = array('Hide languages without direct fallback', 'Do not show languages that have no direct fallback assigned.');
 $GLOBALS['TL_LANG']['tl_module']['keepUrlParams']        = array('Keep URL parameters', 'Please check here if you want to preserve URL parameters when switching the language.');
-$GLOBALS['TL_LANG']['tl_module']['customLanguage']        = array('Custom language texts', 'Please check here if you want to have custom texts for your languages (not uppercase language shortcuts). Please be aware that this will be ignored if you enable country flags.');
+$GLOBALS['TL_LANG']['tl_module']['customLanguage']        = array('Custom language texts', 'Please check here if you want to have custom texts for your languages (not uppercase language shortcuts).');
 $GLOBALS['TL_LANG']['tl_module']['customLanguageText']    = array(' ', 'Please enter a replacement for every language. Use lower case shortcuts.');
 
 

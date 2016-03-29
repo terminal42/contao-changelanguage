@@ -34,7 +34,7 @@
 $GLOBALS['TL_LANG']['tl_module']['hideActiveLanguage']    = array('Aktive Sprache ausblenden', 'Klicken Sie hier, wenn die aktive Sprache in der Auswahl nicht erscheinen soll.');
 $GLOBALS['TL_LANG']['tl_module']['hideNoFallback']        = array('Sprachen ohne direkte Hauptsprache ausblenden', 'Sprachen ausblenden, welche keine Hauptsprache zugewiesen haben.');
 $GLOBALS['TL_LANG']['tl_module']['keepUrlParams']        = array('URL-Parameter beibehalten', 'Klicken Sie hier wenn beim Wechsel der Sprache die URL-Parameter beibehalten werden sollen.');
-$GLOBALS['TL_LANG']['tl_module']['customLanguage']        = array('Eigene Sprachtexte', 'Klicken Sie hier, wenn Sie anstelle der Sprachkürzel eigene Texte verwenden wollen. Bitte beachten Sie dass diese Option ignoriert wird, wenn Sie die Landesflaggen aktivieren.');
+$GLOBALS['TL_LANG']['tl_module']['customLanguage']        = array('Eigene Sprachtexte', 'Klicken Sie hier, wenn Sie anstelle der Sprachkürzel eigene Texte verwenden wollen.');
 $GLOBALS['TL_LANG']['tl_module']['customLanguageText']    = array(' ', 'Bitte geben Sie einen Ersatz für jede Sprache ein.');
 
 

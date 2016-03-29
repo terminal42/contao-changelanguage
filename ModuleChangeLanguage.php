@@ -156,13 +156,16 @@ class ModuleChangelanguage extends Module
         foreach ($arrRootPages as $arrRootPage)
         {
             $absoluteUrl = false;
-            $domain  = ($this->Environment->ssl ? 'https://' : 'http://') . $arrRootPage['dns'] . TL_PATH . '/';
+            $blnDirectFallback = true;
+            $domain = '';
+
+            if ($arrRootPage['dns'] != '') {
+                $domain = ($this->Environment->ssl ? 'https://' : 'http://') . $arrRootPage['dns'] . TL_PATH . '/';
+            }
 
             if ($objPage->domain != $arrRootPage['dns']) {
                 $absoluteUrl = true;
             }
-
-            $blnDirectFallback = true;
 
             // If the root isn't published, continue with the next page
             if ((!$arrRootPage['published'] || ($arrRootPage['start'] > 0 && $arrRootPage['start'] > time()) || ($arrRootPage['stop'] > 0 && $arrRootPage['stop'] < time())) && !BE_USER_LOGGED_IN)
