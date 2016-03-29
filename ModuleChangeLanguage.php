@@ -155,12 +155,11 @@ class ModuleChangelanguage extends Module
 
         foreach ($arrRootPages as $arrRootPage)
         {
-            $domain = '';
+            $absoluteUrl = false;
+            $domain  = ($this->Environment->ssl ? 'https://' : 'http://') . $arrRootPage['dns'] . TL_PATH . '/';
 
-            // Get the new domain if it differs from the current one
-            if ($objPage->domain != $arrRootPage['dns'])
-            {
-                $domain  = (\Environment::get('ssl') ? 'https://' : 'http://') . $arrRootPage['dns'] . TL_PATH . '/';
+            if ($objPage->domain != $arrRootPage['dns']) {
+                $absoluteUrl = true;
             }
 
             $blnDirectFallback = true;
@@ -174,6 +173,7 @@ class ModuleChangelanguage extends Module
             // Search for foreign language
             else
             {
+                $addToNavigation = true;
                 $active = false;
                 $target = '';
                 $arrTranslatedParams = $arrParams;
@@ -182,7 +182,7 @@ class ModuleChangelanguage extends Module
                 {
                     // If it is the active page, and we want to hide this, continue with the next page
                     if ($this->hideActiveLanguage) {
-                        continue;
+                        $addToNavigation = false;
                     }
 
                     $active = true;
@@ -481,28 +481,30 @@ class ModuleChangelanguage extends Module
             // Hide languages without direct fallback
             if ($this->hideNoFallback && !$blnDirectFallback)
             {
-                continue;
+                $addToNavigation = false;
             }
 
-            // Build template array
-            $arrItems[$c] = array
-            (
-                'isActive'    => $active,
-                'class'        => 'lang-' . $arrRootPage['language'] . ($blnDirectFallback ? '' : ' nofallback') . ($active ? ' active' : '') . ($c == 0 ? ' first' : '') . ($c == $count-1 ? ' last' : ''),
-                'link'        => $this->getLabel($arrRootPage['language']),
-                'subitems'    => '',
-                'href'        => ($domain . $href),
-                'pageTitle' => strip_tags($pageTitle),
-                'accesskey'    => '',
-                'tabindex'    => '',
-                'nofollow'    => false,
-                'target'    => $target . ' hreflang="' . $arrRootPage['language'] . '" lang="' . $arrRootPage['language'] . '"',
-                'language'    => $arrRootPage['language'],
-            );
+            if ($addToNavigation) {
+                // Build template array
+                $arrItems[$c] = array
+                (
+                    'isActive'  => $active,
+                    'class'     => 'lang-' . $arrRootPage['language'] . ($blnDirectFallback ? '' : ' nofallback') . ($active ? ' active' : '') . ($c == 0 ? ' first' : '') . ($c == $count - 1 ? ' last' : ''),
+                    'link'      => $this->getLabel($arrRootPage['language']),
+                    'subitems'  => '',
+                    'href'      => specialchars(($absoluteUrl ? $domain : '') . $href),
+                    'pageTitle' => strip_tags($pageTitle),
+                    'accesskey' => '',
+                    'tabindex'  => '',
+                    'nofollow'  => false,
+                    'target'    => $target . ' hreflang="' . $arrRootPage['language'] . '" lang="' . $arrRootPage['language'] . '"',
+                    'language'  => $arrRootPage['language'],
+                );
+            }
 
-            if ($active || $blnDirectFallback)
+            if ($blnDirectFallback)
             {
-                $GLOBALS['TL_HEAD'][] = '<link rel="alternate" hreflang="' . $arrRootPage['language'] . '" lang="' . $arrRootPage['language'] . '" href="' . ($domain . $href) . '" title="' . specialchars($pageTitle, true) . '"' . ($objPage->outputFormat == 'html5' ? '>' : ' />');
+                $GLOBALS['TL_HEAD'][] = '<link rel="alternate" hreflang="' . $arrRootPage['language'] . '" lang="' . $arrRootPage['language'] . '" href="' . specialchars($domain . $href) . '" title="' . specialchars($pageTitle, true) . '"' . ($objPage->outputFormat == 'html5' ? '>' : ' />');
             }
 
             $c++;
@@ -541,8 +543,8 @@ class ModuleChangelanguage extends Module
     {
         $arrCustom = array_keys($this->customLanguageText);
 
-        $key1 = array_search($a['language'], $arrCustom);
-        $key2 = array_search($b['language'], $arrCustom);
+        $key1 = array_search(strtolower($a['language']), $arrCustom);
+        $key2 = array_search(strtolower($b['language']), $arrCustom);
 
         return ($key1 < $key2) ? -1 : 1;
     }
