@@ -11,73 +11,64 @@
 
 namespace Terminal42\ChangeLanguage\DataContainer;
 
-use Contao\Backend;
+use Contao\Database;
+use Contao\DataContainer;
+use Contao\Input;
+use Terminal42\ChangeLanguage\Finder;
 
-class Article extends Backend
+class Article
 {
-
-    /**
-     * Initialize the class
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->import('ChangeLanguage');
-    }
-
-
     /**
      * Inject fields if appropriate.
      *
-     * @access public
-     * @return void
+     * @param DataContainer $dc
      */
-    public function showSelectbox($dc)
+    public function showSelectbox(DataContainer $dc)
     {
-        if (\Input::get('act') == 'edit')
-        {
-            $objPage = $this->Database->prepare("SELECT p.* FROM tl_page p LEFT JOIN tl_article a ON a.pid=p.id WHERE a.id=? GROUP BY a.pid")->execute($dc->id);
-            $arrMain = $this->ChangeLanguage->findMainLanguagePageForPage($objPage);
+        if ('edit' === Input::get('act')) {
+            $objPage = Database::getInstance()
+                ->prepare('SELECT p.* FROM tl_page p LEFT JOIN tl_article a ON a.pid=p.id WHERE a.id=? GROUP BY a.pid')
+                ->execute($dc->id)
+            ;
 
-            if ($arrMain !== false)
-            {
+            $arrMain = Finder::findMainLanguagePageForPage($objPage);
+
+            if ($arrMain !== false) {
                 $GLOBALS['TL_DCA']['tl_article']['fields']['title']['eval']['tl_class'] = 'w50';
                 $GLOBALS['TL_DCA']['tl_article']['fields']['alias']['eval']['tl_class'] = 'clr w50';
                 $GLOBALS['TL_DCA']['tl_article']['palettes']['default'] = preg_replace('@([,|;]title)([,|;])@','$1,languageMain$2', $GLOBALS['TL_DCA']['tl_article']['palettes']['default']);
             }
-        }
-        elseif (\Input::get('act') == 'editAll')
-        {
+
+        } elseif ('editAll' === Input::get('act')) {
             $GLOBALS['TL_DCA']['tl_page']['palettes']['default'] = preg_replace('@([,|;]title)([,|;])@','$1,languageMain$2', $GLOBALS['TL_DCA']['tl_page']['palettes']['default']);
         }
     }
 
-
     /**
      * Return all fallback pages for the current page (used as options_callback).
      *
-     * @access public
+     * @param DataContainer $dc
+     *
      * @return array
      */
-    public function getFallbackArticles($dc)
+    public function getFallbackArticles(DataContainer $dc)
     {
-        $arrPage = $this->ChangeLanguage->findMainLanguagePageForPage($dc->activeRecord->pid);
+        $arrPage = Finder::findMainLanguagePageForPage($dc->activeRecord->pid);
 
-        if ($arrPage === false)
-        {
+        if ($arrPage === false) {
             return array();
         }
 
         $arrArticles = array();
-        $objArticles = $this->Database->prepare("SELECT id, title FROM tl_article WHERE pid=? AND inColumn=?")->execute($arrPage['id'], $dc->activeRecord->inColumn);
+        $objArticles = Database::getInstance()
+            ->prepare('SELECT id, title FROM tl_article WHERE pid=? AND inColumn=?')
+            ->execute($arrPage['id'], $dc->activeRecord->inColumn)
+        ;
 
-        while ($objArticles->next())
-        {
-            $arrArticles[$objArticles->id] = $objArticles->title . ' [ID ' . $objArticles->id . ']';
+        while ($objArticles->next()) {
+            $arrArticles[$objArticles->id] = sprintf('%s [ID %s]', $objArticles->title, $objArticles->id);
         }
 
         return $arrArticles;
     }
 }
-

@@ -11,23 +11,31 @@
 
 namespace Terminal42\ChangeLanguage\DataContainer;
 
-use Contao\Backend;
+use Contao\Database;
 use Contao\DataContainer;
 
-class FaqCategory extends Backend
+class FaqCategory
 {
-
     /**
      * Get an array of possible categories
+     *
+     * @param DataContainer $dc
+     *
+     * @return array
      */
     public function getCategories(DataContainer $dc)
     {
         $arrCalendars = array();
-        $objCategories = $this->Database->prepare("SELECT * FROM tl_faq_category WHERE language!=? AND id!=? AND master=0 ORDER BY title")->execute($dc->activeRecord->language, $dc->id);
+        $objCategories = Database::getInstance()
+            ->prepare('SELECT * FROM tl_faq_category WHERE language!=? AND id!=? AND master=0 ORDER BY title')
+            ->execute($dc->activeRecord->language, $dc->id)
+        ;
 
-        while( $objCategories->next() )
-        {
-            $arrCalendars[$objCategories->id] = sprintf($GLOBALS['TL_LANG']['tl_faq_category']['isSlave'], $objCategories->title);
+        while ($objCategories->next()) {
+            $arrCalendars[$objCategories->id] = sprintf(
+                $GLOBALS['TL_LANG']['tl_faq_category']['isSlave'],
+                $objCategories->title
+            );
         }
 
         return $arrCalendars;

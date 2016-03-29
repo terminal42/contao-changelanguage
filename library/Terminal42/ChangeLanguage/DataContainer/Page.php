@@ -11,83 +11,94 @@
 
 namespace Terminal42\ChangeLanguage\DataContainer;
 
-use Contao\Backend;
+use Contao\Database;
+use Contao\DataContainer;
+use Contao\Input;
+use Contao\ModuleLoader;
+use Contao\PageModel;
+use Terminal42\ChangeLanguage\Finder;
 
-class Page extends Backend
+class Page
 {
-
     /**
      * Inject fields if appropriate.
      *
-     * @access public
-     * @return void
+     * @param DataContainer $dc
      */
     public function showSelectbox($dc)
     {
-        if (\Input::get('act') == 'edit')
-        {
-            $objPage = $this->getPageDetails($dc->id);
+        if ('edit' === Input::get('act')) {
+            $objPage = PageModel::findWithDetails($dc->id);
 
-            if ($objPage->type == 'root' && $objPage->fallback)
-            {
-                $GLOBALS['TL_DCA']['tl_page']['palettes']['root'] = preg_replace('@([,|;]fallback)([,|;])@','$1,languageRoot$2', $GLOBALS['TL_DCA']['tl_page']['palettes']['root']);
-            }
-            elseif ($objPage->type != 'root')
-            {
-                $objRootPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->limit(1)->execute($objPage->rootId);
+            if ('root' === $objPage->type && $objPage->fallback) {
+                $GLOBALS['TL_DCA']['tl_page']['palettes']['root'] = preg_replace('@([,|;]fallback)([,|;])@', '$1,languageRoot$2', $GLOBALS['TL_DCA']['tl_page']['palettes']['root']);
 
-                $objFallback = $this->Database->prepare("SELECT id FROM tl_page WHERE type='root' AND fallback='1' AND id!=? AND (dns=? OR id=?)")->limit(1)->execute($objRootPage->id, $objPage->domain, ($objRootPage->fallback ? $objRootPage->languageRoot : 0));
+            } elseif ('root' !== $objPage->type) {
+                $objRootPage = Database::getInstance()
+                    ->prepare('SELECT * FROM tl_page WHERE id=?')
+                    ->execute($objPage->rootId)
+                ;
 
-                if($objFallback->numRows)
-                {
+                $objFallback = Database::getInstance()
+                    ->prepare("SELECT id FROM tl_page WHERE type='root' AND fallback='1' AND id!=? AND (dns=? OR id=?)")
+                    ->limit(1)
+                    ->execute(
+                        $objRootPage->id,
+                        $objPage->domain,
+                        ($objRootPage->fallback ? $objRootPage->languageRoot : 0)
+                    )
+                ;
+
+                if ($objFallback->numRows) {
                     $GLOBALS['TL_DCA']['tl_page']['palettes'][$objPage->type] = str_replace('type;', 'type;{language_legend},languageMain;', $GLOBALS['TL_DCA']['tl_page']['palettes'][$objPage->type]);
                 }
             }
-        }
-        elseif (\Input::get('act') == 'editAll')
-        {
-            foreach( $GLOBALS['TL_DCA']['tl_page']['palettes'] as $name => $palette )
-            {
-                if ($name == '__selector__' || $name == 'root')
-                    continue;
 
-                $GLOBALS['TL_DCA']['tl_page']['palettes'][$name] = str_replace('type;', 'type;{language_legend},languageMain;', $palette);
+        } elseif ('editAll' === Input::get('act')) {
+            foreach ($GLOBALS['TL_DCA']['tl_page']['palettes'] as $name => &$palette) {
+                if ('__selector__' === $name || 'root' === $name) {
+                    continue;
+                }
+
+                $palette = str_replace('type;', 'type;{language_legend},languageMain;', $palette);
             }
         }
     }
 
-
     /**
      * Reset the fallback assignment if it's moved to the fallback root
-     * @param integer
+     *
+     * @param int $intId
      */
     public function resetFallback($intId)
     {
         $objPage = \PageModel::findWithDetails($intId);
         $objRoot = \PageModel::findByPk($objPage->rootId);
 
-        if ($objRoot->fallback)
-        {
-            $arrSubpages = $this->Database->getChildRecords($objPage->id, 'tl_page', true);
+        if ($objRoot->fallback) {
+            $arrSubpages   = Database::getInstance()->getChildRecords($objPage->id, 'tl_page');
             $arrSubpages[] = $objPage->id;
-            $this->Database->execute("UPDATE tl_page SET languageMain=0 WHERE id IN(" . implode(',', $arrSubpages) . ")");
+
+            Database::getInstance()->execute(
+                'UPDATE tl_page SET languageMain=0 WHERE id IN(' . implode(',', $arrSubpages) . ')'
+            );
         }
     }
 
-
     /**
      * Reset fallback with other callbacks
-     * @param object
+     *
+     * @param DataContainer $dc
      */
     public function resetFallbackAll($dc)
     {
         $this->resetFallback($dc->id);
     }
 
-
     /**
      * Reset fallback with oncopy_callback
-     * @param integer
+     *
+     * @param int
      */
     public function resetFallbackCopy($intId)
     {
@@ -96,51 +107,72 @@ class Page extends Backend
 
     /**
      * Reset the language main when the fallback is deleted
-     * @param object
+     *
+     * @param DataContainer $dc
      */
     public function resetLanguageMain($dc)
     {
-        $arrIds = $this->getChildRecords($dc->id, 'tl_page');
+        $arrIds   = Database::getInstance()->getChildRecords($dc->id, 'tl_page');
         $arrIds[] = $dc->id;
 
-        $this->Database->execute("UPDATE tl_page SET languageMain=0 WHERE languageMain IN (" . implode(',', $arrIds) . ")");
+        Database::getInstance()->execute(
+            'UPDATE tl_page SET languageMain=0 WHERE languageMain IN (' . implode(',', $arrIds) . ')'
+        );
     }
 
     /**
      * Show notice if no fallback page is set
+     *
+     * @param array              $row
+     * @param string             $label
+     * @param DataContainer|null $dc
+     * @param string             $imageAttribute
+     * @param bool               $blnReturnImage
+     * @param bool               $blnProtected
+     *
+     * @return string
      */
-    public function addFallbackNotice($row, $label, $dc=null, $imageAttribute='', $blnReturnImage=false, $blnProtected=false)
-    {
-        if (in_array('cacheicon', $this->Config->getActiveModules()))
-        {
+    public function addFallbackNotice(
+        $row,
+        $label,
+        $dc = null,
+        $imageAttribute = '',
+        $blnReturnImage = false,
+        $blnProtected = false
+    ) {
+        $activeModules = ModuleLoader::getActive();
+
+        if (in_array('cacheicon', $activeModules, true)) {
             $objPage = new \tl_page_cacheicon();
             $label = $objPage->addImage($row, $label, $dc, $imageAttribute, $blnReturnImage, $blnProtected);
-        }
-        elseif (in_array('Avisota', $this->Config->getActiveModules()))
-        {
+        } elseif (in_array('Avisota', $activeModules, true)) {
             $objPage = new \tl_page_avisota();
             $label = $objPage->addIcon($row, $label, $dc, $imageAttribute, $blnReturnImage, $blnProtected);
-        }
-        else
-        {
+        } else {
             $objPage = new \tl_page();
             $label = $objPage->addIcon($row, $label, $dc, $imageAttribute, $blnReturnImage, $blnProtected);
         }
 
-        if (!$row['languageMain'])
-        {
+        if (!$row['languageMain']) {
             // Save resources if we are not a regular page
-            if ($row['type'] == 'root' || $row['type'] == 'folder')
+            if ('root' === $row['type'] || 'folder' === $row['type']) {
                 return $label;
+            }
 
-            $objPage = $this->getPageDetails($row['id']);
+            $objPage = PageModel::findWithDetails($row['id']);
 
-            $objRootPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->limit(1)->execute($objPage->rootId);
+            $objRootPage = Database::getInstance()
+                ->prepare('SELECT * FROM tl_page WHERE id=?')
+                ->execute($objPage->rootId)
+            ;
 
-            $objFallback = $this->Database->prepare("SELECT id FROM tl_page WHERE type='root' AND fallback='1' AND id!=? AND (dns=? OR id=?)")->limit(1)->execute($objRootPage->id, $objPage->domain, ($objRootPage->fallback ? $objRootPage->languageRoot : 0));
+            $objFallback = Database::getInstance()
+                ->prepare("SELECT id FROM tl_page WHERE type='root' AND fallback='1' AND id!=? AND (dns=? OR id=?)")
+                ->limit(1)
+                ->execute($objRootPage->id, $objPage->domain, ($objRootPage->fallback ? $objRootPage->languageRoot : 0))
+            ;
 
-            if ($objFallback->numRows)
-            {
+            if ($objFallback->numRows) {
                 $label .= '<span style="color:#b3b3b3; padding-left:3px;">[' . $GLOBALS['TL_LANG']['MSC']['noMainLanguage'] . ']</span>';
             }
         }
@@ -148,70 +180,84 @@ class Page extends Backend
         return $label;
     }
 
-
     /**
      * Return all fallback pages for the current page (used as options_callback).
      *
-     * @access public
+     * @param DataContainer $dc
+     *
      * @return array
      */
     public function getFallbackPages($dc)
     {
-        $this->import('ChangeLanguage');
-
         $arrPages = array();
-        $arrRoot = $this->ChangeLanguage->findMainLanguageRootForPage($dc->id);
+        $arrRoot = Finder::findMainLanguageRootForPage($dc->id);
 
-        if ($arrRoot !== false)
-        {
+        if (false !== $arrRoot) {
             $this->generatePageOptions($arrPages, $arrRoot['id'], 0);
         }
 
         return $arrPages;
     }
 
-
+    /**
+     * Get alternative fallback root pages
+     *
+     * @param DataContainer $dc
+     *
+     * @return array
+     */
     public function getRootPages($dc)
     {
         $arrPages = array();
-        $objPages = $this->Database->prepare("SELECT * FROM tl_page WHERE type='root' AND fallback='1' AND languageRoot=0 AND id!=?")->execute($dc->id);
+        $objPages = Database::getInstance()
+            ->prepare(
+                "SELECT * FROM tl_page WHERE type='root' AND fallback='1' AND languageRoot=0 AND id!=?"
+            )
+            ->execute($dc->id)
+        ;
 
-        while( $objPages->next() )
-        {
-            $arrPages[$objPages->id] = $objPages->title . (strlen($objPages->dns) ? (' (' . $objPages->dns . ')') : '') . ' [' . $objPages->language . ']';
+        while ($objPages->next()) {
+            $arrPages[$objPages->id] = sprintf(
+                '%s%s [%s]',
+                $objPages->title,
+                (strlen($objPages->dns) ? (' (' . $objPages->dns . ')') : ''),
+                $objPages->language
+            );
         }
 
         return $arrPages;
     }
 
-
     /**
      * Generates a list of all subpages
      *
-     * @param array
-     * @param int
-     * @param int
+     * @param array $arrPages
+     * @param int   $intId
+     * @param int   $level
      */
-    protected function generatePageOptions(&$arrPages, $intId=0, $level=-1)
+    protected function generatePageOptions(&$arrPages, $intId = 0, $level = -1)
     {
         // Add child pages
-        $objPages = $this->Database->prepare("SELECT id, title FROM tl_page WHERE pid=? AND type != 'root' AND type != 'error_403' AND type != 'error_404' ORDER BY sorting")
-                                   ->execute($intId);
+        $objPages = Database::getInstance()
+            ->prepare("
+                SELECT id, title 
+                FROM tl_page 
+                WHERE pid=? AND type != 'root' AND type != 'error_403' AND type != 'error_404' 
+                ORDER BY sorting
+            ")
+            ->execute($intId)
+        ;
 
-        if ($objPages->numRows < 1)
-        {
+        if ($objPages->numRows < 1) {
             return;
         }
 
         ++$level;
-        $strOptions = '';
 
-        while ($objPages->next())
-        {
-            $arrPages[$objPages->id] = str_repeat("&nbsp;", (3 * $level)) . $objPages->title;
+        while ($objPages->next()) {
+            $arrPages[$objPages->id] = str_repeat('&nbsp;', 3 * $level) . $objPages->title;
 
             $this->generatePageOptions($arrPages, $objPages->id, $level);
         }
     }
 }
-

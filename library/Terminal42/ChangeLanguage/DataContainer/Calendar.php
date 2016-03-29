@@ -11,23 +11,31 @@
 
 namespace Terminal42\ChangeLanguage\DataContainer;
 
-use Contao\Backend;
+use Contao\Database;
 use Contao\DataContainer;
 
-class Calendar extends Backend
+class Calendar
 {
-
     /**
      * Get an array of possible calendars
+     *
+     * @param DataContainer $dc
+     *
+     * @return array
      */
     public function getCalendars(DataContainer $dc)
     {
         $arrCalendars = array();
-        $objCalendars = $this->Database->prepare("SELECT * FROM tl_calendar WHERE language!=? AND id!=? AND master=0 ORDER BY title")->execute($dc->activeRecord->language, $dc->id);
+        $objCalendars = Database::getInstance()
+            ->prepare('SELECT * FROM tl_calendar WHERE language!=? AND id!=? AND master=0 ORDER BY title')
+            ->execute($dc->activeRecord->language, $dc->id)
+        ;
 
-        while( $objCalendars->next() )
-        {
-            $arrCalendars[$objCalendars->id] = sprintf($GLOBALS['TL_LANG']['tl_calendar']['isSlave'], $objCalendars->title);
+        while ($objCalendars->next()) {
+            $arrCalendars[$objCalendars->id] = sprintf(
+                $GLOBALS['TL_LANG']['tl_calendar']['isSlave'],
+                $objCalendars->title
+            );
         }
 
         return $arrCalendars;

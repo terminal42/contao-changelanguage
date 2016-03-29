@@ -49,8 +49,6 @@ class ModuleChangelanguage extends Module
             $this->navigationTpl = 'nav_default';
         }
 
-        $this->import('ChangeLanguage');
-
         $strBuffer = parent::generate();
 
         if ($this->Template->items == '')
@@ -72,7 +70,7 @@ class ModuleChangelanguage extends Module
         // Required for the current pagetree language
         $objRootPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($objPage->rootId);
 
-        $arrRootPages = $this->ChangeLanguage->findLanguageRootsForDomain($objPage->domain);
+        $arrRootPages = \Terminal42\ChangeLanguage\Finder::findLanguageRootsForDomain($objPage->domain);
 
 
         // Check if there are foreign languages of this page

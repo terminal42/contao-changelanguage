@@ -11,27 +11,31 @@
 
 namespace Terminal42\ChangeLanguage\DataContainer;
 
-use Contao\Backend;
+use Contao\Database;
 use Contao\DataContainer;
 
-class NewsArchive extends Backend
+class NewsArchive
 {
-
     /**
      * Get an array of possible news archives
      *
-     * @param    DataContainer
-     * @return    array
-     * @link    http://www.contao.org/callbacks.html#options_callback
+     * @param DataContainer $dc
+     *
+     * @return array
      */
     public function getArchives(DataContainer $dc)
     {
         $arrArchives = array();
-        $objArchives = $this->Database->prepare("SELECT * FROM tl_news_archive WHERE language!=? AND id!=? AND master=0 ORDER BY title")->execute($dc->activeRecord->language, $dc->id);
+        $objArchives = Database::getInstance()
+            ->prepare('SELECT * FROM tl_news_archive WHERE language!=? AND id!=? AND master=0 ORDER BY title')
+            ->execute($dc->activeRecord->language, $dc->id)
+        ;
 
-        while( $objArchives->next() )
-        {
-            $arrArchives[$objArchives->id] = sprintf($GLOBALS['TL_LANG']['tl_news_archive']['isSlave'], $objArchives->title);
+        while ($objArchives->next()) {
+            $arrArchives[$objArchives->id] = sprintf(
+                $GLOBALS['TL_LANG']['tl_news_archive']['isSlave'],
+                $objArchives->title
+            );
         }
 
         return $arrArchives;
