@@ -14,4 +14,3 @@
  * Frontend modules
  */
 $GLOBALS['FE_MOD']['miscellaneous']['changelanguage']   = 'Terminal42\ChangeLanguage\FrontendModule\ChangeLanguageModule';
-$GLOBALS['FE_MOD']['miscellaneous']['languageRedirect'] = 'Terminal42\ChangeLanguage\FrontendModule\LanguageRedirectModule';
