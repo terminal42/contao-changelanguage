@@ -30,15 +30,10 @@ class Article
 
         if ('edit' === $act) {
             $objPage = Database::getInstance()
-                ->prepare("SELECT p.* FROM tl_page p LEFT JOIN tl_article a ON a.pid=p.id WHERE a.id=? AND a.showTeaser='1'")
+                ->prepare("SELECT p.* FROM tl_page p LEFT JOIN tl_article a ON a.pid=p.id WHERE a.id=?")
                 ->limit(1)
                 ->execute($dc->id)
             ;
-
-            // Article does not have showTeaser enabled
-            if (!$objPage->numRows) {
-                return;
-            }
 
             $arrMain = Finder::findMainLanguagePageForPage($objPage);
 
