@@ -378,9 +378,8 @@ class ChangeLanguageModule extends Module
                     $pageTitle = $arrLanguagePages[$arrRootPage['language']]['title'];
                     $href = $this->generateFrontendUrl($arrLanguagePages[$arrRootPage['language']], $strParam, $arrRootPage['language']) . (count($arrRequest) ? ('?'.implode('&amp;', $arrRequest)) : '');
 
-                    if ($arrLanguagePages[$arrRootPage['language']]['target'])
-                    {
-                        $target = ($objPage->outputFormat == 'html5') ? ' target="_blank"' : ' onclick="window.open(this.href); return false;"';
+                    if ($arrLanguagePages[$arrRootPage['language']]['target']) {
+                        $target = ' target="_blank"';
                     }
 
                 } else {
@@ -447,9 +446,8 @@ class ChangeLanguageModule extends Module
                         $pageTitle = $objTrailPage->title;
                         $href = $this->generateFrontendUrl($objTrailPage->row(), $strParam, $arrRootPage['language']);
 
-                        if ($objTrailPage->target)
-                        {
-                            $target = ($objPage->outputFormat == 'html5') ? ' target="_blank"' : ' onclick="window.open(this.href); return false;"';
+                        if ($objTrailPage->target) {
+                            $target = ' target="_blank"';
                         }
                     } else {
                         $pageTitle = $arrRootPage['title'];
@@ -479,9 +477,8 @@ class ChangeLanguageModule extends Module
                 );
             }
 
-            if ($blnDirectFallback)
-            {
-                $GLOBALS['TL_HEAD'][] = '<link rel="alternate" hreflang="' . $arrRootPage['language'] . '" lang="' . $arrRootPage['language'] . '" href="' . specialchars($domain . $href) . '" title="' . specialchars($pageTitle, true) . '"' . ($objPage->outputFormat == 'html5' ? '>' : ' />');
+            if ($blnDirectFallback) {
+                $GLOBALS['TL_HEAD'][] = '<link rel="alternate" hreflang="' . $arrRootPage['language'] . '" lang="' . $arrRootPage['language'] . '" href="' . specialchars($domain . $href) . '" title="' . specialchars($pageTitle, true) . '">';
             }
 
             $c++;
