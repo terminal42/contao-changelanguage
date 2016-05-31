@@ -11,11 +11,13 @@
 
 namespace Terminal42\ChangeLanguage\DataContainer;
 
+use Contao\Backend;
 use Contao\Database;
 use Contao\DataContainer;
 use Contao\Input;
 use Contao\ModuleLoader;
 use Contao\PageModel;
+use Haste\Dca\PaletteManipulator;
 use Terminal42\ChangeLanguage\Finder;
 
 class Page
@@ -31,8 +33,10 @@ class Page
             $objPage = PageModel::findWithDetails($dc->id);
 
             if ('root' === $objPage->type && $objPage->fallback) {
-                $GLOBALS['TL_DCA']['tl_page']['palettes']['root'] = preg_replace('@([,|;]fallback)([,|;])@', '$1,languageRoot$2', $GLOBALS['TL_DCA']['tl_page']['palettes']['root']);
-
+                PaletteManipulator::create()
+                    ->addField('languageRoot', 'fallback')
+                    ->applyToPalette('root', 'tl_page')
+                ;
             } elseif ('root' !== $objPage->type) {
                 $objRootPage = Database::getInstance()
                     ->prepare('SELECT * FROM tl_page WHERE id=?')
@@ -50,38 +54,27 @@ class Page
                 ;
 
                 if ($objFallback->numRows) {
-                    $GLOBALS['TL_DCA']['tl_page']['palettes'][$objPage->type] = str_replace('type;', 'type;{language_legend},languageMain;', $GLOBALS['TL_DCA']['tl_page']['palettes'][$objPage->type]);
+                    PaletteManipulator::create()
+                        ->addLegend('language_legend', 'title_legend')
+                        ->addField('languageMain', 'language_legend', PaletteManipulator::POSITION_APPEND)
+                        ->applyToPalette($objPage->type, 'tl_page')
+                    ;
                 }
             }
 
         } elseif ('editAll' === Input::get('act')) {
             foreach ($GLOBALS['TL_DCA']['tl_page']['palettes'] as $name => &$palette) {
+                $pm = PaletteManipulator::create()
+                    ->addLegend('language_legend', 'title_legend')
+                    ->addField('languageMain', 'language_legend', PaletteManipulator::POSITION_APPEND)
+                ;
+
                 if ('__selector__' === $name || 'root' === $name) {
                     continue;
                 }
 
-                $palette = str_replace('type;', 'type;{language_legend},languageMain;', $palette);
+                $pm->applyToPalette($palette, 'tl_page');
             }
-        }
-    }
-
-    /**
-     * Reset the fallback assignment if it's moved to the fallback root
-     *
-     * @param int $intId
-     */
-    public function resetFallback($intId)
-    {
-        $objPage = \PageModel::findWithDetails($intId);
-        $objRoot = \PageModel::findByPk($objPage->rootId);
-
-        if ($objRoot->fallback) {
-            $arrSubpages   = Database::getInstance()->getChildRecords($objPage->id, 'tl_page');
-            $arrSubpages[] = $objPage->id;
-
-            Database::getInstance()->execute(
-                'UPDATE tl_page SET languageMain=0 WHERE id IN(' . implode(',', $arrSubpages) . ')'
-            );
         }
     }
 
@@ -140,21 +133,10 @@ class Page
         $blnReturnImage = false,
         $blnProtected = false
     ) {
-        $activeModules = ModuleLoader::getActive();
-
-        if (in_array('cacheicon', $activeModules, true)) {
-            $objPage = new \tl_page_cacheicon();
-            $label = $objPage->addImage($row, $label, $dc, $imageAttribute, $blnReturnImage, $blnProtected);
-        } elseif (in_array('Avisota', $activeModules, true)) {
-            $objPage = new \tl_page_avisota();
-            $label = $objPage->addIcon($row, $label, $dc, $imageAttribute, $blnReturnImage, $blnProtected);
-        } else {
-            $objPage = new \tl_page();
-            $label = $objPage->addIcon($row, $label, $dc, $imageAttribute, $blnReturnImage, $blnProtected);
-        }
+        $label = Backend::addPageIcon($row, $label, $dc, $imageAttribute, $blnReturnImage, $blnProtected);
 
         if (!$row['languageMain']) {
-            // Save resources if we are not a regular page
+            // Skip if we are not a regular page
             if ('root' === $row['type'] || 'folder' === $row['type']) {
                 return $label;
             }
@@ -235,7 +217,7 @@ class Page
      * @param int   $intId
      * @param int   $level
      */
-    protected function generatePageOptions(&$arrPages, $intId = 0, $level = -1)
+    private function generatePageOptions(&$arrPages, $intId = 0, $level = -1)
     {
         // Add child pages
         $objPages = Database::getInstance()
@@ -258,6 +240,26 @@ class Page
             $arrPages[$objPages->id] = str_repeat('&nbsp;', 3 * $level) . $objPages->title;
 
             $this->generatePageOptions($arrPages, $objPages->id, $level);
+        }
+    }
+
+    /**
+     * Reset the fallback assignment if it's moved to the fallback root
+     *
+     * @param int $intId
+     */
+    private function resetFallback($intId)
+    {
+        $objPage = \PageModel::findWithDetails($intId);
+        $objRoot = \PageModel::findByPk($objPage->rootId);
+
+        if ($objRoot->fallback) {
+            $arrSubpages   = Database::getInstance()->getChildRecords($objPage->id, 'tl_page');
+            $arrSubpages[] = $objPage->id;
+
+            Database::getInstance()->execute(
+                'UPDATE tl_page SET languageMain=0 WHERE id IN(' . implode(',', $arrSubpages) . ')'
+            );
         }
     }
 }

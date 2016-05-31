@@ -63,6 +63,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['customLanguageText'] = array
     'exclude'                 => true,
     'inputType'               => 'optionWizard',
     'eval'                      => array('allowHtml'=>true, 'tl_class'=>'long'),
-    'sql'                     => "blob NULL"
+    'sql'                     => "text NULL"
 );
 
