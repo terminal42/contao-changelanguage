@@ -11,29 +11,28 @@
 
 
 /**
- * Return if the module is not active
+ * Prevent DB fields to be added to an empty DCA
  */
-if (!in_array('news', \ModuleLoader::getActive()))
+if (in_array('news', \ModuleLoader::getActive(), true))
 {
-    return;
+
+    /**
+     * Config
+     */
+    $GLOBALS['TL_DCA']['tl_news']['config']['onload_callback'][] = array('Terminal42\ChangeLanguage\DataContainer\News', 'showSelectbox');
+
+
+    /**
+     * Fields
+     */
+    $GLOBALS['TL_DCA']['tl_news']['fields']['languageMain'] = array
+    (
+        'label'                   => &$GLOBALS['TL_LANG']['tl_news']['languageMain'],
+        'exclude'                 => false,
+        'inputType'               => 'select',
+        'options_callback'        => array('Terminal42\ChangeLanguage\DataContainer\News', 'getMasterArchive'),
+        'eval'                    => array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
+        'sql'                     => "int(10) unsigned NOT NULL default '0'"
+    );
+
 }
-
-
-/**
- * Config
- */
-$GLOBALS['TL_DCA']['tl_news']['config']['onload_callback'][] = array('Terminal42\ChangeLanguage\DataContainer\News', 'showSelectbox');
-
-
-/**
- * Fields
- */
-$GLOBALS['TL_DCA']['tl_news']['fields']['languageMain'] = array
-(
-    'label'                   => &$GLOBALS['TL_LANG']['tl_news']['languageMain'],
-    'exclude'                 => false,
-    'inputType'               => 'select',
-    'options_callback'        => array('Terminal42\ChangeLanguage\DataContainer\News', 'getMasterArchive'),
-    'eval'                    => array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
-    'sql'                     => "int(10) unsigned NOT NULL default '0'"
-);

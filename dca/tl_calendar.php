@@ -11,40 +11,39 @@
 
 
 /**
- * Return if the module is not active
+ * Prevent DB fields to be added to an empty DCA
  */
-if (!in_array('calendar', \ModuleLoader::getActive()))
+if (in_array('calendar', \ModuleLoader::getActive(), true))
 {
-    return;
+
+    /**
+     * Palettes
+     */
+    $GLOBALS['TL_DCA']['tl_calendar']['palettes']['default'] = str_replace('jumpTo;', 'jumpTo;{language_legend},language,master;', $GLOBALS['TL_DCA']['tl_calendar']['palettes']['default']);
+
+
+    /**
+     * Fields
+     */
+    $GLOBALS['TL_DCA']['tl_calendar']['fields']['master'] = array
+    (
+        'label'                   => &$GLOBALS['TL_LANG']['tl_calendar']['master'],
+        'exclude'                 => true,
+        'inputType'               => 'select',
+        'options_callback'        => array('Terminal42\ChangeLanguage\DataContainer\Calendar', 'getCalendars'),
+        'eval'                    => array('includeBlankOption'=>true, 'blankOptionLabel'=>&$GLOBALS['TL_LANG']['tl_calendar']['isMaster']),
+        'sql'                     => "int(10) unsigned NOT NULL default '0'"
+    );
+
+    $GLOBALS['TL_DCA']['tl_calendar']['fields']['language'] = array
+    (
+        'label'                   => &$GLOBALS['TL_LANG']['tl_calendar']['language'],
+        'exclude'                 => true,
+        'search'                  => true,
+        'filter'                  => true,
+        'inputType'               => 'text',
+        'eval'                    => array('mandatory'=>true, 'rgxp'=>'language', 'maxlength'=>5, 'nospace'=>true, 'tl_class'=>'w50'),
+        'sql'                     => "varchar(5) NOT NULL default ''"
+    );
+
 }
-
-
-/**
- * Palettes
- */
-$GLOBALS['TL_DCA']['tl_calendar']['palettes']['default'] = str_replace('jumpTo;', 'jumpTo;{language_legend},language,master;', $GLOBALS['TL_DCA']['tl_calendar']['palettes']['default']);
-
-
-/**
- * Fields
- */
-$GLOBALS['TL_DCA']['tl_calendar']['fields']['master'] = array
-(
-    'label'                   => &$GLOBALS['TL_LANG']['tl_calendar']['master'],
-    'exclude'                 => true,
-    'inputType'               => 'select',
-    'options_callback'        => array('Terminal42\ChangeLanguage\DataContainer\Calendar', 'getCalendars'),
-    'eval'                    => array('includeBlankOption'=>true, 'blankOptionLabel'=>&$GLOBALS['TL_LANG']['tl_calendar']['isMaster']),
-    'sql'                     => "int(10) unsigned NOT NULL default '0'"
-);
-
-$GLOBALS['TL_DCA']['tl_calendar']['fields']['language'] = array
-(
-    'label'                   => &$GLOBALS['TL_LANG']['tl_calendar']['language'],
-    'exclude'                 => true,
-    'search'                  => true,
-    'filter'                  => true,
-    'inputType'               => 'text',
-    'eval'                    => array('mandatory'=>true, 'rgxp'=>'language', 'maxlength'=>5, 'nospace'=>true, 'tl_class'=>'w50'),
-    'sql'                     => "varchar(5) NOT NULL default ''"
-);
