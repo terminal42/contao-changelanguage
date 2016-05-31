@@ -44,7 +44,7 @@ class Article
                 $this->addSelectboxToPalette();
             }
 
-        } elseif ('editAll' === $act || 'overrideAll' === $act) {
+        } elseif ('editAll' === $act) {
             $this->addSelectboxToPalette();
         }
     }
