@@ -43,6 +43,6 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['languageRoot'] = array
     'exclude'                 => true,
     'inputType'               => 'select',
     'options_callback'        => array('Terminal42\ChangeLanguage\DataContainer\Page', 'getRootPages'),
-    'eval'                    => array('includeBlankOption'=>true, 'blankOptionLabel'=>&$GLOBALS['TL_LANG']['tl_page']['no_rootpage'], 'tl_class'=>'w50'),
+    'eval'                    => array('includeBlankOption'=>true, 'blankOptionLabel'=>&$GLOBALS['TL_LANG']['tl_page']['languageRoot'][2], 'tl_class'=>'w50'),
     'sql'                     => "int(10) unsigned NOT NULL default '0'"
 );

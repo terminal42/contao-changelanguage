@@ -13,11 +13,4 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_article']['languageMain']    = array('Fallback article', 'Choose the article in the language marked as fallback equals this article.');
-
-
-/**
- * References
- */
-$GLOBALS['TL_LANG']['tl_article']['no_subarticle']    = 'No equal article';
-
+$GLOBALS['TL_LANG']['tl_article']['languageMain']    = array('Fallback article', 'Choose the article in the language marked as fallback equals this article.', 'No equal article');

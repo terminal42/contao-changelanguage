@@ -13,11 +13,4 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_article']['languageMain']    = array('Fallback-Artikel', 'Wählen Sie den Artikel in der Fallback-Sprache aus, welcher diesem hier entspricht. So ist es für den Sprachenwechsler möglich, einen Artikel direkt zu verlinken.');
-
-
-/**
- * References
- */
-$GLOBALS['TL_LANG']['tl_article']['no_subarticle']    = 'Kein passender Artikel';
-
+$GLOBALS['TL_LANG']['tl_article']['languageMain']    = array('Fallback-Artikel', 'Wählen Sie den Artikel in der Fallback-Sprache aus, welcher diesem hier entspricht. So ist es für den Sprachenwechsler möglich, einen Artikel direkt zu verlinken.', 'Kein passender Artikel');
