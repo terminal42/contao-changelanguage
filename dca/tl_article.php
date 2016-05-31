@@ -13,12 +13,14 @@
 /**
  * Config
  */
-$GLOBALS['TL_DCA']['tl_article']['config']['onload_callback'][] = array('Terminal42\ChangeLanguage\DataContainer\Article','showSelectbox');
+$GLOBALS['TL_DCA']['tl_article']['config']['onload_callback'][] = array('Terminal42\ChangeLanguage\DataContainer\Article', 'showSelectbox');
 
 
 /**
  * Fields
  */
+$GLOBALS['TL_DCA']['tl_article']['fields']['showTeaser']['eval']['submitOnChange'] = true;
+
 $GLOBALS['TL_DCA']['tl_article']['fields']['languageMain'] = array
 (
     'label'                   => &$GLOBALS['TL_LANG']['tl_article']['languageMain'],

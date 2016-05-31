@@ -205,44 +205,6 @@ class ChangeLanguageModule extends Module
                     }
                 }
 
-                // Try to find matching article
-                if (isset($arrParams['url']['articles']))
-                {
-                    $objArticle = null;
-
-                    // Get the fallback article
-                    if ($arrRootPage['fallback'])
-                    {
-                        $objArticle = $this->Database->prepare("SELECT id, alias FROM tl_article WHERE id=(SELECT languageMain FROM tl_article WHERE pid=? AND alias=?)")
-                                                     ->execute($objPage->id, $arrParams['url']['articles']);
-                    }
-                    else
-                    {
-                        $arrSubpages = $this->Database->getChildRecords($arrRootPage['id'], 'tl_page', true);
-
-                        if (!empty($arrSubpages))
-                        {
-                            // Find foreign article by fallback alias
-                            if ($objRootPage->fallback)
-                            {
-                                $objArticle = $this->Database->prepare("SELECT id, alias FROM tl_article WHERE languageMain=(SELECT id FROM tl_article WHERE alias=?) AND pid IN (" . implode(',', $arrSubpages) . ")")
-                                                             ->execute($arrParams['url']['articles']);
-                            }
-                            // Find foreign article by current article alias
-                            else
-                            {
-                                $objArticle = $this->Database->prepare("SELECT id, alias FROM tl_article WHERE languageMain=(SELECT languageMain FROM tl_article WHERE pid=? AND alias=?) AND pid IN (" . implode(',', $arrSubpages) . ")")
-                                                             ->execute($objPage->id, $arrParams['url']['articles']);
-                            }
-                        }
-                    }
-
-                    if ($objArticle->numRows)
-                    {
-                        $arrTranslatedParams['url']['articles'] = $objArticle->alias;
-                    }
-                }
-
                 // Check for other modules
                 if (($GLOBALS['TL_CONFIG']['useAutoItem'] && isset($_GET['auto_item'])) || isset($arrTranslatedParams['url']['items']))
                 {

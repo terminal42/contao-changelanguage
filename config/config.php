@@ -14,3 +14,9 @@
  * Frontend modules
  */
 $GLOBALS['FE_MOD']['miscellaneous']['changelanguage']   = 'Terminal42\ChangeLanguage\FrontendModule\ChangeLanguageModule';
+
+
+/**
+ * Hooks
+ */
+$GLOBALS['TL_HOOKS']['translateUrlParameters'][] = array('Terminal42\ChangeLanguage\EventListener\ArticleParameterListener', 'onTranslateUrlParameters');

@@ -14,6 +14,7 @@ namespace Terminal42\ChangeLanguage\DataContainer;
 use Contao\Database;
 use Contao\DataContainer;
 use Contao\Input;
+use Haste\Dca\PaletteManipulator;
 use Terminal42\ChangeLanguage\Finder;
 
 class Article
@@ -25,27 +26,36 @@ class Article
      */
     public function showSelectbox(DataContainer $dc)
     {
-        if ('edit' === Input::get('act')) {
+        $act = Input::get('act');
+
+        if ('edit' === $act) {
             $objPage = Database::getInstance()
-                ->prepare('SELECT p.* FROM tl_page p LEFT JOIN tl_article a ON a.pid=p.id WHERE a.id=? GROUP BY a.pid')
+                ->prepare("SELECT p.* FROM tl_page p LEFT JOIN tl_article a ON a.pid=p.id WHERE a.id=? AND a.showTeaser='1'")
+                ->limit(1)
                 ->execute($dc->id)
             ;
 
-            $arrMain = Finder::findMainLanguagePageForPage($objPage);
-
-            if ($arrMain !== false) {
-                $GLOBALS['TL_DCA']['tl_article']['fields']['title']['eval']['tl_class'] = 'w50';
-                $GLOBALS['TL_DCA']['tl_article']['fields']['alias']['eval']['tl_class'] = 'clr w50';
-                $GLOBALS['TL_DCA']['tl_article']['palettes']['default'] = preg_replace('@([,|;]title)([,|;])@','$1,languageMain$2', $GLOBALS['TL_DCA']['tl_article']['palettes']['default']);
+            // Article does not have showTeaser enabled
+            if (!$objPage->numRows) {
+                return;
             }
 
-        } elseif ('editAll' === Input::get('act')) {
-            $GLOBALS['TL_DCA']['tl_page']['palettes']['default'] = preg_replace('@([,|;]title)([,|;])@','$1,languageMain$2', $GLOBALS['TL_DCA']['tl_page']['palettes']['default']);
+            $arrMain = Finder::findMainLanguagePageForPage($objPage);
+
+            if (false !== $arrMain) {
+                $GLOBALS['TL_DCA']['tl_article']['fields']['title']['eval']['tl_class'] = 'w50';
+                $GLOBALS['TL_DCA']['tl_article']['fields']['alias']['eval']['tl_class'] = 'clr w50';
+
+                $this->addSelectboxToPalette();
+            }
+
+        } elseif ('editAll' === $act || 'overrideAll' === $act) {
+            $this->addSelectboxToPalette();
         }
     }
 
     /**
-     * Return all fallback pages for the current page (used as options_callback).
+     * Return all fallback articles for the current article (used as options_callback).
      *
      * @param DataContainer $dc
      *
@@ -55,7 +65,7 @@ class Article
     {
         $arrPage = Finder::findMainLanguagePageForPage($dc->activeRecord->pid);
 
-        if ($arrPage === false) {
+        if (false === $arrPage) {
             return array();
         }
 
@@ -70,5 +80,16 @@ class Article
         }
 
         return $arrArticles;
+    }
+
+    /**
+     * Adds languageMain field to tl_article palette
+     */
+    private function addSelectboxToPalette()
+    {
+        PaletteManipulator::create()
+            ->addField('languageMain', 'title', PaletteManipulator::POSITION_AFTER, 'title_legend')
+            ->applyToPalette('default', 'tl_article')
+        ;
     }
 }
