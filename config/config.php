@@ -20,3 +20,15 @@ $GLOBALS['FE_MOD']['miscellaneous']['changelanguage']   = 'Terminal42\ChangeLang
  * Hooks
  */
 $GLOBALS['TL_HOOKS']['translateUrlParameters'][] = array('Terminal42\ChangeLanguage\EventListener\ArticleParameterListener', 'onTranslateUrlParameters');
+
+if (in_array('calendar', ModuleLoader::getActive(), true)) {
+    $GLOBALS['TL_HOOKS']['translateUrlParameters'][] = array('Terminal42\ChangeLanguage\EventListener\CalendarParameterListener', 'onTranslateUrlParameters');
+}
+
+if (in_array('faq', ModuleLoader::getActive(), true)) {
+    $GLOBALS['TL_HOOKS']['translateUrlParameters'][] = array('Terminal42\ChangeLanguage\EventListener\FaqParameterListener', 'onTranslateUrlParameters');
+}
+
+if (in_array('news', ModuleLoader::getActive(), true)) {
+    $GLOBALS['TL_HOOKS']['translateUrlParameters'][] = array('Terminal42\ChangeLanguage\EventListener\NewsParameterListener', 'onTranslateUrlParameters');
+}

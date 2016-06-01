@@ -1,0 +1,103 @@
+<?php
+
+/**
+ * changelanguage Extension for Contao Open Source CMS
+ *
+ * @copyright  Copyright (c) 2008-2016, terminal42 gmbh
+ * @author     terminal42 gmbh <info@terminal42.ch>
+ * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://github.com/terminal42/contao-changelanguage
+ */
+
+namespace Terminal42\ChangeLanguage\EventListener;
+
+use Contao\Model;
+
+abstract class AbstractParameterListener
+{
+    /**
+     * Find record based on languageMain field and parent master archive
+     *
+     * @param array  $parameters
+     * @param string $language
+     *
+     * @return array
+     */
+    public function onTranslateUrlParameters(array $parameters, $language)
+    {
+        $current = $this->findCurrent();
+
+        if (null === $current) {
+            return $parameters;
+        }
+
+        $parent = $current->getRelated('pid');
+        $t = $current::getTable();
+
+        if (0 === $parent->master) {
+            $mainId = $current->id;
+            $masterId = $current->pid;
+        } else {
+            // Abort if current news has no translated version
+            if (0 === $current->languageMain) {
+                return $parameters;
+            }
+
+            $mainId = $current->languageMain;
+            $masterId = $parent->master;
+        }
+
+        $translatedNews = $this->findPublishedBy(
+            array(
+                "($t.id=? OR $t.languageMain=?)",
+                "$t.pid=(SELECT id FROM " . $parent::getTable() . " WHERE (id=? OR master=?) AND language=?)"
+            ),
+            array($mainId, $mainId, $masterId, $masterId, $language)
+        );
+
+        if (null !== $translatedNews) {
+            $parameters['url'][$this->getUrlKey()] = $translatedNews->alias ?: $translatedNews->id;
+        }
+
+        return $parameters;
+    }
+
+    /**
+     * Adds publishing conditions to Model query columns if backend user is not logged in.
+     *
+     * @param array  $columns
+     * @param string $table
+     *
+     * @return array
+     */
+    protected function addPublishedConditions(array $columns, $table)
+    {
+        if (true !== BE_USER_LOGGED_IN) {
+            $time      = \Date::floorToMinute();
+            $columns[] = "($table.start='' OR $table.start<='$time')";
+            $columns[] = "($table.stop='' OR $table.stop>'" . ($time + 60) . "')";
+            $columns[] = "$table.published='1'";
+        }
+
+        return $columns;
+    }
+
+    /**
+     * @return string
+     */
+    abstract protected function getUrlKey();
+
+    /**
+     * @return Model|null
+     */
+    abstract protected function findCurrent();
+
+    /**
+     * @param array $columns
+     * @param array $values
+     * @param array $options
+     *
+     * @return Model|null
+     */
+    abstract protected function findPublishedBy(array $columns, array $values = array(), array $options = array());
+}

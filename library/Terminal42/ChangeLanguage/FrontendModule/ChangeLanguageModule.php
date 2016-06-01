@@ -19,6 +19,7 @@ use Contao\FrontendTemplate;
 use Contao\Input;
 use Contao\Module;
 use Contao\PageModel;
+use Contao\System;
 use Terminal42\ChangeLanguage\Finder;
 
 /**
@@ -195,117 +196,12 @@ class ChangeLanguageModule extends Module
                     && is_array($GLOBALS['TL_HOOKS']['translateUrlParameters'])
                 ) {
                     foreach ($GLOBALS['TL_HOOKS']['translateUrlParameters'] as $callback) {
-                        $this->import($callback[0]);
-                        $arrTranslatedParams = $this->{$callback[0]}->$callback[1](
+                        $arrTranslatedParams = System::importStatic($callback[0])->{$callback[1]}(
                             $arrTranslatedParams,
                             $arrRootPage['language'],
                             $arrRootPage,
                             $addToNavigation
                         );
-                    }
-                }
-
-                // Check for other modules
-                if (($GLOBALS['TL_CONFIG']['useAutoItem'] && isset($_GET['auto_item'])) || isset($arrTranslatedParams['url']['items']))
-                {
-                    $blnFound = false;
-
-                    // News
-                    if (in_array('news', \ModuleLoader::getActive()))
-                    {
-                        $objNewsArchive = \NewsArchiveModel::findByJumpTo($objPage->id);
-
-                        if ($objNewsArchive !== null)
-                        {
-                            $objNews = \NewsModel::findPublishedByParentAndIdOrAlias(($GLOBALS['TL_CONFIG']['useAutoItem'] ? \Input::get('auto_item') : \Input::get('items')), array($objNewsArchive->id));
-
-                            // News item exists, find foreign item
-                            if ($objNews !== null)
-                            {
-                                if (!$objNewsArchive->master)
-                                {
-                                    $objNewsForeign = $this->Database->prepare("SELECT * FROM tl_news WHERE languageMain=? AND pid=(SELECT id FROM tl_news_archive WHERE language=?)" . (!BE_USER_LOGGED_IN ? " AND (start='' OR start<$time) AND (stop='' OR stop>$time) AND published=1" : ""))
-                                                                     ->limit(1)
-                                                                     ->execute($objNews->id, $arrRootPage['language']);
-                                }
-                                else
-                                {
-                                    $objNewsForeign = $this->Database->prepare("SELECT * FROM tl_news WHERE (id=? OR languageMain=?) AND pid=(SELECT id FROM tl_news_archive WHERE language=?)" . (!BE_USER_LOGGED_IN ? " AND (start='' OR start<$time) AND (stop='' OR stop>$time) AND published=1" : ""))
-                                                                     ->limit(1)
-                                                                     ->execute($objNews->languageMain, $objNews->languageMain, $arrRootPage['language']);
-                                }
-
-                                if ($objNewsForeign->numRows)
-                                {
-                                    $blnFound = true;
-                                    $arrTranslatedParams['url']['items'] = (($objNewsForeign->alias != '' && !$GLOBALS['TL_CONFIG']['disableAlias']) ? $objNewsForeign->alias : $objNewsForeign->id);
-                                }
-                            }
-                        }
-                    }
-
-                    // Events
-                    if (!$blnFound && in_array('calendar', \ModuleLoader::getActive()))
-                    {
-                        $objCalendar = \CalendarModel::findByJumpTo($objPage->id);
-
-                        if ($objCalendar !== null)
-                        {
-                            $objEvent = \CalendarEventsModel::findPublishedByParentAndIdOrAlias(($GLOBALS['TL_CONFIG']['useAutoItem'] ? \Input::get('auto_item') : \Input::get('items')), array($objCalendar->id));
-
-                            // Event exists, find foreign item
-                            if ($objEvent !== null)
-                            {
-                                if (!$objCalendar->master)
-                                {
-                                    $objEventForeign = $this->Database->prepare("SELECT * FROM tl_calendar_events WHERE languageMain=? AND pid=(SELECT id FROM tl_calendar WHERE language=?)" . (!BE_USER_LOGGED_IN ? " AND (start='' OR start<$time) AND (stop='' OR stop>$time) AND published=1" : ""))
-                                                                     ->limit(1)
-                                                                     ->execute($objEvent->id, $arrRootPage['language']);
-                                }
-                                else
-                                {
-                                    $objEventForeign = $this->Database->prepare("SELECT * FROM tl_calendar_events WHERE (id=? OR languageMain=?) AND pid=(SELECT id FROM tl_calendar WHERE language=?)" . (!BE_USER_LOGGED_IN ? " AND (start='' OR start<$time) AND (stop='' OR stop>$time) AND published=1" : ""))
-                                                                     ->limit(1)
-                                                                     ->execute($objEvent->languageMain, $objEvent->languageMain, $arrRootPage['language']);
-                                }
-
-                                if ($objEventForeign->numRows)
-                                {
-                                    $blnFound = true;
-                                    $arrTranslatedParams['url']['items'] = ((!$GLOBALS['TL_CONFIG']['disableAlias'] && $objEventForeign->alias != '') ? $objEventForeign->alias : $objEventForeign->id);
-                                }
-                            }
-                        }
-                    }
-
-                    // FAQ
-                    if (!$blnFound && in_array('faq', \ModuleLoader::getActive()))
-                    {
-                        $objFaqCategory = \FaqCategoryModel::findByJumpTo($objPage->id);
-
-                        if ($objFaqCategory !== null)
-                        {
-                            $objFaq = \FaqModel::findPublishedByParentAndIdOrAlias(($GLOBALS['TL_CONFIG']['useAutoItem'] ? \Input::get('auto_item') : \Input::get('items')), array($objFaqCategory->id));
-
-                            // FAQ item exists, find foreign item
-                            if ($objFaq !== null)
-                            {
-                                if (!$objFaqCategory->master) {
-                                    $objFaqForeign = $this->Database->prepare("SELECT * FROM tl_faq WHERE languageMain=? AND pid=(SELECT id FROM tl_faq_category WHERE language=?)" . (!BE_USER_LOGGED_IN ? " AND published=1" : ""))
-                                                                     ->limit(1)
-                                                                     ->execute($objFaq->id, $arrRootPage['language']);
-                                } else {
-                                    $objFaqForeign = $this->Database->prepare("SELECT * FROM tl_faq WHERE (id=? OR languageMain=?) AND pid=(SELECT id FROM tl_faq_category WHERE language=?)" . (!BE_USER_LOGGED_IN ? " AND published=1" : ""))
-                                                                     ->limit(1)
-                                                                     ->execute($objFaq->languageMain, $objFaq->languageMain, $arrRootPage['language']);
-                                }
-
-                                if ($objFaqForeign->numRows) {
-                                    $blnFound = true;
-                                    $arrTranslatedParams['url']['items'] = ((!$GLOBALS['TL_CONFIG']['disableAlias'] && $objFaqForeign->alias != '') ? $objFaqForeign->alias : $objFaqForeign->id);
-                                }
-                            }
-                        }
                     }
                 }
 
