@@ -141,7 +141,6 @@ class ChangeLanguageModule extends Module
 
         $c        = 0;
         $count    = count($arrRootPages);
-        $time     = time();
         $arrItems = array();
 
         foreach ($arrRootPages as $arrRootPage) {
@@ -234,7 +233,7 @@ class ChangeLanguageModule extends Module
                 if (array_key_exists($arrRootPage['language'], $arrLanguagePages)) {
                     // Matching language page found
                     $pageTitle = $arrLanguagePages[$arrRootPage['language']]['title'];
-                    $href = $this->generateFrontendUrl($arrLanguagePages[$arrRootPage['language']], $strParam, $arrRootPage['language']) . (count($arrRequest) ? ('?'.implode('&amp;', $arrRequest)) : '');
+                    $href = Controller::generateFrontendUrl($arrLanguagePages[$arrRootPage['language']], $strParam, $arrRootPage['language']) . (count($arrRequest) ? ('?'.implode('&amp;', $arrRequest)) : '');
 
                     if ($arrLanguagePages[$arrRootPage['language']]['target']) {
                         $target = ' target="_blank"';
@@ -302,14 +301,14 @@ class ChangeLanguageModule extends Module
                     // We found a trail page
                     if ($blnFound) {
                         $pageTitle = $objTrailPage->title;
-                        $href = $this->generateFrontendUrl($objTrailPage->row(), $strParam, $arrRootPage['language']);
+                        $href = Controller::generateFrontendUrl($objTrailPage->row(), $strParam, $arrRootPage['language']);
 
                         if ($objTrailPage->target) {
                             $target = ' target="_blank"';
                         }
                     } else {
                         $pageTitle = $arrRootPage['title'];
-                        $href = $this->generateFrontendUrl($arrRootPage, null, $arrRootPage['language']);
+                        $href = Controller::generateFrontendUrl($arrRootPage, null, $arrRootPage['language']);
                     }
                 }
             }
@@ -373,8 +372,8 @@ class ChangeLanguageModule extends Module
     {
         $arrCustom = array_keys($this->customLanguageText);
 
-        $key1 = array_search(strtolower($a['language']), $arrCustom);
-        $key2 = array_search(strtolower($b['language']), $arrCustom);
+        $key1 = array_search(strtolower($a['language']), $arrCustom, true);
+        $key2 = array_search(strtolower($b['language']), $arrCustom, true);
 
         return ($key1 < $key2) ? -1 : 1;
     }
