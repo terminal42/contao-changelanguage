@@ -18,9 +18,11 @@ use Contao\Environment;
 use Contao\FrontendTemplate;
 use Contao\Input;
 use Contao\Module;
+use Contao\ModuleModel;
 use Contao\PageModel;
 use Contao\System;
 use Terminal42\ChangeLanguage\Finder;
+use Terminal42\ChangeLanguage\Helper\LanguageText;
 
 /**
  * Class ChangeLanguageModule
@@ -40,9 +42,26 @@ class ChangeLanguageModule extends Module
     protected $strTemplate = 'mod_changelanguage';
 
     /**
-     * Generate the frontend module.
-     *
-     * @return string
+     * @var LanguageText
+     */
+    private $languageText;
+
+    /**
+     * @inheritDoc
+     */
+    public function __construct(ModuleModel $objModule, $strColumn)
+    {
+        parent::__construct($objModule, $strColumn);
+
+        $this->languageText = LanguageText::createFromOptionWizard($this->customLanguageText);
+
+        if ('' === $this->navigationTpl) {
+            $this->navigationTpl = 'nav_default';
+        }
+    }
+
+    /**
+     * @inheritdoc
      */
     public function generate()
     {
@@ -56,18 +75,6 @@ class ChangeLanguageModule extends Module
             $objTemplate->href     = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
 
             return $objTemplate->parse();
-        }
-
-        // Prepare custom language texts
-        $this->customLanguageText = deserialize($this->customLanguageText, true);
-        $customLanguageText = array();
-        foreach ($this->customLanguageText as $arrText) {
-            $customLanguageText[strtolower($arrText['value'])] = $arrText['label'];
-        }
-        $this->customLanguageText = $customLanguageText;
-
-        if ($this->navigationTpl == '') {
-            $this->navigationTpl = 'nav_default';
         }
 
         $strBuffer = parent::generate();
@@ -322,7 +329,7 @@ class ChangeLanguageModule extends Module
                 $arrItems[$c] = array(
                     'isActive'  => $active,
                     'class'     => 'lang-' . $arrRootPage['language'] . ($blnDirectFallback ? '' : ' nofallback') . ($active ? ' active' : '') . ($c == 0 ? ' first' : '') . ($c == $count - 1 ? ' last' : ''),
-                    'link'      => $this->getLabel($arrRootPage['language']),
+                    'link'      => $this->languageText->get($arrRootPage['language']),
                     'subitems'  => '',
                     'href'      => specialchars(($absoluteUrl ? $domain : '') . $href),
                     'pageTitle' => strip_tags($pageTitle),
@@ -343,7 +350,7 @@ class ChangeLanguageModule extends Module
 
         if ($c > 0) {
             if ($this->customLanguage) {
-                usort($arrItems, array($this, 'orderByCustom'));
+                $arrItems = $this->orderByCustom($arrItems);
             }
 
             /** @var FrontendTemplate|object $objTemplate */
@@ -359,33 +366,22 @@ class ChangeLanguageModule extends Module
         $this->getPageDetails($objPage->id);
     }
 
-
     /**
      * Re-order language options by custom texts.
      *
-     * @access private
-     * @param array $a
-     * @param array $b
-     * @return int
+     * @param array $items
+     *
+     * @return array
      */
-    private function orderByCustom($a, $b)
+    private function orderByCustom(array $items)
     {
-        $arrCustom = array_keys($this->customLanguageText);
+        $languages = $this->languageText->getLanguages();
 
-        $key1 = array_search(strtolower($a['language']), $arrCustom, true);
-        $key2 = array_search(strtolower($b['language']), $arrCustom, true);
+        return usort($items, function($a, $b) use ($languages) {
+            $key1 = array_search(strtolower($a['language']), $languages, true);
+            $key2 = array_search(strtolower($b['language']), $languages, true);
 
-        return ($key1 < $key2) ? -1 : 1;
-    }
-
-
-    private function getLabel($strLanguage)
-    {
-        if ($this->customLanguage && strlen($this->customLanguageText[strtolower($strLanguage)])) {
-            return Controller::replaceInsertTags($this->customLanguageText[strtolower($strLanguage)]);
-        }
-
-        return strtoupper($strLanguage);
+            return ($key1 < $key2) ? -1 : 1;
+        });
     }
 }
-
