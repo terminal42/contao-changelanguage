@@ -21,6 +21,12 @@
         "contao/calendar-bundle": "~3.3 || ~4.1",
         "contao/faq-bundle": "~3.3 || ~4.1"
     },
+    "conflict": {
+        "terminal42/contao-newslanguage": "*",
+        "aschempp/contao-calendarlanguage": "*",
+        "contao-legacy/newslanguage": "*",
+        "contao-legacy/calendarlanguage": "*"
+    },
     "replace": {
         "contao-legacy/changelanguage": "self.version"
     },
@@ -31,9 +37,12 @@
     },
     "extra":{
         "contao": {
-            "sources":{
+            "sources": {
                 "": "system/modules/changelanguage"
             },
+            "runonce": [
+                "config/update.php"
+            ],
             "transifex": {
                 "project": "contao-changelanguage",
                 "prefix": "master-",
