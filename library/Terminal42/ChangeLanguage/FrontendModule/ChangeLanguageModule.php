@@ -22,6 +22,7 @@ use Contao\ModuleModel;
 use Contao\PageModel;
 use Contao\System;
 use Terminal42\ChangeLanguage\Finder;
+use Terminal42\ChangeLanguage\Helper\AlternateLinks;
 use Terminal42\ChangeLanguage\Helper\LanguageText;
 
 /**
@@ -47,13 +48,19 @@ class ChangeLanguageModule extends Module
     private $languageText;
 
     /**
+     * @var AlternateLinks
+     */
+    private $alternateLinks;
+
+    /**
      * @inheritDoc
      */
     public function __construct(ModuleModel $objModule, $strColumn)
     {
         parent::__construct($objModule, $strColumn);
 
-        $this->languageText = LanguageText::createFromOptionWizard($this->customLanguageText);
+        $this->languageText   = LanguageText::createFromOptionWizard($this->customLanguageText);
+        $this->alternateLinks = new AlternateLinks();
 
         if ('' === $this->navigationTpl) {
             $this->navigationTpl = 'nav_default';
@@ -342,7 +349,7 @@ class ChangeLanguageModule extends Module
             }
 
             if ($blnDirectFallback) {
-                $GLOBALS['TL_HEAD'][] = '<link rel="alternate" hreflang="' . $arrRootPage['language'] . '" lang="' . $arrRootPage['language'] . '" href="' . specialchars($domain . $href) . '" title="' . specialchars($pageTitle, true) . '">';
+                $this->alternateLinks->add($arrRootPage['language'], $domain . $href, $pageTitle);
             }
 
             $c++;
@@ -364,6 +371,8 @@ class ChangeLanguageModule extends Module
 
         // Fix contao problem with date/time formats...
         $this->getPageDetails($objPage->id);
+
+        $GLOBALS['TL_HEAD'][] = $this->alternateLinks->generate();
     }
 
     /**

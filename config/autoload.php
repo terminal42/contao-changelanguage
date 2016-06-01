@@ -24,4 +24,5 @@ TemplateLoader::addFiles(array
 (
     'mod_changelanguage'           => 'system/modules/changelanguage/templates',
     'nav_dropdown'                 => 'system/modules/changelanguage/templates',
+    'block_alternate_links'        => 'system/modules/changelanguage/templates',
 ));
