@@ -11,16 +11,15 @@
 
 namespace Terminal42\ChangeLanguage\FrontendModule;
 
-use Contao\BackendTemplate;
 use Contao\Controller;
 use Contao\Database;
 use Contao\Environment;
 use Contao\FrontendTemplate;
 use Contao\Input;
-use Contao\Module;
 use Contao\ModuleModel;
 use Contao\PageModel;
 use Contao\System;
+use Haste\Frontend\AbstractFrontendModule;
 use Terminal42\ChangeLanguage\Finder;
 use Terminal42\ChangeLanguage\Helper\AlternateLinks;
 use Terminal42\ChangeLanguage\Helper\LanguageText;
@@ -34,7 +33,7 @@ use Terminal42\ChangeLanguage\Helper\LanguageText;
  * @property bool  $customLanguage
  * @property array $customLanguageText
  */
-class ChangeLanguageModule extends Module
+class ChangeLanguageModule extends AbstractFrontendModule
 {
     /**
      * Template
@@ -70,27 +69,9 @@ class ChangeLanguageModule extends Module
     /**
      * @inheritdoc
      */
-    public function generate()
+    public function outputIsEmpty()
     {
-        if ('BE' === TL_MODE) {
-            $objTemplate = new BackendTemplate('be_wildcard');
-
-            $objTemplate->wildcard = '### ' . $GLOBALS['TL_LANG']['FMD'][$this->type] . ' ###';
-            $objTemplate->title    = $this->headline;
-            $objTemplate->id       = $this->id;
-            $objTemplate->link     = $this->name;
-            $objTemplate->href     = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
-
-            return $objTemplate->parse();
-        }
-
-        $strBuffer = parent::generate();
-
-        if ($this->Template->items == '') {
-            return '';
-        }
-
-        return $strBuffer;
+        return $this->Template->items == '';
     }
 
     /**
