@@ -10,9 +10,8 @@
 
 namespace Terminal42\ChangeLanguage\Tests\PageFinder;
 
-use Contao\Model\Registry;
 use Contao\PageModel;
-use Terminal42\ChangeLanguage\PageFinder;
+use Terminal42\ChangeLanguage\Navigation\PageFinder;
 use Terminal42\ChangeLanguage\Tests\ContaoTestCase;
 
 class AssociatedPagesTest extends ContaoTestCase

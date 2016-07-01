@@ -17,8 +17,9 @@ use Haste\Frontend\AbstractFrontendModule;
 use Haste\Generator\RowClass;
 use Terminal42\ChangeLanguage\Helper\AlternateLinks;
 use Terminal42\ChangeLanguage\Helper\LanguageText;
-use Terminal42\ChangeLanguage\NavigationItem;
-use Terminal42\ChangeLanguage\PageFinder;
+use Terminal42\ChangeLanguage\Navigation\NavigationFactory;
+use Terminal42\ChangeLanguage\Navigation\NavigationItem;
+use Terminal42\ChangeLanguage\Navigation\PageFinder;
 
 /**
  * Class ChangeLanguageModule
@@ -36,37 +37,6 @@ class ChangeLanguageModule extends AbstractFrontendModule
      * @var string
      */
     protected $strTemplate = 'mod_changelanguage';
-
-    /**
-     * @var LanguageText
-     */
-    private $languageText;
-
-    /**
-     * @var AlternateLinks
-     */
-    private $alternateLinks;
-
-    /**
-     * @var PageFinder
-     */
-    private $pageFinder;
-
-    /**
-     * @inheritdoc
-     */
-    public function __construct(\ModuleModel $objModule, $strColumn)
-    {
-        parent::__construct($objModule, $strColumn);
-
-        $this->alternateLinks = new AlternateLinks();
-        $this->pageFinder     = new PageFinder();
-        $this->languageText = LanguageText::createFromOptionWizard($this->customLanguageText);
-
-        if ('' === $this->navigationTpl) {
-            $this->navigationTpl = 'nav_default';
-        }
-    }
 
     /**
      * @inheritdoc
@@ -87,73 +57,79 @@ class ChangeLanguageModule extends AbstractFrontendModule
      */
     protected function compile()
     {
-        /** @var PageModel $objPage */
-        global $objPage;
-
-        /** @var NavigationItem[] $navigationItems */
-        $navigationItems = [];
-        $rootPages = $this->pageFinder->findRootPagesForPage($objPage);
-
-        foreach ($rootPages as $rootPage) {
-            $language = strtolower($rootPage->language);
-
-            if (array_key_exists($language, $navigationItems)) {
-                throw new \OverflowException(
-                    sprintf('Multiple root pages for the language "%s" found', $rootPage->language)
-                );
-            }
-
-            $navigationItems[$language] = new NavigationItem($rootPage, $this->languageText->get($language));
-        }
-
-        foreach ($this->pageFinder->findAssociatedForPage($objPage) as $page) {
-            $page->loadDetails();
-
-            if (array_key_exists($page->rootId, $rootPages)) {
-                $navigationItems[strtolower($page->language)]->setTargetPage($page, true);
-            }
-        }
+        $currentPage  = $this->getCurrentPage();
+        $pageFinder   = new PageFinder();
 
         if ($this->customLanguage) {
-            $this->languageText->orderNavigationItems($navigationItems);
+            $languageText = LanguageText::createFromOptionWizard($this->customLanguageText);
+        } else {
+            $languageText = new LanguageText();
         }
 
-        $templateItems = [];
+        $navigationFactory = new NavigationFactory($pageFinder, $languageText);
+
+        $items = $navigationFactory->findNavigationItems(
+            $currentPage,
+            $this->hideActiveLanguage,
+            $this->hideNoFallback
+        );
+
+        $this->Template->items = $this->generateNavigationTemplate($items);
+        $GLOBALS['TL_HEAD'][]  = $this->generateHeaderLinks($items);
+    }
+
+    /**
+     * @param NavigationItem[] $navigationItems
+     *
+     * @return string|void
+     */
+    protected function generateNavigationTemplate(array $navigationItems)
+    {
+        if (0 === count($navigationItems)) {
+            return '';
+        }
+
+        $items = [];
 
         foreach ($navigationItems as $item) {
-            if ($this->hideActiveLanguage && $item->isIsCurrentPage()) {
-                continue;
-            }
-
-            if ($this->hideNoFallback && !$item->isIsDirectFallback()) {
-                continue;
-            }
-
-            if (!$item->hasTargetPage()) {
-                $item->setTargetPage(
-                    $this->pageFinder->findAssociatedParentForLanguage($objPage, $item->getLanguageTag()),
-                    false
-                );
-            }
-
-            $templateItems[] = $item->getTemplateArray();
-            $this->alternateLinks->addFromNavigationItem($item);
+            $items[] = $item->getTemplateArray();
         }
 
-        if (0 === count($templateItems)) {
-            return;
-        }
-
-        RowClass::withKey('class')->addFirstLast()->applyTo($templateItems);
+        RowClass::withKey('class')->addFirstLast()->applyTo($items);
 
         /** @var FrontendTemplate|object $objTemplate */
-        $objTemplate = new FrontendTemplate($this->navigationTpl);
+        $objTemplate = new FrontendTemplate($this->navigationTpl ?: 'nav_default');
+
         $objTemplate->setData($this->arrData);
         $objTemplate->level = 'level_1';
-        $objTemplate->items = $templateItems;
+        $objTemplate->items = $items;
 
-        $this->Template->items = $objTemplate->parse();
+        return $objTemplate->parse();
+    }
 
-        $GLOBALS['TL_HEAD'][] = $this->alternateLinks->generate();
+    /**
+     * @param NavigationItem[] $items
+     *
+     * @return string
+     */
+    protected function generateHeaderLinks(array $items)
+    {
+        $links = new AlternateLinks();
+
+        foreach ($items as $item) {
+            $links->addFromNavigationItem($item);
+        }
+
+        return $links->generate();
+    }
+
+    /**
+     * @return PageModel
+     */
+    protected function getCurrentPage()
+    {
+        global $objPage;
+
+        return $objPage;
     }
 }

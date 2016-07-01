@@ -8,9 +8,10 @@
  * @link       http://github.com/terminal42/contao-changelanguage
  */
 
-namespace Terminal42\ChangeLanguage;
+namespace Terminal42\ChangeLanguage\Navigation;
 
 use Contao\PageModel;
+use Terminal42\ChangeLanguage\Language;
 
 class NavigationItem
 {
