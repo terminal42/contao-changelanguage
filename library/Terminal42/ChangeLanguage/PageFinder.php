@@ -29,7 +29,7 @@ class PageFinder
 
         return $this->findPages(
             $columns,
-            [$page->dns, $page->dns, $page->dns],
+            [$page->domain, $page->domain, $page->domain],
             ['order' => 'sorting']
         );
     }

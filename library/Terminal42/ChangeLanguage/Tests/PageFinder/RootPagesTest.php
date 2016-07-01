@@ -35,7 +35,7 @@ class RootPagesTest extends ContaoTestCase
 
         $pageModel = new PageModel();
         $pageModel->id = 1;
-        $pageModel->dns = '';
+        $pageModel->domain = '';
 
         $roots = $this->pageFinder->findRootPagesForPage($pageModel);
 
@@ -52,7 +52,7 @@ class RootPagesTest extends ContaoTestCase
 
         $pageModel = new PageModel();
         $pageModel->id = 1;
-        $pageModel->dns = '';
+        $pageModel->domain = '';
 
         $roots = $this->pageFinder->findRootPagesForPage($pageModel);
 
@@ -66,7 +66,7 @@ class RootPagesTest extends ContaoTestCase
 
         $pageModel = new PageModel();
         $pageModel->id = 1;
-        $pageModel->dns = 'foo.com';
+        $pageModel->domain = 'foo.com';
 
         $roots = $this->pageFinder->findRootPagesForPage($pageModel);
 
@@ -82,7 +82,7 @@ class RootPagesTest extends ContaoTestCase
 
         $pageModel = new PageModel();
         $pageModel->id = $master;
-        $pageModel->dns = 'foo.com';
+        $pageModel->domain = 'foo.com';
 
         $roots = $this->pageFinder->findRootPagesForPage($pageModel);
 
@@ -98,7 +98,7 @@ class RootPagesTest extends ContaoTestCase
 
         $pageModel = new PageModel();
         $pageModel->id = $search;
-        $pageModel->dns = 'bar.com';
+        $pageModel->domain = 'bar.com';
 
         $roots = $this->pageFinder->findRootPagesForPage($pageModel);
 
@@ -114,7 +114,7 @@ class RootPagesTest extends ContaoTestCase
 
         $pageModel = new PageModel();
         $pageModel->id = 1;
-        $pageModel->dns = 'foo.com';
+        $pageModel->domain = 'foo.com';
 
         $roots = $this->pageFinder->findRootPagesForPage($pageModel);
 
@@ -131,7 +131,7 @@ class RootPagesTest extends ContaoTestCase
 
         $pageModel = new PageModel();
         $pageModel->id = 1;
-        $pageModel->dns = 'foo.com';
+        $pageModel->domain = 'foo.com';
 
         $roots = $this->pageFinder->findRootPagesForPage($pageModel);
 
@@ -147,7 +147,7 @@ class RootPagesTest extends ContaoTestCase
 
         $pageModel = new PageModel();
         $pageModel->id = 1;
-        $pageModel->dns = 'foo.com';
+        $pageModel->domain = 'foo.com';
 
         $roots = $this->pageFinder->findRootPagesForPage($pageModel);
 
@@ -163,7 +163,7 @@ class RootPagesTest extends ContaoTestCase
 
         $pageModel = new PageModel();
         $pageModel->id = $master;
-        $pageModel->dns = 'foo.com';
+        $pageModel->domain = 'foo.com';
 
         $roots = $this->pageFinder->findRootPagesForPage($pageModel);
 
