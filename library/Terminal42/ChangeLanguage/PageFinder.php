@@ -35,6 +35,30 @@ class PageFinder
     }
 
     /**
+     * @param PageModel $page
+     *
+     * @return PageModel[]
+     */
+    public function findAssociatedForPage(PageModel $page)
+    {
+        $page->loadDetails();
+
+        if ($page->rootIsFallback) {
+            $values = [$page->id, $page->id];
+        } elseif (!$page->languageMain) {
+            return [$page];
+        } else {
+            $values = [$page->languageMain, $page->languageMain];
+        }
+
+        $columns = ['(id=? OR languageMain=?)'];
+
+        $this->addPublishingConditions($columns);
+
+        return $this->findPages($columns, $values);
+    }
+
+    /**
      * @param array $columns
      */
     private function addPublishingConditions(array &$columns)
