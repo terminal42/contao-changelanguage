@@ -4,3 +4,6 @@
 
 # Transifex
 .tx
+
+# Unit Tests
+phpunit.xml

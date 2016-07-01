@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.2/phpunit.xsd"
+         backupGlobals="false"
+         colors="true"
+         bootstrap="library/Terminal42/ChangeLanguage/Tests/bootstrap.php"
+>
+    <php>
+        <var name="DB_HOST" value="localhost" />
+        <var name="DB_PORT" value="3306" />
+        <var name="DB_USER" value="" />
+        <var name="DB_PASSWD" value="" />
+        <var name="DB_DBNAME" value="changelanguage" />
+    </php>
+
+    <testsuites>
+        <testsuite name="ChangeLanguage TestSuite">
+            <directory>./library/Terminal42/ChangeLanguage/Tests/*</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>
