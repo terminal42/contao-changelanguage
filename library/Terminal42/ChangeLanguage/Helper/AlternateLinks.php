@@ -12,6 +12,8 @@
 namespace Terminal42\ChangeLanguage\Helper;
 
 use Contao\FrontendTemplate;
+use Terminal42\ChangeLanguage\Language;
+use Terminal42\ChangeLanguage\NavigationItem;
 
 /**
  * AlternateLinks is a helper class to handle <link rel="alternate"> in the page header.
@@ -34,11 +36,11 @@ class AlternateLinks
      */
     public function has($language)
     {
-        return array_key_exists($this->normalize($language), $this->links);
+        return array_key_exists(Language::toLanguageTag($language), $this->links);
     }
 
     /**
-     * Adds or replaces a link for a language
+     * Adds or replaces a link for a language.
      *
      * @param string $language
      * @param string $href
@@ -50,13 +52,23 @@ class AlternateLinks
     }
 
     /**
+     * Adds a link from a NavigationItem instance.
+     *
+     * @param NavigationItem $item
+     */
+    public function addFromNavigationItem(NavigationItem $item)
+    {
+        $this->add($item->getLanguageTag(), $item->getHref(), $item->getTitle());
+    }
+
+    /**
      * Removes link for a language if it exists.
      *
      * @param string $language
      */
     public function remove($language)
     {
-        unset($this->links[$this->normalize($language)]);
+        unset($this->links[Language::toLanguageTag($language)]);
     }
 
     /**
@@ -97,26 +109,8 @@ class AlternateLinks
      */
     private function store($language, $href, $title)
     {
-        $language = $this->normalize($language);
+        $language = Language::toLanguageTag($language);
 
         $this->links[$language] = ['language' => $language, 'href' => $href, 'title' => $title];
-    }
-
-    /**
-     * Normalizes language to a correct IETF Language Tag (BCP 47).
-     *
-     * @param string $language
-     *
-     * @return string
-     *
-     * @throws \InvalidArgumentException if the language is not a valid format (BCP 47 or ICU Locale ID)
-     */
-    private function normalize($language)
-    {
-        if (!preg_match('#([a-z]{2})((-|_)([A-Z]{2}))?#i', $language, $matches)) {
-            throw new \InvalidArgumentException($language . ' is not a supported language format.');
-        }
-
-        return strtolower($matches[1]) . '-' . strtoupper($matches[4]);
     }
 }

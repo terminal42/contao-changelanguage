@@ -59,6 +59,39 @@ class PageFinder
     }
 
     /**
+     * @param PageModel $page
+     * @param string    $language
+     *
+     * @return PageModel
+     */
+    public function findAssociatedParentForLanguage(PageModel $page, $language)
+    {
+        // Stop loop if we're at the top
+        if (0 === $page->pid || 'root' === $page->type) {
+            return $page;
+        }
+
+        $parent = PageModel::findPublishedById($page->pid);
+
+        if (!$parent instanceof PageModel) {
+            return $page;
+        }
+
+        $language   = Language::toLocaleID($language);
+        $associated = $this->findAssociatedForPage($parent);
+
+        foreach ($associated as $model) {
+            $model->loadDetails();
+
+            if (Language::toLocaleID($model->language) === $language) {
+                return $model;
+            }
+        }
+
+        return $this->findAssociatedParentForLanguage($parent, $language);
+    }
+
+    /**
      * @param array $columns
      */
     private function addPublishingConditions(array &$columns)

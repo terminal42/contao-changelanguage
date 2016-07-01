@@ -12,6 +12,7 @@
 namespace Terminal42\ChangeLanguage\Helper;
 
 use Contao\Controller;
+use Terminal42\ChangeLanguage\NavigationItem;
 
 /**
  * LanguageText stores a list of labels for language keys.
@@ -84,13 +85,22 @@ class LanguageText
     }
 
     /**
-     * Gets the languages from label map.
+     * Order an array of NavigationItem's by our custom labels.
+     *
+     * @param NavigationItem[] $items
      *
      * @return array
      */
-    public function getLanguages()
+    public function orderNavigationItems(array &$items)
     {
-        return array_keys($this->map);
+        $languages = array_keys($this->map);
+
+        return usort($items, function(NavigationItem $a, NavigationItem $b) use ($languages) {
+            $key1 = array_search(strtolower($a->getNormalizedLanguage()), $languages, true);
+            $key2 = array_search(strtolower($b->getNormalizedLanguage()), $languages, true);
+
+            return ($key1 < $key2) ? -1 : 1;
+        });
     }
 
     /**
@@ -105,7 +115,7 @@ class LanguageText
         $config = deserialize($config);
 
         if (!is_array($config)) {
-            return static();
+            return new static();
         }
 
         $map = array();
