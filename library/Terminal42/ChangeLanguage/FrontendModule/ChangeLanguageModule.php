@@ -71,13 +71,19 @@ class ChangeLanguageModule extends AbstractFrontendModule
     /**
      * @inheritdoc
      */
-    public function outputIsEmpty()
+    public function generate()
     {
-        return $this->Template->items == '';
+        if ('BE' === TL_MODE) {
+            return $this->generateWildcard();
+        }
+
+        $buffer = parent::generate();
+
+        return '' === $this->Template->items ? '' : $buffer;
     }
 
     /**
-     * Generate module
+     * @inheritdoc
      */
     protected function compile()
     {
