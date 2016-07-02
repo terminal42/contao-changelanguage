@@ -13,8 +13,10 @@ namespace Terminal42\ChangeLanguage\FrontendModule;
 
 use Contao\FrontendTemplate;
 use Contao\PageModel;
+use Contao\System;
 use Haste\Frontend\AbstractFrontendModule;
 use Haste\Generator\RowClass;
+use Terminal42\ChangeLanguage\Event\ChangelanguageNavigationEvent;
 use Terminal42\ChangeLanguage\Helper\AlternateLinks;
 use Terminal42\ChangeLanguage\Helper\LanguageText;
 use Terminal42\ChangeLanguage\Helper\UrlParameterBag;
@@ -94,6 +96,10 @@ class ChangeLanguageModule extends AbstractFrontendModule
         foreach ($navigationItems as $item) {
             $urlParameters = clone $defaultUrlParameters;
 
+            if (false === $this->executeHook($item, $urlParameters)) {
+                continue;
+            }
+
             $items[] = $item->getTemplateArray($urlParameters);
         }
 
@@ -133,5 +139,35 @@ class ChangeLanguageModule extends AbstractFrontendModule
         global $objPage;
 
         return $objPage;
+    }
+
+    /**
+     * Returns false if navigation item should be skipped
+     *
+     * @param NavigationItem  $navigationItem
+     * @param UrlParameterBag $urlParameterBag
+     *
+     * @return bool
+     */
+    protected function executeHook(NavigationItem $navigationItem, UrlParameterBag $urlParameterBag)
+    {
+        // HOOK: allow extensions to modify url parameters
+        if (isset($GLOBALS['TL_HOOKS']['changelanguageNavigation'])
+            && is_array($GLOBALS['TL_HOOKS']['changelanguageNavigation'])
+        ) {
+            $event = new ChangelanguageNavigationEvent($navigationItem, $urlParameterBag);
+
+            foreach ($GLOBALS['TL_HOOKS']['changelanguageNavigation'] as $callback) {
+                System::importStatic($callback[0])->{$callback[1]}($event);
+
+                if ($event->isPropagationStopped()) {
+                    break;
+                }
+            }
+
+            return !$event->isSkipped();
+        }
+
+        return true;
     }
 }
