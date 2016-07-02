@@ -133,21 +133,21 @@ class NavigationItem
     }
 
     /**
+     * @param UrlParameterBag $urlParameterBag
+     *
      * @return string
      */
-    public function getLabel()
-    {
-        return $this->linkLabel;
-    }
-
-    /**
-     * @return string
-     */
-    public function getHref()
+    public function getHref(UrlParameterBag $urlParameterBag)
     {
         $targetPage = $this->targetPage ?: $this->rootPage;
 
-        return $targetPage->getFrontendUrl();
+        $href = $targetPage->getFrontendUrl($urlParameterBag->generateParameters());
+
+        if (($queryString = $urlParameterBag->generateQueryString()) !== null) {
+            $href .= '?' . $queryString;
+        }
+
+        return $href;
     }
 
     /**
@@ -161,9 +161,11 @@ class NavigationItem
     /**
      * Generates array suitable for nav_default template.
      *
+     * @param UrlParameterBag $urlParameterBag
+     *
      * @return array
      */
-    public function getTemplateArray()
+    public function getTemplateArray(UrlParameterBag $urlParameterBag)
     {
         $targetPage = $this->targetPage ?: $this->rootPage;
         $newWindow  = 'redirect' === $targetPage->type && $targetPage->target;
@@ -173,7 +175,7 @@ class NavigationItem
             'class'     => 'lang-' . $this->getNormalizedLanguage() . ($this->isDirectFallback ? '' : ' nofallback') . ($this->isCurrentPage ? ' active' : ''),
             'link'      => $this->getLabel(),
             'subitems'  => '',
-            'href'      => specialchars($this->getHref()),
+            'href'      => specialchars($this->getHref($urlParameterBag)),
             'pageTitle' => strip_tags($this->getTitle()),
             'accesskey' => '',
             'tabindex'  => '',

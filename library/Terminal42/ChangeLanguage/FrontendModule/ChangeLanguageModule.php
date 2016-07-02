@@ -17,13 +17,12 @@ use Haste\Frontend\AbstractFrontendModule;
 use Haste\Generator\RowClass;
 use Terminal42\ChangeLanguage\Helper\AlternateLinks;
 use Terminal42\ChangeLanguage\Helper\LanguageText;
+use Terminal42\ChangeLanguage\Helper\UrlParameterBag;
 use Terminal42\ChangeLanguage\Navigation\NavigationFactory;
 use Terminal42\ChangeLanguage\Navigation\NavigationItem;
 use Terminal42\ChangeLanguage\Navigation\PageFinder;
 
 /**
- * Class ChangeLanguageModule
- *
  * @property bool  $hideActiveLanguage
  * @property bool  $hideNoFallback
  * @property bool  $keepUrlParams
@@ -90,9 +89,12 @@ class ChangeLanguageModule extends AbstractFrontendModule
         }
 
         $items = [];
+        $defaultUrlParameters = UrlParameterBag::createFromGlobals();
 
         foreach ($navigationItems as $item) {
-            $items[] = $item->getTemplateArray();
+            $urlParameters = clone $defaultUrlParameters;
+
+            $items[] = $item->getTemplateArray($urlParameters);
         }
 
         RowClass::withKey('class')->addFirstLast()->applyTo($items);
