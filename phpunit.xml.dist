@@ -16,7 +16,7 @@
 
     <testsuites>
         <testsuite name="ChangeLanguage TestSuite">
-            <directory>./library/Terminal42/ChangeLanguage/Tests/*</directory>
+            <directory>./library/Terminal42/ChangeLanguage/Tests/</directory>
         </testsuite>
     </testsuites>
 </phpunit>

@@ -25,7 +25,7 @@ class Language
      */
     public static function normalize($language, $delimiter)
     {
-        if (!preg_match('#([a-z]{2})((-|_)([A-Z]{2}))?#i', $language, $matches)) {
+        if (!preg_match('#^([a-z]{2})((-|_)([A-Z]{2}))?$#i', $language, $matches)) {
             throw new \InvalidArgumentException(sprintf('"%s" is not a supported language format.', $language));
         }
 
