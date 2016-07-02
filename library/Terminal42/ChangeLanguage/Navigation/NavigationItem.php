@@ -11,6 +11,7 @@
 namespace Terminal42\ChangeLanguage\Navigation;
 
 use Contao\PageModel;
+use Terminal42\ChangeLanguage\Helper\UrlParameterBag;
 use Terminal42\ChangeLanguage\Language;
 
 class NavigationItem
@@ -21,9 +22,19 @@ class NavigationItem
     private $rootPage;
 
     /**
-     * @var PageModel
+     * @var PageModel|null
      */
     private $targetPage;
+
+    /**
+     * @var string
+     */
+    private $linkLabel;
+
+    /**
+     * @var bool
+     */
+    private $newWindow;
 
     /**
      * @var bool
@@ -79,6 +90,35 @@ class NavigationItem
     }
 
     /**
+     * @return PageModel
+     */
+    public function getRootPage()
+    {
+        return $this->rootPage;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLabel()
+    {
+        return $this->linkLabel;
+    }
+
+    public function setLabel($label)
+    {
+        $this->linkLabel = (string) $label;
+    }
+
+    /**
+     * @return PageModel|null
+     */
+    public function getTargetPage()
+    {
+        return $this->targetPage;
+    }
+
+    /**
      * @param PageModel $targetPage
      * @param bool      $isDirectFallback
      * @param bool|null $isCurrentPage
@@ -96,6 +136,36 @@ class NavigationItem
                 $this->isCurrentPage = true;
             }
         }
+    }
+
+    /**
+     * @param boolean $isCurrentPage
+     */
+    public function setIsCurrentPage($isCurrentPage)
+    {
+        $this->isCurrentPage = $isCurrentPage;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isNewWindow()
+    {
+        if (null === $this->newWindow) {
+            $targetPage = $this->targetPage ?: $this->rootPage;
+
+            return 'redirect' === $targetPage->type && $targetPage->target;
+        }
+
+        return $this->newWindow;
+    }
+
+    /**
+     * @param bool|null $newWindow
+     */
+    public function setNewWindow($newWindow)
+    {
+        $this->newWindow = $newWindow;
     }
 
     /**
@@ -167,9 +237,6 @@ class NavigationItem
      */
     public function getTemplateArray(UrlParameterBag $urlParameterBag)
     {
-        $targetPage = $this->targetPage ?: $this->rootPage;
-        $newWindow  = 'redirect' === $targetPage->type && $targetPage->target;
-
         return [
             'isActive'  => $this->isCurrentPage,
             'class'     => 'lang-' . $this->getNormalizedLanguage() . ($this->isDirectFallback ? '' : ' nofallback') . ($this->isCurrentPage ? ' active' : ''),
@@ -180,7 +247,7 @@ class NavigationItem
             'accesskey' => '',
             'tabindex'  => '',
             'nofollow'  => false,
-            'target'    => ($newWindow ? ' target="_blank"' : '') . ' hreflang="' . $this->getLanguageTag() . '" lang="' . $this->getLanguageTag() . '"',
+            'target'    => ($this->isNewWindow() ? ' target="_blank"' : '') . ' hreflang="' . $this->getLanguageTag() . '" lang="' . $this->getLanguageTag() . '"',
             'item'      => $this,
         ];
     }
