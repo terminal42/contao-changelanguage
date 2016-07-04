@@ -227,28 +227,4 @@ class NavigationItem
     {
         return $this->targetPage ? $this->targetPage->title : $this->rootPage->title;
     }
-
-    /**
-     * Generates array suitable for nav_default template.
-     *
-     * @param UrlParameterBag $urlParameterBag
-     *
-     * @return array
-     */
-    public function getTemplateArray(UrlParameterBag $urlParameterBag)
-    {
-        return [
-            'isActive'  => $this->isCurrentPage,
-            'class'     => 'lang-' . $this->getNormalizedLanguage() . ($this->isDirectFallback ? '' : ' nofallback') . ($this->isCurrentPage ? ' active' : ''),
-            'link'      => $this->getLabel(),
-            'subitems'  => '',
-            'href'      => specialchars($this->getHref($urlParameterBag)),
-            'pageTitle' => strip_tags($this->getTitle()),
-            'accesskey' => '',
-            'tabindex'  => '',
-            'nofollow'  => false,
-            'target'    => ($this->isNewWindow() ? ' target="_blank"' : '') . ' hreflang="' . $this->getLanguageTag() . '" lang="' . $this->getLanguageTag() . '"',
-            'item'      => $this,
-        ];
-    }
 }

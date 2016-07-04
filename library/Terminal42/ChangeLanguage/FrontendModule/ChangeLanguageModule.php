@@ -69,29 +69,19 @@ class ChangeLanguageModule extends AbstractFrontendModule
 
         $navigationFactory = new NavigationFactory($pageFinder, $languageText);
 
-        $items = $navigationFactory->findNavigationItems(
+        $navigationItems = $navigationFactory->findNavigationItems(
             $currentPage,
             $this->hideActiveLanguage,
             $this->hideNoFallback
         );
 
         // Do not generate module or header if there is none or only one link
-        if (count($items) < 2) {
+        if (count($navigationItems) < 2) {
             return;
         }
 
-        $this->Template->items = $this->generateNavigationTemplate($items);
-        $GLOBALS['TL_HEAD'][]  = $this->generateHeaderLinks($items);
-    }
-
-    /**
-     * @param NavigationItem[] $navigationItems
-     *
-     * @return string|void
-     */
-    protected function generateNavigationTemplate(array $navigationItems)
-    {
-        $items = [];
+        $templateItems        = [];
+        $headerLinks          = new AlternateLinks();
         $defaultUrlParameters = UrlParameterBag::createFromGlobals();
 
         foreach ($navigationItems as $item) {
@@ -101,9 +91,46 @@ class ChangeLanguageModule extends AbstractFrontendModule
                 continue;
             }
 
-            $items[] = $item->getTemplateArray($urlParameters);
+            $templateItems[] = $this->generateTemplateArray($item, $urlParameters);
+            $headerLinks->addFromNavigationItem($item, $urlParameters);
         }
 
+        $this->Template->items = $this->generateNavigationTemplate($templateItems);
+        $GLOBALS['TL_HEAD'][]  = $headerLinks->generate();
+    }
+
+    /**
+     * Generates array suitable for nav_default template.
+     *
+     * @param NavigationItem  $item
+     * @param UrlParameterBag $urlParameterBag
+     *
+     * @return array
+     */
+    protected function generateTemplateArray(NavigationItem $item, UrlParameterBag $urlParameterBag)
+    {
+        return [
+            'isActive'  => $item->isCurrentPage(),
+            'class'     => 'lang-' . $item->getNormalizedLanguage() . ($item->isDirectFallback() ? '' : ' nofallback') . ($item->isCurrentPage() ? ' active' : ''),
+            'link'      => $item->getLabel(),
+            'subitems'  => '',
+            'href'      => specialchars($item->getHref($urlParameterBag)),
+            'pageTitle' => strip_tags($item->getTitle()),
+            'accesskey' => '',
+            'tabindex'  => '',
+            'nofollow'  => false,
+            'target'    => ($item->isNewWindow() ? ' target="_blank"' : '') . ' hreflang="' . $item->getLanguageTag() . '" lang="' . $item->getLanguageTag() . '"',
+            'item'      => $this,
+        ];
+    }
+
+    /**
+     * @param array $items
+     *
+     * @return string
+     */
+    protected function generateNavigationTemplate(array $items)
+    {
         RowClass::withKey('class')->addFirstLast()->applyTo($items);
 
         /** @var FrontendTemplate|object $objTemplate */
@@ -114,22 +141,6 @@ class ChangeLanguageModule extends AbstractFrontendModule
         $objTemplate->items = $items;
 
         return $objTemplate->parse();
-    }
-
-    /**
-     * @param NavigationItem[] $items
-     *
-     * @return string
-     */
-    protected function generateHeaderLinks(array $items)
-    {
-        $links = new AlternateLinks();
-
-        foreach ($items as $item) {
-            $links->addFromNavigationItem($item);
-        }
-
-        return $links->generate();
     }
 
     /**
