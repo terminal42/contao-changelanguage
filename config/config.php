@@ -19,16 +19,16 @@ $GLOBALS['FE_MOD']['miscellaneous']['changelanguage']   = 'Terminal42\ChangeLang
 /**
  * Hooks
  */
-$GLOBALS['TL_HOOKS']['translateUrlParameters'][] = array('Terminal42\ChangeLanguage\EventListener\ArticleParameterListener', 'onTranslateUrlParameters');
+$GLOBALS['TL_HOOKS']['changelanguageNavigation'][] = array('Terminal42\ChangeLanguage\EventListener\ArticleNavigationListener', 'onChangelanguageNavigation');
 
 if (in_array('calendar', ModuleLoader::getActive(), true)) {
-    $GLOBALS['TL_HOOKS']['translateUrlParameters'][] = array('Terminal42\ChangeLanguage\EventListener\CalendarParameterListener', 'onTranslateUrlParameters');
+    $GLOBALS['TL_HOOKS']['changelanguageNavigation'][] = array('Terminal42\ChangeLanguage\EventListener\CalendarNavigationListener', 'onChangelanguageNavigation');
 }
 
 if (in_array('faq', ModuleLoader::getActive(), true)) {
-    $GLOBALS['TL_HOOKS']['translateUrlParameters'][] = array('Terminal42\ChangeLanguage\EventListener\FaqParameterListener', 'onTranslateUrlParameters');
+    $GLOBALS['TL_HOOKS']['changelanguageNavigation'][] = array('Terminal42\ChangeLanguage\EventListener\FaqNavigationListener', 'onChangelanguageNavigation');
 }
 
 if (in_array('news', ModuleLoader::getActive(), true)) {
-    $GLOBALS['TL_HOOKS']['translateUrlParameters'][] = array('Terminal42\ChangeLanguage\EventListener\NewsParameterListener', 'onTranslateUrlParameters');
+    $GLOBALS['TL_HOOKS']['changelanguageNavigation'][] = array('Terminal42\ChangeLanguage\EventListener\NewsNavigationListener', 'onChangelanguageNavigation');
 }

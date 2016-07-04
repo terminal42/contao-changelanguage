@@ -11,22 +11,22 @@
 
 namespace Terminal42\ChangeLanguage\EventListener;
 
-use Contao\FaqCategoryModel;
-use Contao\FaqModel;
+use Contao\CalendarEventsModel;
+use Contao\CalendarModel;
 use Contao\PageModel;
 use Haste\Input\Input;
 
 /**
- * Translate URL parameters for faq items
+ * Translate URL parameters for calendar events
  */
-class FaqParameterListener extends AbstractParameterListener
+class CalendarNavigationListener extends AbstractMasterListener
 {
     /**
      * @inheritdoc
      */
     protected function getUrlKey()
     {
-        return 'items';
+        return 'events';
     }
 
     /**
@@ -43,11 +43,11 @@ class FaqParameterListener extends AbstractParameterListener
         /** @var PageModel $objPage */
         global $objPage;
 
-        if (($calendars = FaqCategoryModel::findBy('jumpTo', $objPage->id)) === null) {
+        if (($calendars = CalendarModel::findBy('jumpTo', $objPage->id)) === null) {
             return null;
         }
 
-        return FaqModel::findPublishedByParentAndIdOrAlias($alias, $calendars->fetchEach('id'));
+        return CalendarEventsModel::findPublishedByParentAndIdOrAlias($alias, $calendars->fetchEach('id'));
     }
 
     /**
@@ -55,8 +55,8 @@ class FaqParameterListener extends AbstractParameterListener
      */
     protected function findPublishedBy(array $columns, array $values = array(), array $options = array())
     {
-        return FaqModel::findOneBy(
-            $this->addPublishedConditions($columns, FaqModel::getTable()),
+        return CalendarEventsModel::findOneBy(
+            $this->addPublishedConditions($columns, CalendarEventsModel::getTable()),
             $values,
             $options
         );

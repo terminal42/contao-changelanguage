@@ -12,23 +12,21 @@
 namespace Terminal42\ChangeLanguage\EventListener;
 
 use Contao\Model;
+use Terminal42\ChangeLanguage\Event\ChangelanguageNavigationEvent;
 
-abstract class AbstractParameterListener
+abstract class AbstractMasterListener
 {
     /**
      * Find record based on languageMain field and parent master archive
      *
-     * @param array  $parameters
-     * @param string $language
-     *
-     * @return array
+     * @param ChangelanguageNavigationEvent $event
      */
-    public function onTranslateUrlParameters(array $parameters, $language)
+    public function onChangelanguageNavigation(ChangelanguageNavigationEvent $event)
     {
         $current = $this->findCurrent();
 
         if (null === $current) {
-            return $parameters;
+            return;
         }
 
         $parent = $current->getRelated('pid');
@@ -38,28 +36,35 @@ abstract class AbstractParameterListener
             $mainId = $current->id;
             $masterId = $current->pid;
         } else {
-            // Abort if current news has no translated version
+            // Abort if current record has no translated version
             if (0 === $current->languageMain) {
-                return $parameters;
+                return;
             }
 
             $mainId = $current->languageMain;
             $masterId = $parent->master;
         }
 
-        $translatedNews = $this->findPublishedBy(
+        $translated = $this->findPublishedBy(
             array(
                 "($t.id=? OR $t.languageMain=?)",
                 "$t.pid=(SELECT id FROM " . $parent::getTable() . " WHERE (id=? OR master=?) AND language=?)"
             ),
-            array($mainId, $mainId, $masterId, $masterId, $language)
+            array($mainId, $mainId, $masterId, $masterId, $event->getNavigationItem()->getLanguageTag())
         );
 
-        if (null !== $translatedNews) {
-            $parameters['url'][$this->getUrlKey()] = $translatedNews->alias ?: $translatedNews->id;
+        if (null === $translated) {
+            return;
         }
 
-        return $parameters;
+        $urlKey = $this->getUrlKey();
+
+        if ($GLOBALS['TL_CONFIG']['useAutoItem'] && in_array($urlKey, $GLOBALS['TL_AUTO_ITEM'], true)) {
+            $urlKey = 'auto_item';
+        }
+
+        $urlParameters = $event->getUrlParameterBag();
+        $urlParameters->setUrlAttribute($urlKey, $translated->alias ?: $translated->id);
     }
 
     /**

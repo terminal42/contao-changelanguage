@@ -19,7 +19,7 @@ use Haste\Input\Input;
 /**
  * Translate URL parameters for news items
  */
-class NewsParameterListener extends AbstractParameterListener
+class NewsNavigationListener extends AbstractMasterListener
 {
     /**
      * @inheritdoc

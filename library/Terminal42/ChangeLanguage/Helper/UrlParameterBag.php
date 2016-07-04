@@ -11,7 +11,6 @@
 
 namespace Terminal42\ChangeLanguage\Helper;
 
-use Contao\Environment;
 use Contao\Input;
 
 class UrlParameterBag
@@ -59,11 +58,21 @@ class UrlParameterBag
     /**
      * @param string $name
      *
+     * @return bool
+     */
+    public function hasUrlAttribute($name)
+    {
+        return array_key_exists($name, $this->attributes);
+    }
+
+    /**
+     * @param string $name
+     *
      * @return mixed|null
      */
     public function getUrlAttribute($name)
     {
-        return array_key_exists($name, $this->attributes) ? $this->attributes[$name] : null;
+        return $this->hasUrlAttribute($name) ? $this->attributes[$name] : null;
     }
 
     /**
@@ -98,11 +107,21 @@ class UrlParameterBag
     /**
      * @param string $name
      *
+     * @return bool
+     */
+    public function hasQueryParameter($name)
+    {
+        return array_key_exists($name, $this->query);
+    }
+
+    /**
+     * @param string $name
+     *
      * @return mixed|null
      */
     public function getQueryParameter($name)
     {
-        return array_key_exists($name, $this->query) ? $this->query[$name] : null;
+        return $this->hasQueryParameter($name) ? $this->query[$name] : null;
     }
 
     /**
