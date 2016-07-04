@@ -19,7 +19,10 @@
     "require-dev": {
         "contao/news-bundle": "~3.5 || ~4.1",
         "contao/calendar-bundle": "~3.5 || ~4.1",
-        "contao/faq-bundle": "~3.5 || ~4.1"
+        "contao/faq-bundle": "~3.5 || ~4.1",
+        "contao/core":"~3.5",
+        "phpunit/phpunit": "4.*",
+        "phpunit/dbunit": "~1.3"
     },
     "conflict": {
         "terminal42/contao-newslanguage": "*",
