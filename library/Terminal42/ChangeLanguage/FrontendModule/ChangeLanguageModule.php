@@ -75,6 +75,11 @@ class ChangeLanguageModule extends AbstractFrontendModule
             $this->hideNoFallback
         );
 
+        // Do not generate module or header if there is none or only one link
+        if (count($items) < 2) {
+            return;
+        }
+
         $this->Template->items = $this->generateNavigationTemplate($items);
         $GLOBALS['TL_HEAD'][]  = $this->generateHeaderLinks($items);
     }
@@ -86,10 +91,6 @@ class ChangeLanguageModule extends AbstractFrontendModule
      */
     protected function generateNavigationTemplate(array $navigationItems)
     {
-        if (0 === count($navigationItems)) {
-            return '';
-        }
-
         $items = [];
         $defaultUrlParameters = UrlParameterBag::createFromGlobals();
 
