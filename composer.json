@@ -14,7 +14,8 @@
         "php":">=5.4",
         "contao/core-bundle":"~3.5 || ~4.1",
         "contao-community-alliance/composer-plugin":"^2.4.1 || ~3.0",
-        "codefog/contao-haste": "~4.13"
+        "codefog/contao-haste": "~4.13",
+        "menatwork/contao-multicolumnwizard": "^3.3"
     },
     "require-dev": {
         "contao/news-bundle": "~3.5 || ~4.1",

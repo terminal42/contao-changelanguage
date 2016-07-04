@@ -44,7 +44,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['keepUrlParams'] = array
     'label'                   => &$GLOBALS['TL_LANG']['tl_module']['keepUrlParams'],
     'exclude'                 => true,
     'inputType'               => 'checkbox',
-    'eval'                      => array('tl_class'=>'w50'),
+    'eval'                    => array('tl_class'=>'w50'),
     'sql'                     => "char(1) NOT NULL default ''"
 );
 
@@ -53,7 +53,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['customLanguage'] = array
     'label'                   => &$GLOBALS['TL_LANG']['tl_module']['customLanguage'],
     'exclude'                 => true,
     'inputType'               => 'checkbox',
-    'eval'                      => array('submitOnChange'=>true, 'tl_class'=>'clr'),
+    'eval'                    => array('submitOnChange'=>true, 'tl_class'=>'clr'),
     'sql'                     => "char(1) NOT NULL default ''"
 );
 
@@ -61,8 +61,25 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['customLanguageText'] = array
 (
     'label'                   => &$GLOBALS['TL_LANG']['tl_module']['customLanguageText'],
     'exclude'                 => true,
-    'inputType'               => 'optionWizard',
-    'eval'                      => array('allowHtml'=>true, 'tl_class'=>'long'),
+    'inputType'               => 'multiColumnWizard',
+    'eval'                    => array(
+        'columnFields' => [
+            'value' => [
+                'label'     => &$GLOBALS['TL_LANG']['tl_module']['customLanguageText']['value'],
+                'inputType' => 'text',
+                'mandatory' => true,
+                'class'     => 'tl_text',
+            ],
+            'label' => [
+                'label'     => &$GLOBALS['TL_LANG']['tl_module']['customLanguageText']['label'],
+                'inputType' => 'text',
+                'mandatory' => true,
+                'class'     => 'tl_text',
+            ],
+        ],
+        'allowHtml'    => true,
+        'tl_class'     => 'clr',
+    ),
     'sql'                     => "text NULL"
 );
 
