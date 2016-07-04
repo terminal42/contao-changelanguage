@@ -1,3 +1,3 @@
 <?php foreach ($this->links as $link): ?>
-<link rel="alternate" hreflang="<?= $link['language'] ?>" lang="<?= $link['language'] ?>" href="<?= $link['href'] ?>"<?php if($link['title']): ?> title="<?= specialchars($link['title'], true) ?>"<?php endif; ?>>
+<link rel="alternate" hreflang="<?= $link['language'] ?>" href="<?= $link['href'] ?>">
 <?php endforeach; ?>
