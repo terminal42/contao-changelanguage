@@ -72,12 +72,12 @@ class NavigationFactory
         }
 
         foreach ($navigationItems as $k => $item) {
-            if ($hideActive && $item->isIsCurrentPage()) {
+            if ($hideActive && $item->isCurrentPage()) {
                 unset($navigationItems[$k]);
                 continue;
             }
 
-            if ($hideNoFallback && !$item->isIsDirectFallback()) {
+            if ($hideNoFallback && !$item->isDirectFallback()) {
                 unset($navigationItems[$k]);
                 continue;
             }

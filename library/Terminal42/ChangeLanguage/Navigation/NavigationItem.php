@@ -76,7 +76,7 @@ class NavigationItem
     /**
      * @return bool
      */
-    public function isIsDirectFallback()
+    public function isDirectFallback()
     {
         return $this->isDirectFallback;
     }
@@ -84,7 +84,7 @@ class NavigationItem
     /**
      * @return bool
      */
-    public function isIsCurrentPage()
+    public function isCurrentPage()
     {
         return $this->isCurrentPage;
     }
