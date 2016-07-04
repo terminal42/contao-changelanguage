@@ -191,7 +191,7 @@ class UrlParameterBag
         parse_str($_SERVER['QUERY_STRING'], $currentQuery);
 
         foreach ($_GET as $k => $value) {
-            $value = Input::get($k);
+            $value = Input::get($k, false, true);
             $isQuery = array_key_exists($k, $currentQuery);
 
             if (empty($value) || ($skipQueryParameters && $isQuery)) {
