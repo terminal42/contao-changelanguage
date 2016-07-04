@@ -13,7 +13,7 @@ namespace Terminal42\ChangeLanguage\Helper;
 
 use Contao\FrontendTemplate;
 use Terminal42\ChangeLanguage\Language;
-use Terminal42\ChangeLanguage\NavigationItem;
+use Terminal42\ChangeLanguage\Navigation\NavigationItem;
 
 /**
  * AlternateLinks is a helper class to handle <link rel="alternate"> in the page header.
@@ -56,9 +56,9 @@ class AlternateLinks
      *
      * @param NavigationItem $item
      */
-    public function addFromNavigationItem(NavigationItem $item)
+    public function addFromNavigationItem(NavigationItem $item, UrlParameterBag $urlParameterBag)
     {
-        $this->add($item->getLanguageTag(), $item->getHref(), $item->getTitle());
+        $this->add($item->getLanguageTag(), $item->getHref($urlParameterBag), $item->getTitle());
     }
 
     /**
@@ -110,6 +110,11 @@ class AlternateLinks
     private function store($language, $href, $title)
     {
         $language = Language::toLanguageTag($language);
+
+        // URLs must always be absolute
+        if (0 !== strpos($href, 'http://') && 0 !== strpos($href, 'https://')) {
+            $href = \Environment::get('base') . $href;
+        }
 
         $this->links[$language] = ['language' => $language, 'href' => $href, 'title' => $title];
     }
