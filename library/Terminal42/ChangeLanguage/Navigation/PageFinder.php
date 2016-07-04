@@ -105,13 +105,23 @@ class PageFinder
     {
         // Stop loop if we're at the top
         if (0 === $page->pid || 'root' === $page->type) {
-            return $page;
+            $rootPages = $this->findRootPagesForPage($page);
+
+            foreach ($rootPages as $model) {
+                if (Language::toLocaleID($model->language) === $language) {
+                    return $model;
+                }
+            }
+
+            throw new \InvalidArgumentException(
+                sprintf('There\'s no language "%s" related to root page ID "%s"', $language, $page->id)
+            );
         }
 
         $parent = PageModel::findPublishedById($page->pid);
 
         if (!$parent instanceof PageModel) {
-            return $page;
+            throw new \UnderflowException(sprintf('Parent page for page ID "%s" not found', $page->id));
         }
 
         return $this->findAssociatedForLanguage($parent, $language);
