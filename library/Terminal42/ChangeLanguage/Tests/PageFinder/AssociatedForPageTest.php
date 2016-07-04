@@ -14,7 +14,7 @@ use Contao\PageModel;
 use Terminal42\ChangeLanguage\Navigation\PageFinder;
 use Terminal42\ChangeLanguage\Tests\ContaoTestCase;
 
-class AssociatedPagesTest extends ContaoTestCase
+class AssociatedForPageTest extends ContaoTestCase
 {
     /**
      * @var PageFinder
@@ -99,15 +99,32 @@ class AssociatedPagesTest extends ContaoTestCase
         $this->assertPageCount($pages, 1);
     }
 
+    public function testFindsRootsForRootPage()
+    {
+        $en = $this->query("INSERT INTO tl_page (type, language, published) VALUES ('root', 'en', '1')");
+        $de = $this->query("INSERT INTO tl_page (type, language, published) VALUES ('root', 'de', '1')");
+
+        $pageModel = new PageModel();
+        $pageModel->id = $de;
+        $pageModel->type = 'root';
+        $pageModel->dns = '';
+
+        $pages = $this->pageFinder->findAssociatedForPage($pageModel);
+
+        $this->assertPageCount($pages, 2);
+        $this->assertEquals('root', $pages[$en]->type);
+        $this->assertEquals('root', $pages[$de]->type);
+    }
+
     private function createPage($languageMain = 0, $published = true)
     {
         $published = $published ? '1' : '';
 
         return $this->query("
             INSERT INTO tl_page 
-            (type, title, languageMain, published) 
+            (type, languageMain, published) 
             VALUES 
-            ('regular', 'foobar', $languageMain, '$published')
+            ('regular', $languageMain, '$published')
         ");
     }
 

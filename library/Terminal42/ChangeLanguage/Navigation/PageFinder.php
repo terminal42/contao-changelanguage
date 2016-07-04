@@ -51,6 +51,10 @@ class PageFinder
      */
     public function findAssociatedForPage(PageModel $page)
     {
+        if ('root' === $page->type) {
+            return $this->findRootPagesForPage($page);
+        }
+
         $page->loadDetails();
 
         if ($page->rootIsFallback) {
