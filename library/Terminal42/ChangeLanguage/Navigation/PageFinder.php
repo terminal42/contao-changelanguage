@@ -74,6 +74,29 @@ class PageFinder
      *
      * @return PageModel
      */
+    public function findAssociatedForLanguage(PageModel $page, $language)
+    {
+        $language   = Language::toLocaleID($language);
+        $associated = $this->findAssociatedForPage($page);
+
+        foreach ($associated as $model) {
+            $model->loadDetails();
+
+            if (Language::toLocaleID($model->language) === $language) {
+                return $model;
+            }
+        }
+
+        // No page found, find for parent
+        return $this->findAssociatedParentForLanguage($page, $language);
+    }
+
+    /**
+     * @param PageModel $page
+     * @param string    $language
+     *
+     * @return PageModel
+     */
     public function findAssociatedParentForLanguage(PageModel $page, $language)
     {
         // Stop loop if we're at the top
@@ -87,18 +110,7 @@ class PageFinder
             return $page;
         }
 
-        $language   = Language::toLocaleID($language);
-        $associated = $this->findAssociatedForPage($parent);
-
-        foreach ($associated as $model) {
-            $model->loadDetails();
-
-            if (Language::toLocaleID($model->language) === $language) {
-                return $model;
-            }
-        }
-
-        return $this->findAssociatedParentForLanguage($parent, $language);
+        return $this->findAssociatedForLanguage($parent, $language);
     }
 
     /**
