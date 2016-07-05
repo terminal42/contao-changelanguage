@@ -13,13 +13,13 @@
 /**
  * Prevent DB fields to be added to an empty DCA
  */
-if (in_array('news', \ModuleLoader::getActive(), true))
-{
+if (in_array('news', \ModuleLoader::getActive(), true)) {
 
     /**
      * Config
      */
     $GLOBALS['TL_DCA']['tl_news']['config']['onload_callback'][] = array('Terminal42\ChangeLanguage\DataContainer\News', 'showSelectbox');
+    $GLOBALS['TL_DCA']['tl_news']['list']['sorting']['child_record_callback'] = array('Terminal42\ChangeLanguage\EventListener\DataContainer\MissingLanguageIconListener', 'onNewsChildRecords');
 
 
     /**

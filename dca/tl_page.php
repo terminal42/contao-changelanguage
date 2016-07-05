@@ -20,7 +20,7 @@ $GLOBALS['TL_DCA']['tl_page']['config']['oncopy_callback'][]     = array('Termin
 $GLOBALS['TL_DCA']['tl_page']['config']['oncut_callback'][]      = array('Terminal42\ChangeLanguage\DataContainer\Page', 'resetFallbackAll');
 $GLOBALS['TL_DCA']['tl_page']['config']['onsubmit_callback'][]   = array('Terminal42\ChangeLanguage\DataContainer\Page', 'resetFallbackAll');
 $GLOBALS['TL_DCA']['tl_page']['config']['ondelete_callback'][]   = array('Terminal42\ChangeLanguage\DataContainer\Page', 'resetLanguageMain');
-$GLOBALS['TL_DCA']['tl_page']['list']['label']['label_callback'] = array('Terminal42\ChangeLanguage\DataContainer\Page', 'addFallbackNotice');
+$GLOBALS['TL_DCA']['tl_page']['list']['label']['label_callback'] = array('Terminal42\ChangeLanguage\EventListener\DataContainer\MissingLanguageIconListener', 'onPageLabel');
 
 
 /**

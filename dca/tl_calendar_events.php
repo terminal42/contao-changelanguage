@@ -20,6 +20,7 @@ if (in_array('calendar', \ModuleLoader::getActive(), true))
      * Config
      */
     $GLOBALS['TL_DCA']['tl_calendar_events']['config']['onload_callback'][] = array('Terminal42\ChangeLanguage\DataContainer\CalendarEvents', 'showSelectbox');
+    $GLOBALS['TL_DCA']['tl_calendar_events']['list']['sorting']['child_record_callback'] = array('Terminal42\ChangeLanguage\EventListener\DataContainer\MissingLanguageIconListener', 'onCalendarEventChildRecords');
 
 
     /**

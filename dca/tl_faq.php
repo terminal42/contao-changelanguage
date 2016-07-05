@@ -20,6 +20,7 @@ if (in_array('faq', \ModuleLoader::getActive(), false))
      * Config
      */
     $GLOBALS['TL_DCA']['tl_faq']['config']['onload_callback'][] = array('Terminal42\ChangeLanguage\DataContainer\Faq', 'showSelectbox');
+    $GLOBALS['TL_DCA']['tl_faq']['list']['sorting']['child_record_callback'] = array('Terminal42\ChangeLanguage\EventListener\DataContainer\MissingLanguageIconListener', 'onFaqChildRecords');
 
 
     /**

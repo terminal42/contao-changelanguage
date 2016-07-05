@@ -114,55 +114,6 @@ class Page
     }
 
     /**
-     * Show notice if no fallback page is set
-     *
-     * @param array              $row
-     * @param string             $label
-     * @param DataContainer|null $dc
-     * @param string             $imageAttribute
-     * @param bool               $blnReturnImage
-     * @param bool               $blnProtected
-     *
-     * @return string
-     */
-    public function addFallbackNotice(
-        $row,
-        $label,
-        $dc = null,
-        $imageAttribute = '',
-        $blnReturnImage = false,
-        $blnProtected = false
-    ) {
-        $label = Backend::addPageIcon($row, $label, $dc, $imageAttribute, $blnReturnImage, $blnProtected);
-
-        if (!$row['languageMain']) {
-            // Skip if we are not a regular page
-            if ('root' === $row['type'] || 'folder' === $row['type']) {
-                return $label;
-            }
-
-            $objPage = PageModel::findWithDetails($row['id']);
-
-            $objRootPage = Database::getInstance()
-                ->prepare('SELECT * FROM tl_page WHERE id=?')
-                ->execute($objPage->rootId)
-            ;
-
-            $objFallback = Database::getInstance()
-                ->prepare("SELECT id FROM tl_page WHERE type='root' AND fallback='1' AND id!=? AND (dns=? OR id=?)")
-                ->limit(1)
-                ->execute($objRootPage->id, $objPage->domain, ($objRootPage->fallback ? $objRootPage->languageRoot : 0))
-            ;
-
-            if ($objFallback->numRows) {
-                $label .= '<span style="color:#b3b3b3; padding-left:3px;">[' . $GLOBALS['TL_LANG']['MSC']['noMainLanguage'] . ']</span>';
-            }
-        }
-
-        return $label;
-    }
-
-    /**
      * Return all fallback pages for the current page (used as options_callback).
      *
      * @param DataContainer $dc
