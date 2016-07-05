@@ -13,4 +13,4 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_page']['languageMain'] = array('Odpowiadająca strona', 'Wybierz odpowiednik strony w języku oznaczonym jako "Awaryjny język".', 'Nie posiada odpowiednika');
+$GLOBALS['TL_LANG']['tl_page']['languageMain'] = array('Strona głównego języka', 'Wybierz odpowiednik strony w języku oznaczonym jako "Awaryjny język".', 'Nie posiada odpowiednika');

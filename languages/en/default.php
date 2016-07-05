@@ -9,9 +9,13 @@
  * @link       http://github.com/terminal42/contao-changelanguage
  */
 
+/**
+ * Errors
+ */
+$GLOBALS['TL_LANG']['MSC']['duplicateMainLanguage'] = 'This main language record already has an assigment.';
+
 
 /**
  * Miscellaneous
  */
 $GLOBALS['TL_LANG']['MSC']['noMainLanguage']    = 'Main language missing';
-

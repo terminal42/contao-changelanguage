@@ -11,7 +11,12 @@
 
 
 /**
+ * Errors
+ */
+$GLOBALS['TL_LANG']['MSC']['duplicateMainLanguage'] = 'Dieser Datensatz ist in der Hauptsprache bereits verknüpft.';
+
+
+/**
  * Miscellaneous
  */
 $GLOBALS['TL_LANG']['MSC']['noMainLanguage']    = 'Hauptsprache fehlt';
-

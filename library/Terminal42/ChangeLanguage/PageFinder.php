@@ -45,6 +45,34 @@ class PageFinder
     }
 
     /**
+     * Finds the root page of fallback language for the given page.
+     *
+     * @param PageModel $page
+     *
+     * @return \PageModel|null
+     */
+    public function findMasterRootForPage(PageModel $page)
+    {
+        $page->loadDetails();
+
+        $columns = [
+            "type='root'",
+            "fallback='1'",
+            'languageRoot=0',
+            "(
+                dns=? 
+                OR dns IN (SELECT dns FROM tl_page WHERE type='root' AND fallback='1' AND id IN (SELECT languageRoot FROM tl_page WHERE type='root' AND fallback='1' AND dns=?)) 
+                OR dns IN (SELECT dns FROM tl_page WHERE type='root' AND fallback='1' AND languageRoot IN (SELECT id FROM tl_page WHERE type='root' AND fallback='1' AND dns=?))
+            )"
+        ];
+
+        return PageModel::findOneBy(
+            $columns,
+            [$page->domain, $page->domain, $page->domain]
+        );
+    }
+
+    /**
      * @param PageModel $page
      *
      * @return PageModel[]

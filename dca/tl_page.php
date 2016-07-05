@@ -15,7 +15,7 @@
  */
 $GLOBALS['TL_DCA']['tl_page']['config']['sql']['keys']['languageMain'] = 'index';
 
-$GLOBALS['TL_DCA']['tl_page']['config']['onload_callback'][]     = array('Terminal42\ChangeLanguage\DataContainer\Page', 'showSelectbox');
+$GLOBALS['TL_DCA']['tl_page']['config']['onload_callback'][]     = array('Terminal42\ChangeLanguage\EventListener\DataContainer\PageInitializationListener', 'onLoad');
 $GLOBALS['TL_DCA']['tl_page']['config']['oncopy_callback'][]     = array('Terminal42\ChangeLanguage\DataContainer\Page', 'resetFallbackCopy');
 $GLOBALS['TL_DCA']['tl_page']['config']['oncut_callback'][]      = array('Terminal42\ChangeLanguage\DataContainer\Page', 'resetFallbackAll');
 $GLOBALS['TL_DCA']['tl_page']['config']['onsubmit_callback'][]   = array('Terminal42\ChangeLanguage\DataContainer\Page', 'resetFallbackAll');
@@ -33,8 +33,9 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['languageMain'] = array
     'label'                   => &$GLOBALS['TL_LANG']['tl_page']['languageMain'],
     'exclude'                 => true,
     'inputType'               => 'pageTree',
-    'eval'                    => array('fieldType'=>'radio', 'rootNodes'=>array(1)),
-    'sql'                     => "int(10) unsigned NOT NULL default '0'"
+    'eval'                    => array('fieldType'=>'radio', 'multiple'=>false, 'rootNodes'=>[0], 'tl_class'=>'clr'),
+    'sql'                     => "int(10) unsigned NOT NULL default '0'",
+    'save_callback'           => [['Terminal42\ChangeLanguage\EventListener\DataContainer\PageFieldsListener', 'onSaveLanguageMain']]
 );
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['languageRoot'] = array
@@ -42,7 +43,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['languageRoot'] = array
     'label'                   => &$GLOBALS['TL_LANG']['tl_page']['languageRoot'],
     'exclude'                 => true,
     'inputType'               => 'select',
-    'options_callback'        => array('Terminal42\ChangeLanguage\DataContainer\Page', 'getRootPages'),
+    'options_callback'        => array('Terminal42\ChangeLanguage\EventListener\DataContainer\PageFieldsListener', 'onLanguageRootOptions'),
     'eval'                    => array('includeBlankOption'=>true, 'blankOptionLabel'=>&$GLOBALS['TL_LANG']['tl_page']['languageRoot'][2], 'tl_class'=>'w50'),
     'sql'                     => "int(10) unsigned NOT NULL default '0'"
 );
