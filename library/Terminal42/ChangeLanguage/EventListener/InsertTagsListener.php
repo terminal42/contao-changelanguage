@@ -12,7 +12,7 @@
 namespace Terminal42\ChangeLanguage\EventListener;
 
 use Contao\Controller;
-use Terminal42\ChangeLanguage\Navigation\PageFinder;
+use Terminal42\ChangeLanguage\PageFinder;
 
 class InsertTagsListener
 {

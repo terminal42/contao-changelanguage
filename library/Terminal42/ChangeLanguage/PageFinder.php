@@ -9,7 +9,7 @@
  * @link       http://github.com/terminal42/contao-changelanguage
  */
 
-namespace Terminal42\ChangeLanguage\Navigation;
+namespace Terminal42\ChangeLanguage;
 
 use Contao\Date;
 use Contao\PageModel;
