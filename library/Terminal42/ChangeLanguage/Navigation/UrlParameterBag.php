@@ -194,7 +194,8 @@ class UrlParameterBag
             $value = Input::get($k, false, true);
             $isQuery = array_key_exists($k, $currentQuery);
 
-            if (empty($value) || ($skipQueryParameters && $isQuery)) {
+            // the current page language is set in $_GET
+            if (empty($value) || 'language' === $k || ($skipQueryParameters && $isQuery)) {
                 continue;
             }
 
