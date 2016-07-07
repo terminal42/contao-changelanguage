@@ -11,67 +11,32 @@
 
 namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 
-use Contao\BackendUser;
 use Contao\Database;
 use Contao\DataContainer;
-use Contao\System;
 use Haste\Dca\PaletteManipulator;
 
 class ParentTableListener
 {
+    /**
+     * @var string
+     */
     private $table;
 
     /**
      * Constructor.
      *
-     * @param $table
+     * @param string $table
      */
     public function __construct($table)
     {
         $this->table = $table;
     }
 
-    public function onLoad(DataContainer $dc)
+    public function register()
     {
-        if (null === $this->table) {
-            return;
-        }
-
-        // TODO
-        // - cannot have master field if another archive has this as master
-        // -
-        $this->addFieldsToDca();
-    }
-
-    public function onMasterOptions(DataContainer $dc)
-    {
-        if (null === $this->table) {
-            return [];
-        }
-
-        $options = [];
-        $result = Database::getInstance()
-            ->prepare('SELECT id, title FROM ' . $this->table . ' WHERE id!=? AND language!=? AND master=0 ORDER BY title')
-            ->execute($dc->id, $dc->activeRecord->language)
-        ;
-
-        while ($result->next()) {
-            $options[$result->id] = sprintf($GLOBALS['TL_LANG'][$this->table]['isSlave'], $result->title);
-        }
-
-        return $options;
-    }
-
-    protected function addFieldsToDca()
-    {
-        $self = $this;
-        $user = BackendUser::getInstance();
-
-        System::loadLanguageFile('tl_page');
-
         $GLOBALS['TL_DCA'][$this->table]['fields']['language'] = [
             'label'     => &$GLOBALS['TL_LANG'][$this->table]['language'],
-            'exclude'   => !$user->hasAccess($this->table . '::language', 'alexf'),
+            'exclude'   => true,
             'filter'    => true,
             'inputType' => 'text',
             'eval'      => [
@@ -86,10 +51,10 @@ class ParentTableListener
 
         $GLOBALS['TL_DCA'][$this->table]['fields']['master'] = [
             'label'            => &$GLOBALS['TL_LANG'][$this->table]['master'],
-            'exclude'          => !$user->hasAccess($this->table . '::master', 'alexf'),
+            'exclude'          => true,
             'inputType'        => 'select',
-            'options_callback' => function (DataContainer $dc) use ($self) {
-                return $self->onMasterOptions($dc);
+            'options_callback' => function (DataContainer $dc) {
+                return $this->onMasterOptions($dc);
             },
             'eval'             => [
                 'includeBlankOption' => true,
@@ -104,6 +69,20 @@ class ParentTableListener
             ->addField('master', 'language_legend', PaletteManipulator::POSITION_APPEND)
             ->applyToPalette('default', $this->table)
         ;
+    }
 
+    public function onMasterOptions(DataContainer $dc)
+    {
+        $options = [];
+        $result = Database::getInstance()
+            ->prepare('SELECT id, title FROM ' . $this->table . ' WHERE id!=? AND language!=? AND master=0 ORDER BY title')
+            ->execute($dc->id, $dc->activeRecord->language)
+        ;
+
+        while ($result->next()) {
+            $options[$result->id] = sprintf($GLOBALS['TL_LANG'][$this->table]['isSlave'], $result->title);
+        }
+
+        return $options;
     }
 }

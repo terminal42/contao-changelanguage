@@ -10,25 +10,24 @@
 
 namespace Terminal42\ChangeLanguage\EventListener;
 
-use Contao\DataContainer;
+use Terminal42\ChangeLanguage\EventListener\DataContainer\ChildTableListener;
 use Terminal42\ChangeLanguage\EventListener\DataContainer\ParentTableListener;
 
 class CallbackSetupListener
 {
-    private static $parentListeners = [
+    private static $parentTables = [
         'tl_news_archive',
         'tl_calendar',
         'tl_faq_category',
     ];
 
+
     public function onLoadDataContainer($table)
     {
-        if (in_array($table, self::$parentListeners, true)) {
-            $GLOBALS['TL_DCA'][$table]['config']['onload_callback'][] = function (DataContainer $dc) use ($table) {
-                $listener = new ParentTableListener($table);
+        if (in_array($table, self::$parentTables, true)) {
+            $listener = new ParentTableListener($table);
+            $listener->register();
 
-                $listener->onLoad($dc);
-            };
         }
     }
 }
