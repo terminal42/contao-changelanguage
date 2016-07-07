@@ -39,8 +39,6 @@ class PageOperationListener
             && (!$dc->activeRecord->languageRoot || (PageModel::findByPk($dc->activeRecord->languageRoot)) === null)
         ) {
             $this->resetPageAndChildren($dc->id);
-        } else {
-            $this->validateLanguageMainForPage($dc->id);
         }
     }
 
