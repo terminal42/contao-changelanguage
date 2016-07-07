@@ -14,6 +14,7 @@ namespace Terminal42\ChangeLanguage\Helper;
 use Contao\FrontendTemplate;
 use Terminal42\ChangeLanguage\Language;
 use Terminal42\ChangeLanguage\Navigation\NavigationItem;
+use Terminal42\ChangeLanguage\Navigation\UrlParameterBag;
 
 /**
  * AlternateLinks is a helper class to handle <link rel="alternate"> in the page header.

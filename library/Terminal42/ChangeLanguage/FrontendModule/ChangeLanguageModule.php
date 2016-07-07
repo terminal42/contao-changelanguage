@@ -20,9 +20,9 @@ use Terminal42\ChangeLanguage\PageFinder;
 use Terminal42\ChangeLanguage\Event\ChangelanguageNavigationEvent;
 use Terminal42\ChangeLanguage\Helper\AlternateLinks;
 use Terminal42\ChangeLanguage\Helper\LanguageText;
-use Terminal42\ChangeLanguage\Helper\UrlParameterBag;
 use Terminal42\ChangeLanguage\Navigation\NavigationFactory;
 use Terminal42\ChangeLanguage\Navigation\NavigationItem;
+use Terminal42\ChangeLanguage\Navigation\UrlParameterBag;
 
 /**
  * @property bool  $hideActiveLanguage

@@ -11,8 +11,8 @@
 
 namespace Terminal42\ChangeLanguage\Event;
 
-use Terminal42\ChangeLanguage\Helper\UrlParameterBag;
 use Terminal42\ChangeLanguage\Navigation\NavigationItem;
+use Terminal42\ChangeLanguage\Navigation\UrlParameterBag;
 
 class ChangelanguageNavigationEvent
 {

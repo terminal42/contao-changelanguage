@@ -9,7 +9,7 @@
  * @link       http://github.com/terminal42/contao-changelanguage
  */
 
-namespace Terminal42\ChangeLanguage\Helper;
+namespace Terminal42\ChangeLanguage\Navigation;
 
 use Contao\Input;
 

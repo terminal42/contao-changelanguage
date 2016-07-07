@@ -12,7 +12,6 @@
 namespace Terminal42\ChangeLanguage\Navigation;
 
 use Contao\PageModel;
-use Terminal42\ChangeLanguage\Helper\UrlParameterBag;
 use Terminal42\ChangeLanguage\Language;
 
 class NavigationItem
