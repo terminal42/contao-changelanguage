@@ -18,4 +18,4 @@ $GLOBALS['TL_LANG']['MSC']['duplicateMainLanguage'] = 'This main language record
 /**
  * Miscellaneous
  */
-$GLOBALS['TL_LANG']['MSC']['noMainLanguage']    = 'Main language missing';
+$GLOBALS['TL_LANG']['MSC']['noMainLanguage'] = 'Main language missing';
