@@ -14,7 +14,6 @@
  * Config
  */
 $GLOBALS['TL_DCA']['tl_article']['config']['onload_callback'][] = array('Terminal42\ChangeLanguage\DataContainer\Article', 'showSelectbox');
-$GLOBALS['TL_DCA']['tl_article']['list']['label']['label_callback'] = array('Terminal42\ChangeLanguage\EventListener\DataContainer\MissingLanguageIconListener', 'onArticleLabel');
 
 
 /**

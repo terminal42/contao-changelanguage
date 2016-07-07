@@ -14,6 +14,37 @@ use Contao\PageModel;
 
 class MissingLanguageIconListener
 {
+    private static $callbacks = [
+        'tl_page'            => 'onPageLabel',
+        'tl_article'         => 'onArticleLabel',
+        'tl_news'            => 'onNewsChildRecords',
+        'tl_calendar_events' => 'onCalendarEventChildRecords',
+        'tl_faq'             => 'onFaqChildRecords',
+    ];
+
+    /**
+     * Override core labels to show missing language information.
+     *
+     * @param string $table
+     */
+    public function register($table)
+    {
+        if (array_key_exists($table, self::$callbacks)) {
+            $callback = function () use ($table) {
+                return call_user_func_array(
+                    [$this, self::$callbacks[$table]],
+                    func_get_args()
+                );
+            };
+
+            if (4 === $GLOBALS['TL_DCA'][$table]['list']['sorting']['mode']) {
+                $GLOBALS['TL_DCA'][$table]['list']['sorting']['child_record_callback'] = $callback;
+            } else {
+                $GLOBALS['TL_DCA'][$table]['list']['label']['label_callback'] = $callback;
+            }
+        }
+    }
+
     /**
      * Adds missing translation warning to page tree.
      *

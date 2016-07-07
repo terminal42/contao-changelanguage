@@ -21,9 +21,23 @@ class CallbackSetupListener
         'tl_faq_category',
     ];
 
+    /**
+     * @var MissingLanguageIconListener
+     */
+    private $labelListener;
+
+    /**
+     * Constructor.
+     */
+    public function __construct()
+    {
+        $this->labelListener = new MissingLanguageIconListener();
+    }
 
     public function onLoadDataContainer($table)
     {
+        $this->labelListener->register($table);
+
         if (in_array($table, self::$parentTables, true)) {
             $listener = new ParentTableListener($table);
             $listener->register();

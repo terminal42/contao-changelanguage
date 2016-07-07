@@ -22,9 +22,6 @@ $GLOBALS['TL_DCA']['tl_page']['config']['onsubmit_callback'][]   = array('Termin
 $GLOBALS['TL_DCA']['tl_page']['config']['ondelete_callback'][]   = array('Terminal42\ChangeLanguage\EventListener\DataContainer\PageOperationListener', 'onDelete');
 $GLOBALS['TL_DCA']['tl_page']['config']['onundo_callback'][]     = array('Terminal42\ChangeLanguage\EventListener\DataContainer\PageOperationListener', 'onUndo');
 
-$GLOBALS['TL_DCA']['tl_page']['list']['label']['label_callback'] = array('Terminal42\ChangeLanguage\EventListener\DataContainer\MissingLanguageIconListener', 'onPageLabel');
-
-
 /**
  * Fields
  */
