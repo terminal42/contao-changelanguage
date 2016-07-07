@@ -9,18 +9,10 @@
  * @link       http://github.com/terminal42/contao-changelanguage
  */
 
-
 /**
  * Config
  */
 $GLOBALS['TL_DCA']['tl_page']['config']['sql']['keys']['languageMain'] = 'index';
-
-$GLOBALS['TL_DCA']['tl_page']['config']['onload_callback'][]     = array('Terminal42\ChangeLanguage\EventListener\DataContainer\PageInitializationListener', 'onLoad');
-$GLOBALS['TL_DCA']['tl_page']['config']['oncopy_callback'][]     = array('Terminal42\ChangeLanguage\EventListener\DataContainer\PageOperationListener', 'onCopy');
-$GLOBALS['TL_DCA']['tl_page']['config']['oncut_callback'][]      = array('Terminal42\ChangeLanguage\EventListener\DataContainer\PageOperationListener', 'onCut');
-$GLOBALS['TL_DCA']['tl_page']['config']['onsubmit_callback'][]   = array('Terminal42\ChangeLanguage\EventListener\DataContainer\PageOperationListener', 'onSubmit');
-$GLOBALS['TL_DCA']['tl_page']['config']['ondelete_callback'][]   = array('Terminal42\ChangeLanguage\EventListener\DataContainer\PageOperationListener', 'onDelete');
-$GLOBALS['TL_DCA']['tl_page']['config']['onundo_callback'][]     = array('Terminal42\ChangeLanguage\EventListener\DataContainer\PageOperationListener', 'onUndo');
 
 /**
  * Fields

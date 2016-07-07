@@ -1,4 +1,5 @@
 <?php
+
 /**
  * changelanguage Extension for Contao Open Source CMS
  *
@@ -10,18 +11,21 @@
 
 namespace Terminal42\ChangeLanguage\EventListener;
 
-use Terminal42\ChangeLanguage\EventListener\DataContainer\ChildTableListener;
 use Terminal42\ChangeLanguage\EventListener\DataContainer\MissingLanguageIconListener;
 
 class CallbackSetupListener
 {
     private static $listeners = [
-        'tl_news_archive'    => 'Terminal42\ChangeLanguage\EventListener\DataContainer\ParentTableListener',
-        'tl_calendar'        => 'Terminal42\ChangeLanguage\EventListener\DataContainer\ParentTableListener',
-        'tl_faq_category'    => 'Terminal42\ChangeLanguage\EventListener\DataContainer\ParentTableListener',
-        'tl_news'            => 'Terminal42\ChangeLanguage\EventListener\DataContainer\NewsListener',
-        'tl_calendar_events' => 'Terminal42\ChangeLanguage\EventListener\DataContainer\CalendarEventsListener',
-        'tl_faq'             => 'Terminal42\ChangeLanguage\EventListener\DataContainer\FaqListener',
+        'tl_page' => [
+            'Terminal42\ChangeLanguage\EventListener\DataContainer\PageInitializationListener',
+            'Terminal42\ChangeLanguage\EventListener\DataContainer\PageOperationListener',
+        ],
+        'tl_news_archive'    => ['Terminal42\ChangeLanguage\EventListener\DataContainer\ParentTableListener'],
+        'tl_calendar'        => ['Terminal42\ChangeLanguage\EventListener\DataContainer\ParentTableListener'],
+        'tl_faq_category'    => ['Terminal42\ChangeLanguage\EventListener\DataContainer\ParentTableListener'],
+        'tl_news'            => ['Terminal42\ChangeLanguage\EventListener\DataContainer\NewsListener'],
+        'tl_calendar_events' => ['Terminal42\ChangeLanguage\EventListener\DataContainer\CalendarEventsListener'],
+        'tl_faq'             => ['Terminal42\ChangeLanguage\EventListener\DataContainer\FaqListener'],
     ];
 
     /**
@@ -42,8 +46,10 @@ class CallbackSetupListener
         $this->labelListener->register($table);
 
         if (array_key_exists($table, self::$listeners)) {
-            $listener = new self::$listeners[$table]($table);
-            $listener->register();
+            foreach (self::$listeners[$table] as $class) {
+                $listener = new $class($table);
+                $listener->register();
+            }
         }
     }
 }

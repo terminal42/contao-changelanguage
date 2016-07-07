@@ -20,6 +20,16 @@ use Terminal42\ChangeLanguage\PageFinder;
 class PageInitializationListener
 {
     /**
+     * Register our own callbacks
+     */
+    public function register()
+    {
+        $GLOBALS['TL_DCA']['tl_page']['config']['onload_callback'][] = function (DataContainer $dc) {
+            $this->onLoad($dc);
+        };
+    }
+
+    /**
      * Load page data container configuration depending on current mode.
      *
      * @param DataContainer $dc

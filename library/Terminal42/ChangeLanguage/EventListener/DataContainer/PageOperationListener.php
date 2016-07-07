@@ -18,6 +18,15 @@ use Terminal42\ChangeLanguage\PageFinder;
 
 class PageOperationListener
 {
+    public function register()
+    {
+        $GLOBALS['TL_DCA']['tl_page']['config']['oncopy_callback'][]   = $this->selfCallback('onCopy');
+        $GLOBALS['TL_DCA']['tl_page']['config']['oncut_callback'][]    = $this->selfCallback('onCut');
+        $GLOBALS['TL_DCA']['tl_page']['config']['onsubmit_callback'][] = $this->selfCallback('onSubmit');
+        $GLOBALS['TL_DCA']['tl_page']['config']['ondelete_callback'][] = $this->selfCallback('onDelete');
+        $GLOBALS['TL_DCA']['tl_page']['config']['onundo_callback'][]   = $this->selfCallback('onUndo');
+    }
+
     /**
      * Handles submitting a page and resets tl_page.languageMain if necessary.
      *
@@ -123,5 +132,15 @@ class PageOperationListener
         Database::getInstance()->query(
             'UPDATE tl_page SET languageMain=0 WHERE id IN (' . implode(',', $resetIds) . ')'
         );
+    }
+
+    private function selfCallback($method)
+    {
+        return function () use ($method) {
+            return call_user_func_array(
+                [$this, $method],
+                func_get_args()
+            );
+        };
     }
 }
