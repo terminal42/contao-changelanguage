@@ -96,7 +96,7 @@ class PageOperationListener
 
         $duplicates = PageModel::countBy(
             [
-                'id IN (' . Database::getInstance()->getChildRecords($page->rootId, 'tl_page') . ')',
+                'id IN (' . implode(',', Database::getInstance()->getChildRecords($page->rootId, 'tl_page')) . ')',
                 'languageMain=?',
                 'id!=?'
             ],

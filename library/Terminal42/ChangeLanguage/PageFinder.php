@@ -123,6 +123,28 @@ class PageFinder
         return $this->findAssociatedParentForLanguage($page, $language);
     }
 
+    public function findAssociatedInMaster(PageModel $page)
+    {
+        $page->loadDetails();
+        $masterRoot = $this->findMasterRootForPage($page);
+
+        if ($masterRoot->id === $page->rootId) {
+            return;
+        }
+
+        $associated = $this->findAssociatedForPage($page);
+
+        foreach ($associated as $model) {
+            $model->loadDetails();
+
+            if ($model->rootId === $masterRoot->id) {
+                return $model;
+            }
+        }
+
+        return null;
+    }
+
     /**
      * @param PageModel $page
      * @param string    $language
