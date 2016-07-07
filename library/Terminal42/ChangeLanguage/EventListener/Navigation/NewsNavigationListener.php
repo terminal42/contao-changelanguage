@@ -9,7 +9,7 @@
  * @link       http://github.com/terminal42/contao-changelanguage
  */
 
-namespace Terminal42\ChangeLanguage\EventListener;
+namespace Terminal42\ChangeLanguage\EventListener\Navigation;
 
 use Contao\NewsArchiveModel;
 use Contao\NewsModel;
@@ -19,7 +19,7 @@ use Haste\Input\Input;
 /**
  * Translate URL parameters for news items
  */
-class NewsNavigationListener extends AbstractMasterListener
+class NewsNavigationListener extends AbstractNavigationListener
 {
     /**
      * @inheritdoc

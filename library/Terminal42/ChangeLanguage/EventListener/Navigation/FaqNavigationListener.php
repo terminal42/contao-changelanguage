@@ -9,7 +9,7 @@
  * @link       http://github.com/terminal42/contao-changelanguage
  */
 
-namespace Terminal42\ChangeLanguage\EventListener;
+namespace Terminal42\ChangeLanguage\EventListener\Navigation;
 
 use Contao\FaqCategoryModel;
 use Contao\FaqModel;
@@ -19,7 +19,7 @@ use Haste\Input\Input;
 /**
  * Translate URL parameters for faq items
  */
-class FaqNavigationListener extends AbstractMasterListener
+class FaqNavigationListener extends AbstractNavigationListener
 {
     /**
      * @inheritdoc

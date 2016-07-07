@@ -9,12 +9,12 @@
  * @link       http://github.com/terminal42/contao-changelanguage
  */
 
-namespace Terminal42\ChangeLanguage\EventListener;
+namespace Terminal42\ChangeLanguage\EventListener\Navigation;
 
 use Contao\Model;
 use Terminal42\ChangeLanguage\Event\ChangelanguageNavigationEvent;
 
-abstract class AbstractMasterListener
+abstract class AbstractNavigationListener
 {
     /**
      * Find record based on languageMain field and parent master archive

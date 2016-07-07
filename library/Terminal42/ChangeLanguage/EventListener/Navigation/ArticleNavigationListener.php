@@ -9,7 +9,7 @@
  * @link       http://github.com/terminal42/contao-changelanguage
  */
 
-namespace Terminal42\ChangeLanguage\EventListener;
+namespace Terminal42\ChangeLanguage\EventListener\Navigation;
 
 use Contao\ArticleModel;
 use Contao\Database;
