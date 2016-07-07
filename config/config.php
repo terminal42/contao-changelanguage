@@ -19,7 +19,8 @@ $GLOBALS['FE_MOD']['miscellaneous']['changelanguage']   = 'Terminal42\ChangeLang
 /**
  * Hooks
  */
-$GLOBALS['TL_HOOKS']['loadDataContainer'][]        = ['Terminal42\ChangeLanguage\EventListener\DataContainer\CallbackSetupListener', 'onLoadDataContainer'];
+$GLOBALS['TL_HOOKS']['replaceInsertTags'][]        = ['Terminal42\ChangeLanguage\EventListener\InsertTagsListener', 'onReplaceInsertTags'];
+$GLOBALS['TL_HOOKS']['loadDataContainer'][]        = ['Terminal42\ChangeLanguage\EventListener\CallbackSetupListener', 'onLoadDataContainer'];
 $GLOBALS['TL_HOOKS']['changelanguageNavigation'][] = ['Terminal42\ChangeLanguage\EventListener\Navigation\ArticleNavigationListener', 'onChangelanguageNavigation'];
 
 if (in_array('calendar', ModuleLoader::getActive(), true)) {

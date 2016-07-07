@@ -8,9 +8,10 @@
  * @link       http://github.com/terminal42/contao-changelanguage
  */
 
-namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
+namespace Terminal42\ChangeLanguage\EventListener;
 
 use Contao\DataContainer;
+use Terminal42\ChangeLanguage\EventListener\DataContainer\ParentTableListener;
 
 class CallbackSetupListener
 {
