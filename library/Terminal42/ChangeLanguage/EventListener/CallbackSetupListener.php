@@ -11,14 +11,17 @@
 namespace Terminal42\ChangeLanguage\EventListener;
 
 use Terminal42\ChangeLanguage\EventListener\DataContainer\ChildTableListener;
-use Terminal42\ChangeLanguage\EventListener\DataContainer\ParentTableListener;
+use Terminal42\ChangeLanguage\EventListener\DataContainer\MissingLanguageIconListener;
 
 class CallbackSetupListener
 {
-    private static $parentTables = [
-        'tl_news_archive',
-        'tl_calendar',
-        'tl_faq_category',
+    private static $listeners = [
+        'tl_news_archive'    => 'Terminal42\ChangeLanguage\EventListener\DataContainer\ParentTableListener',
+        'tl_calendar'        => 'Terminal42\ChangeLanguage\EventListener\DataContainer\ParentTableListener',
+        'tl_faq_category'    => 'Terminal42\ChangeLanguage\EventListener\DataContainer\ParentTableListener',
+        'tl_news'            => 'Terminal42\ChangeLanguage\EventListener\DataContainer\NewsListener',
+        'tl_calendar_events' => 'Terminal42\ChangeLanguage\EventListener\DataContainer\CalendarEventsListener',
+        'tl_faq'             => 'Terminal42\ChangeLanguage\EventListener\DataContainer\FaqListener',
     ];
 
     /**
@@ -38,10 +41,9 @@ class CallbackSetupListener
     {
         $this->labelListener->register($table);
 
-        if (in_array($table, self::$parentTables, true)) {
-            $listener = new ParentTableListener($table);
+        if (array_key_exists($table, self::$listeners)) {
+            $listener = new self::$listeners[$table]($table);
             $listener->register();
-
         }
     }
 }

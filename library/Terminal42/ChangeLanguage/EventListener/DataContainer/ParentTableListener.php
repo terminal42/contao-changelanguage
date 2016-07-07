@@ -61,6 +61,7 @@ class ParentTableListener
                 'blankOptionLabel'   => &$GLOBALS['TL_LANG'][$this->table]['isMaster'],
             ],
             'sql'              => "int(10) unsigned NOT NULL default '0'",
+            'relation'         => ['type' => 'hasOne', 'table' => $this->table],
         ];
 
         PaletteManipulator::create()

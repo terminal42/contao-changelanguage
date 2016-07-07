@@ -19,5 +19,5 @@ $GLOBALS['TL_LANG']['tl_news']['languageMain'] = array('Hauptbeitrag', 'Bitte w√
 /**
  * References
  */
-$GLOBALS['TL_LANG']['tl_news']['sameDay']    = 'Am selben Tag';
-$GLOBALS['TL_LANG']['tl_news']['otherDay']    = 'An anderen Tagen';
+$GLOBALS['TL_LANG']['tl_news']['sameDay']  = 'Am selben Tag';
+$GLOBALS['TL_LANG']['tl_news']['otherDay'] = 'An anderen Tagen';
