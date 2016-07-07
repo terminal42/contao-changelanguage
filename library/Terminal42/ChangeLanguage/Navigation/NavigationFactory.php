@@ -13,6 +13,7 @@ namespace Terminal42\ChangeLanguage\Navigation;
 
 use Contao\PageModel;
 use Terminal42\ChangeLanguage\Helper\LanguageText;
+use Terminal42\ChangeLanguage\PageFinder;
 
 class NavigationFactory
 {

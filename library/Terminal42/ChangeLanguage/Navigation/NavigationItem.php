@@ -1,4 +1,5 @@
 <?php
+
 /**
  * changelanguage Extension for Contao Open Source CMS
  *
