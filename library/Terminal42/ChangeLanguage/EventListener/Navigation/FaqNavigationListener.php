@@ -56,7 +56,7 @@ class FaqNavigationListener extends AbstractNavigationListener
     protected function findPublishedBy(array $columns, array $values = array(), array $options = array())
     {
         return FaqModel::findOneBy(
-            $this->addPublishedConditions($columns, FaqModel::getTable()),
+            $this->addPublishedConditions($columns, FaqModel::getTable(), false),
             $values,
             $options
         );

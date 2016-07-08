@@ -72,16 +72,20 @@ abstract class AbstractNavigationListener
      *
      * @param array  $columns
      * @param string $table
+     * @param bool   $addStartStop
      *
      * @return array
      */
-    protected function addPublishedConditions(array $columns, $table)
+    protected function addPublishedConditions(array $columns, $table, $addStartStop = true)
     {
         if (true !== BE_USER_LOGGED_IN) {
-            $time      = \Date::floorToMinute();
-            $columns[] = "($table.start='' OR $table.start<='$time')";
-            $columns[] = "($table.stop='' OR $table.stop>'" . ($time + 60) . "')";
             $columns[] = "$table.published='1'";
+
+            if ($addStartStop) {
+                $time      = \Date::floorToMinute();
+                $columns[] = "($table.start='' OR $table.start<='$time')";
+                $columns[] = "($table.stop='' OR $table.stop>'" . ($time + 60) . "')";
+            }
         }
 
         return $columns;
