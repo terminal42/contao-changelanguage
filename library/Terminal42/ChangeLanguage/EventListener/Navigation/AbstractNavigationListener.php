@@ -12,6 +12,7 @@
 namespace Terminal42\ChangeLanguage\EventListener\Navigation;
 
 use Contao\Model;
+use Contao\Model\Collection;
 use Terminal42\ChangeLanguage\Event\ChangelanguageNavigationEvent;
 
 abstract class AbstractNavigationListener
@@ -27,6 +28,10 @@ abstract class AbstractNavigationListener
 
         if (null === $current) {
             return;
+        }
+
+        if ($current instanceof Collection) {
+            $current = $current->current();
         }
 
         $parent = $current->getRelated('pid');
