@@ -151,14 +151,14 @@ class UrlParameterBag
         $auto_item = array_key_exists('auto_item', $attributes) ? $attributes['auto_item'] : null;
         unset($attributes['auto_item']);
 
-        array_walk($attributes, function ($v, $k) {
-            return $k . '/' . $v;
+        array_walk($attributes, function (&$v, $k) {
+            $v =  $k . '/' . $v;
         });
 
-        $params = '/' . implode('/', $attributes);
+        $params = implode('/', $attributes);
 
         if (null !== $auto_item) {
-            $params = $auto_item . '/' . $params;
+            $params = $auto_item . ($params ? '/' . $params : '');
         }
 
         return $params;
