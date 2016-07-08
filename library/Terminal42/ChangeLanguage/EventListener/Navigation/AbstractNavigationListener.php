@@ -33,20 +33,20 @@ abstract class AbstractNavigationListener
             return;
         }
 
+        $t      = $current::getTable();
         $parent = $current->getRelated('pid');
-        $t = $current::getTable();
 
-        if (0 === $parent->master) {
-            $mainId = $current->id;
-            $masterId = $current->pid;
+        if (0 === (int) $parent->master) {
+            $mainId = (int) $current->id;
+            $masterId = (int) $current->pid;
         } else {
-            // Abort if current record has no translated version
-            if (0 === $current->languageMain) {
-                return;
-            }
+            $mainId = (int) $current->languageMain;
+            $masterId = (int) $parent->master;
+        }
 
-            $mainId = $current->languageMain;
-            $masterId = $parent->master;
+        // Abort if current record has no translated version
+        if (0 === $mainId || 0 === $masterId) {
+            return;
         }
 
         $translated = $this->findPublishedBy(
