@@ -19,28 +19,28 @@ class UrlParameterBagTest extends \PHPUnit_Framework_TestCase
     {
         $bag = new UrlParameterBag(['foo' => 'bar']);
 
-        $this->assertEquals('foo/bar', $bag->generateParameters());
+        $this->assertEquals('/foo/bar', $bag->generateParameters());
     }
 
     public function testGenerateMultipleParameters()
     {
         $bag = new UrlParameterBag(['foo' => 'bar', 'bar' => 'baz']);
 
-        $this->assertEquals('foo/bar/bar/baz', $bag->generateParameters());
+        $this->assertEquals('/foo/bar/bar/baz', $bag->generateParameters());
     }
 
     public function testGenerateSingleAutoItemParameter()
     {
         $bag = new UrlParameterBag(['auto_item' => 'foobar']);
 
-        $this->assertEquals('foobar', $bag->generateParameters());
+        $this->assertEquals('/foobar', $bag->generateParameters());
     }
 
     public function testGenerateMultipleWithAutoItem()
     {
         $bag = new UrlParameterBag(['foo' => 'bar', 'auto_item' => 'baz']);
 
-        $this->assertEquals('baz/foo/bar', $bag->generateParameters());
+        $this->assertEquals('/baz/foo/bar', $bag->generateParameters());
     }
 
     public function testGenerateSingleQuery()

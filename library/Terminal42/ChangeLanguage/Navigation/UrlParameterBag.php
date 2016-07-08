@@ -142,6 +142,7 @@ class UrlParameterBag
      */
     public function generateParameters()
     {
+        $params     = '';
         $attributes = $this->attributes;
 
         if (0 === count($attributes)) {
@@ -151,14 +152,19 @@ class UrlParameterBag
         $auto_item = array_key_exists('auto_item', $attributes) ? $attributes['auto_item'] : null;
         unset($attributes['auto_item']);
 
-        array_walk($attributes, function (&$v, $k) {
-            $v =  $k . '/' . $v;
-        });
+        if (0 !== count($attributes)) {
+            array_walk(
+                $attributes,
+                function (&$v, $k) {
+                    $v = $k . '/' . $v;
+                }
+            );
 
-        $params = implode('/', $attributes);
+            $params = '/' . implode('/', $attributes);
+        }
 
         if (null !== $auto_item) {
-            $params = $auto_item . ($params ? '/' . $params : '');
+            $params = '/' . $auto_item . $params;
         }
 
         return $params;
