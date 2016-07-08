@@ -26,7 +26,7 @@ class ArticleNavigationListener
     public function onChangelanguageNavigation(ChangelanguageNavigationEvent $event)
     {
         // Try to find matching article
-        if (!$event->getUrlParameterBag()->hasUrlAttribute('articles')) {
+        if ($event->getNavigationItem()->isCurrentPage() || !$event->getUrlParameterBag()->hasUrlAttribute('articles')) {
             return;
         }
 

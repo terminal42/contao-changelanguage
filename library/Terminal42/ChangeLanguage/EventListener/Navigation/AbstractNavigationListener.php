@@ -23,6 +23,10 @@ abstract class AbstractNavigationListener
      */
     public function onChangelanguageNavigation(ChangelanguageNavigationEvent $event)
     {
+        if ($event->getNavigationItem()->isCurrentPage()) {
+            return;
+        }
+
         $current = $this->findCurrent();
 
         if (null === $current) {
