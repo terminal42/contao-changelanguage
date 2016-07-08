@@ -47,7 +47,10 @@ class NewsNavigationListener extends AbstractNavigationListener
             return null;
         }
 
-        return NewsModel::findPublishedByParentAndIdOrAlias($alias, $archives->fetchEach('id'));
+        // Fix Contao bug that returns a collection (see contao-changelanguage#71)
+        $options = ['limit' => 1, 'return' => 'Model'];
+
+        return NewsModel::findPublishedByParentAndIdOrAlias($alias, $archives->fetchEach('id'), $options);
     }
 
     /**
