@@ -27,7 +27,6 @@ use Terminal42\ChangeLanguage\Navigation\UrlParameterBag;
 /**
  * @property bool  $hideActiveLanguage
  * @property bool  $hideNoFallback
- * @property bool  $keepUrlParams
  * @property bool  $customLanguage
  * @property array $customLanguageText
  */

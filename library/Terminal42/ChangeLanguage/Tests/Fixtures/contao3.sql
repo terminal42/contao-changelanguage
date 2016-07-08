@@ -445,7 +445,6 @@ CREATE TABLE `tl_module` (
     `news_showQuantity` char(1) NOT NULL default '',
     `hideActiveLanguage` char(1) NOT NULL default '',
     `hideNoFallback` char(1) NOT NULL default '',
-    `keepUrlParams` char(1) NOT NULL default '',
     `customLanguage` char(1) NOT NULL default '',
     `customLanguageText` text NULL,
     PRIMARY KEY  (`id`)
