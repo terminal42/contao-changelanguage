@@ -46,6 +46,7 @@ abstract class AbstractNavigationListener
 
         // Abort if current record has no translated version
         if (0 === $mainId || 0 === $masterId) {
+            $event->getNavigationItem()->setIsDirectFallback(false);
             return;
         }
 
