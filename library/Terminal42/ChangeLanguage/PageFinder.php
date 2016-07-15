@@ -13,7 +13,6 @@ namespace Terminal42\ChangeLanguage;
 
 use Contao\Date;
 use Contao\PageModel;
-use Terminal42\ChangeLanguage\Language;
 
 class PageFinder
 {
@@ -129,7 +128,7 @@ class PageFinder
         $masterRoot = $this->findMasterRootForPage($page);
 
         if ($masterRoot->id === $page->rootId) {
-            return;
+            return null;
         }
 
         $associated = $this->findAssociatedForPage($page);

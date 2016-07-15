@@ -133,7 +133,6 @@ class ChangeLanguageModule extends AbstractFrontendModule
     {
         RowClass::withKey('class')->addFirstLast()->applyTo($items);
 
-        /** @var FrontendTemplate|object $objTemplate */
         $objTemplate = new FrontendTemplate($this->navigationTpl ?: 'nav_default');
 
         $objTemplate->setData($this->arrData);

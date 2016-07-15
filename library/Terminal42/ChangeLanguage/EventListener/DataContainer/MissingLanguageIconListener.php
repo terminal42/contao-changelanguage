@@ -67,7 +67,7 @@ class MissingLanguageIconListener
     ) {
         $label = Backend::addPageIcon($row, $label, $dc, $imageAttribute, $blnReturnImage, $blnProtected);
 
-        if ('page' !== \Input::get('do') || 'root' === $row['type'] || 'folder' === $row['type']) {
+        if ('root' === $row['type'] || 'folder' === $row['type'] || 'page' !== \Input::get('do')) {
             return $label;
         }
 
@@ -75,7 +75,7 @@ class MissingLanguageIconListener
         $root = PageModel::findByPk($page->rootId);
 
         if ((!$root->fallback || $root->languageRoot > 0)
-            && (!$page->languageMain || (PageModel::findByPk($page->languageMain)) === null)
+            && (!$page->languageMain || null === PageModel::findByPk($page->languageMain))
         ) {
             return $this->generateLabelWithWarning($label);
         }
@@ -100,8 +100,8 @@ class MissingLanguageIconListener
         $root = PageModel::findByPk($page->rootId);
 
         if ((!$root->fallback || $root->languageRoot > 0)
-            && $page->languageMain > 0 && (PageModel::findByPk($page->languageMain)) !== null
-            && (!$row['languageMain'] || (ArticleModel::findByPk($row['languageMain'])) === null)
+            && $page->languageMain > 0 && null !== PageModel::findByPk($page->languageMain)
+            && (!$row['languageMain'] || null === ArticleModel::findByPk($row['languageMain']))
         ) {
             return $this->generateLabelWithWarning($label);
         }
@@ -124,7 +124,7 @@ class MissingLanguageIconListener
         $archive = NewsArchiveModel::findByPk($row['pid']);
 
         if ($archive->master &&
-            (!$row['languageMain'] || (NewsModel::findByPk($row['languageMain'])) === null)
+            (!$row['languageMain'] || null === NewsModel::findByPk($row['languageMain']))
         ) {
             return $this->generateLabelWithWarning($label);
         }
@@ -147,7 +147,7 @@ class MissingLanguageIconListener
         $calendar = CalendarModel::findByPk($row['pid']);
 
         if ($calendar->master
-            && (!$row['languageMain'] || (CalendarEventsModel::findByPk($row['languageMain'])) === null)
+            && (!$row['languageMain'] || null === CalendarEventsModel::findByPk($row['languageMain']))
         ) {
             return $this->generateLabelWithWarning($label);
         }
@@ -170,7 +170,7 @@ class MissingLanguageIconListener
         $category = FaqCategoryModel::findByPk($row['pid']);
 
         if ($category->master
-            && (!$row['languageMain'] || (FaqModel::findByPk($row['languageMain'])) === null)
+            && (!$row['languageMain'] || null === FaqModel::findByPk($row['languageMain']))
         ) {
             return preg_replace(
                 '#</div>#',

@@ -36,7 +36,7 @@ class PageOperationListener
     {
         if ('root' === $dc->activeRecord->type
             && $dc->activeRecord->fallback
-            && (!$dc->activeRecord->languageRoot || (PageModel::findByPk($dc->activeRecord->languageRoot)) === null)
+            && (!$dc->activeRecord->languageRoot || null === PageModel::findByPk($dc->activeRecord->languageRoot))
         ) {
             $this->resetPageAndChildren($dc->id);
         }

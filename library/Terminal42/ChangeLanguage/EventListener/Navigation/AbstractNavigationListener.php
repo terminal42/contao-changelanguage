@@ -52,7 +52,7 @@ abstract class AbstractNavigationListener
         $translated = $this->findPublishedBy(
             array(
                 "($t.id=? OR $t.languageMain=?)",
-                "$t.pid=(SELECT id FROM " . $parent::getTable() . " WHERE (id=? OR master=?) AND language=?)"
+                "$t.pid=(SELECT id FROM " . $parent::getTable() . ' WHERE (id=? OR master=?) AND language=?)'
             ),
             array($mainId, $mainId, $masterId, $masterId, $event->getNavigationItem()->getLanguageTag())
         );
