@@ -68,6 +68,9 @@ class NavigationItem
         }
     }
 
+    /**
+     * @return bool
+     */
     public function hasTargetPage()
     {
         return $this->targetPage instanceof PageModel;
@@ -79,6 +82,14 @@ class NavigationItem
     public function isDirectFallback()
     {
         return $this->isDirectFallback;
+    }
+
+    /**
+     * @param $isDirectFallback
+     */
+    public function setIsDirectFallback($isDirectFallback)
+    {
+        $this->isDirectFallback = (bool) $isDirectFallback;
     }
 
     /**

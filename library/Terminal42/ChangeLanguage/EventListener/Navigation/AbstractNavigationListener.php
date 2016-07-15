@@ -58,6 +58,7 @@ abstract class AbstractNavigationListener
         );
 
         if (null === $translated) {
+            $event->getNavigationItem()->setIsDirectFallback(false);
             return;
         }
 
