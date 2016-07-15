@@ -61,13 +61,14 @@ abstract class AbstractNavigationListener
             return;
         }
 
-        $urlKey = $this->getUrlKey();
+        $urlParameters = $event->getUrlParameterBag();
+        $urlKey        = $this->getUrlKey();
 
         if ($GLOBALS['TL_CONFIG']['useAutoItem'] && in_array($urlKey, $GLOBALS['TL_AUTO_ITEM'], true)) {
+            $urlParameters->removeUrlAttribute($urlKey);
             $urlKey = 'auto_item';
         }
 
-        $urlParameters = $event->getUrlParameterBag();
         $urlParameters->setUrlAttribute($urlKey, $translated->alias ?: $translated->id);
     }
 

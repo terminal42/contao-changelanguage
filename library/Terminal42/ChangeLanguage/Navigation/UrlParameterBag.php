@@ -87,6 +87,14 @@ class UrlParameterBag
     }
 
     /**
+     * @param string $name
+     */
+    public function removeUrlAttribute($name)
+    {
+        unset($this->attributes[$name]);
+    }
+
+    /**
      * @return array
      */
     public function getQueryParameters()
@@ -133,6 +141,14 @@ class UrlParameterBag
         $this->validateScalar($value);
 
         $this->query[$name] = $value;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function removeQueryParameter($name)
+    {
+        unset($this->query[$name]);
     }
 
     /**
