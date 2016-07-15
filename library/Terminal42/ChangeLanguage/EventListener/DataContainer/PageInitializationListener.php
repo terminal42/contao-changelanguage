@@ -68,24 +68,25 @@ class PageInitializationListener
 
         if ('root' === $page->type) {
             if ($page->fallback) {
-                $this->addLanguageRootSelection();
+                $this->addRootLanguageFields();
             }
             return;
         }
 
         $root = PageModel::findByPk($page->loadDetails()->rootId);
+        $addLanguageMain = true;
 
         if ($root->fallback && (!$root->languageRoot || null === PageModel::findByPk($root->languageRoot))) {
-            return;
+            $addLanguageMain = false;
         }
 
-        $this->addLanguageMainSelection($page->type);
+        $this->addRegularLanguageFields($page->type, $addLanguageMain);
     }
 
     private function handleEditAllMode()
     {
-        $this->addLanguageRootSelection();
-        $this->addLanguageMainSelection(
+        $this->addRootLanguageFields();
+        $this->addRegularLanguageFields(
             array_diff(
                 array_keys($GLOBALS['TL_DCA']['tl_page']['palettes']),
                 ['__selector__', 'root']
@@ -121,7 +122,7 @@ class PageInitializationListener
         }
     }
 
-    private function addLanguageRootSelection()
+    private function addRootLanguageFields()
     {
         PaletteManipulator::create()
             ->addField('languageRoot', 'fallback')
@@ -131,12 +132,18 @@ class PageInitializationListener
 
     /**
      * @param array|string $palettes
+     * @param bool         $addLanguageMain
      */
-    private function addLanguageMainSelection($palettes)
+    private function addRegularLanguageFields($palettes, $addLanguageMain = true)
     {
         $pm = PaletteManipulator::create()
-            ->addField('languageMain', 'meta_legend', PaletteManipulator::POSITION_APPEND, 'title_legend')
+            ->addLegend('language_legend', 'title_legend', PaletteManipulator::POSITION_AFTER, true)
+            ->addField('languageQuery', 'language_legend', PaletteManipulator::POSITION_APPEND)
         ;
+
+        if ($addLanguageMain) {
+            $pm->addField('languageMain', 'language_legend', PaletteManipulator::POSITION_PREPEND);
+        }
 
         foreach ((array) $palettes as $palette) {
             $pm->applyToPalette($palette, 'tl_page');

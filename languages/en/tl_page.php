@@ -15,3 +15,10 @@
  */
 $GLOBALS['TL_LANG']['tl_page']['languageMain']    = array('Main language page', 'Choose the page in the language marked as fallback equals this page.');
 $GLOBALS['TL_LANG']['tl_page']['languageRoot']    = array('Foreign-Domain Root Page', 'Select the root page if this page tree is related to another domain.', 'This is a main language root site');
+$GLOBALS['TL_LANG']['tl_page']['languageQuery']   = array('Keep query parameters', 'Enter a comma separated list of query parameters that should be kept when switching to a translation of this page.');
+
+
+/**
+ * Legends
+ */
+$GLOBALS['TL_LANG']['tl_page']['language_legend'] = 'Language &amp; Translation';

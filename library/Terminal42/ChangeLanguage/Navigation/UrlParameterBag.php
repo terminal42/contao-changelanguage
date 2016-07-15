@@ -185,11 +185,13 @@ class UrlParameterBag
     }
 
     /**
-     * @param bool $skipQueryParameters
+     * Creates an UrlParameterBag from the current environment.
+     *
+     * @param array|null $queryParameters An array of query parameters to keep, or NULL to keep all
      *
      * @return static
      */
-    public static function createFromGlobals($skipQueryParameters = true)
+    public static function createFromGlobals(array $queryParameters = null)
     {
         $attributes = [];
         $query      = [];
@@ -201,7 +203,10 @@ class UrlParameterBag
             $isQuery = array_key_exists($k, $currentQuery);
 
             // the current page language is set in $_GET
-            if (empty($value) || 'language' === $k || ($skipQueryParameters && $isQuery)) {
+            if (empty($value)
+                || 'language' === $k
+                || ($isQuery && null !== $queryParameters && !in_array($k, $queryParameters, false))
+            ) {
                 continue;
             }
 
