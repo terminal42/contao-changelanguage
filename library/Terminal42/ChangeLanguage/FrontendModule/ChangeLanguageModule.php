@@ -87,7 +87,9 @@ class ChangeLanguageModule extends AbstractFrontendModule
         foreach ($navigationItems as $item) {
             $urlParameters = clone $defaultUrlParameters;
 
-            if (false === $this->executeHook($item, $urlParameters)) {
+            if (false === $this->executeHook($item, $urlParameters)
+                || ($this->hideNoFallback && !$item->isDirectFallback())
+            ) {
                 continue;
             }
 
