@@ -81,7 +81,7 @@ class ChangeLanguageModule extends AbstractFrontendModule
 
         $templateItems        = [];
         $headerLinks          = new AlternateLinks();
-        $queryParameters      = $currentPage->languageQuery ? trimsplit(',', $currentPage->languageQuery) : null;
+        $queryParameters      = $currentPage->languageQuery ? trimsplit(',', $currentPage->languageQuery) : [];
         $defaultUrlParameters = UrlParameterBag::createFromGlobals($queryParameters);
 
         foreach ($navigationItems as $item) {
