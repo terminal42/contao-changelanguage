@@ -155,18 +155,40 @@ class UrlParameterBag
      * Generates parameter string to generate a Contao url.
      *
      * @return null|string
+     *
+     * @throws \RuntimeException
      */
     public function generateParameters()
     {
         $params     = '';
+        $auto_item  = null;
         $attributes = $this->attributes;
 
         if (0 === count($attributes)) {
             return null;
         }
 
-        $auto_item = array_key_exists('auto_item', $attributes) ? $attributes['auto_item'] : null;
-        unset($attributes['auto_item']);
+        if (isset($this->attributes['auto_item'])) {
+            throw new \RuntimeException('Do not set auto_item parameter');
+        }
+
+        if ($GLOBALS['TL_CONFIG']['useAutoItem']) {
+            $auto_item = array_intersect_key($this->attributes, array_flip($GLOBALS['TL_AUTO_ITEM']));
+
+            switch (count($auto_item)) {
+                case 0:
+                    $auto_item = null;
+                    break;
+
+                case 1:
+                    unset($attributes[key($auto_item)]);
+                    $auto_item = current($auto_item);
+                    break;
+
+                default:
+                    throw new \RuntimeException('You must not have more than one auto_item parameter');
+            }
+        }
 
         if (0 !== count($attributes)) {
             array_walk(
@@ -221,6 +243,7 @@ class UrlParameterBag
             // the current page language is set in $_GET
             if (empty($value)
                 || 'language' === $k
+                || 'auto_item' === $k
                 || ($isQuery && null !== $queryParameters && !in_array($k, $queryParameters, false))
             ) {
                 continue;
