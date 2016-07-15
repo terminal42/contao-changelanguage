@@ -23,28 +23,13 @@ abstract class AbstractNavigationListener
      */
     public function onChangelanguageNavigation(ChangelanguageNavigationEvent $event)
     {
-        $navigationItem = $event->getNavigationItem();
-
-        if ($navigationItem->isCurrentPage()) {
+        if ($event->getNavigationItem()->isCurrentPage()) {
             return;
         }
 
         $current = $this->findCurrent();
 
         if (null === $current) {
-            return;
-        }
-
-        $urlKey        = $this->getUrlKey();
-        $urlParameters = $event->getUrlParameterBag();
-
-        if (!$navigationItem->isDirectFallback()) {
-            $urlParameters->removeUrlAttribute($urlKey);
-
-            if ($this->isAutoItem($urlKey)) {
-                $urlParameters->removeUrlAttribute('auto_item');
-            }
-
             return;
         }
 
@@ -69,14 +54,17 @@ abstract class AbstractNavigationListener
                 "($t.id=? OR $t.languageMain=?)",
                 "$t.pid=(SELECT id FROM " . $parent::getTable() . ' WHERE (id=? OR master=?) AND language=?)'
             ),
-            array($mainId, $mainId, $masterId, $masterId, $navigationItem->getLanguageTag())
+            array($mainId, $mainId, $masterId, $masterId, $event->getNavigationItem()->getLanguageTag())
         );
 
         if (null === $translated) {
             return;
         }
 
-        if ($this->isAutoItem($urlKey)) {
+        $urlParameters = $event->getUrlParameterBag();
+        $urlKey        = $this->getUrlKey();
+
+        if ($GLOBALS['TL_CONFIG']['useAutoItem'] && in_array($urlKey, $GLOBALS['TL_AUTO_ITEM'], true)) {
             $urlParameters->removeUrlAttribute($urlKey);
             $urlKey = 'auto_item';
         }
@@ -126,14 +114,4 @@ abstract class AbstractNavigationListener
      * @return Model|null
      */
     abstract protected function findPublishedBy(array $columns, array $values = array(), array $options = array());
-
-    /**
-     * @param string $urlKey
-     *
-     * @return bool
-     */
-    private function isAutoItem($urlKey)
-    {
-        return $GLOBALS['TL_CONFIG']['useAutoItem'] && in_array($urlKey, $GLOBALS['TL_AUTO_ITEM'], true);
-    }
 }
