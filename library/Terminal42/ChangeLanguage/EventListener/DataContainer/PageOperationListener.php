@@ -11,8 +11,8 @@
 
 namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 
-use Contao\Database;
 use Contao\DataContainer;
+use Contao\Database;
 use Contao\PageModel;
 use Terminal42\ChangeLanguage\PageFinder;
 
@@ -122,6 +122,9 @@ class PageOperationListener
         }
     }
 
+    /**
+     * @param int $pageId
+     */
     private function resetPageAndChildren($pageId)
     {
         $resetIds   = Database::getInstance()->getChildRecords($pageId, 'tl_page');
@@ -132,6 +135,11 @@ class PageOperationListener
         );
     }
 
+    /**
+     * @param $method
+     *
+     * @return \Closure
+     */
     private function selfCallback($method)
     {
         return function () use ($method) {

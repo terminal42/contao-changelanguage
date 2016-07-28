@@ -32,6 +32,8 @@ class FaqListener extends AbstractChildTableListener
     }
 
     /**
+     * @inheritdoc
+     *
      * @param FaqModel   $current
      * @param FaqModel[] $models
      */

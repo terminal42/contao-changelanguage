@@ -78,9 +78,21 @@ abstract class AbstractChildTableListener extends AbstractTableListener
         return $class::findByPk($id);
     }
 
+    /**
+     * @return string
+     */
     abstract protected function getTitleField();
 
+    /**
+     * @return string
+     */
     abstract protected function getSorting();
 
+    /**
+     * @param Model            $current
+     * @param Model\Collection $models
+     *
+     * @return array
+     */
     abstract protected function formatOptions(Model $current, Model\Collection $models);
 }

@@ -122,6 +122,11 @@ class PageFinder
         return $this->findAssociatedParentForLanguage($page, $language);
     }
 
+    /**
+     * @param PageModel $page
+     *
+     * @return PageModel|null
+     */
     public function findAssociatedInMaster(PageModel $page)
     {
         $page->loadDetails();

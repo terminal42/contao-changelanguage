@@ -11,8 +11,8 @@
 
 namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 
-use Contao\Database;
 use Contao\DataContainer;
+use Contao\Database;
 use Haste\Dca\PaletteManipulator;
 
 class ParentTableListener

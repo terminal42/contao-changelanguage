@@ -33,6 +33,8 @@ class NewsListener extends AbstractChildTableListener
     }
 
     /**
+     * @inheritdoc
+     *
      * @param NewsModel   $current
      * @param NewsModel[] $models
      */

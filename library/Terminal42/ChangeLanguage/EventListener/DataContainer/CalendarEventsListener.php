@@ -33,6 +33,8 @@ class CalendarEventsListener extends AbstractChildTableListener
     }
 
     /**
+     * @inheritdoc
+     *
      * @param CalendarEventsModel   $current
      * @param CalendarEventsModel[] $models
      */
