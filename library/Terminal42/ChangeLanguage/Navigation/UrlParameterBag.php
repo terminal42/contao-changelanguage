@@ -33,6 +33,9 @@ class UrlParameterBag
      */
     public function __construct(array $attributes = [], array $query = [])
     {
+        $this->validateScalar($attributes);
+        $this->validateScalar($query);
+
         $this->attributes = $attributes;
         $this->query      = $query;
     }

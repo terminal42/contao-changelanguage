@@ -24,6 +24,48 @@ class UrlParameterBagTest extends \PHPUnit_Framework_TestCase
         unset($GLOBALS['TL_AUTO_ITEM']);
     }
 
+    public function testUrlAttributeGetterAndSetter()
+    {
+        $bag = new UrlParameterBag();
+
+        $this->assertFalse($bag->hasUrlAttribute('foo'));
+
+        $bag->setUrlAttribute('foo', 'bar');
+
+        $this->assertTrue($bag->hasUrlAttribute('foo'));
+        $this->assertEquals('bar', $bag->getUrlAttribute('foo'));
+
+        $bag->removeUrlAttribute('foo');
+
+        $this->assertFalse($bag->hasUrlAttribute('foo'));
+
+        $bag->setUrlAttributes(['foo' => 'bar']);
+
+        $this->assertTrue($bag->hasUrlAttribute('foo'));
+        $this->assertEquals(['foo' => 'bar'], $bag->getUrlAttributes());
+    }
+
+    public function testQueryParameterGettersAndSetters()
+    {
+        $bag = new UrlParameterBag();
+
+        $this->assertFalse($bag->hasQueryParameter('foo'));
+
+        $bag->setQueryParameter('foo', 'bar');
+
+        $this->assertTrue($bag->hasQueryParameter('foo'));
+        $this->assertEquals('bar', $bag->getQueryParameter('foo'));
+
+        $bag->removeQueryParameter('foo');
+
+        $this->assertFalse($bag->hasQueryParameter('foo'));
+
+        $bag->setQueryParameters(['foo' => 'bar']);
+
+        $this->assertTrue($bag->hasQueryParameter('foo'));
+        $this->assertEquals(['foo' => 'bar'], $bag->getQueryParameters());
+    }
+
     public function testGenerateOneParameters()
     {
         $bag = new UrlParameterBag(['foo' => 'bar']);
@@ -63,6 +105,13 @@ class UrlParameterBagTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('/foo/bar', $bag->generateParameters());
     }
 
+    public function testReturnsNullOnEmptyParameters()
+    {
+        $bag = new UrlParameterBag();
+
+        $this->assertEquals(null, $bag->generateParameters());
+    }
+
     /**
      * @expectedException \RuntimeException
      */
@@ -84,6 +133,34 @@ class UrlParameterBagTest extends \PHPUnit_Framework_TestCase
         $bag->generateParameters();
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testExceptionOnConstructNonScalarParameter()
+    {
+        new UrlParameterBag(['foo' => (object) ['bar']]);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testExceptionOnSettingNonScalarParameter()
+    {
+        $bag = new UrlParameterBag();
+
+        $bag->setUrlAttribute('foo', (object) ['bar']);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testExceptionOnSettingNonScalarParameters()
+    {
+        $bag = new UrlParameterBag();
+
+        $bag->setUrlAttributes(['foo' => (object) ['bar']]);
+    }
+
     public function testGenerateSingleQuery()
     {
         $bag = new UrlParameterBag([], ['foo' => 'bar']);
@@ -96,5 +173,40 @@ class UrlParameterBagTest extends \PHPUnit_Framework_TestCase
         $bag = new UrlParameterBag([], ['foo' => 'bar', 'bar' => 'baz']);
 
         $this->assertEquals('foo=bar&bar=baz', $bag->generateQueryString());
+    }
+
+    public function testReturnsNullOnEmptyQuery()
+    {
+        $bag = new UrlParameterBag();
+
+        $this->assertEquals(null, $bag->generateQueryString());
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testExceptionOnConstructNonScalarQuery()
+    {
+        new UrlParameterBag([], ['foo' => (object) ['bar']]);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testExceptionOnSettingNonScalarQuery()
+    {
+        $bag = new UrlParameterBag();
+
+        $bag->setQueryParameter('foo', (object) ['bar']);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testExceptionOnSettingNonScalarQuerys()
+    {
+        $bag = new UrlParameterBag();
+
+        $bag->setQueryParameters(['foo' => (object) ['bar']]);
     }
 }
