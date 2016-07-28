@@ -15,6 +15,15 @@ use Terminal42\ChangeLanguage\Navigation\UrlParameterBag;
 
 class UrlParameterBagTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @inheritDoc
+     */
+    protected function setUp()
+    {
+        $GLOBALS['TL_CONFIG']['useAutoItem'] = true;
+        unset($GLOBALS['TL_AUTO_ITEM']);
+    }
+
     public function testGenerateOneParameters()
     {
         $bag = new UrlParameterBag(['foo' => 'bar']);
@@ -31,16 +40,48 @@ class UrlParameterBagTest extends \PHPUnit_Framework_TestCase
 
     public function testGenerateSingleAutoItemParameter()
     {
-        $bag = new UrlParameterBag(['auto_item' => 'foobar']);
+        $GLOBALS['TL_AUTO_ITEM'] = ['foo'];
+        $bag = new UrlParameterBag(['foo' => 'bar']);
 
-        $this->assertEquals('/foobar', $bag->generateParameters());
+        $this->assertEquals('/bar', $bag->generateParameters());
     }
 
     public function testGenerateMultipleWithAutoItem()
     {
-        $bag = new UrlParameterBag(['foo' => 'bar', 'auto_item' => 'baz']);
+        $GLOBALS['TL_AUTO_ITEM'] = ['bar'];
+        $bag = new UrlParameterBag(['foo' => 'bar', 'bar' => 'baz']);
 
         $this->assertEquals('/baz/foo/bar', $bag->generateParameters());
+    }
+
+    public function testIgnoresAutoItemIfDisabled()
+    {
+        $GLOBALS['TL_CONFIG']['useAutoItem'] = false;
+        $GLOBALS['TL_AUTO_ITEM'] = ['foo'];
+        $bag = new UrlParameterBag(['foo' => 'bar']);
+
+        $this->assertEquals('/foo/bar', $bag->generateParameters());
+    }
+
+    /**
+     * @expectedException \RuntimeException
+     */
+    public function testExceptionOnAutoItemKey()
+    {
+        $bag = new UrlParameterBag(['auto_item' => 'baz']);
+
+        $bag->generateParameters();
+    }
+
+    /**
+     * @expectedException \RuntimeException
+     */
+    public function testExceptionOnMulitpleAutoItems()
+    {
+        $GLOBALS['TL_AUTO_ITEM'] = ['foo', 'bar'];
+        $bag = new UrlParameterBag(['foo' => 'bar', 'bar' => 'baz']);
+
+        $bag->generateParameters();
     }
 
     public function testGenerateSingleQuery()

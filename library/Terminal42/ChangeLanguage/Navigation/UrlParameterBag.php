@@ -173,7 +173,7 @@ class UrlParameterBag
         }
 
         if ($GLOBALS['TL_CONFIG']['useAutoItem']) {
-            $auto_item = array_intersect_key($this->attributes, array_flip($GLOBALS['TL_AUTO_ITEM']));
+            $auto_item = array_intersect_key($this->attributes, array_flip((array) $GLOBALS['TL_AUTO_ITEM']));
 
             switch (count($auto_item)) {
                 case 0:
