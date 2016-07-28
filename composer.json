@@ -23,7 +23,8 @@
         "contao/faq-bundle": "~3.5 || ~4.1",
         "contao/core":"~3.5",
         "phpunit/phpunit": "4.*",
-        "phpunit/dbunit": "~1.3"
+        "phpunit/dbunit": "~1.3",
+        "satooshi/php-coveralls": "~0.6"
     },
     "conflict": {
         "terminal42/contao-newslanguage": "*",

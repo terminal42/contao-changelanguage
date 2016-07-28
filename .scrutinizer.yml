@@ -4,9 +4,6 @@ tools:
     php_analyzer: true
     sensiolabs_security_checker: true
 
-    external_code_coverage:
-        runs: 4
-
 filter:
     paths: ["library/*"]
     excluded_paths: ["library/Terminal42/ChangeLanguage/Tests/*"]

@@ -5,21 +5,17 @@ php:
   - 5.6
   - 7.0
 
-env:
-  - CONTAO_VERSION="3.5.*"
-
 before_install:
   - cp $HOME/.phpenv/versions/$(phpenv global)/etc/conf.d/xdebug.ini /tmp
   - phpenv config-rm xdebug.ini
 
 install:
   - mysql -e 'CREATE DATABASE changelanguage_testsuite;'
-  - composer require contao/core:${CONTAO_VERSION} --no-update
-  - composer update --prefer-stable
+  - travis_wait composer update --prefer-stable
   - phpenv config-add /tmp/xdebug.ini
+  - mkdir -p build/logs
 
-script: phpunit --configuration phpunit.travis.xml --coverage-clover=coverage.clover
+script: phpunit --configuration phpunit.travis.xml --coverage-clover build/logs/clover.xml
 
 after_script:
-  - wget https://scrutinizer-ci.com/ocular.phar
-  - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+  - php vendor/bin/coveralls
