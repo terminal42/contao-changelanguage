@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version='1.2'
+       xmlns='urn:oasis:names:tc:xliff:document:1.2'
+       xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+       xsi:schemaLocation='urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd'
+>
+    <file original="languages/en/tl_calendar.xlf" source-language="en" datatype="plaintext">
+        <body>
+            <trans-unit id="tl_calendar.master.0">
+                <source>Master calendar</source>
+            </trans-unit>
+            <trans-unit id="tl_calendar.master.1">
+                <source>Please define the master calendar to allow language switching.</source>
+            </trans-unit>
+            <trans-unit id="tl_calendar.language.0">
+                <source>Language</source>
+            </trans-unit>
+            <trans-unit id="tl_calendar.language.1">
+                <source>Please enter the page language according to the ISO-639-1 standard (e.g. "en" for English or "en-US" for American English).</source>
+            </trans-unit>
+            <trans-unit id="tl_calendar.language_legend">
+                <source>Language settings</source>
+            </trans-unit>
+            <trans-unit id="tl_calendar.isMaster">
+                <source>This is a master calendar</source>
+            </trans-unit>
+            <trans-unit id="tl_calendar.isSlave">
+                <source>Master calendar is "%s"</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

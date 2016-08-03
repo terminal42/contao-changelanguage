@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version='1.2'
+       xmlns='urn:oasis:names:tc:xliff:document:1.2'
+       xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+       xsi:schemaLocation='urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd'
+>
+    <file original="languages/en/tl_module.xlf" source-language="en" datatype="plaintext">
+        <body>
+            <trans-unit id="tl_module.hideActiveLanguage.0">
+                <source>Hide active language</source>
+                <target>Aktive Sprache ausblenden</target>
+            </trans-unit>
+            <trans-unit id="tl_module.hideActiveLanguage.1">
+                <source>Please check here if you want to hide the active language on your site.</source>
+                <target>Klicken Sie hier, wenn die aktive Sprache in der Auswahl nicht erscheinen soll.</target>
+            </trans-unit>
+            <trans-unit id="tl_module.hideNoFallback.0">
+                <source>Hide languages without direct fallback</source>
+                <target>Sprachen ohne direkte Hauptsprache ausblenden</target>
+            </trans-unit>
+            <trans-unit id="tl_module.hideNoFallback.1">
+                <source>Do not show languages that have no direct fallback assigned.</source>
+                <target>Sprachen ausblenden, welche keine Hauptsprache zugewiesen haben.</target>
+            </trans-unit>
+            <trans-unit id="tl_module.customLanguage.0">
+                <source>Custom language texts</source>
+                <target>Eigene Sprachtexte</target>
+            </trans-unit>
+            <trans-unit id="tl_module.customLanguage.1">
+                <source>Please check here if you want to have custom texts for your languages (not uppercase language
+                    shortcuts).</source>
+                <target>Klicken Sie hier, wenn Sie anstelle der Sprachkürzel eigene Texte verwenden wollen.</target>
+            </trans-unit>
+            <trans-unit id="tl_module.customLanguageText.0">
+                <source>Language texts</source>
+                <target>Sprachtexte</target>
+            </trans-unit>
+            <trans-unit id="tl_module.customLanguageText.1">
+                <source>Please enter a replacement for every language. Use lower case shortcuts.</source>
+                <target>Bitte geben Sie einen Ersatz für jede Sprache ein.</target>
+            </trans-unit>
+            <trans-unit id="tl_module.customLanguageText.value">
+                <source>Language shortcut</source>
+                <target>Sprachkürzel (klein)</target>
+            </trans-unit>
+            <trans-unit id="tl_module.customLanguageText.label">
+                <source>Replacement text</source>
+                <target>Ersatztext</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

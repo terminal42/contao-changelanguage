@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version='1.2'
+       xmlns='urn:oasis:names:tc:xliff:document:1.2'
+       xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+       xsi:schemaLocation='urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd'
+>
+    <file original="languages/en/tl_page.xlf" source-language="en" datatype="plaintext">
+        <body>
+            <trans-unit id="tl_page.languageMain.0">
+                <source>Main language page</source>
+                <target>Seite in Hauptsprache</target>
+            </trans-unit>
+            <trans-unit id="tl_page.languageMain.1">
+                <source>Choose the page in the language marked as fallback equals this page.</source>
+                <target>Wählen Sie die Seite in der Fallback-Sprache aus, die dieser hier entspricht.</target>
+            </trans-unit>
+            <trans-unit id="tl_page.languageRoot.0">
+                <source>Foreign-Domain Root Page</source>
+                <target>Fremd-Domain Hauptsprache</target>
+            </trans-unit>
+            <trans-unit id="tl_page.languageRoot.1">
+                <source>Select the root page if this page tree is related to another domain.</source>
+                <target>Wählen Sie ob diese Seitenstruktur zur Sprache einer anderen Domain gehört.</target>
+            </trans-unit>
+            <trans-unit id="tl_page.languageRoot.2">
+                <source>This is a main language root site</source>
+                <target>Dies ist die Hauptdomain</target>
+            </trans-unit>
+            <trans-unit id="tl_page.languageQuery.0">
+                <source>Keep query parameters</source>
+                <target>Query-Parameter beibehalten</target>
+            </trans-unit>
+            <trans-unit id="tl_page.languageQuery.1">
+                <source>Enter a comma separated list of query parameters that should be kept when switching to a translation of this page.</source>
+                <target>Geben Sie eine kommaseparierte Liste von Query-Parametern ein, welche beim Sprachwechsel beibehalten werden sollen.</target>
+            </trans-unit>
+            <trans-unit id="tl_page.language_legend">
+                <source>Language &amp; Translation</source>
+                <target>Sprache &amp; Übersetzung</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
