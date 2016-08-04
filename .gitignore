@@ -2,8 +2,5 @@
 /vendor/
 /composer.lock
 
-# Transifex
-.tx
-
 # Unit Tests
 phpunit.xml
