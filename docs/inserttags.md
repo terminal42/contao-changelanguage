@@ -5,7 +5,7 @@
 2. [Linking pages](pages.md)
 3. [Frontend module](frontend-module.md)
 4. [Insert tags](inserttags.md)
-5. [FAQ](faq.md)
+5. [Tips & FAQ](tips-faq.md)
 
 
 ## Insert Tags

@@ -5,7 +5,34 @@
 2. [Linking pages](pages.md)
 3. [Frontend module](frontend-module.md)
 4. [Insert tags](inserttags.md)
-5. [FAQ](faq.md)
+5. [Tips & FAQ](tips-faq.md)
+
+
+
+## Tips & Tricks
+
+<dl>
+
+<dt>Do not use flags for the language selection</dt>
+<dd>Using flag icons for languages is a very bad idea. Flags represent
+    <u>countries</u> and not <u>languages</u>. Not every language belongs to
+    only one country! Would you take the American flag, the British flag or
+    the Australian flag for english? What flags do you use for <i>Chinese
+    Simplified</i> and <i>Chinese Traditional</i> (two different forms of writing
+    for the same chinese language)? Don't do it…</dd>
+
+<dt>Use a select menu for language selection</dt>
+<dd>Easy: go to your front end module settings and select <i>nav_dropdown</i> in
+    the <i>Navigation template</i> option. <b>BAM!</b>, you're done :-)</dd>
+
+<dt>Customizing alternate link tags</dt>
+<dd>By default, <i>ChangeLanguage</i> will add <code>&lt;link rel="alternate"&gt;</code>
+    markup to your page's head section. This will tell Google and other search
+    engines which pages belong together for better search results.<br><br>
+    If you want to customize the alternate tags, you can create a copy of the
+    <code>block_alternate_links.html5</code> template and customize the output.</dd>
+
+</dl>
 
 
 ## Frequently Asked Questions
@@ -33,6 +60,7 @@
     and add the new language. New localizations will be published with each new release by default.</a></dd>
 
 </dl>
+
 
 ## Known limitations
 

@@ -15,4 +15,4 @@ visitors to switch between different languages of your website.
 2. [Linking pages](docs/pages.md)
 3. [Frontend module](docs/frontend-module.md)
 4. [Insert tags](docs/inserttags.md)
-5. [FAQ](docs/faq.md)
+6. [Tips & FAQ](docs/tips-faq.md)
