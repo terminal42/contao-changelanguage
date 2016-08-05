@@ -47,7 +47,13 @@ abstract class AbstractChildTableListener extends AbstractTableListener
 
         /** @var Model $class */
         $class  = Model::getClassFromTable($this->table);
-        $models = $class::findBy('pid', $master->id);
+        $models = $class::findBy(
+            [
+                $this->table.'.pid=?',
+                sprintf('%s.id NOT IN (SELECT languageMain FROM %s WHERE pid=? AND id!=?)', $this->table, $this->table),
+            ],
+            [$master->id, $current->pid, $current->id]
+        );
 
         return $models instanceof Model\Collection ? $this->formatOptions($current, $models) : [];
     }
