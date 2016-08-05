@@ -19,7 +19,8 @@
     only one country! Would you take the American flag, the British flag or
     the Australian flag for english? What flags do you use for <i>Chinese
     Simplified</i> and <i>Chinese Traditional</i> (two different forms of writing
-    for the same chinese language)? Don't do it…</dd>
+    for the same chinese language)?<br>
+    Read more at <a href="https://www.ethnologue.com/about/problem-language-identification">https://www.ethnologue.com/about/problem-language-identification</a></dd>
 
 <dt>Use a select menu for language selection</dt>
 <dd>Easy: go to your front end module settings and select <i>nav_dropdown</i> in
@@ -35,11 +36,28 @@
 </dl>
 
 
+## Common issues
+
+<dl>
+
+<dt>"You must not have more than one auto_item parameter" error message</dt>
+<dd>This error is a misconfiguration based on all of the following conditions:
+    <ol>
+    <li>You do have <i>auto_item</i> functionality enabled in the system settings.</li>
+    <li>Multiple modules (e.g. news and events) have the same <i>Redirect page</i> set.</li>
+    <li>There are news and events with the same alias.</li>
+    </ol>
+    To fix the error message, you must correctly set up your page structure and modules.
+</dd>
+
+</dl>
+
+
 ## Frequently Asked Questions
 
 <dl>
 
-<dt>Where can I get support for ChangeLanguage</dt>
+<dt>Where can I get support for ChangeLanguage?</dt>
 <dd>Please use the official Contao community forums at
     https://community.contao.org for support on all our free extensions.</dd>
 
