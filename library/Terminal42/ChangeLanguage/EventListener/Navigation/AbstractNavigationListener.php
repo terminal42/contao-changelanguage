@@ -25,7 +25,7 @@ abstract class AbstractNavigationListener
     {
         $navigationItem = $event->getNavigationItem();
 
-        if ($navigationItem->isCurrentPage() || !$navigationItem->isDirectFallback()) {
+        if ($navigationItem->isCurrentPage()) {
             return;
         }
 
@@ -33,6 +33,11 @@ abstract class AbstractNavigationListener
 
         if (null === $current) {
             return;
+        }
+
+        // Remove the news/event/faq alias from the URL if there is no actual reader page assigned
+        if (!$navigationItem->isDirectFallback()) {
+            $event->getUrlParameterBag()->removeUrlAttribute($this->getUrlKey());
         }
 
         $t      = $current::getTable();
