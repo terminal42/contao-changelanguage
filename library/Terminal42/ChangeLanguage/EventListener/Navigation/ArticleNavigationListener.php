@@ -36,7 +36,6 @@ class ArticleNavigationListener
         $targetRoot     = $event->getNavigationItem()->getRootPage();
         $currentAlias   = $event->getUrlParameterBag()->getUrlAttribute('articles');
         $currentArticle = ArticleModel::findByIdOrAliasAndPid($currentAlias, $objPage->id);
-        $targetArticle  = null;
         $t              = ArticleModel::getTable();
 
         if (null === $currentArticle

@@ -39,8 +39,8 @@ class ChangelanguageNavigationEvent
     /**
      * Constructor.
      *
-     * @param NavigationItem  $navigationItem
-     * @param UrlParameterBag $urlParameters
+     * @param NavigationItem       $navigationItem
+     * @param UrlParameterBag|null $urlParameters
      */
     public function __construct(NavigationItem $navigationItem, UrlParameterBag $urlParameters = null)
     {

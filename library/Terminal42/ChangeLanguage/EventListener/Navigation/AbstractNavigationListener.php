@@ -55,7 +55,7 @@ abstract class AbstractNavigationListener
         $translated = $this->findPublishedBy(
             array(
                 "($t.id=? OR $t.languageMain=?)",
-                "$t.pid=(SELECT id FROM " . $parent::getTable() . ' WHERE (id=? OR master=?) AND jumpTo=?)'
+                sprintf('%s.pid=(SELECT id FROM %s WHERE (id=? OR master=?) AND jumpTo=?)', $t, $parent::getTable())
             ),
             array($mainId, $mainId, $masterId, $masterId, $navigationItem->getTargetPage()->id)
         );
