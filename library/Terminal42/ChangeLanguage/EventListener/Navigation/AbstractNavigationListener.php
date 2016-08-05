@@ -23,7 +23,9 @@ abstract class AbstractNavigationListener
      */
     public function onChangelanguageNavigation(ChangelanguageNavigationEvent $event)
     {
-        if ($event->getNavigationItem()->isCurrentPage()) {
+        $navigationItem = $event->getNavigationItem();
+
+        if ($navigationItem->isCurrentPage() || !$navigationItem->isDirectFallback()) {
             return;
         }
 
@@ -46,20 +48,20 @@ abstract class AbstractNavigationListener
 
         // Abort if current record has no translated version
         if (0 === $mainId || 0 === $masterId) {
-            $event->getNavigationItem()->setIsDirectFallback(false);
+            $navigationItem->setIsDirectFallback(false);
             return;
         }
 
         $translated = $this->findPublishedBy(
             array(
                 "($t.id=? OR $t.languageMain=?)",
-                "$t.pid=(SELECT id FROM " . $parent::getTable() . ' WHERE (id=? OR master=?) AND language=?)'
+                "$t.pid=(SELECT id FROM " . $parent::getTable() . ' WHERE (id=? OR master=?) AND jumpTo=?)'
             ),
-            array($mainId, $mainId, $masterId, $masterId, $event->getNavigationItem()->getLanguageTag())
+            array($mainId, $mainId, $masterId, $masterId, $navigationItem->getTargetPage()->id)
         );
 
         if (null === $translated) {
-            $event->getNavigationItem()->setIsDirectFallback(false);
+            $navigationItem->setIsDirectFallback(false);
             return;
         }
 

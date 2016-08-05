@@ -13,7 +13,9 @@ namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 
 use Contao\DataContainer;
 use Contao\Database;
+use Contao\PageModel;
 use Haste\Dca\PaletteManipulator;
+use Terminal42\ChangeLanguage\PageFinder;
 
 class ParentTableListener
 {
@@ -34,21 +36,6 @@ class ParentTableListener
 
     public function register()
     {
-        $GLOBALS['TL_DCA'][$this->table]['fields']['language'] = [
-            'label'     => &$GLOBALS['TL_LANG'][$this->table]['language'],
-            'exclude'   => true,
-            'filter'    => true,
-            'inputType' => 'text',
-            'eval'      => [
-                'mandatory' => true,
-                'rgxp'      => 'language',
-                'maxlength' => 5,
-                'nospace'   => true,
-                'tl_class'  => 'w50',
-            ],
-            'sql'       => "varchar(5) NOT NULL default ''",
-        ];
-
         $GLOBALS['TL_DCA'][$this->table]['fields']['master'] = [
             'label'            => &$GLOBALS['TL_LANG'][$this->table]['master'],
             'exclude'          => true,
@@ -66,7 +53,6 @@ class ParentTableListener
 
         PaletteManipulator::create()
             ->addLegend('language_legend', 'title_legend')
-            ->addField('language', 'language_legend', PaletteManipulator::POSITION_APPEND)
             ->addField('master', 'language_legend', PaletteManipulator::POSITION_APPEND)
             ->applyToPalette('default', $this->table)
         ;
@@ -74,10 +60,32 @@ class ParentTableListener
 
     public function onMasterOptions(DataContainer $dc)
     {
+        if (($jumpTo = PageModel::findByPk($dc->activeRecord->jumpTo)) === null) {
+            return [];
+        }
+
+        $associated = [];
+        $pageFinder = new PageFinder();
+
+        foreach ($pageFinder->findAssociatedForPage($jumpTo) as $page) {
+            if ($page->id !== $dc->activeRecord->jumpTo) {
+                $associated[] = $page->id;
+            }
+        }
+
+        if (0 === count($associated)) {
+            return [];
+        }
+
         $options = [];
         $result = Database::getInstance()
-            ->prepare('SELECT id, title FROM ' . $this->table . ' WHERE id!=? AND language!=? AND master=0 ORDER BY title')
-            ->execute($dc->id, $dc->activeRecord->language)
+            ->prepare('
+                SELECT id, title 
+                FROM ' . $this->table . ' 
+                WHERE jumpTo IN (' . implode(',', $associated) . ') AND master=0 
+                ORDER BY title
+            ')
+            ->execute($dc->activeRecord->language)
         ;
 
         while ($result->next()) {
