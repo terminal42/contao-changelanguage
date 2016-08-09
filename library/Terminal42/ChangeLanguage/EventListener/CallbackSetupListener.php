@@ -42,6 +42,11 @@ class CallbackSetupListener
         $this->labelListener = new MissingLanguageIconListener();
     }
 
+    /**
+     * Callback for loadDataContainer hook.
+     *
+     * @param string $table
+     */
     public function onLoadDataContainer($table)
     {
         $this->labelListener->register($table);

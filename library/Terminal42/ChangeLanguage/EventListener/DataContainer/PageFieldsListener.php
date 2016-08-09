@@ -23,6 +23,8 @@ class PageFieldsListener
      * @param DataContainer $dc
      *
      * @return mixed
+     *
+     * @throws \RuntimeException
      */
     public function onSaveLanguageMain($value, DataContainer $dc)
     {

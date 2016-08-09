@@ -28,8 +28,16 @@ abstract class AbstractTableListener
         $this->table = $table;
     }
 
+    /**
+     * Register necessary callbacks for this listener.
+     */
     abstract public function register();
 
+    /**
+     * Gets the table name for this listener.
+     *
+     * @return string
+     */
     protected function getTable()
     {
         return $this->table;
