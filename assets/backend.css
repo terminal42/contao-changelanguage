@@ -8,6 +8,7 @@
 
 .header_switchLanguage ul {
     position: absolute;
+    left: 0;
     display: none;
     min-width: 100px;
     margin: 10px 12px 0 0;
