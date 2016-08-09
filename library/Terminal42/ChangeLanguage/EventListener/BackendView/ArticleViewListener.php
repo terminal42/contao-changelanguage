@@ -11,7 +11,6 @@
 namespace Terminal42\ChangeLanguage\EventListener\BackendView;
 
 use Contao\ArticleModel;
-use Contao\Backend;
 use Contao\Controller;
 use Contao\DataContainer;
 use Contao\PageModel;
@@ -70,7 +69,7 @@ class ArticleViewListener extends AbstractViewListener
             case 'tl_page':
                 Session::getInstance()->set('tl_page_node', (int) $id);
 
-                $url = TL_SCRIPT . '?do=article&amp;rt=' . REQUEST_TOKEN;
+                $url = TL_SCRIPT.'?do=article&amp;rt=' . REQUEST_TOKEN;
                 break;
 
             default:
