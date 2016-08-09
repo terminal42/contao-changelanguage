@@ -9,7 +9,7 @@
  * @link       http://github.com/terminal42/contao-changelanguage
  */
 
-namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
+namespace Terminal42\ChangeLanguage\EventListener;
 
 abstract class AbstractTableListener
 {

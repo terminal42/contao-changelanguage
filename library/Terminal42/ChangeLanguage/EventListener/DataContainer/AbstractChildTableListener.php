@@ -14,6 +14,7 @@ namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 use Contao\DataContainer;
 use Contao\Model;
 use Haste\Dca\PaletteManipulator;
+use Terminal42\ChangeLanguage\EventListener\AbstractTableListener;
 
 abstract class AbstractChildTableListener extends AbstractTableListener
 {

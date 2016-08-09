@@ -11,7 +11,6 @@
 
 namespace Terminal42\ChangeLanguage\EventListener;
 
-use Terminal42\ChangeLanguage\EventListener\DataContainer\AbstractTableListener;
 use Terminal42\ChangeLanguage\EventListener\DataContainer\MissingLanguageIconListener;
 
 class CallbackSetupListener

@@ -15,6 +15,7 @@ use Contao\DataContainer;
 use Contao\Database;
 use Contao\PageModel;
 use Haste\Dca\PaletteManipulator;
+use Terminal42\ChangeLanguage\EventListener\AbstractTableListener;
 use Terminal42\ChangeLanguage\PageFinder;
 
 class ArticleListener extends AbstractTableListener
