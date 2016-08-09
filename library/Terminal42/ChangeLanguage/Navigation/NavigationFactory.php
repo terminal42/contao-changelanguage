@@ -28,15 +28,22 @@ class NavigationFactory
     private $languageText;
 
     /**
+     * @var PageModel
+     */
+    private $currentPage;
+
+    /**
      * Constructor.
      *
      * @param PageFinder   $pageFinder
      * @param LanguageText $languageText
+     * @param PageModel    $currentPage
      */
-    public function __construct(PageFinder $pageFinder, LanguageText $languageText)
+    public function __construct(PageFinder $pageFinder, LanguageText $languageText, PageModel $currentPage)
     {
         $this->pageFinder   = $pageFinder;
         $this->languageText = $languageText;
+        $this->currentPage  = $currentPage;
     }
 
     /**
@@ -74,6 +81,7 @@ class NavigationFactory
             if (!$item->hasTargetPage()) {
                 $item->setTargetPage(
                     $this->pageFinder->findAssociatedParentForLanguage($currentPage, $item->getLanguageTag()),
+                    false,
                     false
                 );
             }
@@ -89,7 +97,7 @@ class NavigationFactory
      *
      * @param NavigationItem[] $rootPages
      *
-     * @return array
+     * @return NavigationItem[]
      *
      * @throws \OverflowException if multiple root pages have the same language
      */
@@ -130,7 +138,10 @@ class NavigationFactory
                 throw new \UnderflowException(sprintf('Missing root page for language "%s"', $page->language));
             }
 
-            $navigationItems[strtolower($page->language)]->setTargetPage($page, true);
+            $language      = strtolower($page->language);
+            $isCurrentPage = $this->currentPage->id === $page->id;
+
+            $navigationItems[$language]->setTargetPage($page, true, $isCurrentPage);
         }
     }
 }

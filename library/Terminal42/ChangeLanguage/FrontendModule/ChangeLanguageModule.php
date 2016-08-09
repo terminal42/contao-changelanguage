@@ -67,12 +67,12 @@ class ChangeLanguageModule extends AbstractFrontendModule
             $languageText = new LanguageText();
         }
 
-        $navigationFactory = new NavigationFactory($pageFinder, $languageText);
+        $navigationFactory = new NavigationFactory($pageFinder, $languageText, $currentPage);
 
         $navigationItems = $navigationFactory->findNavigationItems(
             $currentPage,
-            $this->hideActiveLanguage,
-            $this->hideNoFallback
+            (bool) $this->hideActiveLanguage,
+            (bool) $this->hideNoFallback
         );
 
         // Do not generate module or header if there is none or only one link

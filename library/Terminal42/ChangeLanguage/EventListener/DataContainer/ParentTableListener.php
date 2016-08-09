@@ -67,10 +67,8 @@ class ParentTableListener
         $associated = [];
         $pageFinder = new PageFinder();
 
-        foreach ($pageFinder->findAssociatedForPage($jumpTo) as $page) {
-            if ($page->id !== $dc->activeRecord->jumpTo) {
-                $associated[] = $page->id;
-            }
+        foreach ($pageFinder->findAssociatedForPage($jumpTo, true) as $page) {
+            $associated[] = $page->id;
         }
 
         if (0 === count($associated)) {

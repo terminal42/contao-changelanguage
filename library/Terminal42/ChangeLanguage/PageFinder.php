@@ -73,10 +73,11 @@ class PageFinder
 
     /**
      * @param PageModel $page
+     * @param bool      $skipCurrent
      *
-     * @return PageModel[]
+     * @return \Contao\PageModel[]
      */
-    public function findAssociatedForPage(PageModel $page)
+    public function findAssociatedForPage(PageModel $page, $skipCurrent = false)
     {
         if ('root' === $page->type) {
             return $this->findRootPagesForPage($page);
@@ -93,6 +94,11 @@ class PageFinder
         }
 
         $columns = ['(id=? OR languageMain=?)'];
+
+        if ($skipCurrent) {
+            $columns[] = 'id!=?';
+            $values[]  = $page->id;
+        }
 
         $this->addPublishingConditions($columns);
 

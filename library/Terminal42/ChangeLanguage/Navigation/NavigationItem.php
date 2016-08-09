@@ -132,21 +132,13 @@ class NavigationItem
     /**
      * @param PageModel $targetPage
      * @param bool      $isDirectFallback
-     * @param bool|null $isCurrentPage
+     * @param bool      $isCurrentPage
      */
-    public function setTargetPage(PageModel $targetPage, $isDirectFallback, $isCurrentPage = null)
+    public function setTargetPage(PageModel $targetPage, $isDirectFallback, $isCurrentPage)
     {
         $this->targetPage = $targetPage;
-        $this->isDirectFallback = $isDirectFallback;
+        $this->isDirectFallback = (bool) $isDirectFallback;
         $this->isCurrentPage = (bool) $isCurrentPage;
-
-        if (null === $isCurrentPage) {
-            global $objPage;
-
-            if ($objPage instanceof PageModel && $objPage->id === $targetPage->id) {
-                $this->isCurrentPage = true;
-            }
-        }
     }
 
     /**

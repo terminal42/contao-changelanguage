@@ -30,22 +30,14 @@ class PageViewListener extends AbstractViewListener
             return [];
         }
 
+        $options    = [];
+        $languages  = System::getLanguages();
         $pageFinder = new PageFinder();
-        $associated = $pageFinder->findAssociatedForPage($current);
 
-        if (0 === count($associated)) {
-            return [];
-        }
-
-        $options   = [];
-        $languages = System::getLanguages();
-
-        foreach ($associated as $model) {
+        foreach ($pageFinder->findAssociatedForPage($current, true) as $model) {
             $model->loadDetails();
 
-            if ($model->language !== $current->language) {
-                $options[$model->id] = $languages[$model->language] ?: $model->language;
-            }
+            $options[$model->id] = $languages[$model->language] ?: $model->language;
         }
 
         return $options;
