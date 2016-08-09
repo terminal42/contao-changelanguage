@@ -18,10 +18,11 @@ class PageFinder
 {
     /**
      * @param PageModel $page
+     * @param bool      $skipCurrent
      *
-     * @return PageModel[]
+     * @return \Contao\PageModel[]
      */
-    public function findRootPagesForPage(PageModel $page)
+    public function findRootPagesForPage(PageModel $page, $skipCurrent = false)
     {
         $page->loadDetails();
 
@@ -34,13 +35,16 @@ class PageFinder
             )"
         ];
 
+        $values = [$page->domain, $page->domain, $page->domain];
+
+        if ($skipCurrent) {
+            $columns[] = 'id!=?';
+            $values[]  = $page->rootId;
+        }
+
         $this->addPublishingConditions($columns);
 
-        return $this->findPages(
-            $columns,
-            [$page->domain, $page->domain, $page->domain],
-            ['order' => 'sorting']
-        );
+        return $this->findPages($columns, $values, ['order' => 'sorting']);
     }
 
     /**
@@ -80,7 +84,7 @@ class PageFinder
     public function findAssociatedForPage(PageModel $page, $skipCurrent = false)
     {
         if ('root' === $page->type) {
-            return $this->findRootPagesForPage($page);
+            return $this->findRootPagesForPage($page, $skipCurrent);
         }
 
         $page->loadDetails();
