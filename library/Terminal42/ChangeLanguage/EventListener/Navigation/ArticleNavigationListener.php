@@ -94,7 +94,7 @@ class ArticleNavigationListener
         return $this->findPublishedArticle(
             array(
                 'tl_article.languageMain = ?',
-                'tl_article.pid IN (' . implode(',', $subpages) . ')'
+                'tl_article.pid IN ('.implode(',', $subpages).')'
             ),
             array(
                 $currentIsFallback ? $currentArticle->id : $currentArticle->languageMain,
@@ -113,13 +113,11 @@ class ArticleNavigationListener
      */
     private function findPublishedArticle(array $columns, array $values = array(), array $options = array())
     {
-        $t = ArticleModel::getTable();
-
         if (true !== BE_USER_LOGGED_IN) {
             $time      = \Date::floorToMinute();
-            $columns[] = "($t.start='' OR $t.start<='$time')";
-            $columns[] = "($t.stop='' OR $t.stop>'" . ($time + 60) . "')";
-            $columns[] = "$t.published='1'";
+            $columns[] = "(tl_article.start='' OR tl_article.start<='$time')";
+            $columns[] = "(tl_article.stop='' OR tl_article.stop>'".($time + 60)."')";
+            $columns[] = "tl_article.published='1'";
         }
 
         return ArticleModel::findOneBy($columns, $values, $options);
