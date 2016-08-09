@@ -13,9 +13,26 @@ namespace Terminal42\ChangeLanguage\EventListener\BackendView;
 use Contao\Backend;
 use Contao\DataContainer;
 use Terminal42\ChangeLanguage\EventListener\AbstractTableListener;
+use Terminal42\ChangeLanguage\PageFinder;
 
 abstract class AbstractViewListener extends AbstractTableListener
 {
+    /**
+     * @var PageFinder
+     */
+    protected $pageFinder;
+
+    /**
+     * @inheritdoc
+     */
+    public function __construct($table)
+    {
+        parent::__construct($table);
+
+        $this->pageFinder = new PageFinder();
+    }
+
+
     /**
      * @inheritdoc
      */

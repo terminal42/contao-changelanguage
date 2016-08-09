@@ -25,6 +25,7 @@ class CallbackSetupListener
             'Terminal42\ChangeLanguage\EventListener\DataContainer\ArticleListener',
             'Terminal42\ChangeLanguage\EventListener\BackendView\PageViewListener',
         ],
+        'tl_content'         => ['Terminal42\ChangeLanguage\EventListener\BackendView\ArticleViewListener'],
         'tl_news_archive'    => ['Terminal42\ChangeLanguage\EventListener\DataContainer\ParentTableListener'],
         'tl_calendar'        => ['Terminal42\ChangeLanguage\EventListener\DataContainer\ParentTableListener'],
         'tl_faq_category'    => ['Terminal42\ChangeLanguage\EventListener\DataContainer\ParentTableListener'],

@@ -15,7 +15,6 @@ use Contao\DataContainer;
 use Contao\PageModel;
 use Contao\Session;
 use Contao\System;
-use Terminal42\ChangeLanguage\PageFinder;
 
 class PageViewListener extends AbstractViewListener
 {
@@ -32,9 +31,8 @@ class PageViewListener extends AbstractViewListener
 
         $options    = [];
         $languages  = System::getLanguages();
-        $pageFinder = new PageFinder();
 
-        foreach ($pageFinder->findAssociatedForPage($current, true) as $model) {
+        foreach ($this->pageFinder->findAssociatedForPage($current, true) as $model) {
             $model->loadDetails();
 
             $options[$model->id] = $languages[$model->language] ?: $model->language;
