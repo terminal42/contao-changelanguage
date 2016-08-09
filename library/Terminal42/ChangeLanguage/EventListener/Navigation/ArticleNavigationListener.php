@@ -26,7 +26,9 @@ class ArticleNavigationListener
     public function onChangelanguageNavigation(ChangelanguageNavigationEvent $event)
     {
         // Try to find matching article
-        if ($event->getNavigationItem()->isCurrentPage() || !$event->getUrlParameterBag()->hasUrlAttribute('articles')) {
+        if ($event->getNavigationItem()->isCurrentPage()
+            || !$event->getUrlParameterBag()->hasUrlAttribute('articles')
+        ) {
             return;
         }
 
@@ -36,7 +38,6 @@ class ArticleNavigationListener
         $targetRoot     = $event->getNavigationItem()->getRootPage();
         $currentAlias   = $event->getUrlParameterBag()->getUrlAttribute('articles');
         $currentArticle = ArticleModel::findByIdOrAliasAndPid($currentAlias, $objPage->id);
-        $t              = ArticleModel::getTable();
 
         if (null === $currentArticle
             || ($currentArticle->languageMain < 1
@@ -46,33 +47,46 @@ class ArticleNavigationListener
             return;
         }
 
-        if ($targetRoot->fallback) {
-            // If the target root is fallback, the article ID will match our current "languageMain"
-            $targetArticle = $this->findPublishedArticle(array("$t.id = " . $currentArticle->languageMain));
-
-        } else {
-            $arrSubpages = Database::getInstance()->getChildRecords($targetRoot->id, 'tl_page', true);
-
-            if (0 === count($arrSubpages)) {
-                return;
-            }
-
-            $targetArticle = $this->findPublishedArticle(
-                array(
-                    "$t.languageMain = ?",
-                    "$t.pid IN (" . implode(',', $arrSubpages) . ')'
-                ),
-                array(
-                    $objPage->rootIsFallback ? $currentArticle->id : $currentArticle->languageMain
-                )
-            );
-        }
+        $targetArticle = $this->findTargetArticle($targetRoot, $currentArticle, $objPage->rootIsFallback);
 
         if (null === $targetArticle) {
             return;
         }
 
         $event->getUrlParameterBag()->setUrlAttribute('articles', $targetArticle->alias);
+    }
+
+    /**
+     * Find target article for a root page and current article.
+     *
+     * @param PageModel    $targetRoot
+     * @param ArticleModel $currentArticle
+     * @param bool         $isFallback
+     *
+     * @return \ArticleModel|null
+     */
+    private function findTargetArticle(PageModel $targetRoot, ArticleModel $currentArticle, $isFallback)
+    {
+        // If the target root is fallback, the article ID will match our current "languageMain"
+        if ($targetRoot->fallback) {
+            return $this->findPublishedArticle(array('tl_article.id = '.$currentArticle->languageMain));
+        }
+
+        $subpages = Database::getInstance()->getChildRecords($targetRoot->id, 'tl_page', true);
+
+        if (0 === count($subpages)) {
+            return null;
+        }
+
+        return $this->findPublishedArticle(
+            array(
+                'tl_article.languageMain = ?',
+                'tl_article.pid IN (' . implode(',', $subpages) . ')'
+            ),
+            array(
+                $isFallback ? $currentArticle->id : $currentArticle->languageMain
+            )
+        );
     }
 
     /**

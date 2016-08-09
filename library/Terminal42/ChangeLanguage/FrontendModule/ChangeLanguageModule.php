@@ -166,26 +166,24 @@ class ChangeLanguageModule extends AbstractFrontendModule
     {
         $attributes = [];
         $query      = [];
+        $input      = $_GET;
+
+        // the current page language is set in $_GET
+        unset($input['language'], $input['auto_item']);
 
         parse_str($_SERVER['QUERY_STRING'], $currentQuery);
 
-        foreach ($_GET as $k => $value) {
-            $value   = Input::get($k, false, true);
-            $isQuery = array_key_exists($k, $currentQuery);
+        foreach ($input as $k => $value) {
+            $value = (string) Input::get($k, false, true);
 
-            // the current page language is set in $_GET
-            if (empty($value)
-                || 'language' === $k
-                || 'auto_item' === $k
-                || ($isQuery && !in_array($k, $queryParameters, false))
-            ) {
+            if ('' === $value) {
                 continue;
             }
 
-            if ($isQuery) {
-                $query[$k] = $value;
-            } else {
+            if (!array_key_exists($k, $currentQuery)) {
                 $attributes[$k] = $value;
+            } else if (in_array($k, $queryParameters, false)) {
+                $query[$k] = $value;
             }
         }
 
