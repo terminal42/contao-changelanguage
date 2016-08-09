@@ -45,32 +45,20 @@ class NavigationFactory
      * @param bool      $hideNoFallback
      *
      * @return NavigationItem[]
+     *
+     * @throws \OverflowException
+     * @throws \UnderflowException
      */
     public function findNavigationItems(PageModel $currentPage, $hideActive, $hideNoFallback)
     {
-        /** @var NavigationItem[] $navigationItems */
-        $navigationItems = [];
         $rootPages = $this->pageFinder->findRootPagesForPage($currentPage);
+        $navigationItems = $this->createNavigationItemsForRootPages($rootPages);
 
-        foreach ($rootPages as $rootPage) {
-            $language = strtolower($rootPage->language);
-
-            if (array_key_exists($language, $navigationItems)) {
-                throw new \OverflowException(
-                    sprintf('Multiple root pages for the language "%s" found', $rootPage->language)
-                );
-            }
-
-            $navigationItems[$language] = new NavigationItem($rootPage, $this->languageText->get($language));
-        }
-
-        foreach ($this->pageFinder->findAssociatedForPage($currentPage) as $page) {
-            $page->loadDetails();
-
-            if (array_key_exists($page->rootId, $rootPages)) {
-                $navigationItems[strtolower($page->language)]->setTargetPage($page, true);
-            }
-        }
+        $this->setTargetPageForNavigationItems(
+            $navigationItems,
+            $rootPages,
+            $this->pageFinder->findAssociatedForPage($currentPage)
+        );
 
         foreach ($navigationItems as $k => $item) {
             if ($hideActive && $item->isCurrentPage()) {
@@ -94,5 +82,55 @@ class NavigationFactory
         $this->languageText->orderNavigationItems($navigationItems);
 
         return array_values($navigationItems);
+    }
+
+    /**
+     * Builds NavigationItem's from given root pages.
+     *
+     * @param NavigationItem[] $rootPages
+     *
+     * @return array
+     *
+     * @throws \OverflowException if multiple root pages have the same language
+     */
+    private function createNavigationItemsForRootPages(array $rootPages)
+    {
+        $navigationItems = [];
+
+        foreach ($rootPages as $rootPage) {
+            $language = strtolower($rootPage->language);
+
+            if (array_key_exists($language, $navigationItems)) {
+                throw new \OverflowException(
+                    sprintf('Multiple root pages for the language "%s" found', $rootPage->language)
+                );
+            }
+
+            $navigationItems[$language] = new NavigationItem($rootPage, $this->languageText->get($language));
+        }
+
+        return $navigationItems;
+    }
+
+    /**
+     * Sets the target page for navigation items based on list of associated pages.
+     *
+     * @param NavigationItem[] $navigationItems
+     * @param PageModel[]      $rootPages
+     * @param PageModel[]      $associatedPages
+     *
+     * @throws \UnderflowException
+     */
+    private function setTargetPageForNavigationItems(array $navigationItems, array $rootPages, array $associatedPages)
+    {
+        foreach ($associatedPages as $page) {
+            $page->loadDetails();
+
+            if (!array_key_exists($page->rootId, $rootPages)) {
+                throw new \UnderflowException(sprintf('Missing root page for language "%s"', $page->language));
+            }
+
+            $navigationItems[strtolower($page->language)]->setTargetPage($page, true);
+        }
     }
 }

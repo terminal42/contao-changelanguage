@@ -11,8 +11,6 @@
 
 namespace Terminal42\ChangeLanguage\Navigation;
 
-use Contao\Input;
-
 class UrlParameterBag
 {
     /**
@@ -226,43 +224,6 @@ class UrlParameterBag
     }
 
     /**
-     * Creates an UrlParameterBag from the current environment.
-     *
-     * @param array|null $queryParameters An array of query parameters to keep, or NULL to keep all
-     *
-     * @return static
-     */
-    public static function createFromGlobals(array $queryParameters = null)
-    {
-        $attributes = [];
-        $query      = [];
-
-        parse_str($_SERVER['QUERY_STRING'], $currentQuery);
-
-        foreach ($_GET as $k => $value) {
-            $value = Input::get($k, false, true);
-            $isQuery = array_key_exists($k, $currentQuery);
-
-            // the current page language is set in $_GET
-            if (empty($value)
-                || 'language' === $k
-                || 'auto_item' === $k
-                || ($isQuery && null !== $queryParameters && !in_array($k, $queryParameters, false))
-            ) {
-                continue;
-            }
-
-            if ($isQuery) {
-                $query[$k] = $value;
-            } else {
-                $attributes[$k] = $value;
-            }
-        }
-
-        return new static($attributes, $query);
-    }
-
-    /**
      * Makes sure the given value is scalar or an array of scalar values.
      *
      * @param mixed $value
@@ -270,7 +231,7 @@ class UrlParameterBag
     private function validateScalar($value)
     {
         if (is_array($value)) {
-            foreach ($value as $k => $v) {
+            foreach ($value as $v) {
                 $this->validateScalar($v);
             }
 

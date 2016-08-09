@@ -12,6 +12,7 @@
 namespace Terminal42\ChangeLanguage\FrontendModule;
 
 use Contao\FrontendTemplate;
+use Contao\Input;
 use Contao\PageModel;
 use Contao\System;
 use Haste\Frontend\AbstractFrontendModule;
@@ -82,7 +83,7 @@ class ChangeLanguageModule extends AbstractFrontendModule
         $templateItems        = [];
         $headerLinks          = new AlternateLinks();
         $queryParameters      = $currentPage->languageQuery ? trimsplit(',', $currentPage->languageQuery) : [];
-        $defaultUrlParameters = UrlParameterBag::createFromGlobals($queryParameters);
+        $defaultUrlParameters = $this->createUrlParameterBag($queryParameters);
 
         foreach ($navigationItems as $item) {
             $urlParameters = clone $defaultUrlParameters;
@@ -152,6 +153,43 @@ class ChangeLanguageModule extends AbstractFrontendModule
         global $objPage;
 
         return $objPage;
+    }
+
+    /**
+     * Creates an UrlParameterBag from the current environment.
+     *
+     * @param array $queryParameters An array of query parameters to keep
+     *
+     * @return UrlParameterBag
+     */
+    protected function createUrlParameterBag(array $queryParameters = [])
+    {
+        $attributes = [];
+        $query      = [];
+
+        parse_str($_SERVER['QUERY_STRING'], $currentQuery);
+
+        foreach ($_GET as $k => $value) {
+            $value   = Input::get($k, false, true);
+            $isQuery = array_key_exists($k, $currentQuery);
+
+            // the current page language is set in $_GET
+            if (empty($value)
+                || 'language' === $k
+                || 'auto_item' === $k
+                || ($isQuery && !in_array($k, $queryParameters, false))
+            ) {
+                continue;
+            }
+
+            if ($isQuery) {
+                $query[$k] = $value;
+            } else {
+                $attributes[$k] = $value;
+            }
+        }
+
+        return new UrlParameterBag($attributes, $query);
     }
 
     /**

@@ -39,17 +39,13 @@ class ChangelanguageNavigationEvent
     /**
      * Constructor.
      *
-     * @param NavigationItem       $navigationItem
-     * @param UrlParameterBag|null $urlParameters
+     * @param NavigationItem  $navigationItem
+     * @param UrlParameterBag $urlParameters
      */
-    public function __construct(NavigationItem $navigationItem, UrlParameterBag $urlParameters = null)
+    public function __construct(NavigationItem $navigationItem, UrlParameterBag $urlParameters)
     {
         $this->navigationItem  = $navigationItem;
         $this->urlParameterBag = $urlParameters;
-
-        if (null === $this->urlParameterBag) {
-            $this->urlParameterBag = UrlParameterBag::createFromGlobals();
-        }
     }
 
     /**
