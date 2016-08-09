@@ -9,6 +9,14 @@
                 <source>Main language missing</source>
                 <target>Hauptsprache fehlt</target>
             </trans-unit>
+            <trans-unit id="MSC.switchLanguage">
+                <source>Switch language</source>
+                <target>Sprache wechseln</target>
+            </trans-unit>
+            <trans-unit id="MSC.switchLanguageTo">
+                <source>Switch to %s</source>
+                <target>Wechseln zu %s</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
