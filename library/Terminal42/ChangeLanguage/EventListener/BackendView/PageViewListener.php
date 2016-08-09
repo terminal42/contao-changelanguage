@@ -23,19 +23,14 @@ class PageViewListener extends AbstractViewListener
      */
     protected function getAvailableLanguages(DataContainer $dc)
     {
+        $options = [];
         $current = $this->getCurrentPage();
 
-        if (null === $current) {
-            return [];
-        }
-
-        $options    = [];
-        $languages  = System::getLanguages();
-
-        foreach ($this->pageFinder->findAssociatedForPage($current, true) as $model) {
-            $model->loadDetails();
-
-            $options[$model->id] = $languages[$model->language] ?: $model->language;
+        if (null !== $current) {
+            foreach ($this->pageFinder->findAssociatedForPage($current, true) as $model) {
+                $model->loadDetails();
+                $options[$model->id] = $this->getLanguageLabel($model->language);
+            }
         }
 
         return $options;

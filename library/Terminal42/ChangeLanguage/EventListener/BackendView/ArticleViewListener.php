@@ -15,7 +15,6 @@ use Contao\Controller;
 use Contao\DataContainer;
 use Contao\PageModel;
 use Contao\Session;
-use Contao\System;
 use Haste\Util\Url;
 
 class ArticleViewListener extends AbstractViewListener
@@ -33,8 +32,6 @@ class ArticleViewListener extends AbstractViewListener
         }
 
         $options    = [];
-        $languages  = System::getLanguages();
-
         $masterRoot = $this->pageFinder->findMasterRootForPage($currentPage);
         $articleId  = $currentPage->rootId === $masterRoot->id ? $currentArticle->id : $currentArticle->languageMain;
 
@@ -44,9 +41,9 @@ class ArticleViewListener extends AbstractViewListener
             $articles = $this->findArticlesForPage($page, $articleId, $currentArticle);
 
             if (1 === count($articles)) {
-                $options['tl_article.'.$articles[0]->id] = $languages[$page->language] ?: $page->language;
+                $options['tl_article.'.$articles[0]->id] = $this->getLanguageLabel($page->language);
             } else {
-                $options['tl_page.'.$page->id] = $languages[$page->language] ?: $page->language;
+                $options['tl_page.'.$page->id] = $this->getLanguageLabel($page->language);
             }
         }
 

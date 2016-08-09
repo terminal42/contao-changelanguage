@@ -12,6 +12,7 @@ namespace Terminal42\ChangeLanguage\EventListener\BackendView;
 
 use Contao\Backend;
 use Contao\DataContainer;
+use Contao\System;
 use Terminal42\ChangeLanguage\EventListener\AbstractTableListener;
 use Terminal42\ChangeLanguage\PageFinder;
 
@@ -139,5 +140,27 @@ abstract class AbstractViewListener extends AbstractTableListener
         }
 
         return $markup.'</ul></div>';
+    }
+
+    /**
+     * @param string $languageCode
+     *
+     * @return string
+     */
+    protected function getLanguageLabel($languageCode)
+    {
+        static $languages;
+
+        if (null === $languages) {
+            $languages = System::getLanguages();
+        }
+
+        if (array_key_exists($languageCode, $languages)) {
+            list($label,) = explode(' - ', $languages[$languageCode], 2);
+        } else {
+            $label = $languageCode;
+        }
+
+        return $label;
     }
 }
