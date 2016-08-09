@@ -48,7 +48,7 @@ class PageViewListener extends AbstractViewListener
      */
     protected function doSwitchView($id)
     {
-        Session::getInstance()->set('tl_page_node', $id);
+        Session::getInstance()->set('tl_page_node', (int) $id);
 
         Controller::redirect(System::getReferer());
     }

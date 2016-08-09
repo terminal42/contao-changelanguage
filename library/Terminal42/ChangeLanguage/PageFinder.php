@@ -30,8 +30,20 @@ class PageFinder
             "type='root'",
             "(
                 dns=? 
-                OR dns IN (SELECT dns FROM tl_page WHERE type='root' AND fallback='1' AND id IN (SELECT languageRoot FROM tl_page WHERE type='root' AND fallback='1' AND dns=?)) 
-                OR dns IN (SELECT dns FROM tl_page WHERE type='root' AND fallback='1' AND languageRoot IN (SELECT id FROM tl_page WHERE type='root' AND fallback='1' AND dns=?))
+                OR dns IN (
+                    SELECT dns 
+                    FROM tl_page 
+                    WHERE type='root' AND fallback='1' AND id IN (
+                        SELECT languageRoot FROM tl_page WHERE type='root' AND fallback='1' AND dns=?
+                    )
+                ) 
+                OR dns IN (
+                    SELECT dns 
+                    FROM tl_page 
+                    WHERE type='root' AND fallback='1' AND languageRoot IN (
+                        SELECT id FROM tl_page WHERE type='root' AND fallback='1' AND dns=?
+                    )
+                )
             )"
         ];
 
