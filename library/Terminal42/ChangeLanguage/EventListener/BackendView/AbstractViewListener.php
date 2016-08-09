@@ -21,7 +21,7 @@ abstract class AbstractViewListener extends AbstractTableListener
      */
     public function register()
     {
-        $GLOBALS['TL_DCA'][$this->table]['config']['onload_callback'][] = function(DataContainer $dc) {
+        $GLOBALS['TL_DCA'][$this->table]['config']['onload_callback'][] = function (DataContainer $dc) {
             $this->onLoad($dc);
         };
     }
@@ -103,7 +103,7 @@ abstract class AbstractViewListener extends AbstractTableListener
 
             return sprintf(
                 '<a href="%s" class="header_switchLanguage" title="%s">%s</a>',
-                Backend::addToUrl('&amp;switchLanguage=' . $id),
+                Backend::addToUrl('&amp;switchLanguage='.$id),
                 sprintf($GLOBALS['TL_LANG']['MSC']['switchLanguageTo'], $language),
                 sprintf($GLOBALS['TL_LANG']['MSC']['switchLanguageTo'], $language)
             );
@@ -115,12 +115,12 @@ abstract class AbstractViewListener extends AbstractTableListener
         foreach ($languages as $id => $language) {
             $markup .= sprintf(
                 '<li><a href="%s" title="%s">%s</a></li>',
-                Backend::addToUrl('&amp;switchLanguage=' . $id),
+                Backend::addToUrl('&amp;switchLanguage='.$id),
                 sprintf($GLOBALS['TL_LANG']['MSC']['switchLanguageTo'], $language),
                 $language
             );
         }
 
-        return $markup . '</ul></div>';
+        return $markup.'</ul></div>';
     }
 }

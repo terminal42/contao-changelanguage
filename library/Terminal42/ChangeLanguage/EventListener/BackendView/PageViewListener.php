@@ -24,23 +24,27 @@ class PageViewListener extends AbstractViewListener
      */
     protected function getAvailableLanguages(DataContainer $dc)
     {
-        $options = [];
-        $node = Session::getInstance()->get('tl_page_node');
+        $current = $this->getCurrentPage();
 
-        if ($node > 1 && ($current = PageModel::findByPk($node)) !== null) {
-            $pageFinder = new PageFinder();
-            $associated = $pageFinder->findAssociatedForPage($current);
+        if (null === $current) {
+            return [];
+        }
 
-            if (count($associated) > 1) {
-                $languages = System::getLanguages();
+        $pageFinder = new PageFinder();
+        $associated = $pageFinder->findAssociatedForPage($current);
 
-                foreach ($associated as $model) {
-                    $model->loadDetails();
+        if (0 === count($associated)) {
+            return [];
+        }
 
-                    if ($model->language !== $current->language) {
-                        $options[$model->id] = $languages[$model->language] ?: $model->language;
-                    }
-                }
+        $options   = [];
+        $languages = System::getLanguages();
+
+        foreach ($associated as $model) {
+            $model->loadDetails();
+
+            if ($model->language !== $current->language) {
+                $options[$model->id] = $languages[$model->language] ?: $model->language;
             }
         }
 
@@ -55,5 +59,21 @@ class PageViewListener extends AbstractViewListener
         Session::getInstance()->set('tl_page_node', $id);
 
         Controller::redirect(System::getReferer());
+    }
+
+    /**
+     * Returns the page for current node filter.
+     *
+     * @return \PageModel|null
+     */
+    private function getCurrentPage()
+    {
+        $node = Session::getInstance()->get('tl_page_node');
+
+        if ($node < 1) {
+            return null;
+        }
+
+        return PageModel::findByPk($node);
     }
 }
