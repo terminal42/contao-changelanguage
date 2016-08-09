@@ -1,0 +1,57 @@
+.header_switchLanguage {
+    position: relative;
+    display: inline;
+    margin-left: 15px;
+    padding: 2px 0 10px 20px;
+    background: url("language-switch.png") no-repeat 0 1px;
+}
+
+.header_switchLanguage ul {
+    position: absolute;
+    display: none;
+    min-width: 100px;
+    margin: 10px 12px 0 0;
+    padding: 5px 10px;
+    text-align: left;
+    background: #fff;
+    border: 1px solid #ccc;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    z-index: 99999999;
+}
+
+.header_switchLanguage:hover ul {
+    display: block;
+}
+
+.header_switchLanguage ul:after, .header_switchLanguage ul:before {
+    bottom: 100%;
+    left: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+}
+
+.header_switchLanguage ul:after {
+    border-color: rgba(255, 255, 255, 0);
+    border-bottom-color: #fff;
+    border-width: 5px;
+    margin-left: -5px;
+}
+
+.header_switchLanguage ul:before {
+    border-color: rgba(204, 204, 204, 0);
+    border-bottom-color: #ccc;
+    border-width: 6px;
+    margin-left: -6px;
+}
+
+.header_switchLanguage a {
+    display: block;
+    padding: 3px 0;
+    white-space: nowrap;
+}

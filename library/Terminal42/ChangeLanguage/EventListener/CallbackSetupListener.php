@@ -16,11 +16,15 @@ use Terminal42\ChangeLanguage\EventListener\DataContainer\MissingLanguageIconLis
 class CallbackSetupListener
 {
     private static $listeners = [
-        'tl_page' => [
+        'tl_page'            => [
             'Terminal42\ChangeLanguage\EventListener\DataContainer\PageInitializationListener',
             'Terminal42\ChangeLanguage\EventListener\DataContainer\PageOperationListener',
+            'Terminal42\ChangeLanguage\EventListener\BackendView\PageViewListener',
         ],
-        'tl_article'         => ['Terminal42\ChangeLanguage\EventListener\DataContainer\ArticleListener'],
+        'tl_article'         => [
+            'Terminal42\ChangeLanguage\EventListener\DataContainer\ArticleListener',
+            'Terminal42\ChangeLanguage\EventListener\BackendView\PageViewListener',
+        ],
         'tl_news_archive'    => ['Terminal42\ChangeLanguage\EventListener\DataContainer\ParentTableListener'],
         'tl_calendar'        => ['Terminal42\ChangeLanguage\EventListener\DataContainer\ParentTableListener'],
         'tl_faq_category'    => ['Terminal42\ChangeLanguage\EventListener\DataContainer\ParentTableListener'],

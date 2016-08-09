@@ -12,6 +12,12 @@
             <trans-unit id="MSC.noMainLanguage">
                 <source>Main language missing</source>
             </trans-unit>
+            <trans-unit id="MSC.switchLanguage">
+                <source>Switch language</source>
+            </trans-unit>
+            <trans-unit id="MSC.switchLanguageTo">
+                <source>Switch to %s</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>
