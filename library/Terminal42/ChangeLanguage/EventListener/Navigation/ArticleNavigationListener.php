@@ -15,6 +15,7 @@ use Contao\ArticleModel;
 use Contao\Database;
 use Contao\PageModel;
 use Terminal42\ChangeLanguage\Event\ChangelanguageNavigationEvent;
+use Terminal42\ChangeLanguage\PageFinder;
 
 class ArticleNavigationListener
 {
@@ -35,44 +36,56 @@ class ArticleNavigationListener
         /** @var PageModel $objPage */
         global $objPage;
 
-        $targetRoot     = $event->getNavigationItem()->getRootPage();
-        $currentAlias   = $event->getUrlParameterBag()->getUrlAttribute('articles');
-        $currentArticle = ArticleModel::findByIdOrAliasAndPid($currentAlias, $objPage->id);
+        $parameterBag   = $event->getUrlParameterBag();
+        $currentArticle = ArticleModel::findByIdOrAliasAndPid(
+            $parameterBag->getUrlAttribute('articles'),
+            $objPage->id
+        );
 
-        if (null === $currentArticle
-            || ($currentArticle->languageMain < 1
-                && ($targetRoot->fallback || !$objPage->rootIsFallback)
-            )
-        ) {
+        if (null === $currentArticle) {
             return;
         }
 
-        $targetArticle = $this->findTargetArticle($targetRoot, $currentArticle, $objPage->rootIsFallback);
+        $pageFinder     = new PageFinder();
+        $targetRoot     = $event->getNavigationItem()->getRootPage();
+        $masterRoot     = $pageFinder->findMasterRootForPage($targetRoot);
+
+        $targetArticle = $this->findTargetArticle(
+            $currentArticle,
+            $targetRoot->id,
+            $objPage->rootId === $masterRoot->id,
+            null !== $masterRoot && $targetRoot->id === $masterRoot->id
+        );
 
         if (null === $targetArticle) {
-            return;
+            $parameterBag->removeUrlAttribute('articles');
+        } else {
+            $parameterBag->setUrlAttribute('articles', $targetArticle->alias);
         }
-
-        $event->getUrlParameterBag()->setUrlAttribute('articles', $targetArticle->alias);
     }
 
     /**
      * Find target article for a root page and current article.
      *
-     * @param PageModel    $targetRoot
      * @param ArticleModel $currentArticle
-     * @param bool         $isFallback
+     * @param int          $targetRootId
+     * @param bool         $currentIsFallback
+     * @param bool         $targetIsFallback
      *
      * @return \ArticleModel|null
      */
-    private function findTargetArticle(PageModel $targetRoot, ArticleModel $currentArticle, $isFallback)
-    {
+    private function findTargetArticle(
+        ArticleModel $currentArticle,
+        $targetRootId,
+        $currentIsFallback,
+        $targetIsFallback
+    ) {
         // If the target root is fallback, the article ID will match our current "languageMain"
-        if ($targetRoot->fallback) {
+        if ($targetIsFallback) {
             return $this->findPublishedArticle(array('tl_article.id = '.$currentArticle->languageMain));
         }
 
-        $subpages = Database::getInstance()->getChildRecords($targetRoot->id, 'tl_page', true);
+        $subpages = Database::getInstance()->getChildRecords($targetRootId, 'tl_page');
 
         if (0 === count($subpages)) {
             return null;
@@ -84,7 +97,7 @@ class ArticleNavigationListener
                 'tl_article.pid IN (' . implode(',', $subpages) . ')'
             ),
             array(
-                $isFallback ? $currentArticle->id : $currentArticle->languageMain
+                $currentIsFallback ? $currentArticle->id : $currentArticle->languageMain,
             )
         );
     }
