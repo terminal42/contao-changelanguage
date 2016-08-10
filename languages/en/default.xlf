@@ -13,9 +13,12 @@
                 <source>Main language missing</source>
             </trans-unit>
             <trans-unit id="MSC.switchLanguage">
-                <source>Switch language</source>
+                <source>Language</source>
             </trans-unit>
-            <trans-unit id="MSC.switchLanguageTo">
+            <trans-unit id="MSC.switchLanguageTo.0">
+                <source>Switch to</source>
+            </trans-unit>
+            <trans-unit id="MSC.switchLanguageTo.1">
                 <source>Switch to %s</source>
             </trans-unit>
         </body>

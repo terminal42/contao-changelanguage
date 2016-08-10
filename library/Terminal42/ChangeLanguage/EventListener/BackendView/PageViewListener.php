@@ -21,16 +21,27 @@ class PageViewListener extends AbstractViewListener
     /**
      * @inheritdoc
      */
-    protected function getAvailableLanguages(DataContainer $dc)
+    protected function getCurrentPage()
+    {
+        $node = Session::getInstance()->get('tl_page_node');
+
+        if ($node < 1) {
+            return null;
+        }
+
+        return PageModel::findByPk($node);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getAvailableLanguages(PageModel $page)
     {
         $options = [];
-        $current = $this->getCurrentPage();
 
-        if (null !== $current) {
-            foreach ($this->pageFinder->findAssociatedForPage($current, true) as $model) {
-                $model->loadDetails();
-                $options[$model->id] = $this->getLanguageLabel($model->language);
-            }
+        foreach ($this->pageFinder->findAssociatedForPage($page, true) as $model) {
+            $model->loadDetails();
+            $options[$model->id] = $this->getLanguageLabel($model->language);
         }
 
         return $options;
@@ -44,21 +55,5 @@ class PageViewListener extends AbstractViewListener
         Session::getInstance()->set('tl_page_node', (int) $id);
 
         Controller::redirect(System::getReferer());
-    }
-
-    /**
-     * Returns the page for current node filter.
-     *
-     * @return \PageModel|null
-     */
-    private function getCurrentPage()
-    {
-        $node = Session::getInstance()->get('tl_page_node');
-
-        if ($node < 1) {
-            return null;
-        }
-
-        return PageModel::findByPk($node);
     }
 }

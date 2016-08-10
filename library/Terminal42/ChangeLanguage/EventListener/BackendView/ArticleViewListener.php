@@ -12,7 +12,6 @@ namespace Terminal42\ChangeLanguage\EventListener\BackendView;
 
 use Contao\ArticleModel;
 use Contao\Controller;
-use Contao\DataContainer;
 use Contao\PageModel;
 use Contao\Session;
 use Haste\Util\Url;
@@ -20,30 +19,45 @@ use Haste\Util\Url;
 class ArticleViewListener extends AbstractViewListener
 {
     /**
+     * @var ArticleModel
+     */
+    private $currentArticle = false;
+
+    /**
      * @inheritdoc
      */
-    protected function getAvailableLanguages(DataContainer $dc)
+    protected function getCurrentPage()
     {
-        $currentArticle = ArticleModel::findByPk($dc->id);
-        $currentPage    = PageModel::findWithDetails($currentArticle->pid);
-
-        if (null === $currentArticle || null === $currentPage) {
-            return [];
+        if (false === $this->currentArticle) {
+            $this->currentArticle = ArticleModel::findByPk($this->dataContainer->id);
         }
 
+        if (null === $this->currentArticle) {
+            return null;
+        }
+
+        return PageModel::findWithDetails($this->currentArticle->pid);
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    protected function getAvailableLanguages(PageModel $page)
+    {
         $options    = [];
-        $masterRoot = $this->pageFinder->findMasterRootForPage($currentPage);
-        $articleId  = $currentPage->rootId === $masterRoot->id ? $currentArticle->id : $currentArticle->languageMain;
+        $masterRoot = $this->pageFinder->findMasterRootForPage($page);
+        $articleId  = $page->rootId === $masterRoot->id ? $this->currentArticle->id : $this->currentArticle->languageMain;
 
-        foreach ($this->pageFinder->findAssociatedForPage($currentPage, true) as $page) {
-            $page->loadDetails();
+        foreach ($this->pageFinder->findAssociatedForPage($page, true) as $model) {
+            $model->loadDetails();
 
-            $articles = $this->findArticlesForPage($page, $articleId, $currentArticle);
+            $articles = $this->findArticlesForPage($model, $articleId);
 
             if (1 === count($articles)) {
-                $options['tl_article.'.$articles[0]->id] = $this->getLanguageLabel($page->language);
+                $options['tl_article.'.$articles[0]->id] = $this->getLanguageLabel($model->language);
             } else {
-                $options['tl_page.'.$page->id] = $this->getLanguageLabel($page->language);
+                $options['tl_page.'.$model->id] = $this->getLanguageLabel($model->language);
             }
         }
 
@@ -52,6 +66,8 @@ class ArticleViewListener extends AbstractViewListener
 
     /**
      * @inheritdoc
+     *
+     * @throws \InvalidArgumentException
      */
     protected function doSwitchView($id)
     {
@@ -79,11 +95,10 @@ class ArticleViewListener extends AbstractViewListener
     /**
      * @param PageModel    $page
      * @param              $articleId
-     * @param ArticleModel $article
      *
      * @return ArticleModel[]
      */
-    private function findArticlesForPage(PageModel $page, $articleId, ArticleModel $article)
+    private function findArticlesForPage(PageModel $page, $articleId)
     {
         $articles = ArticleModel::findBy(
             [
@@ -91,7 +106,15 @@ class ArticleViewListener extends AbstractViewListener
                 'tl_article.id!=?',
                 '(tl_article.id=? OR tl_article.languageMain=? OR tl_article.inColumn=?)',
             ],
-            [$page->id, $article->id, $articleId, $articleId, $article->inColumn, $articleId, $articleId],
+            [
+                $page->id,
+                $this->currentArticle->id,
+                $articleId,
+                $articleId,
+                $this->currentArticle->inColumn,
+                $articleId,
+                $articleId,
+            ],
             ['order' => 'tl_article.id=? DESC, tl_article.languageMain=? DESC']
         );
 

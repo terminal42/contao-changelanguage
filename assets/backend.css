@@ -1,14 +1,25 @@
 .header_switchLanguage {
+    float: left;
+    margin: 2px 0 0 12px;
+}
+
+.header_switchLanguage svg {
+    float: left;
+    width: 16px;
+    height: 16px;
+    padding-right: 8px;
+    fill: #589b0e;
+}
+
+.header_switchLanguage > span {
     position: relative;
-    display: inline;
-    margin-left: 15px;
-    padding: 2px 0 10px 20px;
-    background: url("language-switch.png") no-repeat 0 1px;
+    display: inline-block;
+    padding-bottom: 10px;
 }
 
 .header_switchLanguage ul {
     position: absolute;
-    left: 0;
+    left: 50%;
     display: none;
     min-width: 100px;
     margin: 10px 12px 0 0;
@@ -20,9 +31,11 @@
     -webkit-border-radius: 4px;
     border-radius: 4px;
     z-index: 99999999;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%)
 }
 
-.header_switchLanguage:hover ul {
+.header_switchLanguage > span:hover ul {
     display: block;
 }
 
@@ -51,8 +64,15 @@
     margin-left: -6px;
 }
 
-.header_switchLanguage a {
-    display: block;
+.header_switchLanguage li {
     padding: 3px 0;
     white-space: nowrap;
+}
+
+.header_switchLanguage a {
+    display: block;
+}
+
+.header_switchLanguage a:before {
+    content: "› ";
 }
