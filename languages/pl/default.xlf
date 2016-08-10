@@ -10,12 +10,13 @@
                 <target>Brak głównego języka</target>
             </trans-unit>
             <trans-unit id="MSC.switchLanguage">
-                <source>Switch language</source>
-                <target>Zmień język</target>
+                <source>Language</source>
             </trans-unit>
-            <trans-unit id="MSC.switchLanguageTo">
+            <trans-unit id="MSC.switchLanguageTo.0">
+                <source>Switch to</source>
+            </trans-unit>
+            <trans-unit id="MSC.switchLanguageTo.1">
                 <source>Switch to %s</source>
-                <target>Zmień na %s</target>
             </trans-unit>
         </body>
     </file>

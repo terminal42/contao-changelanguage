@@ -10,12 +10,16 @@
                 <target>Hauptsprache fehlt</target>
             </trans-unit>
             <trans-unit id="MSC.switchLanguage">
-                <source>Switch language</source>
-                <target>Sprache wechseln</target>
+                <source>Language</source>
+                <target>Sprache</target>
             </trans-unit>
-            <trans-unit id="MSC.switchLanguageTo">
+            <trans-unit id="MSC.switchLanguageTo.0">
+                <source>Switch to</source>
+                <target>Wechseln zu</target>
+            </trans-unit>
+            <trans-unit id="MSC.switchLanguageTo.1">
                 <source>Switch to %s</source>
-                <target>Wechseln zu %s</target>
+                <target>Zu %s wechseln</target>
             </trans-unit>
         </body>
     </file>
