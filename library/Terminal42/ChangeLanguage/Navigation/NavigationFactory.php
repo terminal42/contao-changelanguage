@@ -81,7 +81,6 @@ class NavigationFactory
             if (!$item->hasTargetPage()) {
                 $item->setTargetPage(
                     $this->pageFinder->findAssociatedParentForLanguage($currentPage, $item->getLanguageTag()),
-                    false,
                     false
                 );
             }

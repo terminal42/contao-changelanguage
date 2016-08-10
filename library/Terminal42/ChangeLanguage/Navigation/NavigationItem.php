@@ -134,7 +134,7 @@ class NavigationItem
      * @param bool      $isDirectFallback
      * @param bool      $isCurrentPage
      */
-    public function setTargetPage(PageModel $targetPage, $isDirectFallback, $isCurrentPage)
+    public function setTargetPage(PageModel $targetPage, $isDirectFallback, $isCurrentPage = false)
     {
         $this->targetPage = $targetPage;
         $this->isDirectFallback = (bool) $isDirectFallback;
