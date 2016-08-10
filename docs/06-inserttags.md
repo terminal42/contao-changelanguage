@@ -1,11 +1,13 @@
-
 # ChangeLanguage v3
 
-1. [Installation](installation.md)
-2. [Linking pages](pages.md)
-3. [Frontend module](frontend-module.md)
-4. [Insert tags](inserttags.md)
-5. [Tips & FAQ](tips-faq.md)
+1. [Installation](01-installation.md)
+2. [Basic configuration](02-basics.md)
+3. [Advanced configuration](03-advanced.md)
+4. [Backend tools](04-backend.md)
+5. [Frontend module](05-frontend-module.md)
+6. [**Insert tags**](06-inserttags.md)
+7. [Developers](07-developers.md)
+8. [Tips & FAQ](08-tips-faq.md)
 
 
 ## Insert Tags

@@ -16,11 +16,14 @@ together and present the website visitor with a list of available languages.
 
 ## Documentation
 
-1. [Installation](docs/installation.md)
-2. [Linking pages](docs/pages.md)
-3. [Frontend module](docs/frontend-module.md)
-4. [Insert tags](docs/inserttags.md)
-6. [Tips & FAQ](docs/tips-faq.md)
+1. [Installation](docs/01-installation.md)
+2. [Basic configuration](docs/02-basics.md)
+3. [Advanced configuration](docs/03-advanced.md)
+4. [Backend tools](docs/04-backend.md)
+5. [Frontend module](docs/05-frontend-module.md)
+6. [Insert tags](docs/06-inserttags.md)
+7. [Developers](docs/07-developers.md)
+8. [Tips & FAQ](docs/08-tips-faq.md)
 
 
 

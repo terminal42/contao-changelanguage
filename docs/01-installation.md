@@ -1,11 +1,13 @@
-
 # ChangeLanguage v3
 
-1. [Installation](installation.md)
-2. [Linking pages](pages.md)
-3. [Frontend module](frontend-module.md)
-4. [Insert tags](inserttags.md)
-5. [Tips & FAQ](tips-faq.md)
+1. [**Installation**](01-installation.md)
+2. [Basic configuration](02-basics.md)
+3. [Advanced configuration](03-advanced.md)
+4. [Backend tools](04-backend.md)
+5. [Frontend module](05-frontend-module.md)
+6. [Insert tags](06-inserttags.md)
+7. [Developers](07-developers.md)
+8. [Tips & FAQ](08-tips-faq.md)
 
 
 ## Installation
@@ -27,7 +29,7 @@ The Contao plugin will take care of copying the files to the correct place.
 
 ### Install from Extension Repository (in Contao 3.5)
 
-ChangeLanguage v3 can also be installed from the old Contao Extension Repository.
+ChangeLanguage v3 can also be installed from the Contao Extension Repository.
 Follow the Contao manual on [how to install extensions][2].
 
 
