@@ -28,6 +28,10 @@ class ArticleViewListener extends AbstractViewListener
      */
     protected function getCurrentPage()
     {
+        if ('article' !== (string) \Input::get('do')) {
+            return null;
+        }
+
         if (false === $this->currentArticle) {
             $this->currentArticle = ArticleModel::findByPk($this->dataContainer->id);
         }
