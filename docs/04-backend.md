@@ -18,7 +18,7 @@ back end becomes a lot easier thanks to the language switching tool.
 
 ### In the page or article tree
 
-By clickin on a page name in the back end page or article tree, Contao
+By clicking on a page name in the back end page or article tree, Contao
 will filter down the tree to the given node and show a breadcrumb menu.
 
 ![](images/backend-breadcrumb.png)
@@ -41,7 +41,7 @@ of content elements when editing page articles.
 For *ChangeLanguage* to find the correct article in a foreign language,
 one of the following conditions must apply:
 
-1. You have set up links between articles of the master page and it's
+1. You have set up links between articles of the master page and its
    translations.
 2. There is only one article in the target language page
 3. There is only one article in the same column as the current article

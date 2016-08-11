@@ -18,9 +18,9 @@
 <dd>Using flag icons for languages is a very bad idea. Flags represent
     <u>countries</u> and not <u>languages</u>. Not every language belongs to
     only one country! Would you take the American flag, the British flag or
-    the Australian flag for english? What flags do you use for <i>Chinese
+    the Australian flag for English? What flags do you use for <i>Chinese
     Simplified</i> and <i>Chinese Traditional</i> (two different forms of writing
-    for the same chinese language)?<br>
+    for the same Chinese language)?<br>
     Read more at <a href="https://www.ethnologue.com/about/problem-language-identification">https://www.ethnologue.com/about/problem-language-identification</a></dd>
 
 <dt>Use a select menu for language selection</dt>
@@ -75,7 +75,7 @@
 
 <dt>How can I add localization for my native language?</dt>
 <dd>Translations for ChangeLanguage are managed on <a href="https://www.transifex.com">Transifex</a>.
-    To add your language, simply register yourself for the <a href="https://www.transifex.com/terminal42/contao-changelanguage/dashboard/">ChangeLanguage project</a>.
+    To add your language, simply register yourself for the <a href="https://www.transifex.com/terminal42/contao-changelanguage/dashboard/">ChangeLanguage project</a>
     and add the new language. New localizations will be published with each new release by default.</a></dd>
 
 </dl>

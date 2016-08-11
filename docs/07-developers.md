@@ -61,7 +61,7 @@ The `items` key is whatever you use in your module as the URL key.
 If your module supports `auto_item`, make sure to **not** set an URL
 key `auto_item`, but simply the regular name. Your `auto_item` key should
 be registered in `$GLOBALS['TL_AUTO_ITEM]` and will be automatically
-detected by ChangeLanguage.
+detected by *ChangeLanguage*.
 
 
 #### Adjusting the navigation item
@@ -119,12 +119,12 @@ hook (for the same even / root page) will be called.
 
 ## Upgrading from ChangeLanguage v2
 
-Be aware that *ChangeLanguage* and it's hook has been completely rewritten
+Be aware that *ChangeLanguage* and its hooks have been completely rewritten
 in version 3. The `translateUrlParameters` from version 2 will no longer
-work. It is however recommended to keep it to support both versions.
+work. It is, however, recommended to keep it to support both versions.
 
 Simply register two callbacks for both hook names, and handle each
-separately. A example implementation can be found in [Isotope eCommerce 2.4][1]
+separately. An example implementation can be found in [Isotope eCommerce 2.4][1].
 
 
 
