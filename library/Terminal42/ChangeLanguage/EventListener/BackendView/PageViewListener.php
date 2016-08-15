@@ -11,7 +11,6 @@
 namespace Terminal42\ChangeLanguage\EventListener\BackendView;
 
 use Contao\Controller;
-use Contao\DataContainer;
 use Contao\PageModel;
 use Contao\Session;
 use Contao\System;

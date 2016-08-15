@@ -31,10 +31,11 @@ class PageFieldsListener
         // Validate that there is no other page in the current page tree with the same languageMain assigned
         if ($value > 0) {
             $currentPage = PageModel::findWithDetails($dc->id);
+            $childIds    = \Database::getInstance()->getChildRecords($currentPage->rootId, 'tl_page');
 
             $duplicates = PageModel::countBy(
                 [
-                    'id IN (' . implode(',', \Database::getInstance()->getChildRecords($currentPage->rootId, 'tl_page')) . ')',
+                    'id IN (' . implode(',', $childIds) . ')',
                     'languageMain=?',
                     'id!=?'
                 ],
@@ -58,6 +59,7 @@ class PageFieldsListener
      */
     public function onLanguageRootOptions(DataContainer $dc)
     {
+        /** @var PageModel[] $pages */
         $pages = PageModel::findBy(
             [
                 "type='root'",
@@ -85,5 +87,4 @@ class PageFieldsListener
 
         return $options;
     }
-
 }

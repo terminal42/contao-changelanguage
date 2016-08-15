@@ -12,6 +12,7 @@ namespace Terminal42\ChangeLanguage\EventListener\BackendView;
 
 use Contao\ArticleModel;
 use Contao\Controller;
+use Contao\Model\Collection;
 use Contao\PageModel;
 use Contao\Session;
 use Haste\Util\Url;
@@ -122,16 +123,17 @@ class ArticleViewListener extends AbstractViewListener
             ['order' => 'tl_article.id=? DESC, tl_article.languageMain=? DESC']
         );
 
-        if (null === $articles) {
+        if (!$articles instanceof Collection) {
             return [];
         }
 
-        $articles = $articles->getModels();
+        /** @var ArticleModel[] $models */
+        $models = $articles->getModels();
 
-        if ($articleId > 0 && ($articles[0]->id == $articleId || $articles[0]->languageMain == $articleId)) {
-            return [$articles[0]];
+        if ($articleId > 0 && ($models[0]->id == $articleId || $models[0]->languageMain == $articleId)) {
+            return [$models[0]];
         }
 
-        return $articles;
+        return $models;
     }
 }

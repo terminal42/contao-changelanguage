@@ -42,7 +42,7 @@ class ArticleListener extends AbstractTableListener
             $article    = ArticleModel::findByPk($dc->id);
             $page       = PageModel::findByPk($article->pid);
 
-            if (null !== $pageFinder->findAssociatedInMaster($page)) {
+            if (null !== $page && null !== $pageFinder->findAssociatedInMaster($page)) {
                 $this->addFieldsToPalettes();
             }
         }
@@ -53,9 +53,8 @@ class ArticleListener extends AbstractTableListener
         $pageFinder = new PageFinder();
         $current    = ArticleModel::findByPk($dc->id);
         $page       = PageModel::findByPk($current->pid);
-        $master     = $pageFinder->findAssociatedInMaster($page);
 
-        if (null === $master) {
+        if (null === $page || ($master = $pageFinder->findAssociatedInMaster($page)) === null) {
             return [];
         }
 
@@ -64,13 +63,15 @@ class ArticleListener extends AbstractTableListener
             ->prepare('
                 SELECT id, title 
                 FROM tl_article 
-                WHERE pid=? AND id NOT IN (SELECT languageMain FROM tl_article WHERE id!=? AND pid=? AND languageMain > 0)
+                WHERE pid=? AND id NOT IN (
+                    SELECT languageMain FROM tl_article WHERE id!=? AND pid=? AND languageMain > 0
+                )
             ')
             ->execute($master->id, $current->id, $page->id)
         ;
 
         while ($result->next()) {
-                $options[$result->id] = sprintf('%s [ID %s]', $result->title, $result->id);
+            $options[$result->id] = sprintf('%s [ID %s]', $result->title, $result->id);
         }
 
         return $options;
