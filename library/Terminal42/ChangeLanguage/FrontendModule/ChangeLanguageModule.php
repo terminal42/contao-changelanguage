@@ -68,12 +68,7 @@ class ChangeLanguageModule extends AbstractFrontendModule
         }
 
         $navigationFactory = new NavigationFactory($pageFinder, $languageText, $currentPage);
-
-        $navigationItems = $navigationFactory->findNavigationItems(
-            $currentPage,
-            (bool) $this->hideActiveLanguage,
-            (bool) $this->hideNoFallback
-        );
+        $navigationItems   = $navigationFactory->findNavigationItems($currentPage);
 
         // Do not generate module or header if there is none or only one link
         if (count($navigationItems) < 2) {
@@ -94,8 +89,14 @@ class ChangeLanguageModule extends AbstractFrontendModule
                 continue;
             }
 
-            $templateItems[] = $this->generateTemplateArray($item, $urlParameters);
             $headerLinks->addFromNavigationItem($item, $urlParameters);
+
+            // Remove active language from navigation but not from header links!
+            if ($this->hideActiveLanguage && $item->isCurrentPage()) {
+                continue;
+            }
+
+            $templateItems[] = $this->generateTemplateArray($item, $urlParameters);
         }
 
         $this->Template->items = $this->generateNavigationTemplate($templateItems);

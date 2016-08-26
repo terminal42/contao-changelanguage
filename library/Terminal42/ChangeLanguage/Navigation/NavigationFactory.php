@@ -48,15 +48,13 @@ class NavigationFactory
 
     /**
      * @param PageModel $currentPage
-     * @param bool      $hideActive
-     * @param bool      $hideNoFallback
      *
      * @return NavigationItem[]
      *
      * @throws \OverflowException
      * @throws \UnderflowException
      */
-    public function findNavigationItems(PageModel $currentPage, $hideActive, $hideNoFallback)
+    public function findNavigationItems(PageModel $currentPage)
     {
         $rootPages = $this->pageFinder->findRootPagesForPage($currentPage);
         $navigationItems = $this->createNavigationItemsForRootPages($rootPages);
@@ -68,16 +66,6 @@ class NavigationFactory
         );
 
         foreach ($navigationItems as $k => $item) {
-            if ($hideActive && $item->isCurrentPage()) {
-                unset($navigationItems[$k]);
-                continue;
-            }
-
-            if ($hideNoFallback && !$item->isDirectFallback()) {
-                unset($navigationItems[$k]);
-                continue;
-            }
-
             if (!$item->hasTargetPage()) {
                 $item->setTargetPage(
                     $this->pageFinder->findAssociatedParentForLanguage($currentPage, $item->getLanguageTag()),
