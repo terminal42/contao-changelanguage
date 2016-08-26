@@ -41,19 +41,17 @@
         }
     },
     "extra":{
+        "branch-alias": {
+            "dev-master": "3.0.x-dev",
+            "dev-develop": "3.1.x-dev"
+        },
         "contao": {
             "sources": {
                 "": "system/modules/changelanguage"
             },
             "runonce": [
                 "config/update.php"
-            ],
-            "transifex": {
-                "project": "contao-changelanguage",
-                "prefix": "master-",
-                "languages_cto": "languages",
-                "languages_tx": ".tx"
-            }
+            ]
         }
     }
 }

@@ -1,0 +1,47 @@
+<?xml version="1.0" ?><xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+    <file datatype="plaintext" original="languages/en/tl_module.xlf" source-language="en" target-language="ja">
+        <body>
+            <trans-unit id="tl_module.hideActiveLanguage.0">
+                <source>Hide active language</source>
+                <target>有効な言語を非表示</target>
+            </trans-unit>
+            <trans-unit id="tl_module.hideActiveLanguage.1">
+                <source>Please check here if you want to hide the active language on your site.</source>
+                <target>サイトの有効な言語を表示したくない場合に選択してください。</target>
+            </trans-unit>
+            <trans-unit id="tl_module.hideNoFallback.0">
+                <source>Hide languages without direct fallback</source>
+                <target>代替の指定のない言語を非表示</target>
+            </trans-unit>
+            <trans-unit id="tl_module.hideNoFallback.1">
+                <source>Do not show languages that have no direct fallback assigned.</source>
+                <target>代替の言語の指定のない言語を表示しません。</target>
+            </trans-unit>
+            <trans-unit id="tl_module.customLanguage.0">
+                <source>Custom language texts</source>
+                <target>独自の言語の文字列</target>
+            </trans-unit>
+            <trans-unit id="tl_module.customLanguage.1">
+                <source>Please check here if you want to have custom texts for your languages (not uppercase language
+                    shortcuts).</source>
+                <target>(大文字の言語名ではない)独自の文字列を言語名に使用したい場合に選択してください。</target>
+            </trans-unit>
+            <trans-unit id="tl_module.customLanguageText.0">
+                <source>Language texts</source>
+                <target>言語の文字列</target>
+            </trans-unit>
+            <trans-unit id="tl_module.customLanguageText.1">
+                <source>Please enter a replacement for every language. Use lower case shortcuts.</source>
+                <target>各言語に代わりに置き換えて使用する文字列を入力してください。小文字のショートカットを使用してください。</target>
+            </trans-unit>
+            <trans-unit id="tl_module.customLanguageText.value">
+                <source>Language shortcut</source>
+                <target>言語のショートカット</target>
+            </trans-unit>
+            <trans-unit id="tl_module.customLanguageText.label">
+                <source>Replacement text</source>
+                <target>置き換える文字列</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

@@ -55,7 +55,8 @@ class AlternateLinks
     /**
      * Adds a link from a NavigationItem instance.
      *
-     * @param NavigationItem $item
+     * @param NavigationItem  $item
+     * @param UrlParameterBag $urlParameterBag
      */
     public function addFromNavigationItem(NavigationItem $item, UrlParameterBag $urlParameterBag)
     {
@@ -86,17 +87,17 @@ class AlternateLinks
     /**
      * Generates template markup of links for the page header.
      *
-     * @param string $template
+     * @param string $templateName
      *
      * @return string
      */
-    public function generate($template = 'block_alternate_links')
+    public function generate($templateName = 'block_alternate_links')
     {
         if (0 === count($this->links)) {
             return '';
         }
 
-        $template = new FrontendTemplate($template);
+        $template = new FrontendTemplate($templateName);
 
         $template->links = $this->links;
 
