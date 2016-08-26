@@ -50,7 +50,7 @@ class ChangeLanguageModule extends AbstractFrontendModule
 
         $buffer = parent::generate();
 
-        return '' === $this->Template->items ? '' : $buffer;
+        return '' === (string) $this->Template->items ? '' : $buffer;
     }
 
     /**
