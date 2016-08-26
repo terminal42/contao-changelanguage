@@ -1,0 +1,3 @@
+<?php foreach ($this->links as $link): ?>
+<link rel="alternate" hreflang="<?= $link['language'] ?>" href="<?= $link['href'] ?>">
+<?php endforeach; ?>

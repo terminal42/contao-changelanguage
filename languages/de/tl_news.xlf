@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version='1.2'
+       xmlns='urn:oasis:names:tc:xliff:document:1.2'
+       xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+       xsi:schemaLocation='urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd'
+>
+    <file original="languages/en/tl_news.xlf" source-language="en" datatype="plaintext">
+        <body>
+            <trans-unit id="tl_news.languageMain.0">
+                <source>Master article</source>
+                <target>Hauptbeitrag</target>
+            </trans-unit>
+            <trans-unit id="tl_news.languageMain.1">
+                <source>Choose the article in the master archive equaling this article.</source>
+                <target>Bitte wählen Sie den Beitrag im Hauptarchive welcher diesem entspricht.</target>
+            </trans-unit>
+            <trans-unit id="tl_news.sameDay">
+                <source>Same day</source>
+                <target>Am selben Tag</target>
+            </trans-unit>
+            <trans-unit id="tl_news.otherDay">
+                <source>Other days</source>
+                <target>An anderen Tagen</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

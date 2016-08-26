@@ -1,0 +1,58 @@
+[main]
+host = https://www.transifex.com
+type = XLIFF
+
+[contao-changelanguage.default]
+source_file = languages/en/default.xlf
+source_lang = en
+file_filter = languages/<lang>/default.xlf
+
+[contao-changelanguage.modules]
+source_file = languages/en/modules.xlf
+source_lang = en
+file_filter = languages/<lang>/modules.xlf
+
+[contao-changelanguage.tl_article]
+source_file = languages/en/tl_article.xlf
+source_lang = en
+file_filter = languages/<lang>/tl_article.xlf
+
+[contao-changelanguage.tl_calendar]
+source_file = languages/en/tl_calendar.xlf
+source_lang = en
+file_filter = languages/<lang>/tl_calendar.xlf
+
+[contao-changelanguage.tl_calendar_events]
+source_file = languages/en/tl_calendar_events.xlf
+source_lang = en
+file_filter = languages/<lang>/tl_calendar_events.xlf
+
+[contao-changelanguage.tl_faq]
+source_file = languages/en/tl_faq.xlf
+source_lang = en
+file_filter = languages/<lang>/tl_faq.xlf
+
+[contao-changelanguage.tl_faq_category]
+source_file = languages/en/tl_faq_category.xlf
+source_lang = en
+file_filter = languages/<lang>/tl_faq_category.xlf
+
+[contao-changelanguage.tl_module]
+source_file = languages/en/tl_module.xlf
+source_lang = en
+file_filter = languages/<lang>/tl_module.xlf
+
+[contao-changelanguage.tl_news]
+source_file = languages/en/tl_news.xlf
+source_lang = en
+file_filter = languages/<lang>/tl_news.xlf
+
+[contao-changelanguage.tl_news_archive]
+source_file = languages/en/tl_news_archive.xlf
+source_lang = en
+file_filter = languages/<lang>/tl_news_archive.xlf
+
+[contao-changelanguage.tl_page]
+source_file = languages/en/tl_page.xlf
+source_lang = en
+file_filter = languages/<lang>/tl_page.xlf

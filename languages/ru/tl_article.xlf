@@ -1,0 +1,18 @@
+<?xml version="1.0" ?><xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+    <file datatype="plaintext" original="languages/en/tl_article.xlf" source-language="en" target-language="ru">
+        <body>
+            <trans-unit id="tl_article.languageMain.0">
+                <source>Fallback article</source>
+                <target>Резервная статья</target>
+            </trans-unit>
+            <trans-unit id="tl_article.languageMain.1">
+                <source>Choose the article in the language marked as fallback equals this article.</source>
+                <target>Выберите статью, на языке отмеченным как резервный, равную этой статье.</target>
+            </trans-unit>
+            <trans-unit id="tl_article.languageMain.2">
+                <source>No equal article</source>
+                <target>Нет равных статей</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

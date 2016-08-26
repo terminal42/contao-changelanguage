@@ -1,42 +1,36 @@
 <?php
 
 /**
- * Contao Open Source CMS
- * Copyright (C) 2005-2012 Leo Feyer
+ * changelanguage Extension for Contao Open Source CMS
  *
- * Formerly known as TYPOlight Open Source CMS.
- *
- * This program is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation, either
- * version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program. If not, please visit the Free
- * Software Foundation website at <http://www.gnu.org/licenses/>.
- *
- * PHP version 5
- * @copyright  Felix Pfeiffer 2008, terminal42 gmbh 2008-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Felix Pfeiffer <info@felixpfeiffer.com>
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @copyright  Copyright (c) 2008-2016, terminal42 gmbh
+ * @author     terminal42 gmbh <info@terminal42.ch>
+ * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://github.com/terminal42/contao-changelanguage
  */
 
 
 /**
  * Frontend modules
  */
-$GLOBALS['FE_MOD']['miscellaneous']['changelanguage']		= 'ModuleChangeLanguage';
-$GLOBALS['FE_MOD']['miscellaneous']['languageRedirect']		= 'ModuleLanguageRedirect';
+$GLOBALS['FE_MOD']['miscellaneous']['changelanguage']   = 'Terminal42\ChangeLanguage\FrontendModule\ChangeLanguageModule';
 
 
-/***
+/**
  * Hooks
  */
-$GLOBALS['TL_HOOKS']['translateUrlParameters'][] = array('ChangeLanguage', 'translateArticles');
+$GLOBALS['TL_HOOKS']['replaceInsertTags'][]        = ['Terminal42\ChangeLanguage\EventListener\InsertTagsListener', 'onReplaceInsertTags'];
+$GLOBALS['TL_HOOKS']['loadDataContainer'][]        = ['Terminal42\ChangeLanguage\EventListener\CallbackSetupListener', 'onLoadDataContainer'];
+$GLOBALS['TL_HOOKS']['changelanguageNavigation'][] = ['Terminal42\ChangeLanguage\EventListener\Navigation\ArticleNavigationListener', 'onChangelanguageNavigation'];
 
+if (in_array('calendar', ModuleLoader::getActive(), true)) {
+    $GLOBALS['TL_HOOKS']['changelanguageNavigation'][] = ['Terminal42\ChangeLanguage\EventListener\Navigation\CalendarNavigationListener', 'onChangelanguageNavigation'];
+}
+
+if (in_array('faq', ModuleLoader::getActive(), true)) {
+    $GLOBALS['TL_HOOKS']['changelanguageNavigation'][] = ['Terminal42\ChangeLanguage\EventListener\Navigation\FaqNavigationListener', 'onChangelanguageNavigation'];
+}
+
+if (in_array('news', ModuleLoader::getActive(), true)) {
+    $GLOBALS['TL_HOOKS']['changelanguageNavigation'][] = ['Terminal42\ChangeLanguage\EventListener\Navigation\NewsNavigationListener', 'onChangelanguageNavigation'];
+}

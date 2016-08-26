@@ -1,0 +1,23 @@
+<?xml version="1.0" ?><xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+    <file datatype="plaintext" original="languages/en/default.xlf" source-language="en" target-language="pl">
+        <body>
+            <trans-unit id="MSC.duplicateMainLanguage">
+                <source>This main language record already has an assigment.</source>
+                <target>Ten rekord głównego języka jest już przypisany.</target>
+            </trans-unit>
+            <trans-unit id="MSC.noMainLanguage">
+                <source>Main language missing</source>
+                <target>Brak głównego języka</target>
+            </trans-unit>
+            <trans-unit id="MSC.switchLanguage">
+                <source>Language</source>
+            </trans-unit>
+            <trans-unit id="MSC.switchLanguageTo.0">
+                <source>Switch to</source>
+            </trans-unit>
+            <trans-unit id="MSC.switchLanguageTo.1">
+                <source>Switch to %s</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

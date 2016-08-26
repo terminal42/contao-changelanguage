@@ -1,1 +1,6 @@
-.idea
+# Composer
+/vendor/
+/composer.lock
+
+# Unit Tests
+phpunit.xml

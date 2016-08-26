@@ -1,0 +1,38 @@
+<?xml version="1.0" ?><xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+    <file datatype="plaintext" original="languages/en/tl_page.xlf" source-language="en" target-language="ru">
+        <body>
+            <trans-unit id="tl_page.languageMain.0">
+                <source>Main language page</source>
+                <target>Основной язык страницы</target>
+            </trans-unit>
+            <trans-unit id="tl_page.languageMain.1">
+                <source>Choose the page in the language marked as fallback equals this page.</source>
+                <target>Выберите страницу, на языке отмеченным как резервный, равную этой странице.</target>
+            </trans-unit>
+            <trans-unit id="tl_page.languageRoot.0">
+                <source>Foreign-Domain Root Page</source>
+                <target>Корневая страница внешнего домена</target>
+            </trans-unit>
+            <trans-unit id="tl_page.languageRoot.1">
+                <source>Select the root page if this page tree is related to another domain.</source>
+                <target>Выберите корневую страницу, если это дерево страниц связано с другим доменом.</target>
+            </trans-unit>
+            <trans-unit id="tl_page.languageRoot.2">
+                <source>This is a main language root site</source>
+                <target>Это основной язык корня сайта</target>
+            </trans-unit>
+            <trans-unit id="tl_page.languageQuery.0">
+                <source>Keep query parameters</source>
+                <target>Сохранить параметры запроса</target>
+            </trans-unit>
+            <trans-unit id="tl_page.languageQuery.1">
+                <source>Enter a comma separated list of query parameters that should be kept when switching to a translation of this page.</source>
+                <target>Введите разделенный запятыми список параметров запроса, который должен храниться при переключении на перевод этой страницы.</target>
+            </trans-unit>
+            <trans-unit id="tl_page.language_legend">
+                <source>Language &amp; Translation</source>
+                <target>Язык и перевод</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

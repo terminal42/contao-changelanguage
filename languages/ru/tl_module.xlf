@@ -1,0 +1,48 @@
+<?xml version="1.0" ?><xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+    <file datatype="plaintext" original="languages/en/tl_module.xlf" source-language="en" target-language="ru">
+        <body>
+            <trans-unit id="tl_module.hideActiveLanguage.0">
+                <source>Hide active language</source>
+                <target>Скрыть активный язык</target>
+            </trans-unit>
+            <trans-unit id="tl_module.hideActiveLanguage.1">
+                <source>Please check here if you want to hide the active language on your site.</source>
+                <target>Выберите, если хотите скрыть активный язык на вашем сайте.</target>
+            </trans-unit>
+            <trans-unit id="tl_module.hideNoFallback.0">
+                <source>Hide languages without direct fallback</source>
+                <target>Скрыть языки с неуказанным резервным языком</target>
+            </trans-unit>
+            <trans-unit id="tl_module.hideNoFallback.1">
+                <source>Do not show languages that have no direct fallback assigned.</source>
+                <target>Не показывать языки, которым неуказан резервный язык.</target>
+            </trans-unit>
+            <trans-unit id="tl_module.customLanguage.0">
+                <source>Custom language texts</source>
+                <target>Пользовательские языковые тексты</target>
+            </trans-unit>
+            <trans-unit id="tl_module.customLanguage.1">
+                <source>Please check here if you want to have custom texts for your languages (not uppercase language
+                    shortcuts).</source>
+                <target>Отметьте, если хотите иметь собственные подписи для языков (не заглавные ярлыки
+                    языков).</target>
+            </trans-unit>
+            <trans-unit id="tl_module.customLanguageText.0">
+                <source>Language texts</source>
+                <target>Языковые тексты</target>
+            </trans-unit>
+            <trans-unit id="tl_module.customLanguageText.1">
+                <source>Please enter a replacement for every language. Use lower case shortcuts.</source>
+                <target>Введите замену для каждого языка. Используйте нижний регистр клавиш.</target>
+            </trans-unit>
+            <trans-unit id="tl_module.customLanguageText.value">
+                <source>Language shortcut</source>
+                <target>Ярлык языка</target>
+            </trans-unit>
+            <trans-unit id="tl_module.customLanguageText.label">
+                <source>Replacement text</source>
+                <target>Текст замещения</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
