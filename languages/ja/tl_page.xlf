@@ -1,0 +1,38 @@
+<?xml version="1.0" ?><xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+    <file datatype="plaintext" original="languages/en/tl_page.xlf" source-language="en" target-language="ja">
+        <body>
+            <trans-unit id="tl_page.languageMain.0">
+                <source>Main language page</source>
+                <target>主言語のページ</target>
+            </trans-unit>
+            <trans-unit id="tl_page.languageMain.1">
+                <source>Choose the page in the language marked as fallback equals this page.</source>
+                <target>このページと同等な、代替とする主言語のページを選択してください。</target>
+            </trans-unit>
+            <trans-unit id="tl_page.languageRoot.0">
+                <source>Foreign-Domain Root Page</source>
+                <target>外部のドメインのルートのページ</target>
+            </trans-unit>
+            <trans-unit id="tl_page.languageRoot.1">
+                <source>Select the root page if this page tree is related to another domain.</source>
+                <target>このページのツリーが他のドメインに関係している場合はルートのページを選択してください。</target>
+            </trans-unit>
+            <trans-unit id="tl_page.languageRoot.2">
+                <source>This is a main language root site</source>
+                <target>これは主言語のルートのサイト</target>
+            </trans-unit>
+            <trans-unit id="tl_page.languageQuery.0">
+                <source>Keep query parameters</source>
+                <target>問い合わせ文字列を保持</target>
+            </trans-unit>
+            <trans-unit id="tl_page.languageQuery.1">
+                <source>Enter a comma separated list of query parameters that should be kept when switching to a translation of this page.</source>
+                <target>このページの翻訳版に切り替えるときに保持する問い合わせ文字列をコンマで区切って入力してください。</target>
+            </trans-unit>
+            <trans-unit id="tl_page.language_legend">
+                <source>Language &amp; Translation</source>
+                <target>言語と翻訳</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
