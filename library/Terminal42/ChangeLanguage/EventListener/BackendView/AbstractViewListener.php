@@ -79,6 +79,7 @@ abstract class AbstractViewListener extends AbstractTableListener
                 $GLOBALS['TL_DCA'][$this->table]['list']['global_operations'],
                 0,
                 [
+                    'showOnSelect'   => true,
                     'switchLanguage' => [
                         'button_callback' => function () use ($page, $languages) {
                             return $this->onSwitchButtonCallback($page, $languages);
