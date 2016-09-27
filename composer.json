@@ -12,7 +12,7 @@
     ],
     "require":{
         "php":">=5.4",
-        "contao/core-bundle":"~3.5 || ~4.1",
+        "contao/core-bundle":"^3.5.8 || ^4.1.1",
         "contao-community-alliance/composer-plugin":"^2.4.1 || ~3.0",
         "codefog/contao-haste": "~4.13",
         "menatwork/contao-multicolumnwizard": "^3.3"
@@ -21,7 +21,7 @@
         "contao/news-bundle": "~3.5 || ~4.1",
         "contao/calendar-bundle": "~3.5 || ~4.1",
         "contao/faq-bundle": "~3.5 || ~4.1",
-        "contao/core":"~3.5",
+        "contao/core":"^3.5.8",
         "phpunit/phpunit": "4.*",
         "phpunit/dbunit": "~1.3",
         "satooshi/php-coveralls": "~0.6"
