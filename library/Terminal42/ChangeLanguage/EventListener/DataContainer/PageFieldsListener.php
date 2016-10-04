@@ -35,9 +35,9 @@ class PageFieldsListener
 
             $duplicates = PageModel::countBy(
                 [
-                    'id IN (' . implode(',', $childIds) . ')',
-                    'languageMain=?',
-                    'id!=?'
+                    'tl_page.id IN (' . implode(',', $childIds) . ')',
+                    'tl_page.languageMain=?',
+                    'tl_page.id!=?'
                 ],
                 [$value, $dc->id]
             );
@@ -62,10 +62,10 @@ class PageFieldsListener
         /** @var PageModel[] $pages */
         $pages = PageModel::findBy(
             [
-                "type='root'",
-                "fallback='1'",
-                'languageRoot=0',
-                'id!=?'
+                "tl_page.type='root'",
+                "tl_page.fallback='1'",
+                'tl_page.languageRoot=0',
+                'tl_page.id!=?'
             ],
             [$dc->id]
         );
