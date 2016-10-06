@@ -11,6 +11,7 @@ use Contao\FaqModel;
 use Contao\NewsArchiveModel;
 use Contao\NewsModel;
 use Contao\PageModel;
+use Contao\System;
 
 class MissingLanguageIconListener
 {
@@ -21,6 +22,11 @@ class MissingLanguageIconListener
         'tl_calendar_events' => 'onCalendarEventChildRecords',
         'tl_faq'             => 'onFaqChildRecords',
     ];
+
+    /**
+     * @var array|callable
+     */
+    private $originalLabelCallback;
 
     /**
      * Override core labels to show missing language information.
@@ -40,6 +46,7 @@ class MissingLanguageIconListener
             if (4 === $GLOBALS['TL_DCA'][$table]['list']['sorting']['mode']) {
                 $GLOBALS['TL_DCA'][$table]['list']['sorting']['child_record_callback'] = $callback;
             } else {
+                $this->originalLabelCallback = $GLOBALS['TL_DCA'][$table]['list']['label']['label_callback'];
                 $GLOBALS['TL_DCA'][$table]['list']['label']['label_callback'] = $callback;
             }
         }
@@ -65,7 +72,16 @@ class MissingLanguageIconListener
         $blnReturnImage = false,
         $blnProtected = false
     ) {
-        $label = Backend::addPageIcon($row, $label, $dc, $imageAttribute, $blnReturnImage, $blnProtected);
+        if (is_array($this->originalLabelCallback)) {
+            $label = call_user_func_array(
+                [System::importStatic($this->originalLabelCallback[0]), $this->originalLabelCallback[1]],
+                func_get_args()
+            );
+        } elseif (is_callable($this->originalLabelCallback)) {
+            $label = call_user_func_array($this->originalLabelCallback, func_get_args());
+        } else {
+            $label = Backend::addPageIcon($row, $label, $dc, $imageAttribute, $blnReturnImage, $blnProtected);
+        }
 
         if ('root' === $row['type'] || 'folder' === $row['type'] || 'page' !== \Input::get('do')) {
             return $label;
