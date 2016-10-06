@@ -105,7 +105,7 @@ class PageFinder
         $page->loadDetails();
         $t = $page::getTable();
 
-        if ($page->rootIsFallback) {
+        if ($page->rootIsFallback && ($root = PageModel::findByPk($page->rootId)) !== null && !$root->languageRoot) {
             $values = [$page->id, $page->id];
         } elseif (!$page->languageMain) {
             return [$page];
