@@ -13,7 +13,7 @@ namespace Terminal42\ChangeLanguage\EventListener\BackendView;
 use Contao\Controller;
 use Contao\PageModel;
 use Contao\Session;
-use Contao\System;
+use Haste\Util\Url;
 
 class PageViewListener extends AbstractViewListener
 {
@@ -53,6 +53,6 @@ class PageViewListener extends AbstractViewListener
     {
         Session::getInstance()->set('tl_page_node', (int) $id);
 
-        Controller::redirect(System::getReferer());
+        Controller::redirect(Url::removeQueryString(['switchLanguage']));
     }
 }
