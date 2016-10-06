@@ -214,6 +214,10 @@ class NavigationItem
     {
         $targetPage = $this->targetPage ?: $this->rootPage;
 
+        if ('root' === $targetPage->type) {
+            $targetPage = PageModel::findFirstPublishedRegularByPid($targetPage->id) ?: $targetPage;
+        }
+
         $href = \Controller::generateFrontendUrl(
             $targetPage->row(),
             $urlParameterBag->generateParameters(),
