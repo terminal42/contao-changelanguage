@@ -108,7 +108,7 @@ class PageFinder
         if ($page->rootIsFallback && ($root = PageModel::findByPk($page->rootId)) !== null && !$root->languageRoot) {
             $values = [$page->id, $page->id];
         } elseif (!$page->languageMain) {
-            return [$page];
+            return $skipCurrent ? [] : [$page];
         } else {
             $values = [$page->languageMain, $page->languageMain];
         }
