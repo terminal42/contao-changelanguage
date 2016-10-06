@@ -12,6 +12,7 @@
 namespace Terminal42\ChangeLanguage;
 
 use Contao\Date;
+use Contao\Model\Collection;
 use Contao\PageModel;
 
 class PageFinder
@@ -25,19 +26,20 @@ class PageFinder
     public function findRootPagesForPage(PageModel $page, $skipCurrent = false)
     {
         $page->loadDetails();
+        $t = $page::getTable();
 
         $columns = [
-            "type='root'",
+            "$t.type='root'",
             "(
-                dns=? 
-                OR dns IN (
+                $t.dns=? 
+                OR $t.dns IN (
                     SELECT dns 
                     FROM tl_page 
                     WHERE type='root' AND fallback='1' AND id IN (
                         SELECT languageRoot FROM tl_page WHERE type='root' AND fallback='1' AND dns=?
                     )
                 ) 
-                OR dns IN (
+                OR $t.dns IN (
                     SELECT dns 
                     FROM tl_page 
                     WHERE type='root' AND fallback='1' AND languageRoot IN (
@@ -50,11 +52,11 @@ class PageFinder
         $values = [$page->domain, $page->domain, $page->domain];
 
         if ($skipCurrent) {
-            $columns[] = 'id!=?';
+            $columns[] = "$t.id!=?";
             $values[]  = $page->rootId;
         }
 
-        $this->addPublishingConditions($columns);
+        $this->addPublishingConditions($columns, $t);
 
         return $this->findPages($columns, $values, ['order' => 'sorting']);
     }
@@ -69,15 +71,16 @@ class PageFinder
     public function findMasterRootForPage(PageModel $page)
     {
         $page->loadDetails();
+        $t = $page::getTable();
 
         $columns = [
-            "type='root'",
-            "fallback='1'",
-            'languageRoot=0',
+            "$t.type='root'",
+            "$t.fallback='1'",
+            "$t.languageRoot=0",
             "(
-                dns=? 
-                OR dns IN (SELECT dns FROM tl_page WHERE type='root' AND fallback='1' AND id IN (SELECT languageRoot FROM tl_page WHERE type='root' AND fallback='1' AND dns=?)) 
-                OR dns IN (SELECT dns FROM tl_page WHERE type='root' AND fallback='1' AND languageRoot IN (SELECT id FROM tl_page WHERE type='root' AND fallback='1' AND dns=?))
+                $t.dns=? 
+                OR $t.dns IN (SELECT dns FROM tl_page WHERE type='root' AND fallback='1' AND id IN (SELECT languageRoot FROM tl_page WHERE type='root' AND fallback='1' AND dns=?)) 
+                OR $t.dns IN (SELECT dns FROM tl_page WHERE type='root' AND fallback='1' AND languageRoot IN (SELECT id FROM tl_page WHERE type='root' AND fallback='1' AND dns=?))
             )"
         ];
 
@@ -100,23 +103,24 @@ class PageFinder
         }
 
         $page->loadDetails();
+        $t = $page::getTable();
 
-        if ($page->rootIsFallback) {
+        if ($page->rootIsFallback && ($root = PageModel::findByPk($page->rootId)) !== null && !$root->languageRoot) {
             $values = [$page->id, $page->id];
         } elseif (!$page->languageMain) {
-            return [$page];
+            return $skipCurrent ? [] : [$page];
         } else {
             $values = [$page->languageMain, $page->languageMain];
         }
 
-        $columns = ['(id=? OR languageMain=?)'];
+        $columns = ["($t.id=? OR $t.languageMain=?)"];
 
         if ($skipCurrent) {
-            $columns[] = 'id!=?';
+            $columns[] = "$t.id!=?";
             $values[]  = $page->id;
         }
 
-        $this->addPublishingConditions($columns);
+        $this->addPublishingConditions($columns, $t);
 
         return $this->findPages($columns, $values);
     }
@@ -204,17 +208,18 @@ class PageFinder
     }
 
     /**
-     * @param array $columns
+     * @param array  $columns
+     * @param string $table
      */
-    private function addPublishingConditions(array &$columns)
+    private function addPublishingConditions(array &$columns, $table)
     {
-        if (true !== BE_USER_LOGGED_IN) {
+        if ('BE' !== TL_MODE && true !== BE_USER_LOGGED_IN) {
             $start = Date::floorToMinute();
             $stop  = $start + 60;
 
-            $columns[] = "published='1'";
-            $columns[] = "(start='' OR start<$start)";
-            $columns[] = "(stop='' OR stop>$stop)";
+            $columns[] = "$table.published='1'";
+            $columns[] = "($table.start='' OR $table.start<$start)";
+            $columns[] = "($table.stop='' OR $table.stop>$stop)";
         }
     }
 
@@ -227,9 +232,10 @@ class PageFinder
      */
     private function findPages(array $columns, array $values, array $options = [])
     {
+        /** @var Collection $collection */
         $collection = PageModel::findBy($columns, $values, $options);
 
-        if (null === $collection) {
+        if (!$collection instanceof Collection) {
             return [];
         }
 

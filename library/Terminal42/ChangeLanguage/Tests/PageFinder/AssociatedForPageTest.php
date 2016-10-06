@@ -43,6 +43,7 @@ class AssociatedForPageTest extends ContaoTestCase
         $pageModel = new PageModel();
         $pageModel->id = $this->createPage();
         $pageModel->rootIsFallback = true;
+        $pageModel->rootId = $this->createRootPage('en');
 
         $this->createPage($pageModel->id);
         $this->createPage($pageModel->id);
@@ -90,6 +91,7 @@ class AssociatedForPageTest extends ContaoTestCase
         $pageModel = new PageModel();
         $pageModel->id = $this->createPage($fallback);
         $pageModel->rootIsFallback = true;
+        $pageModel->rootId = $this->createRootPage('en');
         $pageModel->languageMain = $fallback;
 
         $this->createPage($fallback);
@@ -101,8 +103,8 @@ class AssociatedForPageTest extends ContaoTestCase
 
     public function testFindsRootsForRootPage()
     {
-        $en = $this->query("INSERT INTO tl_page (type, language, published) VALUES ('root', 'en', '1')");
-        $de = $this->query("INSERT INTO tl_page (type, language, published) VALUES ('root', 'de', '1')");
+        $en = $this->createRootPage('en');
+        $de = $this->createRootPage('de');
 
         $pageModel = new PageModel();
         $pageModel->id = $de;
@@ -116,15 +118,42 @@ class AssociatedForPageTest extends ContaoTestCase
         $this->assertEquals('root', $pages[$de]->type);
     }
 
-    private function createPage($languageMain = 0, $published = true)
+    public function testFindsAllOnDifferentDomains()
     {
-        $published = $published ? '1' : '';
+        $enRoot = $this->createRootPage('en', '1', 'www.example.com');
+        $deRoot = $this->createRootPage('de', '1', 'www.example.org', $enRoot);
 
+        $en = $this->createPage(0, $enRoot);
+        $de = $this->createPage($en, $deRoot);
+
+        $pageModel = new PageModel();
+        $pageModel->id = $de;
+        $pageModel->languageMain = $en;
+        $pageModel->rootIsFallback = true;
+        $pageModel->type = 'regular';
+
+        $pages = $this->pageFinder->findAssociatedForPage($pageModel);
+
+        $this->assertPageCount($pages, 2);
+    }
+
+    private function createPage($languageMain = 0, $pid = 0)
+    {
         return $this->query("
             INSERT INTO tl_page 
-            (type, languageMain, published) 
+            (type, pid, languageMain, published) 
             VALUES 
-            ('regular', $languageMain, '$published')
+            ('regular', $pid, $languageMain, '1')
+        ");
+    }
+
+    private function createRootPage($language, $fallback = '1', $dns = '', $languageRoot = 0)
+    {
+        return $this->query("
+            INSERT INTO tl_page 
+                (type, dns, fallback, language, languageRoot, published) 
+            VALUES 
+                ('root', '$dns', '$fallback', '$language', $languageRoot, '1')
         ");
     }
 

@@ -78,16 +78,15 @@ class ArticleViewListener extends AbstractViewListener
     {
         list ($table, $id) = explode('.', $id);
 
+        $url = Url::removeQueryString(['switchLanguage']);
+
         switch ($table) {
             case 'tl_article':
-                $url = Url::removeQueryString(['switchLanguage']);
                 $url = Url::addQueryString('id='.$id, $url);
                 break;
 
             case 'tl_page':
                 Session::getInstance()->set('tl_page_node', (int) $id);
-
-                $url = TL_SCRIPT.'?do=article&amp;rt=' . REQUEST_TOKEN;
                 break;
 
             default:

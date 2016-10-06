@@ -15,7 +15,6 @@ use Contao\DataContainer;
 use Contao\PageModel;
 use Contao\System;
 use Terminal42\ChangeLanguage\EventListener\AbstractTableListener;
-use Terminal42\ChangeLanguage\Language;
 use Terminal42\ChangeLanguage\PageFinder;
 
 abstract class AbstractViewListener extends AbstractTableListener
@@ -79,8 +78,8 @@ abstract class AbstractViewListener extends AbstractTableListener
                 $GLOBALS['TL_DCA'][$this->table]['list']['global_operations'],
                 0,
                 [
-                    'showOnSelect'   => true,
                     'switchLanguage' => [
+                        'showOnSelect'    => true,
                         'button_callback' => function () use ($page, $languages) {
                             return $this->onSwitchButtonCallback($page, $languages);
                         },
