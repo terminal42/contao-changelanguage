@@ -213,7 +213,7 @@ class PageFinder
      */
     private function addPublishingConditions(array &$columns, $table)
     {
-        if (true !== BE_USER_LOGGED_IN) {
+        if ('BE' !== TL_MODE && true !== BE_USER_LOGGED_IN) {
             $start = Date::floorToMinute();
             $stop  = $start + 60;
 
