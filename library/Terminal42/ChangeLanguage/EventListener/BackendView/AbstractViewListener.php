@@ -39,12 +39,15 @@ abstract class AbstractViewListener extends AbstractTableListener
         $this->pageFinder = new PageFinder();
     }
 
-
     /**
      * @inheritdoc
      */
     public function register()
     {
+        if (!$this->isSupported()) {
+            return;
+        }
+
         $GLOBALS['TL_DCA'][$this->table]['config']['onload_callback'][] = function (DataContainer $dc) {
             $this->onLoad($dc);
         };
@@ -88,6 +91,13 @@ abstract class AbstractViewListener extends AbstractTableListener
             );
         }
     }
+
+    /**
+     * Returns whether the listener is supported on the current page.
+     *
+     * @return bool
+     */
+    abstract protected function isSupported();
 
     /**
      * Returns the current active page (to determine the current language).

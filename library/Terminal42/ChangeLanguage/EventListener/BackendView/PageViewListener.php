@@ -18,6 +18,14 @@ use Haste\Util\Url;
 class PageViewListener extends AbstractViewListener
 {
     /**
+     * @inheritDoc
+     */
+    protected function isSupported()
+    {
+        return 'page' === \Input::get('do') || 'article' === \Input::get('do');
+    }
+
+    /**
      * @inheritdoc
      */
     protected function getCurrentPage()

@@ -27,12 +27,16 @@ class ArticleViewListener extends AbstractViewListener
     /**
      * @inheritdoc
      */
+    protected function isSupported()
+    {
+        return 'article' === (string) \Input::get('do');
+    }
+
+    /**
+     * @inheritdoc
+     */
     protected function getCurrentPage()
     {
-        if ('article' !== (string) \Input::get('do')) {
-            return null;
-        }
-
         if (false === $this->currentArticle) {
             $this->currentArticle = ArticleModel::findByPk($this->dataContainer->id);
         }
@@ -43,7 +47,6 @@ class ArticleViewListener extends AbstractViewListener
 
         return PageModel::findWithDetails($this->currentArticle->pid);
     }
-
 
     /**
      * @inheritdoc
@@ -98,7 +101,7 @@ class ArticleViewListener extends AbstractViewListener
 
     /**
      * @param PageModel    $page
-     * @param              $articleId
+     * @param int          $articleId
      *
      * @return ArticleModel[]
      */
