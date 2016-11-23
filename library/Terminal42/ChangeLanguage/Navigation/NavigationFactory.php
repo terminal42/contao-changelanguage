@@ -51,12 +51,11 @@ class NavigationFactory
      *
      * @return NavigationItem[]
      *
-     * @throws \OverflowException
-     * @throws \UnderflowException
+     * @throws \RuntimeException
      */
     public function findNavigationItems(PageModel $currentPage)
     {
-        $rootPages = $this->pageFinder->findRootPagesForPage($currentPage);
+        $rootPages = $this->pageFinder->findRootPagesForPage($currentPage, false, false);
         $navigationItems = $this->createNavigationItemsForRootPages($rootPages);
 
         $this->setTargetPageForNavigationItems(
@@ -82,21 +81,25 @@ class NavigationFactory
     /**
      * Builds NavigationItem's from given root pages.
      *
-     * @param NavigationItem[] $rootPages
+     * @param PageModel[] $rootPages
      *
      * @return NavigationItem[]
      *
-     * @throws \OverflowException if multiple root pages have the same language
+     * @throws \RuntimeException if multiple root pages have the same language
      */
     private function createNavigationItemsForRootPages(array $rootPages)
     {
         $navigationItems = [];
 
         foreach ($rootPages as $rootPage) {
+            if (!$this->isPagePublished($rootPage)) {
+                continue;
+            }
+
             $language = strtolower($rootPage->language);
 
             if (array_key_exists($language, $navigationItems)) {
-                throw new \OverflowException(
+                throw new \RuntimeException(
                     sprintf('Multiple root pages for the language "%s" found', $rootPage->language)
                 );
             }
@@ -114,7 +117,7 @@ class NavigationFactory
      * @param PageModel[]      $rootPages
      * @param PageModel[]      $associatedPages
      *
-     * @throws \UnderflowException
+     * @throws \RuntimeException
      */
     private function setTargetPageForNavigationItems(array $navigationItems, array $rootPages, array $associatedPages)
     {
@@ -122,7 +125,11 @@ class NavigationFactory
             $page->loadDetails();
 
             if (!array_key_exists($page->rootId, $rootPages)) {
-                throw new \UnderflowException(sprintf('Missing root page for language "%s"', $page->language));
+                throw new \RuntimeException(sprintf('Missing root page for language "%s"', $page->language));
+            }
+
+            if (!$this->isPagePublished($rootPages[$page->rootId])) {
+                continue;
             }
 
             $language      = strtolower($page->language);
@@ -130,5 +137,22 @@ class NavigationFactory
 
             $navigationItems[$language]->setTargetPage($page, true, $isCurrentPage);
         }
+    }
+
+    /**
+     * Returns whether the given page is published.
+     *
+     * @param PageModel $page
+     *
+     * @return bool
+     */
+    private function isPagePublished(PageModel $page)
+    {
+        $time = time();
+
+        return $page->published
+            && ($page->start == '' || $page->start < $time)
+            && ($page->stop == '' || $page->stop > $time)
+        ;
     }
 }

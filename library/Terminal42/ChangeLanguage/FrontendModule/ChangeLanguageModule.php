@@ -89,7 +89,9 @@ class ChangeLanguageModule extends AbstractFrontendModule
                 continue;
             }
 
-            $headerLinks->addFromNavigationItem($item, $urlParameters);
+            if ($item->isDirectFallback()) {
+                $headerLinks->addFromNavigationItem($item, $urlParameters);
+            }
 
             // Remove active language from navigation but not from header links!
             if ($this->hideActiveLanguage && $item->isCurrentPage()) {

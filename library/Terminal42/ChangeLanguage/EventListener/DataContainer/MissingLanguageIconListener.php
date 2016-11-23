@@ -3,7 +3,6 @@
 namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 
 use Contao\ArticleModel;
-use Contao\Backend;
 use Contao\CalendarEventsModel;
 use Contao\CalendarModel;
 use Contao\FaqCategoryModel;
@@ -11,6 +10,7 @@ use Contao\FaqModel;
 use Contao\NewsArchiveModel;
 use Contao\NewsModel;
 use Contao\PageModel;
+use Terminal42\ChangeLanguage\Helper\LabelCallback;
 
 class MissingLanguageIconListener
 {
@@ -30,42 +30,30 @@ class MissingLanguageIconListener
     public function register($table)
     {
         if (array_key_exists($table, self::$callbacks)) {
-            $callback = function () use ($table) {
-                return call_user_func_array(
-                    [$this, self::$callbacks[$table]],
-                    func_get_args()
-                );
-            };
-
-            if (4 === $GLOBALS['TL_DCA'][$table]['list']['sorting']['mode']) {
-                $GLOBALS['TL_DCA'][$table]['list']['sorting']['child_record_callback'] = $callback;
-            } else {
-                $GLOBALS['TL_DCA'][$table]['list']['label']['label_callback'] = $callback;
-            }
+            LabelCallback::createAndRegister(
+                $table,
+                function (array $args, $previousResult) use ($table) {
+                    return $this->{self::$callbacks[$table]}($args, $previousResult);
+                }
+            );
         }
     }
 
     /**
      * Adds missing translation warning to page tree.
      *
-     * @param array               $row
-     * @param string              $label
-     * @param \DataContainer|null $dc
-     * @param string              $imageAttribute
-     * @param bool                $blnReturnImage
-     * @param bool                $blnProtected
+     * @param array $args
+     * @param mixed $previousResult
      *
      * @return string
      */
-    public function onPageLabel(
-        array $row,
-        $label,
-        $dc = null,
-        $imageAttribute = '',
-        $blnReturnImage = false,
-        $blnProtected = false
-    ) {
-        $label = Backend::addPageIcon($row, $label, $dc, $imageAttribute, $blnReturnImage, $blnProtected);
+    public function onPageLabel(array $args, $previousResult = null)
+    {
+        list($row, $label) = $args;
+
+        if ($previousResult) {
+            $label = $previousResult;
+        }
 
         if ('root' === $row['type'] || 'folder' === $row['type'] || 'page' !== \Input::get('do')) {
             return $label;
@@ -86,15 +74,18 @@ class MissingLanguageIconListener
     /**
      * Adds missing translation warning to article tree.
      *
-     * @param array  $row
-     * @param string $label
+     * @param array $args
+     * @param mixed $previousResult
      *
      * @return string
      */
-    public function onArticleLabel(array $row, $label)
+    public function onArticleLabel(array $args, $previousResult = null)
     {
-        $tl_article = new \tl_article();
-        $label = $tl_article->addIcon($row, $label);
+        list($row, $label) = $args;
+
+        if ($previousResult) {
+            $label = $previousResult;
+        }
 
         $page = PageModel::findWithDetails($row['pid']);
         $root = PageModel::findByPk($page->rootId);
@@ -112,14 +103,15 @@ class MissingLanguageIconListener
     /**
      * Generate missing translation warning for news child records.
      *
-     * @param array $row
+     * @param array $args
+     * @param mixed $previousResult
      *
      * @return string
      */
-    public function onNewsChildRecords(array $row)
+    public function onNewsChildRecords(array $args, $previousResult = null)
     {
-        $tl_news = new \tl_news();
-        $label = $tl_news->listNewsArticles($row);
+        $row   = $args[0];
+        $label = (string) $previousResult;
 
         $archive = NewsArchiveModel::findByPk($row['pid']);
 
@@ -135,14 +127,15 @@ class MissingLanguageIconListener
     /**
      * Generate missing translation warning for calendar events child records.
      *
-     * @param array $row
+     * @param array $args
+     * @param mixed $previousResult
      *
      * @return string
      */
-    public function onCalendarEventChildRecords(array $row)
+    public function onCalendarEventChildRecords(array $args, $previousResult = null)
     {
-        $tl_calendar_events = new \tl_calendar_events();
-        $label = $tl_calendar_events->listEvents($row);
+        $row   = $args[0];
+        $label = (string) $previousResult;
 
         $calendar = CalendarModel::findByPk($row['pid']);
 
@@ -158,14 +151,15 @@ class MissingLanguageIconListener
     /**
      * Generate missing translation warning for faq child records.
      *
-     * @param array $row
+     * @param array $args
+     * @param mixed $previousResult
      *
      * @return string
      */
-    public function onFaqChildRecords(array $row)
+    public function onFaqChildRecords(array $args, $previousResult = null)
     {
-        $tl_faq = new \tl_faq();
-        $label = $tl_faq->listQuestions($row);
+        $row   = $args[0];
+        $label = (string) $previousResult;
 
         $category = FaqCategoryModel::findByPk($row['pid']);
 

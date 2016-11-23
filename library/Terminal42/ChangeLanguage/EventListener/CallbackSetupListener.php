@@ -25,13 +25,25 @@ class CallbackSetupListener
             'Terminal42\ChangeLanguage\EventListener\DataContainer\ArticleListener',
             'Terminal42\ChangeLanguage\EventListener\BackendView\PageViewListener',
         ],
-        'tl_content'         => ['Terminal42\ChangeLanguage\EventListener\BackendView\ArticleViewListener'],
+        'tl_content'         => [
+            'Terminal42\ChangeLanguage\EventListener\BackendView\ArticleViewListener',
+            'Terminal42\ChangeLanguage\EventListener\BackendView\ParentChildViewListener',
+        ],
         'tl_news_archive'    => ['Terminal42\ChangeLanguage\EventListener\DataContainer\ParentTableListener'],
         'tl_calendar'        => ['Terminal42\ChangeLanguage\EventListener\DataContainer\ParentTableListener'],
         'tl_faq_category'    => ['Terminal42\ChangeLanguage\EventListener\DataContainer\ParentTableListener'],
-        'tl_news'            => ['Terminal42\ChangeLanguage\EventListener\DataContainer\NewsListener'],
-        'tl_calendar_events' => ['Terminal42\ChangeLanguage\EventListener\DataContainer\CalendarEventsListener'],
-        'tl_faq'             => ['Terminal42\ChangeLanguage\EventListener\DataContainer\FaqListener'],
+        'tl_news'            => [
+            'Terminal42\ChangeLanguage\EventListener\DataContainer\NewsListener',
+            'Terminal42\ChangeLanguage\EventListener\BackendView\ParentChildViewListener',
+        ],
+        'tl_calendar_events' => [
+            'Terminal42\ChangeLanguage\EventListener\DataContainer\CalendarEventsListener',
+            'Terminal42\ChangeLanguage\EventListener\BackendView\ParentChildViewListener',
+        ],
+        'tl_faq'             => [
+            'Terminal42\ChangeLanguage\EventListener\DataContainer\FaqListener',
+            'Terminal42\ChangeLanguage\EventListener\BackendView\ParentChildViewListener',
+        ],
     ];
 
     /**
