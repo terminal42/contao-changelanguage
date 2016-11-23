@@ -81,7 +81,7 @@ class NavigationFactory
     /**
      * Builds NavigationItem's from given root pages.
      *
-     * @param NavigationItem[] $rootPages
+     * @param PageModel[] $rootPages
      *
      * @return NavigationItem[]
      *
