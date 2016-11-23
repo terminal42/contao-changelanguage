@@ -20,10 +20,11 @@ class PageFinder
     /**
      * @param PageModel $page
      * @param bool      $skipCurrent
+     * @param bool      $publishedOnly
      *
      * @return \Contao\PageModel[]
      */
-    public function findRootPagesForPage(PageModel $page, $skipCurrent = false)
+    public function findRootPagesForPage(PageModel $page, $skipCurrent = false, $publishedOnly = true)
     {
         $page->loadDetails();
         $t = $page::getTable();
@@ -56,7 +57,9 @@ class PageFinder
             $values[]  = $page->rootId;
         }
 
-        $this->addPublishingConditions($columns, $t);
+        if ($publishedOnly) {
+            $this->addPublishingConditions($columns, $t);
+        }
 
         return $this->findPages($columns, $values, ['order' => 'sorting']);
     }
@@ -182,6 +185,7 @@ class PageFinder
      * @return PageModel
      *
      * @throws \RuntimeException
+     * @throws \InvalidArgumentException
      */
     public function findAssociatedParentForLanguage(PageModel $page, $language)
     {

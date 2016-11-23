@@ -137,6 +137,22 @@ class RootPagesTest extends ContaoTestCase
         $this->assertPageCount($roots, 3);
     }
 
+    public function testIncludesUnpublishedWhenEnabled()
+    {
+        $master = $this->createRootPage('foo.com', 'en');
+        $this->createRootPage('foo.com', 'de', false);
+        $this->createRootPage('bar.com', 'fr', true, $master);
+        $this->createRootPage('bar.com', 'it', false, 0, false);
+
+        $pageModel = new PageModel();
+        $pageModel->id = 1;
+        $pageModel->domain = 'foo.com';
+
+        $roots = $this->pageFinder->findRootPagesForPage($pageModel, false, false);
+
+        $this->assertPageCount($roots, 4);
+    }
+
     public function testNonFallbackMaster()
     {
         $master = $this->createRootPage('foo.com', 'en');

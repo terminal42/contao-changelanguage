@@ -55,7 +55,7 @@ class NavigationFactory
      */
     public function findNavigationItems(PageModel $currentPage)
     {
-        $rootPages = $this->pageFinder->findRootPagesForPage($currentPage);
+        $rootPages = $this->pageFinder->findRootPagesForPage($currentPage, false, false);
         $navigationItems = $this->createNavigationItemsForRootPages($rootPages);
 
         $this->setTargetPageForNavigationItems(
@@ -92,6 +92,10 @@ class NavigationFactory
         $navigationItems = [];
 
         foreach ($rootPages as $rootPage) {
+            if (!$this->isPagePublished($rootPage)) {
+                continue;
+            }
+
             $language = strtolower($rootPage->language);
 
             if (array_key_exists($language, $navigationItems)) {
@@ -124,10 +128,31 @@ class NavigationFactory
                 throw new \RuntimeException(sprintf('Missing root page for language "%s"', $page->language));
             }
 
+            if (!$this->isPagePublished($rootPages[$page->rootId])) {
+                continue;
+            }
+
             $language      = strtolower($page->language);
             $isCurrentPage = $this->currentPage->id === $page->id;
 
             $navigationItems[$language]->setTargetPage($page, true, $isCurrentPage);
         }
+    }
+
+    /**
+     * Returns whether the given page is published.
+     *
+     * @param PageModel $page
+     *
+     * @return bool
+     */
+    private function isPagePublished(PageModel $page)
+    {
+        $time = time();
+
+        return $page->published
+            && ($page->start == '' || $page->start < $time)
+            && ($page->stop == '' || $page->stop > $time)
+        ;
     }
 }
