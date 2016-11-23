@@ -180,6 +180,8 @@ class PageFinder
      * @param string    $language
      *
      * @return PageModel
+     *
+     * @throws \RuntimeException
      */
     public function findAssociatedParentForLanguage(PageModel $page, $language)
     {
@@ -201,7 +203,7 @@ class PageFinder
         $parent = PageModel::findPublishedById($page->pid);
 
         if (!$parent instanceof PageModel) {
-            throw new \UnderflowException(sprintf('Parent page for page ID "%s" not found', $page->id));
+            throw new \RuntimeException(sprintf('Parent page for page ID "%s" not found', $page->id));
         }
 
         return $this->findAssociatedForLanguage($parent, $language);

@@ -51,8 +51,7 @@ class NavigationFactory
      *
      * @return NavigationItem[]
      *
-     * @throws \OverflowException
-     * @throws \UnderflowException
+     * @throws \RuntimeException
      */
     public function findNavigationItems(PageModel $currentPage)
     {
@@ -86,7 +85,7 @@ class NavigationFactory
      *
      * @return NavigationItem[]
      *
-     * @throws \OverflowException if multiple root pages have the same language
+     * @throws \RuntimeException if multiple root pages have the same language
      */
     private function createNavigationItemsForRootPages(array $rootPages)
     {
@@ -96,7 +95,7 @@ class NavigationFactory
             $language = strtolower($rootPage->language);
 
             if (array_key_exists($language, $navigationItems)) {
-                throw new \OverflowException(
+                throw new \RuntimeException(
                     sprintf('Multiple root pages for the language "%s" found', $rootPage->language)
                 );
             }
@@ -114,7 +113,7 @@ class NavigationFactory
      * @param PageModel[]      $rootPages
      * @param PageModel[]      $associatedPages
      *
-     * @throws \UnderflowException
+     * @throws \RuntimeException
      */
     private function setTargetPageForNavigationItems(array $navigationItems, array $rootPages, array $associatedPages)
     {
@@ -122,7 +121,7 @@ class NavigationFactory
             $page->loadDetails();
 
             if (!array_key_exists($page->rootId, $rootPages)) {
-                throw new \UnderflowException(sprintf('Missing root page for language "%s"', $page->language));
+                throw new \RuntimeException(sprintf('Missing root page for language "%s"', $page->language));
             }
 
             $language      = strtolower($page->language);
