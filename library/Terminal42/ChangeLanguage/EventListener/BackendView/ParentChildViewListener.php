@@ -36,11 +36,11 @@ class ParentChildViewListener extends AbstractViewListener
      */
     protected function getCurrentPage()
     {
-        /** @var Model $class */
-        $class = $this->getModelClass();
-
         if (false === $this->current) {
-            $this->current = $class::findByPk($this->dataContainer->id);
+            /** @var Model $class */
+            $class = $this->getModelClass();
+
+            $this->current = class_exists($class) ? $class::findByPk($this->dataContainer->id) : null;
         }
 
         if (null === $this->current) {
