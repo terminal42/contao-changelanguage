@@ -117,8 +117,11 @@ class PageOperationListener
         }
 
         // Reset languageMain if the current value is not a valid ID of the master tree
-        if (!in_array($page->id, Database::getInstance()->getChildRecords($masterRoot->id, 'tl_page'), false)) {
-            $this->resetPageAndChildren($page->id);
+        if (!in_array($page->languageMain, Database::getInstance()->getChildRecords($masterRoot->id, 'tl_page'), false)) {
+            Database::getInstance()
+                ->prepare('UPDATE tl_page SET languageMain=0 WHERE id=?')
+                ->execute($page->id)
+            ;
         }
     }
 
