@@ -122,7 +122,7 @@ If you are looking for a page in another language you can use the pageFinder to 
 
 ```php
 $pageFinder = new \Terminal42\ChangeLanguage\PageFinder();
-$pageFinder->findAssociatedForLanguage(\PageModel::findByPk(4), $GLOBALS['TL_LANGUAGE']);
+$pageFinder->findAssociatedForLanguage(\PageModel::findByPk(4), 'en');
 ```
 
 ## Upgrading from ChangeLanguage v2
