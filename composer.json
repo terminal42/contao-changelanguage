@@ -22,7 +22,6 @@
         "contao/calendar-bundle": "~3.5 || ~4.1",
         "contao/faq-bundle": "~3.5 || ~4.1",
         "contao/core":"~3.5",
-        "contao/manager-plugin": "~1.0",
         "phpunit/phpunit": "4.*",
         "phpunit/dbunit": "~1.3",
         "satooshi/php-coveralls": "~0.6"
@@ -52,7 +51,6 @@
             "runonce": [
                 "config/update.php"
             ]
-        },
-        "contao-manager-plugin": "Terminal42\\ChangeLanguage\\ContaoManager\\Plugin"
+        }
     }
 }
