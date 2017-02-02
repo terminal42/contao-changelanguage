@@ -19,7 +19,7 @@ use Haste\Util\Url;
 class ParentChildViewListener extends AbstractViewListener
 {
     /**
-     * @var \Model
+     * @var Model
      */
     private $current = false;
 
@@ -29,7 +29,7 @@ class ParentChildViewListener extends AbstractViewListener
     protected function isSupported()
     {
         return $this->getTable() === Input::get('table')
-            && in_array(\Input::get('do'), ['article', 'calendar', 'faq', 'news'], true);
+            && in_array(Input::get('do'), ['article', 'calendar', 'faq', 'news'], true);
     }
 
     /**
