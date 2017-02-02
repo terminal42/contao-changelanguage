@@ -36,6 +36,13 @@ class ParentTableListener
 
     public function register()
     {
+        $GLOBALS['TL_DCA'][$this->table]['config']['onload_callback'][] = function () {
+            $this->onLoad();
+        };
+    }
+
+    public function onLoad()
+    {
         $GLOBALS['TL_DCA'][$this->table]['fields']['master'] = [
             'label'            => &$GLOBALS['TL_LANG'][$this->table]['master'],
             'exclude'          => true,
