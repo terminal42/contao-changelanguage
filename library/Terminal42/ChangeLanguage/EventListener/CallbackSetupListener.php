@@ -71,9 +71,16 @@ class CallbackSetupListener
         if (array_key_exists($table, self::$listeners)) {
             foreach (self::$listeners[$table] as $class) {
 
-                /** @var AbstractTableListener $listener */
-                $listener = new $class($table);
-                $listener->register();
+                try {
+                    /** @var AbstractTableListener $listener */
+                    $listener = new $class($table);
+                    $listener->register();
+                } catch (\InvalidArgumentException $e) {
+                    // An invalid argument exception will be thrown
+                    // if the given table belongs to a disabled
+                    // extension. In this case, do nothing.
+                    continue;
+                }
             }
         }
     }
