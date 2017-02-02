@@ -28,7 +28,8 @@ class ParentChildViewListener extends AbstractViewListener
      */
     protected function isSupported()
     {
-        return $this->getTable() === Input::get('table');
+        return $this->getTable() === Input::get('table')
+            && in_array(\Input::get('do'), ['article', 'calendar', 'faq', 'news'], true);
     }
 
     /**
