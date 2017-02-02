@@ -31,9 +31,14 @@ class InsertTagsListener
             return false;
         }
 
-        $pageFinder  = new PageFinder();
-        $currentPage = \PageModel::findByIdOrAlias($parts[1]);
-        $targetPage  = $pageFinder->findAssociatedForLanguage($currentPage, $parts[2]);
+        try {
+            $pageFinder  = new PageFinder();
+            $currentPage = \PageModel::findByIdOrAlias($parts[1]);
+            $targetPage = $pageFinder->findAssociatedForLanguage($currentPage, $parts[2]);
+        } catch (\RuntimeException $e) {
+            // parent page of current page not found or not published
+            return '';
+        }
 
         return Controller::replaceInsertTags(
             sprintf(

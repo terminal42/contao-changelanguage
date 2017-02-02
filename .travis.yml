@@ -11,7 +11,7 @@ before_install:
 
 install:
   - mysql -e 'CREATE DATABASE changelanguage_testsuite;'
-  - travis_wait composer update --prefer-stable
+  - travis_wait composer update --prefer-stable --ignore-platform-reqs
   - phpenv config-add /tmp/xdebug.ini
   - mkdir -p build/logs
 

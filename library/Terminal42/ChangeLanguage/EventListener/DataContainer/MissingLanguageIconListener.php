@@ -87,14 +87,16 @@ class MissingLanguageIconListener
             $label = $previousResult;
         }
 
-        $page = PageModel::findWithDetails($row['pid']);
-        $root = PageModel::findByPk($page->rootId);
+        if ($row['showTeaser']) {
+            $page = PageModel::findWithDetails($row['pid']);
+            $root = PageModel::findByPk($page->rootId);
 
-        if ((!$root->fallback || $root->languageRoot > 0)
-            && $page->languageMain > 0 && null !== PageModel::findByPk($page->languageMain)
-            && (!$row['languageMain'] || null === ArticleModel::findByPk($row['languageMain']))
-        ) {
-            return $this->generateLabelWithWarning($label);
+            if ((!$root->fallback || $root->languageRoot > 0)
+                && $page->languageMain > 0 && null !== PageModel::findByPk($page->languageMain)
+                && (!$row['languageMain'] || null === ArticleModel::findByPk($row['languageMain']))
+            ) {
+                return $this->generateLabelWithWarning($label);
+            }
         }
 
         return $label;

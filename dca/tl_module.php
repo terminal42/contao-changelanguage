@@ -60,18 +60,17 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['customLanguageText'] = array
                 'inputType' => 'text',
                 'mandatory' => true,
                 'class'     => 'tl_text',
-                'eval'      => ['mandatory' => true, 'allowHtml' => true],
+                'eval'      => ['mandatory' => true, 'allowHtml' => true, 'style' => 'max-width:150px'],
             ],
             'label' => [
                 'label'     => &$GLOBALS['TL_LANG']['tl_module']['customLanguageText']['label'],
                 'inputType' => 'text',
                 'mandatory' => true,
                 'class'     => 'tl_text',
-                'eval'      => ['mandatory' => true, 'allowHtml' => true],
+                'eval'      => ['mandatory' => true, 'allowHtml' => true, 'style' => 'max-width:150px'],
             ],
         ],
         'tl_class'     => 'clr',
     ),
     'sql'                     => "text NULL"
 );
-

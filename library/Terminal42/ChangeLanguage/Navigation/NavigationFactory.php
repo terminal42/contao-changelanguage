@@ -66,10 +66,17 @@ class NavigationFactory
 
         foreach ($navigationItems as $k => $item) {
             if (!$item->hasTargetPage()) {
-                $item->setTargetPage(
-                    $this->pageFinder->findAssociatedParentForLanguage($currentPage, $item->getLanguageTag()),
-                    false
-                );
+                try {
+                    $item->setTargetPage(
+                        $this
+                            ->pageFinder
+                            ->findAssociatedParentForLanguage($currentPage, $item->getLanguageTag())
+                        ,
+                        false
+                    );
+                } catch (\RuntimeException $e) {
+                    // parent page of current page not found or not published
+                }
             }
         }
 

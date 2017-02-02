@@ -19,7 +19,7 @@ use Haste\Util\Url;
 class ParentChildViewListener extends AbstractViewListener
 {
     /**
-     * @var \Model
+     * @var Model
      */
     private $current = false;
 
@@ -28,7 +28,8 @@ class ParentChildViewListener extends AbstractViewListener
      */
     protected function isSupported()
     {
-        return $this->getTable() === Input::get('table');
+        return $this->getTable() === Input::get('table')
+            && in_array(Input::get('do'), ['article', 'calendar', 'faq', 'news'], true);
     }
 
     /**
@@ -36,11 +37,11 @@ class ParentChildViewListener extends AbstractViewListener
      */
     protected function getCurrentPage()
     {
-        /** @var Model $class */
-        $class = $this->getModelClass();
-
         if (false === $this->current) {
-            $this->current = $class::findByPk($this->dataContainer->id);
+            /** @var Model $class */
+            $class = $this->getModelClass();
+
+            $this->current = class_exists($class) ? $class::findByPk($this->dataContainer->id) : null;
         }
 
         if (null === $this->current) {

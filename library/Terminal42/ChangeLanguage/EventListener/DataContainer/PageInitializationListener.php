@@ -115,7 +115,7 @@ class PageInitializationListener
 
         if (null !== $masterRoot) {
             $GLOBALS['TL_DCA']['tl_page']['fields']['languageMain']['eval']['rootNodes'] = Database::getInstance()
-                ->prepare('SELECT id FROM tl_page WHERE pid=?')
+                ->prepare('SELECT id FROM tl_page WHERE pid=? ORDER BY sorting')
                 ->execute($masterRoot->id)
                 ->fetchEach('id')
             ;
