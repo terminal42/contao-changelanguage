@@ -49,7 +49,7 @@ abstract class AbstractViewListener extends AbstractTableListener
             return;
         }
 
-        $GLOBALS['TL_DCA'][$this->table]['config']['onload_callback'][] = function (DataContainer $dc) {
+        $GLOBALS['TL_DCA'][$this->table]['config']['onload_callback'][] = function ($dc) {
             $this->onLoad($dc);
         };
     }
@@ -59,8 +59,12 @@ abstract class AbstractViewListener extends AbstractTableListener
      *
      * @param DataContainer $dc
      */
-    public function onLoad(DataContainer $dc)
+    public function onLoad($dc)
     {
+        if (!$dc instanceof DataContainer) {
+            return;
+        }
+
         if ($dc->table !== $this->table) {
             return;
         }
