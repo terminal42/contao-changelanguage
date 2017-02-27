@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * changelanguage Extension for Contao Open Source CMS
  *
- * @copyright  Copyright (c) 2008-2016, terminal42 gmbh
+ * @copyright  Copyright (c) 2008-2017, terminal42 gmbh
  * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  * @link       http://github.com/terminal42/contao-changelanguage
@@ -106,7 +106,7 @@ class LanguageText
     }
 
     /**
-     * Create instance from serialized data of optionsWizard widget
+     * Create instance from serialized data of optionsWizard widget.
      *
      * @param mixed $config
      *
@@ -120,7 +120,7 @@ class LanguageText
             return new static();
         }
 
-        $map = array();
+        $map = [];
 
         foreach ($config as $text) {
             if (empty($text['value']) || empty($text['label'])) {

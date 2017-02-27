@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * changelanguage Extension for Contao Open Source CMS
  *
- * @copyright  Copyright (c) 2008-2016, terminal42 gmbh
+ * @copyright  Copyright (c) 2008-2017, terminal42 gmbh
  * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  * @link       http://github.com/terminal42/contao-changelanguage
@@ -17,7 +17,7 @@ use Terminal42\ChangeLanguage\Event\ChangelanguageNavigationEvent;
 abstract class AbstractNavigationListener
 {
     /**
-     * Find record based on languageMain field and parent master archive
+     * Find record based on languageMain field and parent master archive.
      *
      * @param ChangelanguageNavigationEvent $event
      */
@@ -40,7 +40,7 @@ abstract class AbstractNavigationListener
             $event->getUrlParameterBag()->removeUrlAttribute($this->getUrlKey());
         }
 
-        $t      = $current::getTable();
+        $t = $current::getTable();
         $parent = $current->getRelated('pid');
 
         if (0 === (int) $parent->master) {
@@ -54,19 +54,21 @@ abstract class AbstractNavigationListener
         // Abort if current record has no translated version
         if (0 === $mainId || 0 === $masterId) {
             $navigationItem->setIsDirectFallback(false);
+
             return;
         }
 
         $translated = $this->findPublishedBy(
-            array(
+            [
                 "($t.id=? OR $t.languageMain=?)",
-                sprintf('%s.pid=(SELECT id FROM %s WHERE (id=? OR master=?) AND jumpTo=?)', $t, $parent::getTable())
-            ),
-            array($mainId, $mainId, $masterId, $masterId, $navigationItem->getTargetPage()->id)
+                sprintf('%s.pid=(SELECT id FROM %s WHERE (id=? OR master=?) AND jumpTo=?)', $t, $parent::getTable()),
+            ],
+            [$mainId, $mainId, $masterId, $masterId, $navigationItem->getTargetPage()->id]
         );
 
         if (null === $translated) {
             $navigationItem->setIsDirectFallback(false);
+
             return;
         }
 
@@ -88,9 +90,9 @@ abstract class AbstractNavigationListener
             $columns[] = "$table.published='1'";
 
             if ($addStartStop) {
-                $time      = \Date::floorToMinute();
+                $time = \Date::floorToMinute();
                 $columns[] = "($table.start='' OR $table.start<='$time')";
-                $columns[] = "($table.stop='' OR $table.stop>'" . ($time + 60) . "')";
+                $columns[] = "($table.stop='' OR $table.stop>'".($time + 60)."')";
             }
         }
 
@@ -114,5 +116,5 @@ abstract class AbstractNavigationListener
      *
      * @return Model|null
      */
-    abstract protected function findPublishedBy(array $columns, array $values = array(), array $options = array());
+    abstract protected function findPublishedBy(array $columns, array $values = [], array $options = []);
 }

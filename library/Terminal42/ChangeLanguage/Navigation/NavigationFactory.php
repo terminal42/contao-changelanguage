@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * changelanguage Extension for Contao Open Source CMS
  *
- * @copyright  Copyright (c) 2008-2016, terminal42 gmbh
+ * @copyright  Copyright (c) 2008-2017, terminal42 gmbh
  * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  * @link       http://github.com/terminal42/contao-changelanguage
@@ -41,17 +41,17 @@ class NavigationFactory
      */
     public function __construct(PageFinder $pageFinder, LanguageText $languageText, PageModel $currentPage)
     {
-        $this->pageFinder   = $pageFinder;
+        $this->pageFinder = $pageFinder;
         $this->languageText = $languageText;
-        $this->currentPage  = $currentPage;
+        $this->currentPage = $currentPage;
     }
 
     /**
      * @param PageModel $currentPage
      *
-     * @return NavigationItem[]
-     *
      * @throws \RuntimeException
+     *
+     * @return NavigationItem[]
      */
     public function findNavigationItems(PageModel $currentPage)
     {
@@ -70,8 +70,7 @@ class NavigationFactory
                     $item->setTargetPage(
                         $this
                             ->pageFinder
-                            ->findAssociatedParentForLanguage($currentPage, $item->getLanguageTag())
-                        ,
+                            ->findAssociatedParentForLanguage($currentPage, $item->getLanguageTag()),
                         false
                     );
                 } catch (\RuntimeException $e) {
@@ -90,9 +89,9 @@ class NavigationFactory
      *
      * @param PageModel[] $rootPages
      *
-     * @return NavigationItem[]
-     *
      * @throws \RuntimeException if multiple root pages have the same language
+     *
+     * @return NavigationItem[]
      */
     private function createNavigationItemsForRootPages(array $rootPages)
     {
@@ -139,7 +138,7 @@ class NavigationFactory
                 continue;
             }
 
-            $language      = strtolower($page->language);
+            $language = strtolower($page->language);
             $isCurrentPage = $this->currentPage->id === $page->id;
 
             $navigationItems[$language]->setTargetPage($page, true, $isCurrentPage);
@@ -158,8 +157,8 @@ class NavigationFactory
         $time = time();
 
         return $page->published
-            && ($page->start == '' || $page->start < $time)
-            && ($page->stop == '' || $page->stop > $time)
+            && ($page->start === '' || $page->start < $time)
+            && ($page->stop === '' || $page->stop > $time)
         ;
     }
 }

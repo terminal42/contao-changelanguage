@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * changelanguage Extension for Contao Open Source CMS
  *
- * @copyright  Copyright (c) 2008-2016, terminal42 gmbh
+ * @copyright  Copyright (c) 2008-2017, terminal42 gmbh
  * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  * @link       http://github.com/terminal42/contao-changelanguage
@@ -36,25 +36,32 @@ class PageFinder
                 OR $t.dns IN (
                     SELECT dns 
                     FROM tl_page 
-                    WHERE type='root' AND fallback='1' AND id IN (
-                        SELECT languageRoot FROM tl_page WHERE type='root' AND fallback='1' AND dns=?
+                    WHERE type='root' AND fallback='1' AND id = (
+                        SELECT languageRoot FROM tl_page WHERE type='root' AND fallback='1' AND dns=? LIMIT 1
                     )
                 ) 
                 OR $t.dns IN (
                     SELECT dns 
                     FROM tl_page 
-                    WHERE type='root' AND fallback='1' AND languageRoot IN (
-                        SELECT id FROM tl_page WHERE type='root' AND fallback='1' AND dns=?
+                    WHERE type='root' AND fallback='1' AND languageRoot = (
+                        SELECT id FROM tl_page WHERE type='root' AND fallback='1' AND dns=? LIMIT 1
+                    )
+                ) 
+                OR $t.dns IN (
+                    SELECT dns 
+                    FROM tl_page 
+                    WHERE type='root' AND fallback='1' AND languageRoot != 0 AND languageRoot = (
+                        SELECT languageRoot FROM tl_page WHERE type='root' AND fallback='1' AND dns=? LIMIT 1
                     )
                 )
-            )"
+            )",
         ];
 
-        $values = [$page->domain, $page->domain, $page->domain];
+        $values = [$page->domain, $page->domain, $page->domain, $page->domain];
 
         if ($skipCurrent) {
             $columns[] = "$t.id!=?";
-            $values[]  = $page->rootId;
+            $values[] = $page->rootId;
         }
 
         if ($publishedOnly) {
@@ -84,7 +91,7 @@ class PageFinder
                 $t.dns=? 
                 OR $t.dns IN (SELECT dns FROM tl_page WHERE type='root' AND fallback='1' AND id IN (SELECT languageRoot FROM tl_page WHERE type='root' AND fallback='1' AND dns=?)) 
                 OR $t.dns IN (SELECT dns FROM tl_page WHERE type='root' AND fallback='1' AND languageRoot IN (SELECT id FROM tl_page WHERE type='root' AND fallback='1' AND dns=?))
-            )"
+            )",
         ];
 
         return PageModel::findOneBy(
@@ -120,7 +127,7 @@ class PageFinder
 
         if ($skipCurrent) {
             $columns[] = "$t.id!=?";
-            $values[]  = $page->id;
+            $values[] = $page->id;
         }
 
         $this->addPublishingConditions($columns, $t);
@@ -136,7 +143,7 @@ class PageFinder
      */
     public function findAssociatedForLanguage(PageModel $page, $language)
     {
-        $language   = Language::toLocaleID($language);
+        $language = Language::toLocaleID($language);
         $associated = $this->findAssociatedForPage($page);
 
         foreach ($associated as $model) {
@@ -182,10 +189,10 @@ class PageFinder
      * @param PageModel $page
      * @param string    $language
      *
-     * @return PageModel
-     *
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
+     *
+     * @return PageModel
      */
     public function findAssociatedParentForLanguage(PageModel $page, $language)
     {
@@ -221,7 +228,7 @@ class PageFinder
     {
         if ('BE' !== TL_MODE && true !== BE_USER_LOGGED_IN) {
             $start = Date::floorToMinute();
-            $stop  = $start + 60;
+            $stop = $start + 60;
 
             $columns[] = "$table.published='1'";
             $columns[] = "($table.start='' OR $table.start<$start)";

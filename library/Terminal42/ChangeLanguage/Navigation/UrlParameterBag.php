@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * changelanguage Extension for Contao Open Source CMS
  *
- * @copyright  Copyright (c) 2008-2016, terminal42 gmbh
+ * @copyright  Copyright (c) 2008-2017, terminal42 gmbh
  * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  * @link       http://github.com/terminal42/contao-changelanguage
@@ -35,7 +35,7 @@ class UrlParameterBag
         $this->validateScalar($query);
 
         $this->attributes = $attributes;
-        $this->query      = $query;
+        $this->query = $query;
     }
 
     /**
@@ -155,14 +155,14 @@ class UrlParameterBag
     /**
      * Generates parameter string to generate a Contao url.
      *
-     * @return null|string
-     *
      * @throws \RuntimeException
+     *
+     * @return null|string
      */
     public function generateParameters()
     {
-        $params     = '';
-        $auto_item  = null;
+        $params = '';
+        $auto_item = null;
         $attributes = $this->attributes;
 
         if (0 === count($attributes)) {
@@ -180,12 +180,10 @@ class UrlParameterBag
                 case 0:
                     $auto_item = null;
                     break;
-
                 case 1:
                     unset($attributes[key($auto_item)]);
                     $auto_item = current($auto_item);
                     break;
-
                 default:
                     throw new \RuntimeException('You must not have more than one auto_item parameter');
             }
@@ -195,15 +193,15 @@ class UrlParameterBag
             array_walk(
                 $attributes,
                 function (&$v, $k) {
-                    $v = $k . '/' . $v;
+                    $v = $k.'/'.$v;
                 }
             );
 
-            $params = '/' . implode('/', $attributes);
+            $params = '/'.implode('/', $attributes);
         }
 
         if (null !== $auto_item) {
-            $params = '/' . $auto_item . $params;
+            $params = '/'.$auto_item.$params;
         }
 
         return $params;

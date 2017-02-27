@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * changelanguage Extension for Contao Open Source CMS
  *
- * @copyright  Copyright (c) 2008-2016, terminal42 gmbh
+ * @copyright  Copyright (c) 2008-2017, terminal42 gmbh
  * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  * @link       http://github.com/terminal42/contao-changelanguage
@@ -60,7 +60,7 @@ class NavigationItem
             );
         }
 
-        $this->rootPage  = $rootPage;
+        $this->rootPage = $rootPage;
         $this->linkLabel = $label;
 
         if (null === $label) {
@@ -142,7 +142,7 @@ class NavigationItem
     }
 
     /**
-     * @param boolean $isCurrentPage
+     * @param bool $isCurrentPage
      */
     public function setIsCurrentPage($isCurrentPage)
     {
@@ -150,7 +150,7 @@ class NavigationItem
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isNewWindow()
     {
@@ -181,7 +181,7 @@ class NavigationItem
 
     /**
      * Returns the language formatted as IETF Language Tag (BCP 47)
-     * Example: en, en-US, de-CH
+     * Example: en, en-US, de-CH.
      *
      * @return string
      *
@@ -194,7 +194,7 @@ class NavigationItem
 
     /**
      * Returns the language formatted as ICU Locale ID
-     * Example: en, en_US, de_CH
+     * Example: en, en_US, de_CH.
      *
      * @return string
      *
@@ -226,7 +226,7 @@ class NavigationItem
         );
 
         if (($queryString = $urlParameterBag->generateQueryString()) !== null) {
-            $href .= '?' . $queryString;
+            $href .= '?'.$queryString;
         }
 
         return $href;

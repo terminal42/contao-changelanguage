@@ -1,8 +1,9 @@
 <?php
-/**
+
+/*
  * changelanguage Extension for Contao Open Source CMS
  *
- * @copyright  Copyright (c) 2008-2016, terminal42 gmbh
+ * @copyright  Copyright (c) 2008-2017, terminal42 gmbh
  * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  * @link       http://github.com/terminal42/contao-changelanguage
@@ -25,7 +26,7 @@ class ArticleViewListener extends AbstractViewListener
     private $currentArticle = false;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function isSupported()
     {
@@ -33,7 +34,7 @@ class ArticleViewListener extends AbstractViewListener
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function getCurrentPage()
     {
@@ -49,13 +50,13 @@ class ArticleViewListener extends AbstractViewListener
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function getAvailableLanguages(PageModel $page)
     {
-        $options    = [];
+        $options = [];
         $masterRoot = $this->pageFinder->findMasterRootForPage($page);
-        $articleId  = $page->rootId === $masterRoot->id ? $this->currentArticle->id : $this->currentArticle->languageMain;
+        $articleId = $page->rootId === $masterRoot->id ? $this->currentArticle->id : $this->currentArticle->languageMain;
 
         foreach ($this->pageFinder->findAssociatedForPage($page, true) as $model) {
             $model->loadDetails();
@@ -73,13 +74,13 @@ class ArticleViewListener extends AbstractViewListener
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @throws \InvalidArgumentException
      */
     protected function doSwitchView($id)
     {
-        list ($table, $id) = explode('.', $id);
+        list($table, $id) = explode('.', $id);
 
         $url = Url::removeQueryString(['switchLanguage']);
 
@@ -87,11 +88,9 @@ class ArticleViewListener extends AbstractViewListener
             case 'tl_article':
                 $url = Url::addQueryString('id='.$id, $url);
                 break;
-
             case 'tl_page':
                 Session::getInstance()->set('tl_page_node', (int) $id);
                 break;
-
             default:
                 throw new \InvalidArgumentException(sprintf('Table "%s" is not supported', $table));
         }
@@ -100,8 +99,8 @@ class ArticleViewListener extends AbstractViewListener
     }
 
     /**
-     * @param PageModel    $page
-     * @param int          $articleId
+     * @param PageModel $page
+     * @param int       $articleId
      *
      * @return ArticleModel[]
      */
@@ -132,7 +131,7 @@ class ArticleViewListener extends AbstractViewListener
         /** @var ArticleModel[] $models */
         $models = $articles->getModels();
 
-        if ($articleId > 0 && ($models[0]->id == $articleId || $models[0]->languageMain == $articleId)) {
+        if ($articleId > 0 && ($models[0]->id === $articleId || $models[0]->languageMain === $articleId)) {
             return [$models[0]];
         }
 

@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * changelanguage Extension for Contao Open Source CMS
+ *
+ * @copyright  Copyright (c) 2008-2017, terminal42 gmbh
+ * @author     terminal42 gmbh <info@terminal42.ch>
+ * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://github.com/terminal42/contao-changelanguage
+ */
+
 namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 
 use Contao\ArticleModel;
@@ -15,11 +24,11 @@ use Terminal42\ChangeLanguage\Helper\LabelCallback;
 class MissingLanguageIconListener
 {
     private static $callbacks = [
-        'tl_page'            => 'onPageLabel',
-        'tl_article'         => 'onArticleLabel',
-        'tl_news'            => 'onNewsChildRecords',
+        'tl_page' => 'onPageLabel',
+        'tl_article' => 'onArticleLabel',
+        'tl_news' => 'onNewsChildRecords',
         'tl_calendar_events' => 'onCalendarEventChildRecords',
-        'tl_faq'             => 'onFaqChildRecords',
+        'tl_faq' => 'onFaqChildRecords',
     ];
 
     /**
@@ -112,7 +121,7 @@ class MissingLanguageIconListener
      */
     public function onNewsChildRecords(array $args, $previousResult = null)
     {
-        $row   = $args[0];
+        $row = $args[0];
         $label = (string) $previousResult;
 
         $archive = NewsArchiveModel::findByPk($row['pid']);
@@ -136,7 +145,7 @@ class MissingLanguageIconListener
      */
     public function onCalendarEventChildRecords(array $args, $previousResult = null)
     {
-        $row   = $args[0];
+        $row = $args[0];
         $label = (string) $previousResult;
 
         $calendar = CalendarModel::findByPk($row['pid']);
@@ -160,7 +169,7 @@ class MissingLanguageIconListener
      */
     public function onFaqChildRecords(array $args, $previousResult = null)
     {
-        $row   = $args[0];
+        $row = $args[0];
         $label = (string) $previousResult;
 
         $category = FaqCategoryModel::findByPk($row['pid']);
@@ -170,7 +179,7 @@ class MissingLanguageIconListener
         ) {
             return preg_replace(
                 '#</div>#',
-                $this->generateLabelWithWarning('', 'position:absolute;top:6px') . '</div>',
+                $this->generateLabelWithWarning('', 'position:absolute;top:6px').'</div>',
                 $label,
                 1
             );
@@ -187,7 +196,7 @@ class MissingLanguageIconListener
      */
     private function generateLabelWithWarning($label, $imgStyle = '')
     {
-        return $label . sprintf(
+        return $label.sprintf(
             '<span style="padding-left:3px"><img src="%s" alt="%s" title="%s" style="%s"></span>',
             'system/modules/changelanguage/assets/language-warning.png',
             $GLOBALS['TL_LANG']['MSC']['noMainLanguage'],

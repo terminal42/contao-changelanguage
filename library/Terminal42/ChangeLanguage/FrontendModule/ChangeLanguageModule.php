@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * changelanguage Extension for Contao Open Source CMS
  *
- * @copyright  Copyright (c) 2008-2016, terminal42 gmbh
+ * @copyright  Copyright (c) 2008-2017, terminal42 gmbh
  * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  * @link       http://github.com/terminal42/contao-changelanguage
@@ -34,13 +34,12 @@ use Terminal42\ChangeLanguage\PageFinder;
 class ChangeLanguageModule extends AbstractFrontendModule
 {
     /**
-     * Template
      * @var string
      */
     protected $strTemplate = 'mod_changelanguage';
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function generate()
     {
@@ -54,12 +53,12 @@ class ChangeLanguageModule extends AbstractFrontendModule
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function compile()
     {
-        $currentPage  = $this->getCurrentPage();
-        $pageFinder   = new PageFinder();
+        $currentPage = $this->getCurrentPage();
+        $pageFinder = new PageFinder();
 
         if ($this->customLanguage) {
             $languageText = LanguageText::createFromOptionWizard($this->customLanguageText);
@@ -68,16 +67,16 @@ class ChangeLanguageModule extends AbstractFrontendModule
         }
 
         $navigationFactory = new NavigationFactory($pageFinder, $languageText, $currentPage);
-        $navigationItems   = $navigationFactory->findNavigationItems($currentPage);
+        $navigationItems = $navigationFactory->findNavigationItems($currentPage);
 
         // Do not generate module or header if there is none or only one link
         if (count($navigationItems) < 2) {
             return;
         }
 
-        $templateItems        = [];
-        $headerLinks          = new AlternateLinks();
-        $queryParameters      = $currentPage->languageQuery ? trimsplit(',', $currentPage->languageQuery) : [];
+        $templateItems = [];
+        $headerLinks = new AlternateLinks();
+        $queryParameters = $currentPage->languageQuery ? trimsplit(',', $currentPage->languageQuery) : [];
         $defaultUrlParameters = $this->createUrlParameterBag($queryParameters);
 
         foreach ($navigationItems as $item) {
@@ -102,7 +101,7 @@ class ChangeLanguageModule extends AbstractFrontendModule
         }
 
         $this->Template->items = $this->generateNavigationTemplate($templateItems);
-        $GLOBALS['TL_HEAD'][]  = $headerLinks->generate();
+        $GLOBALS['TL_HEAD'][] = $headerLinks->generate();
     }
 
     /**
@@ -116,17 +115,17 @@ class ChangeLanguageModule extends AbstractFrontendModule
     protected function generateTemplateArray(NavigationItem $item, UrlParameterBag $urlParameterBag)
     {
         return [
-            'isActive'  => $item->isCurrentPage(),
-            'class'     => 'lang-' . $item->getNormalizedLanguage() . ($item->isDirectFallback() ? '' : ' nofallback') . ($item->isCurrentPage() ? ' active' : ''),
-            'link'      => $item->getLabel(),
-            'subitems'  => '',
-            'href'      => specialchars($item->getHref($urlParameterBag)),
+            'isActive' => $item->isCurrentPage(),
+            'class' => 'lang-'.$item->getNormalizedLanguage().($item->isDirectFallback() ? '' : ' nofallback').($item->isCurrentPage() ? ' active' : ''),
+            'link' => $item->getLabel(),
+            'subitems' => '',
+            'href' => specialchars($item->getHref($urlParameterBag)),
             'pageTitle' => strip_tags($item->getTitle()),
             'accesskey' => '',
-            'tabindex'  => '',
-            'nofollow'  => false,
-            'target'    => ($item->isNewWindow() ? ' target="_blank"' : '') . ' hreflang="' . $item->getLanguageTag() . '" lang="' . $item->getLanguageTag() . '"',
-            'item'      => $this,
+            'tabindex' => '',
+            'nofollow' => false,
+            'target' => ($item->isNewWindow() ? ' target="_blank"' : '').' hreflang="'.$item->getLanguageTag().'" lang="'.$item->getLanguageTag().'"',
+            'item' => $this,
         ];
     }
 
@@ -168,8 +167,8 @@ class ChangeLanguageModule extends AbstractFrontendModule
     protected function createUrlParameterBag(array $queryParameters = [])
     {
         $attributes = [];
-        $query      = [];
-        $input      = $_GET;
+        $query = [];
+        $input = $_GET;
 
         // the current page language is set in $_GET
         unset($input['language'], $input['auto_item']);
@@ -185,7 +184,7 @@ class ChangeLanguageModule extends AbstractFrontendModule
 
             if (!array_key_exists($k, $currentQuery)) {
                 $attributes[$k] = $value;
-            } else if (in_array($k, $queryParameters, false)) {
+            } elseif (in_array($k, $queryParameters, false)) {
                 $query[$k] = $value;
             }
         }
@@ -194,7 +193,7 @@ class ChangeLanguageModule extends AbstractFrontendModule
     }
 
     /**
-     * Returns false if navigation item should be skipped
+     * Returns false if navigation item should be skipped.
      *
      * @param NavigationItem  $navigationItem
      * @param UrlParameterBag $urlParameterBag

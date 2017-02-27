@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * changelanguage Extension for Contao Open Source CMS
  *
- * @copyright  Copyright (c) 2008-2016, terminal42 gmbh
+ * @copyright  Copyright (c) 2008-2017, terminal42 gmbh
  * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  * @link       http://github.com/terminal42/contao-changelanguage
@@ -18,8 +18,6 @@ use Terminal42\ChangeLanguage\Navigation\UrlParameterBag;
 
 /**
  * AlternateLinks is a helper class to handle <link rel="alternate"> in the page header.
- *
- * @package Terminal42\ChangeLanguage\Helper
  */
 class AlternateLinks
 {
@@ -115,7 +113,7 @@ class AlternateLinks
 
         // URLs must always be absolute
         if (0 !== strpos($href, 'http://') && 0 !== strpos($href, 'https://')) {
-            $href = \Environment::get('base') . $href;
+            $href = \Environment::get('base').$href;
         }
 
         $this->links[$language] = ['language' => $language, 'href' => $href, 'title' => $title];

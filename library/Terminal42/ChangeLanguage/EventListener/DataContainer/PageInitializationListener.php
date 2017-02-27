@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * changelanguage Extension for Contao Open Source CMS
  *
- * @copyright  Copyright (c) 2008-2016, terminal42 gmbh
+ * @copyright  Copyright (c) 2008-2017, terminal42 gmbh
  * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  * @link       http://github.com/terminal42/contao-changelanguage
@@ -11,8 +11,8 @@
 
 namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 
-use Contao\DataContainer;
 use Contao\Database;
+use Contao\DataContainer;
 use Contao\PageModel;
 use Haste\Dca\PaletteManipulator;
 use Terminal42\ChangeLanguage\PageFinder;
@@ -20,7 +20,7 @@ use Terminal42\ChangeLanguage\PageFinder;
 class PageInitializationListener
 {
     /**
-     * Register our own callbacks
+     * Register our own callbacks.
      */
     public function register()
     {
@@ -44,11 +44,9 @@ class PageInitializationListener
             case 'edit':
                 $this->handleEditMode($dc);
                 break;
-
             case 'editAll':
                 $this->handleEditAllMode();
                 break;
-
             // Page picker popup
             case 'show':
                 if ('languageMain' === \Input::get('field')) {
@@ -70,6 +68,7 @@ class PageInitializationListener
             if ($page->fallback) {
                 $this->addRootLanguageFields();
             }
+
             return;
         }
 

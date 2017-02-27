@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * changelanguage Extension for Contao Open Source CMS
  *
- * @copyright  Copyright (c) 2008-2016, terminal42 gmbh
+ * @copyright  Copyright (c) 2008-2017, terminal42 gmbh
  * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  * @link       http://github.com/terminal42/contao-changelanguage
@@ -16,7 +16,7 @@ use Terminal42\ChangeLanguage\Navigation\UrlParameterBag;
 class UrlParameterBagTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     protected function setUp()
     {
@@ -33,7 +33,7 @@ class UrlParameterBagTest extends \PHPUnit_Framework_TestCase
         $bag->setUrlAttribute('foo', 'bar');
 
         $this->assertTrue($bag->hasUrlAttribute('foo'));
-        $this->assertEquals('bar', $bag->getUrlAttribute('foo'));
+        $this->assertSame('bar', $bag->getUrlAttribute('foo'));
 
         $bag->removeUrlAttribute('foo');
 
@@ -42,7 +42,7 @@ class UrlParameterBagTest extends \PHPUnit_Framework_TestCase
         $bag->setUrlAttributes(['foo' => 'bar']);
 
         $this->assertTrue($bag->hasUrlAttribute('foo'));
-        $this->assertEquals(['foo' => 'bar'], $bag->getUrlAttributes());
+        $this->assertSame(['foo' => 'bar'], $bag->getUrlAttributes());
     }
 
     public function testQueryParameterGettersAndSetters()
@@ -54,7 +54,7 @@ class UrlParameterBagTest extends \PHPUnit_Framework_TestCase
         $bag->setQueryParameter('foo', 'bar');
 
         $this->assertTrue($bag->hasQueryParameter('foo'));
-        $this->assertEquals('bar', $bag->getQueryParameter('foo'));
+        $this->assertSame('bar', $bag->getQueryParameter('foo'));
 
         $bag->removeQueryParameter('foo');
 
@@ -63,21 +63,21 @@ class UrlParameterBagTest extends \PHPUnit_Framework_TestCase
         $bag->setQueryParameters(['foo' => 'bar']);
 
         $this->assertTrue($bag->hasQueryParameter('foo'));
-        $this->assertEquals(['foo' => 'bar'], $bag->getQueryParameters());
+        $this->assertSame(['foo' => 'bar'], $bag->getQueryParameters());
     }
 
     public function testGenerateOneParameters()
     {
         $bag = new UrlParameterBag(['foo' => 'bar']);
 
-        $this->assertEquals('/foo/bar', $bag->generateParameters());
+        $this->assertSame('/foo/bar', $bag->generateParameters());
     }
 
     public function testGenerateMultipleParameters()
     {
         $bag = new UrlParameterBag(['foo' => 'bar', 'bar' => 'baz']);
 
-        $this->assertEquals('/foo/bar/bar/baz', $bag->generateParameters());
+        $this->assertSame('/foo/bar/bar/baz', $bag->generateParameters());
     }
 
     public function testGenerateSingleAutoItemParameter()
@@ -85,7 +85,7 @@ class UrlParameterBagTest extends \PHPUnit_Framework_TestCase
         $GLOBALS['TL_AUTO_ITEM'] = ['foo'];
         $bag = new UrlParameterBag(['foo' => 'bar']);
 
-        $this->assertEquals('/bar', $bag->generateParameters());
+        $this->assertSame('/bar', $bag->generateParameters());
     }
 
     public function testGenerateMultipleWithAutoItem()
@@ -93,7 +93,7 @@ class UrlParameterBagTest extends \PHPUnit_Framework_TestCase
         $GLOBALS['TL_AUTO_ITEM'] = ['bar'];
         $bag = new UrlParameterBag(['foo' => 'bar', 'bar' => 'baz']);
 
-        $this->assertEquals('/baz/foo/bar', $bag->generateParameters());
+        $this->assertSame('/baz/foo/bar', $bag->generateParameters());
     }
 
     public function testIgnoresAutoItemIfDisabled()
@@ -102,14 +102,14 @@ class UrlParameterBagTest extends \PHPUnit_Framework_TestCase
         $GLOBALS['TL_AUTO_ITEM'] = ['foo'];
         $bag = new UrlParameterBag(['foo' => 'bar']);
 
-        $this->assertEquals('/foo/bar', $bag->generateParameters());
+        $this->assertSame('/foo/bar', $bag->generateParameters());
     }
 
     public function testReturnsNullOnEmptyParameters()
     {
         $bag = new UrlParameterBag();
 
-        $this->assertEquals(null, $bag->generateParameters());
+        $this->assertSame(null, $bag->generateParameters());
     }
 
     /**
@@ -165,21 +165,21 @@ class UrlParameterBagTest extends \PHPUnit_Framework_TestCase
     {
         $bag = new UrlParameterBag([], ['foo' => 'bar']);
 
-        $this->assertEquals('foo=bar', $bag->generateQueryString());
+        $this->assertSame('foo=bar', $bag->generateQueryString());
     }
 
     public function testGenerateMultipleQuery()
     {
         $bag = new UrlParameterBag([], ['foo' => 'bar', 'bar' => 'baz']);
 
-        $this->assertEquals('foo=bar&bar=baz', $bag->generateQueryString());
+        $this->assertSame('foo=bar&bar=baz', $bag->generateQueryString());
     }
 
     public function testReturnsNullOnEmptyQuery()
     {
         $bag = new UrlParameterBag();
 
-        $this->assertEquals(null, $bag->generateQueryString());
+        $this->assertSame(null, $bag->generateQueryString());
     }
 
     /**

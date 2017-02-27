@@ -1,12 +1,12 @@
 <?php
 
-/**
+/*
  * changelanguage Extension for Contao Open Source CMS
  *
- * @copyright Copyright (c) 2008-2016, terminal42 gmbh
- * @author    terminal42 gmbh <info@terminal42.ch>
- * @license   http://opensource.org/licenses/lgpl-3.0.html LGPL
- * @link      http://github.com/terminal42/contao-changelanguage
+ * @copyright  Copyright (c) 2008-2017, terminal42 gmbh
+ * @author     terminal42 gmbh <info@terminal42.ch>
+ * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://github.com/terminal42/contao-changelanguage
  */
 
 namespace Terminal42\ChangeLanguage\Tests\PageFinder;
@@ -43,7 +43,7 @@ class AssociatedForLanguageTest extends ContaoTestCase
         $page = $this->pageFinder->findAssociatedForLanguage($dePage, 'en');
 
         $this->assertInstanceOf('Contao\PageModel', $page);
-        $this->assertEquals($en, $page->id);
+        $this->assertSame($en, $page->id);
     }
 
     public function testReturnsRootWhenNoMatch()
@@ -60,7 +60,7 @@ class AssociatedForLanguageTest extends ContaoTestCase
         $page = $this->pageFinder->findAssociatedForLanguage($pageModel, 'en');
 
         $this->assertInstanceOf('Contao\PageModel', $page);
-        $this->assertEquals($enRoot, $page->id);
+        $this->assertSame($enRoot, $page->id);
     }
 
     /**
@@ -96,7 +96,7 @@ class AssociatedForLanguageTest extends ContaoTestCase
     private function createRootPage($language, $fallback, $published = true)
     {
         $published = $published ? '1' : '';
-        $fallback = $fallback ? '1': '';
+        $fallback = $fallback ? '1' : '';
 
         return $this->query("
             INSERT INTO tl_page 
