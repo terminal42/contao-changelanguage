@@ -1,8 +1,9 @@
 <?php
-/**
+
+/*
  * changelanguage Extension for Contao Open Source CMS
  *
- * @copyright  Copyright (c) 2008-2016, terminal42 gmbh
+ * @copyright  Copyright (c) 2008-2017, terminal42 gmbh
  * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  * @link       http://github.com/terminal42/contao-changelanguage
@@ -11,8 +12,8 @@
 namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 
 use Contao\ArticleModel;
-use Contao\DataContainer;
 use Contao\Database;
+use Contao\DataContainer;
 use Contao\PageModel;
 use Haste\Dca\PaletteManipulator;
 use Terminal42\ChangeLanguage\EventListener\AbstractTableListener;
@@ -39,8 +40,8 @@ class ArticleListener extends AbstractTableListener
             $this->addFieldsToPalettes();
         } elseif ('edit' === $action) {
             $pageFinder = new PageFinder();
-            $article    = ArticleModel::findByPk($dc->id);
-            $page       = PageModel::findByPk($article->pid);
+            $article = ArticleModel::findByPk($dc->id);
+            $page = PageModel::findByPk($article->pid);
 
             if (null !== $page && null !== $pageFinder->findAssociatedInMaster($page)) {
                 $this->addFieldsToPalettes();
@@ -51,15 +52,15 @@ class ArticleListener extends AbstractTableListener
     public function onLanguageMainOptions(DataContainer $dc)
     {
         $pageFinder = new PageFinder();
-        $current    = ArticleModel::findByPk($dc->id);
-        $page       = PageModel::findByPk($current->pid);
+        $current = ArticleModel::findByPk($dc->id);
+        $page = PageModel::findByPk($current->pid);
 
         if (null === $page || ($master = $pageFinder->findAssociatedInMaster($page)) === null) {
             return [];
         }
 
         $options = [];
-        $result  = Database::getInstance()
+        $result = Database::getInstance()
             ->prepare('
                 SELECT id, title 
                 FROM tl_article 

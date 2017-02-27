@@ -1,8 +1,9 @@
 <?php
-/**
+
+/*
  * changelanguage Extension for Contao Open Source CMS
  *
- * @copyright  Copyright (c) 2008-2016, terminal42 gmbh
+ * @copyright  Copyright (c) 2008-2017, terminal42 gmbh
  * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  * @link       http://github.com/terminal42/contao-changelanguage
@@ -30,7 +31,7 @@ abstract class AbstractViewListener extends AbstractTableListener
     protected $pageFinder;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function __construct($table)
     {
@@ -40,7 +41,7 @@ abstract class AbstractViewListener extends AbstractTableListener
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function register()
     {
@@ -82,7 +83,7 @@ abstract class AbstractViewListener extends AbstractTableListener
                 0,
                 [
                     'switchLanguage' => [
-                        'showOnSelect'    => true,
+                        'showOnSelect' => true,
                         'button_callback' => function () use ($page, $languages) {
                             return $this->onSwitchButtonCallback($page, $languages);
                         },
@@ -107,7 +108,7 @@ abstract class AbstractViewListener extends AbstractTableListener
     abstract protected function getCurrentPage();
 
     /**
-     * Returns a list of languages the user can switch to
+     * Returns a list of languages the user can switch to.
      *
      * @param PageModel $page
      *
@@ -136,7 +137,7 @@ abstract class AbstractViewListener extends AbstractTableListener
         }
 
         if (array_key_exists($languageCode, $languages)) {
-            list($label,) = explode(' - ', $languages[$languageCode], 2);
+            list($label) = explode(' - ', $languages[$languageCode], 2);
         } else {
             $label = $languageCode;
         }

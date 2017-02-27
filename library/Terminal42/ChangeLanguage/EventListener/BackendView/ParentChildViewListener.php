@@ -1,8 +1,9 @@
 <?php
-/**
+
+/*
  * changelanguage Extension for Contao Open Source CMS
  *
- * @copyright  Copyright (c) 2008-2016, terminal42 gmbh
+ * @copyright  Copyright (c) 2008-2017, terminal42 gmbh
  * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  * @link       http://github.com/terminal42/contao-changelanguage
@@ -24,7 +25,7 @@ class ParentChildViewListener extends AbstractViewListener
     private $current = false;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function isSupported()
     {
@@ -33,7 +34,7 @@ class ParentChildViewListener extends AbstractViewListener
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function getCurrentPage()
     {
@@ -54,14 +55,14 @@ class ParentChildViewListener extends AbstractViewListener
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function getAvailableLanguages(PageModel $page)
     {
-        $options    = [];
+        $options = [];
         $masterRoot = $this->pageFinder->findMasterRootForPage($page);
-        $parent     = $this->hasParent() ? 'languageMain' : 'master';
-        $id         = $page->rootId === $masterRoot->id ? $this->current->id : $this->current->{$parent};
+        $parent = $this->hasParent() ? 'languageMain' : 'master';
+        $id = $page->rootId === $masterRoot->id ? $this->current->id : $this->current->{$parent};
 
         foreach ($this->pageFinder->findAssociatedForPage($page, true) as $associated) {
             $associated->loadDetails();
@@ -76,7 +77,7 @@ class ParentChildViewListener extends AbstractViewListener
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @throws \InvalidArgumentException
      */
@@ -107,16 +108,15 @@ class ParentChildViewListener extends AbstractViewListener
             $columns = [
                 "$table.pid IN (SELECT id FROM $ptable WHERE jumpTo=?)",
                 "$table.id!=?",
-                "($table.id=? OR $table.languageMain=?)"
+                "($table.id=? OR $table.languageMain=?)",
             ];
         } else {
             $columns = [
                 "$table.jumpTo=?",
                 "$table.id!=?",
-                "($table.id=? OR $table.master=?)"
+                "($table.id=? OR $table.master=?)",
             ];
         }
-
 
         return $class::findOneBy(
             $columns,
@@ -124,7 +124,7 @@ class ParentChildViewListener extends AbstractViewListener
                 $page->id,
                 $this->current->id,
                 $id,
-                $id
+                $id,
             ]
         );
     }

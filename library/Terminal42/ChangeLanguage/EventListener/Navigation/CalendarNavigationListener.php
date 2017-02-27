@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * changelanguage Extension for Contao Open Source CMS
  *
- * @copyright  Copyright (c) 2008-2016, terminal42 gmbh
+ * @copyright  Copyright (c) 2008-2017, terminal42 gmbh
  * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  * @link       http://github.com/terminal42/contao-changelanguage
@@ -17,12 +17,12 @@ use Contao\PageModel;
 use Haste\Input\Input;
 
 /**
- * Translate URL parameters for calendar events
+ * Translate URL parameters for calendar events.
  */
 class CalendarNavigationListener extends AbstractNavigationListener
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function getUrlKey()
     {
@@ -30,7 +30,7 @@ class CalendarNavigationListener extends AbstractNavigationListener
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function findCurrent()
     {
@@ -40,7 +40,7 @@ class CalendarNavigationListener extends AbstractNavigationListener
             return null;
         }
 
-        /** @var PageModel $objPage */
+        /* @var PageModel $objPage */
         global $objPage;
 
         if (($calendars = CalendarModel::findBy('jumpTo', $objPage->id)) === null) {
@@ -51,9 +51,9 @@ class CalendarNavigationListener extends AbstractNavigationListener
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
-    protected function findPublishedBy(array $columns, array $values = array(), array $options = array())
+    protected function findPublishedBy(array $columns, array $values = [], array $options = [])
     {
         return CalendarEventsModel::findOneBy(
             $this->addPublishedConditions($columns, CalendarEventsModel::getTable()),

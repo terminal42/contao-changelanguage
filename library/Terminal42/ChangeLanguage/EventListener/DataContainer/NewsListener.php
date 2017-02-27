@@ -1,8 +1,9 @@
 <?php
-/**
+
+/*
  * changelanguage Extension for Contao Open Source CMS
  *
- * @copyright  Copyright (c) 2008-2016, terminal42 gmbh
+ * @copyright  Copyright (c) 2008-2017, terminal42 gmbh
  * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  * @link       http://github.com/terminal42/contao-changelanguage
@@ -17,7 +18,7 @@ use Contao\NewsModel;
 class NewsListener extends AbstractChildTableListener
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function getTitleField()
     {
@@ -25,7 +26,7 @@ class NewsListener extends AbstractChildTableListener
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function getSorting()
     {
@@ -33,17 +34,17 @@ class NewsListener extends AbstractChildTableListener
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @param NewsModel   $current
      * @param NewsModel[] $models
      */
     protected function formatOptions(Model $current, Model\Collection $models)
     {
-        $sameDay  = $GLOBALS['TL_LANG']['tl_news']['sameDay'];
+        $sameDay = $GLOBALS['TL_LANG']['tl_news']['sameDay'];
         $otherDay = $GLOBALS['TL_LANG']['tl_news']['otherDay'];
         $dayBegin = strtotime('0:00', $current->date);
-        $options  = [$sameDay => [], $otherDay => []];
+        $options = [$sameDay => [], $otherDay => []];
 
         foreach ($models as $model) {
             $group = strtotime('0:00', $model->date) === $dayBegin ? $sameDay : $otherDay;

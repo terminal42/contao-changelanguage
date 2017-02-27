@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * changelanguage Extension for Contao Open Source CMS
  *
- * @copyright  Copyright (c) 2008-2016, terminal42 gmbh
+ * @copyright  Copyright (c) 2008-2017, terminal42 gmbh
  * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  * @link       http://github.com/terminal42/contao-changelanguage
@@ -33,10 +33,10 @@ class ArticleNavigationListener
             return;
         }
 
-        /** @var PageModel $objPage */
+        /* @var PageModel $objPage */
         global $objPage;
 
-        $parameterBag   = $event->getUrlParameterBag();
+        $parameterBag = $event->getUrlParameterBag();
         $currentArticle = ArticleModel::findByIdOrAliasAndPid(
             $parameterBag->getUrlAttribute('articles'),
             $objPage->id
@@ -46,9 +46,9 @@ class ArticleNavigationListener
             return;
         }
 
-        $pageFinder     = new PageFinder();
-        $targetRoot     = $event->getNavigationItem()->getRootPage();
-        $masterRoot     = $pageFinder->findMasterRootForPage($targetRoot);
+        $pageFinder = new PageFinder();
+        $targetRoot = $event->getNavigationItem()->getRootPage();
+        $masterRoot = $pageFinder->findMasterRootForPage($targetRoot);
 
         $targetArticle = $this->findTargetArticle(
             $currentArticle,
@@ -82,7 +82,7 @@ class ArticleNavigationListener
     ) {
         // If the target root is fallback, the article ID will match our current "languageMain"
         if ($targetIsFallback) {
-            return $this->findPublishedArticle(array('tl_article.id = '.$currentArticle->languageMain));
+            return $this->findPublishedArticle(['tl_article.id = '.$currentArticle->languageMain]);
         }
 
         $subpages = Database::getInstance()->getChildRecords($targetRootId, 'tl_page');
@@ -92,13 +92,13 @@ class ArticleNavigationListener
         }
 
         return $this->findPublishedArticle(
-            array(
+            [
                 'tl_article.languageMain = ?',
-                'tl_article.pid IN ('.implode(',', $subpages).')'
-            ),
-            array(
+                'tl_article.pid IN ('.implode(',', $subpages).')',
+            ],
+            [
                 $currentIsFallback ? $currentArticle->id : $currentArticle->languageMain,
-            )
+            ]
         );
     }
 
@@ -111,10 +111,10 @@ class ArticleNavigationListener
      *
      * @return \ArticleModel|null
      */
-    private function findPublishedArticle(array $columns, array $values = array(), array $options = array())
+    private function findPublishedArticle(array $columns, array $values = [], array $options = [])
     {
         if (true !== BE_USER_LOGGED_IN) {
-            $time      = \Date::floorToMinute();
+            $time = \Date::floorToMinute();
             $columns[] = "(tl_article.start='' OR tl_article.start<='$time')";
             $columns[] = "(tl_article.stop='' OR tl_article.stop>'".($time + 60)."')";
             $columns[] = "tl_article.published='1'";

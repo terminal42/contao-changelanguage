@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * changelanguage Extension for Contao Open Source CMS
  *
- * @copyright  Copyright (c) 2008-2016, terminal42 gmbh
+ * @copyright  Copyright (c) 2008-2017, terminal42 gmbh
  * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  * @link       http://github.com/terminal42/contao-changelanguage
@@ -22,22 +22,22 @@ class PageFieldsListener
      * @param mixed         $value
      * @param DataContainer $dc
      *
-     * @return mixed
-     *
      * @throws \RuntimeException
+     *
+     * @return mixed
      */
     public function onSaveLanguageMain($value, DataContainer $dc)
     {
         // Validate that there is no other page in the current page tree with the same languageMain assigned
         if ($value > 0) {
             $currentPage = PageModel::findWithDetails($dc->id);
-            $childIds    = \Database::getInstance()->getChildRecords($currentPage->rootId, 'tl_page');
+            $childIds = \Database::getInstance()->getChildRecords($currentPage->rootId, 'tl_page');
 
             $duplicates = PageModel::countBy(
                 [
-                    'tl_page.id IN (' . implode(',', $childIds) . ')',
+                    'tl_page.id IN ('.implode(',', $childIds).')',
                     'tl_page.languageMain=?',
-                    'tl_page.id!=?'
+                    'tl_page.id!=?',
                 ],
                 [$value, $dc->id]
             );
@@ -65,7 +65,7 @@ class PageFieldsListener
                 "tl_page.type='root'",
                 "tl_page.fallback='1'",
                 'tl_page.languageRoot=0',
-                'tl_page.id!=?'
+                'tl_page.id!=?',
             ],
             [$dc->id]
         );
@@ -80,7 +80,7 @@ class PageFieldsListener
             $options[$page->id] = sprintf(
                 '%s%s [%s]',
                 $page->title,
-                (strlen($page->dns) ? (' (' . $page->dns . ')') : ''),
+                (strlen($page->dns) ? (' ('.$page->dns.')') : ''),
                 $page->language
             );
         }

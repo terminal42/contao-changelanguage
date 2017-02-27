@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * changelanguage Extension for Contao Open Source CMS
  *
- * @copyright  Copyright (c) 2008-2016, terminal42 gmbh
+ * @copyright  Copyright (c) 2008-2017, terminal42 gmbh
  * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  * @link       http://github.com/terminal42/contao-changelanguage
@@ -16,22 +16,30 @@ use Terminal42\ChangeLanguage\Language;
 class LanguageTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @param mixed $localeId
+     * @param mixed $languageTag
+     *
      * @dataProvider languagesProvider
      */
     public function testConvertLocaleIdToLanguageTag($localeId, $languageTag)
     {
-        $this->assertEquals($languageTag, Language::toLanguageTag($localeId));
+        $this->assertSame($languageTag, Language::toLanguageTag($localeId));
     }
 
     /**
+     * @param mixed $localeId
+     * @param mixed $languageTag
+     *
      * @dataProvider languagesProvider
      */
     public function testConvertLanguageTagToLocaleId($localeId, $languageTag)
     {
-        $this->assertEquals($localeId, Language::toLocaleID($languageTag));
+        $this->assertSame($localeId, Language::toLocaleID($languageTag));
     }
 
     /**
+     * @param mixed $language
+     *
      * @dataProvider invalidLanguagesProvider
      * @expectedException \InvalidArgumentException
      */

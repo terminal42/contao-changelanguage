@@ -1,8 +1,9 @@
 <?php
-/**
+
+/*
  * changelanguage Extension for Contao Open Source CMS
  *
- * @copyright  Copyright (c) 2008-2016, terminal42 gmbh
+ * @copyright  Copyright (c) 2008-2017, terminal42 gmbh
  * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  * @link       http://github.com/terminal42/contao-changelanguage
@@ -39,9 +40,9 @@ class RootPagesTest extends ContaoTestCase
         $roots = $this->pageFinder->findRootPagesForPage($pageModel);
 
         $this->assertPageCount($roots, 1);
-        $this->assertEquals('root', $roots[1]->type);
-        $this->assertEquals('', $roots[1]->dns);
-        $this->assertEquals('en', $roots[1]->language);
+        $this->assertSame('root', $roots[1]->type);
+        $this->assertSame('', $roots[1]->dns);
+        $this->assertSame('en', $roots[1]->language);
     }
 
     public function testFindRootsWithSameDns()
@@ -118,7 +119,7 @@ class RootPagesTest extends ContaoTestCase
         $roots = $this->pageFinder->findRootPagesForPage($pageModel);
 
         $this->assertPageCount($roots, 2);
-        $this->assertEquals('foo.com', $roots[1]->dns);
+        $this->assertSame('foo.com', $roots[1]->dns);
     }
 
     public function testIgnoresUnpublished()
@@ -185,13 +186,13 @@ class RootPagesTest extends ContaoTestCase
         $this->assertPageCount($roots, 4);
 
         foreach ($roots as $id => $page) {
-            $this->assertEquals($page->id, $id);
+            $this->assertSame((int) $page->id, $id);
         }
     }
 
     private function createRootPage($dns, $language, $fallback = true, $master = 0, $published = true)
     {
-        $fallback  = $fallback ? '1' : '';
+        $fallback = $fallback ? '1' : '';
         $published = $published ? '1' : '';
 
         return $this->query("

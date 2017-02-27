@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * changelanguage Extension for Contao Open Source CMS
+ *
+ * @copyright  Copyright (c) 2008-2017, terminal42 gmbh
+ * @author     terminal42 gmbh <info@terminal42.ch>
+ * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://github.com/terminal42/contao-changelanguage
+ */
+
 namespace Terminal42\ChangeLanguage\Helper;
 
 use Contao\Controller;
@@ -23,7 +32,7 @@ class LabelCallback
         Controller::loadDataContainer($table);
 
         $chain = function () use ($callback) {
-            $args   = func_get_args();
+            $args = func_get_args();
             $result = null;
 
             if (is_callable($this->previous)) {
@@ -43,8 +52,24 @@ class LabelCallback
     }
 
     /**
+     * Creates and registers new LabelCallback.
+     *
+     * @param string   $table
+     * @param callable $callback
+     *
+     * @return static
+     */
+    public static function createAndRegister($table, callable $callback)
+    {
+        $instance = new static();
+        $instance->register($table, $callback);
+
+        return $instance;
+    }
+
+    /**
      * @param \Closure|array $callback
-     * @param array $args
+     * @param array          $args
      *
      * @return mixed
      */
@@ -59,21 +84,5 @@ class LabelCallback
         }
 
         return call_user_func_array($callback, $args);
-    }
-
-    /**
-     * Creates and registers new LabelCallback.
-     *
-     * @param string   $table
-     * @param callable $callback
-     *
-     * @return static
-     */
-    public static function createAndRegister($table, callable $callback)
-    {
-        $instance = new static();
-        $instance->register($table, $callback);
-
-        return $instance;
     }
 }

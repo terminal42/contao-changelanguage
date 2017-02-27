@@ -1,8 +1,9 @@
 <?php
-/**
+
+/*
  * changelanguage Extension for Contao Open Source CMS
  *
- * @copyright  Copyright (c) 2008-2016, terminal42 gmbh
+ * @copyright  Copyright (c) 2008-2017, terminal42 gmbh
  * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  * @link       http://github.com/terminal42/contao-changelanguage
@@ -17,7 +18,7 @@ use Contao\Model;
 class CalendarEventsListener extends AbstractChildTableListener
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function getTitleField()
     {
@@ -25,7 +26,7 @@ class CalendarEventsListener extends AbstractChildTableListener
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function getSorting()
     {
@@ -33,7 +34,7 @@ class CalendarEventsListener extends AbstractChildTableListener
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @param CalendarEventsModel   $current
      * @param CalendarEventsModel[] $models

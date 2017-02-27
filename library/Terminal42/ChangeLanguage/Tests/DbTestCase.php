@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * changelanguage Extension for Contao Open Source CMS
  *
- * @copyright  Copyright (c) 2008-2016, terminal42 gmbh
+ * @copyright  Copyright (c) 2008-2017, terminal42 gmbh
  * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  * @link       http://github.com/terminal42/contao-changelanguage
@@ -13,7 +13,7 @@ namespace Terminal42\ChangeLanguage\Tests;
 
 abstract class DbTestCase extends \PHPUnit_Extensions_Database_TestCase
 {
-    static private $pdo = null;
+    private static $pdo = null;
 
     private $conn = null;
 
@@ -28,7 +28,7 @@ abstract class DbTestCase extends \PHPUnit_Extensions_Database_TestCase
         $tables = $stmt->fetchAll(\PDO::FETCH_COLUMN);
 
         foreach ((array) $tables as $table) {
-            $pdo->query('DROP TABLE IF EXISTS ' . $table);
+            $pdo->query('DROP TABLE IF EXISTS '.$table);
         }
 
         parent::setUp();
@@ -37,7 +37,7 @@ abstract class DbTestCase extends \PHPUnit_Extensions_Database_TestCase
     final protected function getConnection()
     {
         if ($this->conn === null) {
-            if (self::$pdo == null) {
+            if (self::$pdo === null) {
                 self::$pdo = new \PDO(
                     sprintf('mysql:host=%s;port=%s;dbname=%s;',
                             $GLOBALS['DB_HOST'],
@@ -46,9 +46,9 @@ abstract class DbTestCase extends \PHPUnit_Extensions_Database_TestCase
                     ),
                     $GLOBALS['DB_USER'],
                     $GLOBALS['DB_PASSWD'],
-                    array(
-                        \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
-                    )
+                    [
+                        \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+                    ]
                 );
             }
 
@@ -60,7 +60,7 @@ abstract class DbTestCase extends \PHPUnit_Extensions_Database_TestCase
 
     /**
      * Tell the unit test to use our actual DB for testing
-     * Data is imported in the setUp() method
+     * Data is imported in the setUp() method.
      *
      * @return \PHPUnit_Extensions_Database_DataSet_DefaultDataSet|void
      */

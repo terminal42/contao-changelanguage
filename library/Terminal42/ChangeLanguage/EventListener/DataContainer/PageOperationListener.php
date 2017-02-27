@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * changelanguage Extension for Contao Open Source CMS
  *
- * @copyright  Copyright (c) 2008-2016, terminal42 gmbh
+ * @copyright  Copyright (c) 2008-2017, terminal42 gmbh
  * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  * @link       http://github.com/terminal42/contao-changelanguage
@@ -11,8 +11,8 @@
 
 namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 
-use Contao\DataContainer;
 use Contao\Database;
+use Contao\DataContainer;
 use Contao\PageModel;
 use Terminal42\ChangeLanguage\PageFinder;
 
@@ -20,11 +20,11 @@ class PageOperationListener
 {
     public function register()
     {
-        $GLOBALS['TL_DCA']['tl_page']['config']['oncopy_callback'][]   = $this->selfCallback('onCopy');
-        $GLOBALS['TL_DCA']['tl_page']['config']['oncut_callback'][]    = $this->selfCallback('onCut');
+        $GLOBALS['TL_DCA']['tl_page']['config']['oncopy_callback'][] = $this->selfCallback('onCopy');
+        $GLOBALS['TL_DCA']['tl_page']['config']['oncut_callback'][] = $this->selfCallback('onCut');
         $GLOBALS['TL_DCA']['tl_page']['config']['onsubmit_callback'][] = $this->selfCallback('onSubmit');
         $GLOBALS['TL_DCA']['tl_page']['config']['ondelete_callback'][] = $this->selfCallback('onDelete');
-        $GLOBALS['TL_DCA']['tl_page']['config']['onundo_callback'][]   = $this->selfCallback('onUndo');
+        $GLOBALS['TL_DCA']['tl_page']['config']['onundo_callback'][] = $this->selfCallback('onUndo');
     }
 
     /**
@@ -94,9 +94,9 @@ class PageOperationListener
 
         $duplicates = PageModel::countBy(
             [
-                'id IN (' . implode(',', Database::getInstance()->getChildRecords($page->rootId, 'tl_page')) . ')',
+                'id IN ('.implode(',', Database::getInstance()->getChildRecords($page->rootId, 'tl_page')).')',
                 'languageMain=?',
-                'id!=?'
+                'id!=?',
             ],
             [$page->languageMain, $page->id]
         );
@@ -104,6 +104,7 @@ class PageOperationListener
         // Reset languageMain if another page in the new page tree has the same languageMain
         if ($duplicates > 0) {
             $this->resetPageAndChildren($page->id);
+
             return;
         }
 
@@ -113,6 +114,7 @@ class PageOperationListener
         // Reset languageMain if current tree has no master or if it's the master tree
         if (null === $masterRoot || $masterRoot->id === $page->rootId) {
             $this->resetPageAndChildren($page->id);
+
             return;
         }
 
@@ -130,11 +132,11 @@ class PageOperationListener
      */
     private function resetPageAndChildren($pageId)
     {
-        $resetIds   = Database::getInstance()->getChildRecords($pageId, 'tl_page');
+        $resetIds = Database::getInstance()->getChildRecords($pageId, 'tl_page');
         $resetIds[] = $pageId;
 
         Database::getInstance()->query(
-            'UPDATE tl_page SET languageMain=0 WHERE id IN (' . implode(',', $resetIds) . ')'
+            'UPDATE tl_page SET languageMain=0 WHERE id IN ('.implode(',', $resetIds).')'
         );
     }
 

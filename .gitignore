@@ -1,6 +1,4 @@
-# Composer
 /vendor/
 /composer.lock
-
-# Unit Tests
-phpunit.xml
+/phpunit.xml
+/.php_cs.cache
