@@ -36,21 +36,28 @@ class PageFinder
                 OR $t.dns IN (
                     SELECT dns 
                     FROM tl_page 
-                    WHERE type='root' AND fallback='1' AND id IN (
-                        SELECT languageRoot FROM tl_page WHERE type='root' AND fallback='1' AND dns=?
+                    WHERE type='root' AND fallback='1' AND id = (
+                        SELECT languageRoot FROM tl_page WHERE type='root' AND fallback='1' AND dns=? LIMIT 1
                     )
                 ) 
                 OR $t.dns IN (
                     SELECT dns 
                     FROM tl_page 
-                    WHERE type='root' AND fallback='1' AND languageRoot IN (
-                        SELECT id FROM tl_page WHERE type='root' AND fallback='1' AND dns=?
+                    WHERE type='root' AND fallback='1' AND languageRoot = (
+                        SELECT id FROM tl_page WHERE type='root' AND fallback='1' AND dns=? LIMIT 1
+                    )
+                ) 
+                OR $t.dns IN (
+                    SELECT dns 
+                    FROM tl_page 
+                    WHERE type='root' AND fallback='1' AND languageRoot != 0 AND languageRoot = (
+                        SELECT languageRoot FROM tl_page WHERE type='root' AND fallback='1' AND dns=? LIMIT 1
                     )
                 )
             )",
         ];
 
-        $values = [$page->domain, $page->domain, $page->domain];
+        $values = [$page->domain, $page->domain, $page->domain, $page->domain];
 
         if ($skipCurrent) {
             $columns[] = "$t.id!=?";

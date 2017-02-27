@@ -105,6 +105,28 @@ class RootPagesTest extends ContaoTestCase
         $this->assertPageCount($roots, 4);
     }
 
+    public function testFindsMasterFromMultipleDomains()
+    {
+        $master = $this->createRootPage('en.com', 'en');
+        $this->createRootPage('de.com', 'de', true, $master);
+        $pid = $this->createRootPage('fr.com', 'fr', true, $master);
+
+        $search = $this->query("
+            INSERT INTO tl_page 
+            (type, pid, published) 
+            VALUES 
+            ('regular', '$pid', '1')
+        ");
+
+        $pageModel = new PageModel();
+        $pageModel->id = $search;
+        $pageModel->pid = $pid;
+
+        $roots = $this->pageFinder->findRootPagesForPage($pageModel, false, false);
+
+        $this->assertPageCount($roots, 3);
+    }
+
     public function testIgnoresNonRelated()
     {
         $this->createRootPage('foo.com', 'en');
