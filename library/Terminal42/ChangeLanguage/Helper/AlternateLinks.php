@@ -58,7 +58,9 @@ class AlternateLinks
      */
     public function addFromNavigationItem(NavigationItem $item, UrlParameterBag $urlParameterBag)
     {
-        $this->add($item->getLanguageTag(), $item->getHref($urlParameterBag), $item->getTitle());
+        if( $item->isDirectFallback() ) {
+            $this->add($item->getLanguageTag(), $item->getHref($urlParameterBag), $item->getTitle());
+        }
     }
 
     /**
