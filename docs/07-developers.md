@@ -117,6 +117,17 @@ Be aware that calling this method will stop the event loop, no further
 hook (for the same even / root page) will be called.
 
 
+#### Finding a page in another language
+
+If you are looking for a page model in another language you can use
+the `PageFinder` to do so.
+
+```php
+$pageFinder = new \Terminal42\ChangeLanguage\PageFinder();
+$pageFinder->findAssociatedForLanguage(\PageModel::findByPk(4), 'en');
+```
+
+
 ## Upgrading from ChangeLanguage v2
 
 Be aware that *ChangeLanguage* and its hooks have been completely rewritten

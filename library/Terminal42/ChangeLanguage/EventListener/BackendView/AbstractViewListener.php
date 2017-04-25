@@ -82,6 +82,9 @@ abstract class AbstractViewListener extends AbstractTableListener
         ) {
             $GLOBALS['TL_CSS'][] = 'system/modules/changelanguage/assets/backend.css';
 
+            // Make sure we don't create a dublicate callback
+            unset($GLOBALS['TL_DCA'][$this->table]['list']['global_operations']['switchLanguage']);
+
             array_insert(
                 $GLOBALS['TL_DCA'][$this->table]['list']['global_operations'],
                 0,
