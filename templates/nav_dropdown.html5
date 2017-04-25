@@ -22,7 +22,7 @@
 <?php if ($item['isActive']): ?>
 <option class="active <?php echo $item['class']; ?>" selected><?php echo str_repeat('&nbsp;&nbsp;&nbsp;', $intLevel-1); ?><?php echo $arrLanguages[strtolower($item['link'])] ?: $item['link']; ?><?php echo $item['subitems']; ?></option>
 <?php else: ?>
-<option <?php if ($item['class']): ?> class="<?php echo $item['class']; ?>"<?php endif; ?> value="<?php echo \Environment::get('base').$item['href']; ?>"><?php echo str_repeat('&nbsp;&nbsp;&nbsp;', $intLevel-1); ?><?php echo $arrLanguages[strtolower($item['link'])] ?: $item['link']; ?><?php echo $item['subitems']; ?></option>
+<option <?php if ($item['class']): ?> class="<?php echo $item['class']; ?>"<?php endif; ?> value="<?php echo $item['href']; ?>"><?php echo str_repeat('&nbsp;&nbsp;&nbsp;', $intLevel-1); ?><?php echo $arrLanguages[strtolower($item['link'])] ?: $item['link']; ?><?php echo $item['subitems']; ?></option>
 <?php endif; ?>
 <?php endforeach; ?>
 <?php if ($intLevel == 1): ?>
