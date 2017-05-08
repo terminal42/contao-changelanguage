@@ -3,8 +3,8 @@
 /*
  * changelanguage Extension for Contao Open Source CMS
  *
- * @copyright  Copyright (c) 2008-2017, terminal42 gmbh
- * @author     terminal42 gmbh <info@terminal42.ch>
+ * @copyright  Copyright (c) 2008-2017, terminal42 gmbh
+ * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  * @link       http://github.com/terminal42/contao-changelanguage
  */
@@ -112,50 +112,45 @@ class UrlParameterBagTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(null, $bag->generateParameters());
     }
 
-    /**
-     * @expectedException \RuntimeException
-     */
     public function testExceptionOnAutoItemKey()
     {
+        $this->setExpectedException('RuntimeException');
+
         $bag = new UrlParameterBag(['auto_item' => 'baz']);
 
         $bag->generateParameters();
     }
 
-    /**
-     * @expectedException \RuntimeException
-     */
     public function testExceptionOnMulitpleAutoItems()
     {
+        $this->setExpectedException('RuntimeException');
+
         $GLOBALS['TL_AUTO_ITEM'] = ['foo', 'bar'];
         $bag = new UrlParameterBag(['foo' => 'bar', 'bar' => 'baz']);
 
         $bag->generateParameters();
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testExceptionOnConstructNonScalarParameter()
     {
+        $this->setExpectedException('InvalidArgumentException');
+
         new UrlParameterBag(['foo' => (object) ['bar']]);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testExceptionOnSettingNonScalarParameter()
     {
+        $this->setExpectedException('InvalidArgumentException');
+
         $bag = new UrlParameterBag();
 
         $bag->setUrlAttribute('foo', (object) ['bar']);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testExceptionOnSettingNonScalarParameters()
     {
+        $this->setExpectedException('InvalidArgumentException');
+
         $bag = new UrlParameterBag();
 
         $bag->setUrlAttributes(['foo' => (object) ['bar']]);
@@ -182,29 +177,26 @@ class UrlParameterBagTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(null, $bag->generateQueryString());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testExceptionOnConstructNonScalarQuery()
     {
+        $this->setExpectedException('InvalidArgumentException');
+
         new UrlParameterBag([], ['foo' => (object) ['bar']]);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testExceptionOnSettingNonScalarQuery()
     {
+        $this->setExpectedException('InvalidArgumentException');
+
         $bag = new UrlParameterBag();
 
         $bag->setQueryParameter('foo', (object) ['bar']);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testExceptionOnSettingNonScalarQuerys()
     {
+        $this->setExpectedException('InvalidArgumentException');
+
         $bag = new UrlParameterBag();
 
         $bag->setQueryParameters(['foo' => (object) ['bar']]);
