@@ -61,7 +61,7 @@ class NavigationFactory
         $this->setTargetPageForNavigationItems(
             $navigationItems,
             $rootPages,
-            $this->pageFinder->findAssociatedForPage($currentPage)
+            $this->pageFinder->findAssociatedForPage($currentPage, false, $rootPages)
         );
 
         foreach ($navigationItems as $k => $item) {

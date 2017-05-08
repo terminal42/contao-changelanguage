@@ -106,10 +106,14 @@ class PageFinder
      *
      * @return \Contao\PageModel[]
      */
-    public function findAssociatedForPage(PageModel $page, $skipCurrent = false)
+    public function findAssociatedForPage(PageModel $page, $skipCurrent = false, array $rootPages = null)
     {
         if ('root' === $page->type) {
             return $this->findRootPagesForPage($page, $skipCurrent);
+        }
+
+        if (null === $rootPages) {
+            $rootPages = $this->findRootPagesForPage($page, $skipCurrent);
         }
 
         $page->loadDetails();
@@ -132,7 +136,14 @@ class PageFinder
 
         $this->addPublishingConditions($columns, $t);
 
-        return $this->findPages($columns, $values);
+        return array_filter(
+            $this->findPages($columns, $values),
+            function(PageModel $page) use ($rootPages) {
+                $page->loadDetails();
+
+                return array_key_exists($page->rootId, $rootPages);
+            }
+        );
     }
 
     /**

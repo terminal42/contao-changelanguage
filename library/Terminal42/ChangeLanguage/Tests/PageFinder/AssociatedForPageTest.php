@@ -41,13 +41,16 @@ class AssociatedForPageTest extends ContaoTestCase
 
     public function testFindsAllFromFallback()
     {
-        $pageModel = new PageModel();
-        $pageModel->id = $this->createPage();
-        $pageModel->rootIsFallback = true;
-        $pageModel->rootId = $this->createRootPage('en');
+        $enRoot = $this->createRootPage('en');
+        $deRoot = $this->createRootPage('de', '');
+        $frRoot = $this->createRootPage('fr', '');
 
-        $this->createPage($pageModel->id);
-        $this->createPage($pageModel->id);
+        $pageModel = new PageModel();
+        $pageModel->id = $this->createPage(0, $enRoot);
+        $pageModel->pid = $enRoot;
+
+        $this->createPage($pageModel->id, $frRoot);
+        $this->createPage($pageModel->id, $deRoot);
 
         $pages = $this->pageFinder->findAssociatedForPage($pageModel);
 
@@ -56,14 +59,18 @@ class AssociatedForPageTest extends ContaoTestCase
 
     public function testFindsAllFromRelated()
     {
-        $fallback = $this->createPage();
+        $enRoot = $this->createRootPage('en');
+        $deRoot = $this->createRootPage('de', '');
+        $frRoot = $this->createRootPage('fr', '');
+
+        $fallback = $this->createPage(0, $enRoot);
 
         $pageModel = new PageModel();
-        $pageModel->id = $this->createPage($fallback);
-        $pageModel->rootIsFallback = false;
+        $pageModel->id = $this->createPage($fallback, $deRoot);
+        $pageModel->pid = $deRoot;
         $pageModel->languageMain = $fallback;
 
-        $this->createPage($fallback);
+        $this->createPage($fallback, $frRoot);
 
         $pages = $this->pageFinder->findAssociatedForPage($pageModel);
 
@@ -77,7 +84,6 @@ class AssociatedForPageTest extends ContaoTestCase
 
         $pageModel = new PageModel();
         $pageModel->id = $this->createPage();
-        $pageModel->rootIsFallback = false;
         $pageModel->languageMain = 0;
 
         $pages = $this->pageFinder->findAssociatedForPage($pageModel);
@@ -87,12 +93,14 @@ class AssociatedForPageTest extends ContaoTestCase
 
     public function testIgnoresLanguageMainOnFallback()
     {
-        $fallback = $this->createPage();
+        $enRoot = $this->createRootPage('en');
+        $deRoot = $this->createRootPage('de', '');
+
+        $fallback = $this->createPage(0, $deRoot);
 
         $pageModel = new PageModel();
-        $pageModel->id = $this->createPage($fallback);
-        $pageModel->rootIsFallback = true;
-        $pageModel->rootId = $this->createRootPage('en');
+        $pageModel->id = $this->createPage($fallback, $enRoot);
+        $pageModel->pid = $enRoot;
         $pageModel->languageMain = $fallback;
 
         $this->createPage($fallback);
@@ -129,8 +137,29 @@ class AssociatedForPageTest extends ContaoTestCase
 
         $pageModel = new PageModel();
         $pageModel->id = $de;
+        $pageModel->pid = $deRoot;
         $pageModel->languageMain = $en;
-        $pageModel->rootIsFallback = true;
+        $pageModel->type = 'regular';
+
+        $pages = $this->pageFinder->findAssociatedForPage($pageModel);
+
+        $this->assertPageCount($pages, 2);
+    }
+
+    public function testIgnoresPagesInWrongRoot()
+    {
+        $enRoot = $this->createRootPage('en', '1', 'www.example.com');
+        $deRoot = $this->createRootPage('de', '', 'www.example.com');
+        $frRoot = $this->createRootPage('fr', '1', 'www.example.org');
+
+        $en = $this->createPage(0, $enRoot);
+        $de = $this->createPage($en, $deRoot);
+        $this->createPage($en, $frRoot);
+
+        $pageModel = new PageModel();
+        $pageModel->id = $de;
+        $pageModel->pid = $deRoot;
+        $pageModel->languageMain = $en;
         $pageModel->type = 'regular';
 
         $pages = $this->pageFinder->findAssociatedForPage($pageModel);

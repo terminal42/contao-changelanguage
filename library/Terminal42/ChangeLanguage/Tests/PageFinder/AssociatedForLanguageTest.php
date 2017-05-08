@@ -38,6 +38,7 @@ class AssociatedForLanguageTest extends ContaoTestCase
 
         $dePage = new PageModel();
         $dePage->id = $this->createPage($deRoot, $en);
+        $dePage->pid = $deRoot;
         $dePage->languageMain = $en;
 
         $page = $this->pageFinder->findAssociatedForLanguage($dePage, 'en');
