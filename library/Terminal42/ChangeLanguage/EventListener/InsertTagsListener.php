@@ -42,8 +42,8 @@ class InsertTagsListener
 
         return Controller::replaceInsertTags(
             sprintf(
-                '{{link%s::%s}}',
-                substr($parts[0], 14),
+                '{{%s::%s}}',
+                substr($parts[0], 15),
                 $targetPage->id
             )
         );
