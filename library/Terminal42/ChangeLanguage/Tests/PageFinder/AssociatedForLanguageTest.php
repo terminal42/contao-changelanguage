@@ -3,8 +3,8 @@
 /*
  * changelanguage Extension for Contao Open Source CMS
  *
- * @copyright  Copyright (c) 2008-2017, terminal42 gmbh
- * @author     terminal42 gmbh <info@terminal42.ch>
+ * @copyright  Copyright (c) 2008-2017, terminal42 gmbh
+ * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  * @link       http://github.com/terminal42/contao-changelanguage
  */
@@ -38,6 +38,7 @@ class AssociatedForLanguageTest extends ContaoTestCase
 
         $dePage = new PageModel();
         $dePage->id = $this->createPage($deRoot, $en);
+        $dePage->pid = $deRoot;
         $dePage->languageMain = $en;
 
         $page = $this->pageFinder->findAssociatedForLanguage($dePage, 'en');
@@ -63,11 +64,10 @@ class AssociatedForLanguageTest extends ContaoTestCase
         $this->assertSame($enRoot, $page->id);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testThrowsExceptionWhenLanguageDoesNotExist()
     {
+        $this->setExpectedException('InvalidArgumentException');
+
         $enRoot = $this->createRootPage('en', true);
         $deRoot = $this->createRootPage('de', false);
 
