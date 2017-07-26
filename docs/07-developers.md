@@ -47,7 +47,7 @@ public function onChangelanguageNavigation(
 ) {
     // The target root page for current event
     $targetRoot = $event->getNavigationItem()->getRootPage();
-    $language   = $targetRoot->rootLanguage; // The target language
+    $language   = $targetRoot->language; // The target language
 
     // Find your current and new alias from the current URL
     $newAlias = '…';
