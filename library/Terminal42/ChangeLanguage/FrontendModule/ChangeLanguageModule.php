@@ -125,7 +125,7 @@ class ChangeLanguageModule extends AbstractFrontendModule
             'tabindex' => '',
             'nofollow' => false,
             'target' => ($item->isNewWindow() ? ' target="_blank"' : '').' hreflang="'.$item->getLanguageTag().'" lang="'.$item->getLanguageTag().'"',
-            'item' => $this,
+            'item' => $item,
         ];
     }
 
