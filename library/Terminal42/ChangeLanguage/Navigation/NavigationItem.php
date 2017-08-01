@@ -60,7 +60,7 @@ class NavigationItem
             );
         }
 
-        $this->rootPage = $rootPage;
+        $this->rootPage = $rootPage->loadDetails();
         $this->linkLabel = $label;
 
         if (null === $label) {
@@ -136,7 +136,7 @@ class NavigationItem
      */
     public function setTargetPage(PageModel $targetPage, $isDirectFallback, $isCurrentPage = false)
     {
-        $this->targetPage = $targetPage;
+        $this->targetPage = $targetPage->loadDetails();
         $this->isDirectFallback = (bool) $isDirectFallback;
         $this->isCurrentPage = (bool) $isCurrentPage;
     }
@@ -221,7 +221,7 @@ class NavigationItem
         $href = \Controller::generateFrontendUrl(
             $targetPage->row(),
             $urlParameterBag->generateParameters(),
-            $targetPage->language,
+            $targetPage->rootLanguage,
             true
         );
 
