@@ -11,11 +11,9 @@
 
 namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 
-use Contao\Database;
 use Contao\DataContainer;
 use Contao\PageModel;
 use Haste\Dca\PaletteManipulator;
-use Terminal42\ChangeLanguage\PageFinder;
 
 class PageInitializationListener
 {
@@ -46,12 +44,6 @@ class PageInitializationListener
                 break;
             case 'editAll':
                 $this->handleEditAllMode();
-                break;
-            // Page picker popup
-            case 'show':
-                if ('languageMain' === \Input::get('field')) {
-                    $this->setRootNodesForPage($dc->id);
-                }
                 break;
         }
     }
@@ -88,37 +80,9 @@ class PageInitializationListener
         $this->addRegularLanguageFields(
             array_diff(
                 array_keys($GLOBALS['TL_DCA']['tl_page']['palettes']),
-                ['__selector__', 'root']
+                ['__selector__', 'root', 'folder']
             )
         );
-    }
-
-    /**
-     * Limits the available pages in page picker to the fallback page tree.
-     *
-     * @param int $pageId
-     */
-    private function setRootNodesForPage($pageId)
-    {
-        $page = PageModel::findWithDetails($pageId);
-        $root = PageModel::findByPk($page->rootId);
-
-        if ($root->fallback
-            && (!$root->languageRoot || ($languageRoot = PageModel::findByPk($root->languageRoot)) === null)
-        ) {
-            return;
-        }
-
-        $pageFinder = new PageFinder();
-        $masterRoot = $pageFinder->findMasterRootForPage($page);
-
-        if (null !== $masterRoot) {
-            $GLOBALS['TL_DCA']['tl_page']['fields']['languageMain']['eval']['rootNodes'] = Database::getInstance()
-                ->prepare('SELECT id FROM tl_page WHERE pid=? ORDER BY sorting')
-                ->execute($masterRoot->id)
-                ->fetchEach('id')
-            ;
-        }
     }
 
     private function addRootLanguageFields()
