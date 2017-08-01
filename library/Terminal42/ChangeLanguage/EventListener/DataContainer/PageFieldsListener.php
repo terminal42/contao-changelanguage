@@ -11,11 +11,51 @@
 
 namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 
+use Contao\Database;
 use Contao\DataContainer;
+use Contao\Input;
 use Contao\PageModel;
+use Terminal42\ChangeLanguage\PageFinder;
 
 class PageFieldsListener
 {
+    /**
+     * Sets rootNodes when initializing the languageMain field.
+     *
+     * @param mixed         $value
+     * @param DataContainer $dc
+     *
+     * @return mixed
+     */
+    public function onLoadLanguageMain($value, DataContainer $dc)
+    {
+        if (!$dc->id || 'page' !== Input::get('do')) {
+            return $value;
+        }
+
+        $page = PageModel::findWithDetails($dc->id);
+        $root = PageModel::findByPk($page->rootId);
+
+        if ($root->fallback
+            && (!$root->languageRoot || ($languageRoot = PageModel::findByPk($root->languageRoot)) === null)
+        ) {
+            return $value;
+        }
+
+        $pageFinder = new PageFinder();
+        $masterRoot = $pageFinder->findMasterRootForPage($page);
+
+        if (null !== $masterRoot) {
+            $GLOBALS['TL_DCA']['tl_page']['fields']['languageMain']['eval']['rootNodes'] = Database::getInstance()
+                ->prepare('SELECT id FROM tl_page WHERE pid=? ORDER BY sorting')
+                ->execute($masterRoot->id)
+                ->fetchEach('id')
+            ;
+        }
+
+        return $value;
+    }
+
     /**
      * Validate input value when saving tl_page.languageMain field.
      *

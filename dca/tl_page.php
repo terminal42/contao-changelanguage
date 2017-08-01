@@ -26,7 +26,8 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['languageMain'] = array
     'inputType'               => 'pageTree',
     'eval'                    => array('fieldType'=>'radio', 'multiple'=>false, 'rootNodes'=>[0], 'tl_class'=>'w50 clr'),
     'sql'                     => "int(10) unsigned NOT NULL default '0'",
-    'save_callback'           => [['Terminal42\ChangeLanguage\EventListener\DataContainer\PageFieldsListener', 'onSaveLanguageMain']]
+    'load_callback'           => [['Terminal42\ChangeLanguage\EventListener\DataContainer\PageFieldsListener', 'onLoadLanguageMain']],
+    'save_callback'           => [['Terminal42\ChangeLanguage\EventListener\DataContainer\PageFieldsListener', 'onSaveLanguageMain']],
 );
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['languageRoot'] = array
