@@ -98,8 +98,8 @@ class LanguageText
         $languages = array_keys($this->map);
 
         usort($items, function (NavigationItem $a, NavigationItem $b) use ($languages) {
-            $key1 = array_search(strtolower($a->getNormalizedLanguage()), $languages, true);
-            $key2 = array_search(strtolower($b->getNormalizedLanguage()), $languages, true);
+            $key1 = array_search(strtolower($a->getLanguageTag()), $languages, true);
+            $key2 = array_search(strtolower($b->getLanguageTag()), $languages, true);
 
             return ($key1 < $key2) ? -1 : 1;
         });
