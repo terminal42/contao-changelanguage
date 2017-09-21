@@ -19,6 +19,47 @@ use Terminal42\ChangeLanguage\Tests\ContaoTestCase;
 class LanguageTextTest extends ContaoTestCase
 {
 
+    public function testHasLanguageInMap()
+    {
+        $map = [
+            'en'    => 'International',
+            'de'    => 'Germany',
+            'de-CH' => 'Switzerland (German)',
+        ];
+
+        $languageText = new LanguageText($map);
+
+        $this->assertTrue($languageText->has('en'));
+        $this->assertTrue($languageText->has('de'));
+        $this->assertTrue($languageText->has('de-CH'));
+        $this->assertFalse($languageText->has('fr'));
+    }
+
+    public function testCanSetLabelForLanguage()
+    {
+        $languageText = new LanguageText();
+
+        $this->assertFalse($languageText->has('en'));
+
+        $languageText->set('en', 'English');
+
+        $this->assertTrue($languageText->has('en'));
+    }
+
+    public function testReturnsLabelForLanguage()
+    {
+        $languageText = new LanguageText(['en' => 'English']);
+
+        $this->assertSame('English', $languageText->get('en'));
+    }
+
+    public function testReturnsUppercaseLanguageWhenNotInMap()
+    {
+        $languageText = new LanguageText();
+
+        $this->assertSame('EN', $languageText->get('en'));
+    }
+
     public function testOrdersNavigationItemsAccordingToCustomMap()
     {
         $map = [
@@ -54,19 +95,55 @@ class LanguageTextTest extends ContaoTestCase
         }
     }
 
-    public function testHasLanguageInMap()
+    public function testIgnoresOrderIfMapIsEmpty()
     {
-        $map = [
-            'en'    => 'International',
-            'de'    => 'Germany',
-            'de-CH' => 'Switzerland (German)',
+        $languageText = new LanguageText();
+
+        $fooComId = $this->createRootPage('foo.com', 'en');
+        $barChId = $this->createRootPage('bar.ch', 'de-CH');
+
+        /** @var NavigationItem[] $items */
+        $items = [
+            new NavigationItem(PageModel::findById($fooComId)),
+            new NavigationItem(PageModel::findById($barChId)),
         ];
 
-        $languageText = new LanguageText($map);
+        $languageText->orderNavigationItems($items);
+
+        $this->assertSame('en', $items[0]->getLanguageTag());
+        $this->assertSame('de-CH', $items[1]->getLanguageTag());
+    }
+
+    public function testIsCreatedFromOptionWizard()
+    {
+        $config = [
+            ['label' => 'English', 'value' => 'en']
+        ];
+
+        $languageText = LanguageText::createFromOptionWizard(serialize($config));
 
         $this->assertTrue($languageText->has('en'));
-        $this->assertTrue($languageText->has('de'));
-        $this->assertTrue($languageText->has('de-CH'));
+    }
+
+    public function testIsCreatedFromEmptyOptionWizard()
+    {
+        $languageText = LanguageText::createFromOptionWizard('');
+
+        $this->assertFalse($languageText->has('en'));
+    }
+
+    public function testIgnoresEmptyOptionWizardRows()
+    {
+        $config = [
+            ['label' => 'English', 'value' => 'en'],
+            ['label' => '', 'value' => 'de'],
+            ['label' => 'French', 'value' => ''],
+        ];
+
+        $languageText = LanguageText::createFromOptionWizard(serialize($config));
+
+        $this->assertTrue($languageText->has('en'));
+        $this->assertFalse($languageText->has('de'));
         $this->assertFalse($languageText->has('fr'));
     }
 
