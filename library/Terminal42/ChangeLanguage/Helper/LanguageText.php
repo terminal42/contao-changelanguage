@@ -37,7 +37,7 @@ class LanguageText
     }
 
     /**
-     * Returns whether a language as a label.
+     * Returns whether a language has a label.
      *
      * @param string $language
      *
@@ -45,7 +45,7 @@ class LanguageText
      */
     public function has($language)
     {
-        return empty($this->map[strtolower($language)]);
+        return array_key_exists(strtolower($language), $this->map);
     }
 
     /**

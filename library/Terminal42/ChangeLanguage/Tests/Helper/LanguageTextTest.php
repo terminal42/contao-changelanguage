@@ -54,6 +54,22 @@ class LanguageTextTest extends ContaoTestCase
         }
     }
 
+    public function testHasLanguageInMap()
+    {
+        $map = [
+            'en'    => 'International',
+            'de'    => 'Germany',
+            'de-CH' => 'Switzerland (German)',
+        ];
+
+        $languageText = new LanguageText($map);
+
+        $this->assertTrue($languageText->has('en'));
+        $this->assertTrue($languageText->has('de'));
+        $this->assertTrue($languageText->has('de-CH'));
+        $this->assertFalse($languageText->has('fr'));
+    }
+
     private function createRootPage($dns, $language)
     {
         return $this->query("
