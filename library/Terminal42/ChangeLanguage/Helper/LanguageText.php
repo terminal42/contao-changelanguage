@@ -37,7 +37,7 @@ class LanguageText
     }
 
     /**
-     * Returns whether a language as a label.
+     * Returns whether a language has a label.
      *
      * @param string $language
      *
@@ -45,7 +45,7 @@ class LanguageText
      */
     public function has($language)
     {
-        return empty($this->map[strtolower($language)]);
+        return array_key_exists(strtolower($language), $this->map);
     }
 
     /**
@@ -98,8 +98,8 @@ class LanguageText
         $languages = array_keys($this->map);
 
         usort($items, function (NavigationItem $a, NavigationItem $b) use ($languages) {
-            $key1 = array_search(strtolower($a->getNormalizedLanguage()), $languages, true);
-            $key2 = array_search(strtolower($b->getNormalizedLanguage()), $languages, true);
+            $key1 = array_search(strtolower($a->getLanguageTag()), $languages, true);
+            $key2 = array_search(strtolower($b->getLanguageTag()), $languages, true);
 
             return ($key1 < $key2) ? -1 : 1;
         });
