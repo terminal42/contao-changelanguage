@@ -83,22 +83,15 @@ class PageFieldsListener
             );
 
 
-            if (count($duplicates) > 0) {
+            if (null !== $duplicates) {
 
-                $properties = [];
+                $labels = [];
 
                 foreach ($duplicates as $duplicate) {
-                    $properties[] = [
-                      'id' => $duplicate->id,
-                      'title' => $duplicate->title,
-                    ];
+                    $labels[] = sprintf('%s (ID %s)', $duplicate->id, $duplicate->title);
                 }
 
-                $properties = array_map(function($property) {
-                    return sprintf('%s (ID %s)', $property['title'], $property['id']);
-                }, $properties);
-
-                throw new \RuntimeException(sprintf($GLOBALS['TL_LANG']['MSC']['duplicateMainLanguage'], implode(', ', $properties)));
+                throw new \RuntimeException(sprintf($GLOBALS['TL_LANG']['MSC']['duplicateMainLanguage'], implode(', ', $labels)));
             }
         }
 
