@@ -82,9 +82,23 @@ class PageFieldsListener
                 [$value, $dc->id]
             );
 
+
             if (count($duplicates) > 0) {
-                $titles = $duplicates->fetchEach('title');
-                throw new \RuntimeException(sprintf($GLOBALS['TL_LANG']['MSC']['duplicateMainLanguage'], implode(', ', $titles)));
+
+                $properties = [];
+
+                foreach ($duplicates as $duplicate) {
+                    $properties[] = [
+                      'id' => $duplicate->id,
+                      'title' => $duplicate->title,
+                    ];
+                }
+
+                $properties = array_map(function($property) {
+                    return sprintf('%s (ID %s)', $property['title'], $property['id']);
+                }, $properties);
+
+                throw new \RuntimeException(sprintf($GLOBALS['TL_LANG']['MSC']['duplicateMainLanguage'], implode(', ', $properties)));
             }
         }
 
