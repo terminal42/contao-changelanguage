@@ -73,7 +73,7 @@ class PageFieldsListener
             $currentPage = PageModel::findWithDetails($dc->id);
             $childIds = \Database::getInstance()->getChildRecords($currentPage->rootId, 'tl_page');
 
-            $duplicates = PageModel::countBy(
+            $duplicates = PageModel::findBy(
                 [
                     'tl_page.id IN ('.implode(',', $childIds).')',
                     'tl_page.languageMain=?',
@@ -82,8 +82,9 @@ class PageFieldsListener
                 [$value, $dc->id]
             );
 
-            if ($duplicates > 0) {
-                throw new \RuntimeException($GLOBALS['TL_LANG']['MSC']['duplicateMainLanguage']);
+            if (count($duplicates) > 0) {
+                $titles = $duplicates->fetchEach('title');
+                throw new \RuntimeException(sprintf($GLOBALS['TL_LANG']['MSC']['duplicateMainLanguage'], implode(', ', $titles)));
             }
         }
 
