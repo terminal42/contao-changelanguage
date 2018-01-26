@@ -7,7 +7,7 @@
     <file original="languages/en/default.xlf" source-language="en" datatype="plaintext">
         <body>
             <trans-unit id="MSC.duplicateMainLanguage">
-                <source>This main language record already has an assigment.</source>
+                <source>The selected page is already assigned to "%s" in the main language.</source>
             </trans-unit>
             <trans-unit id="MSC.noMainLanguage">
                 <source>Main language missing</source>

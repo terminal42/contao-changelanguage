@@ -2,8 +2,8 @@
     <file datatype="plaintext" original="languages/en/default.xlf" source-language="en" target-language="de">
         <body>
             <trans-unit id="MSC.duplicateMainLanguage">
-                <source>This main language record already has an assigment.</source>
-                <target>Dieser Datensatz ist in der Hauptsprache bereits verknüpft.</target>
+                <source>The selected page is already assigned to &quot;%s&quot; in the main language.</source>
+                <target>Dieser Datensatz ist in der Hauptsprache bereits mit &quot;%s&quot; verknüpft.</target>
             </trans-unit>
             <trans-unit id="MSC.noMainLanguage">
                 <source>Main language missing</source>

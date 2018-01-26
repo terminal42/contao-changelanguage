@@ -218,12 +218,7 @@ class NavigationItem
             $targetPage = PageModel::findFirstPublishedRegularByPid($targetPage->id) ?: $targetPage;
         }
 
-        $href = \Controller::generateFrontendUrl(
-            $targetPage->row(),
-            $urlParameterBag->generateParameters(),
-            $targetPage->rootLanguage,
-            true
-        );
+        $href = $targetPage->getAbsoluteUrl($urlParameterBag->generateParameters());
 
         if (($queryString = $urlParameterBag->generateQueryString()) !== null) {
             $href .= '?'.$queryString;
