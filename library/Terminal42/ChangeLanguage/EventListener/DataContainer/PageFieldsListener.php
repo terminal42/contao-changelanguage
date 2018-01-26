@@ -82,9 +82,7 @@ class PageFieldsListener
                 [$value, $dc->id]
             );
 
-
             if (null !== $duplicates) {
-
                 $labels = [];
 
                 foreach ($duplicates as $duplicate) {
