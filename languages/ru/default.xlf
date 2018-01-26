@@ -2,8 +2,7 @@
     <file datatype="plaintext" original="languages/en/default.xlf" source-language="en" target-language="ru">
         <body>
             <trans-unit id="MSC.duplicateMainLanguage">
-                <source>This main language record already has an assigment.</source>
-                <target>Эта основная запись языка уже присвоена.</target>
+                <source>The selected page is already assigned to &quot;%s&quot; in the main language.</source>
             </trans-unit>
             <trans-unit id="MSC.noMainLanguage">
                 <source>Main language missing</source>
@@ -11,12 +10,15 @@
             </trans-unit>
             <trans-unit id="MSC.switchLanguage">
                 <source>Language</source>
+                <target>Язык</target>
             </trans-unit>
             <trans-unit id="MSC.switchLanguageTo.0">
                 <source>Switch to</source>
+                <target>Переключить на</target>
             </trans-unit>
             <trans-unit id="MSC.switchLanguageTo.1">
                 <source>Switch to %s</source>
+                <target>Переключить на %s</target>
             </trans-unit>
         </body>
     </file>
