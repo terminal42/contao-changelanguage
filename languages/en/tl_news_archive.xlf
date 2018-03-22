@@ -12,6 +12,9 @@
             <trans-unit id="tl_news_archive.master.1">
                 <source>Please define the master archive to allow language switching.</source>
             </trans-unit>
+            <trans-unit id="tl_news_archive.master.2">
+                <source>This master has already been selected for the "%s" archive!</source>
+            </trans-unit>
             <trans-unit id="tl_news_archive.language.0">
                 <source>Language</source>
             </trans-unit>

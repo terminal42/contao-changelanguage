@@ -13,6 +13,7 @@ namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 
 use Contao\Database;
 use Contao\DataContainer;
+use Contao\NewsArchiveModel;
 use Contao\PageModel;
 use Haste\Dca\PaletteManipulator;
 use Terminal42\ChangeLanguage\PageFinder;
@@ -51,6 +52,11 @@ class ParentTableListener
                 'includeBlankOption' => true,
                 'blankOptionLabel' => &$GLOBALS['TL_LANG'][$this->table]['isMaster'],
             ],
+            'save_callback' => [function ($value, DataContainer $dc) {
+                $this->validateMaster($value, $dc);
+
+                return $value;
+            }],
             'sql' => "int(10) unsigned NOT NULL default '0'",
             'relation' => ['type' => 'hasOne', 'table' => $this->table],
         ];
@@ -95,5 +101,26 @@ class ParentTableListener
         }
 
         return $options;
+    }
+
+    private function validateMaster($value, DataContainer $dc)
+    {
+        if (!$value) {
+            return;
+        }
+
+        $result = Database::getInstance()
+            ->prepare('
+                SELECT title 
+                FROM '.$this->table.' 
+                WHERE jumpTo=? AND master=? AND id!=?
+            ')
+            ->limit(1)
+            ->execute($dc->activeRecord->jumpTo, $value, $dc->id)
+        ;
+
+        if ($result->numRows > 0) {
+            throw new \RuntimeException(sprintf($GLOBALS['TL_LANG'][$this->table]['master'][2], $result->title));
+        }
     }
 }
