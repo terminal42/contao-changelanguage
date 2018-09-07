@@ -11,6 +11,8 @@
 
 namespace Terminal42\ChangeLanguage\Navigation;
 
+use Contao\System;
+
 class UrlParameterBag
 {
     /**
@@ -203,6 +205,15 @@ class UrlParameterBag
         if (null !== $auto_item) {
             $params = '/'.$auto_item.$params;
         }
+        
+        // HOOK: allow extensions to url building logic
+        if (isset($GLOBALS['TL_HOOKS']['changelanguageBuildURL'])
+            && is_array($GLOBALS['TL_HOOKS']['changelanguageBuildURL'])) {
+            foreach ($GLOBALS['TL_HOOKS']['changelanguageBuildURL'] as $callback) {
+                $params = System::importStatic($callback[0])->{$callback[1]}($this->attributes, $params);
+            }
+        }
+
 
         return $params;
     }
