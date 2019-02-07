@@ -33,7 +33,7 @@ abstract class AbstractChildTableListener extends AbstractTableListener
     {
         $action = \Input::get('act');
 
-        if ('editAll' === $action || ('edit' === $action && $this->getModel($dc->id)->getRelated('pid')->master > 0)) {
+        if ('editAll' === $action || ('edit' === $action && null !== ($model = $this->getModel($dc->id)) && $model->getRelated('pid')->master > 0)) {
             $this->addFieldsToPalettes();
         }
     }
