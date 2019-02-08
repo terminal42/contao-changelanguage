@@ -14,7 +14,16 @@ domains. *ChangeLanguage* simply adds the functionality to link pages
 together and present the website visitor with a list of available languages.
 
 
-[Full Documentation](https://terminal42.github.io/contao-changelanguage)
+## Documentation
+
+1. [Installation](01-installation.md)
+2. [Basic configuration](02-basics.md)
+3. [Advanced configuration](03-advanced.md)
+4. [Backend tools](04-backend.md)
+5. [Frontend module](05-frontend-module.md)
+6. [Insert tags](06-inserttags.md)
+7. [Developers](07-developers.md)
+8. [Tips & FAQ](08-tips-faq.md)
 
 
 
