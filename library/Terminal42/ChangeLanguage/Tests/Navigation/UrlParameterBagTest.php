@@ -3,8 +3,8 @@
 /*
  * changelanguage Extension for Contao Open Source CMS
  *
- * @copyright  Copyright (c) 2008-2017, terminal42 gmbh
- * @author     terminal42 gmbh <info@terminal42.ch>
+ * @copyright  Copyright (c) 2008-2019, terminal42 gmbh
+ * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  * @link       http://github.com/terminal42/contao-changelanguage
  */
@@ -109,7 +109,7 @@ class UrlParameterBagTest extends \PHPUnit_Framework_TestCase
     {
         $bag = new UrlParameterBag();
 
-        $this->assertSame(null, $bag->generateParameters());
+        $this->assertNull($bag->generateParameters());
     }
 
     public function testExceptionOnAutoItemKey()
@@ -174,7 +174,7 @@ class UrlParameterBagTest extends \PHPUnit_Framework_TestCase
     {
         $bag = new UrlParameterBag();
 
-        $this->assertSame(null, $bag->generateQueryString());
+        $this->assertNull($bag->generateQueryString());
     }
 
     public function testExceptionOnConstructNonScalarQuery()

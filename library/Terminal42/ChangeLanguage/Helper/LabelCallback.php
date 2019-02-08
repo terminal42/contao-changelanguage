@@ -3,8 +3,8 @@
 /*
  * changelanguage Extension for Contao Open Source CMS
  *
- * @copyright  Copyright (c) 2008-2017, terminal42 gmbh
- * @author     terminal42 gmbh <info@terminal42.ch>
+ * @copyright  Copyright (c) 2008-2019, terminal42 gmbh
+ * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  * @link       http://github.com/terminal42/contao-changelanguage
  */
@@ -32,10 +32,10 @@ class LabelCallback
         Controller::loadDataContainer($table);
 
         $chain = function () use ($callback) {
-            $args = func_get_args();
+            $args = \func_get_args();
             $result = null;
 
-            if (is_callable($this->previous)) {
+            if (\is_callable($this->previous)) {
                 $result = $this->executeCallback($this->previous, $args);
             }
 
@@ -76,13 +76,13 @@ class LabelCallback
     private function executeCallback($callback, array $args)
     {
         // Support Contao's getInstance() method when callback is an array
-        if (is_array($callback)) {
-            return call_user_func_array(
+        if (\is_array($callback)) {
+            return \call_user_func_array(
                 [System::importStatic($callback[0]), $callback[1]],
                 $args
             );
         }
 
-        return call_user_func_array($callback, $args);
+        return \call_user_func_array($callback, $args);
     }
 }

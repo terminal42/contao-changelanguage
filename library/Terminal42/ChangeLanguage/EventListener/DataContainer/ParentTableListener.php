@@ -3,8 +3,8 @@
 /*
  * changelanguage Extension for Contao Open Source CMS
  *
- * @copyright  Copyright (c) 2008-2017, terminal42 gmbh
- * @author     terminal42 gmbh <info@terminal42.ch>
+ * @copyright  Copyright (c) 2008-2019, terminal42 gmbh
+ * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  * @link       http://github.com/terminal42/contao-changelanguage
  */
@@ -13,7 +13,6 @@ namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 
 use Contao\Database;
 use Contao\DataContainer;
-use Contao\NewsArchiveModel;
 use Contao\PageModel;
 use Haste\Dca\PaletteManipulator;
 use Terminal42\ChangeLanguage\PageFinder;
@@ -70,7 +69,7 @@ class ParentTableListener
 
     public function onMasterOptions(DataContainer $dc)
     {
-        if (($jumpTo = PageModel::findByPk($dc->activeRecord->jumpTo)) === null) {
+        if (null === ($jumpTo = PageModel::findByPk($dc->activeRecord->jumpTo))) {
             return [];
         }
 
@@ -81,7 +80,7 @@ class ParentTableListener
             $associated[] = $page->id;
         }
 
-        if (0 === count($associated)) {
+        if (0 === \count($associated)) {
             return [];
         }
 

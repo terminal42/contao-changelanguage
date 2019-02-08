@@ -3,8 +3,8 @@
 /*
  * changelanguage Extension for Contao Open Source CMS
  *
- * @copyright  Copyright (c) 2008-2017, terminal42 gmbh
- * @author     terminal42 gmbh <info@terminal42.ch>
+ * @copyright  Copyright (c) 2008-2019, terminal42 gmbh
+ * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  * @link       http://github.com/terminal42/contao-changelanguage
  */
@@ -157,7 +157,7 @@ class UrlParameterBag
      *
      * @throws \RuntimeException
      *
-     * @return null|string
+     * @return string|null
      */
     public function generateParameters()
     {
@@ -165,7 +165,7 @@ class UrlParameterBag
         $auto_item = null;
         $attributes = $this->attributes;
 
-        if (0 === count($attributes)) {
+        if (0 === \count($attributes)) {
             return null;
         }
 
@@ -176,7 +176,7 @@ class UrlParameterBag
         if ($GLOBALS['TL_CONFIG']['useAutoItem']) {
             $auto_item = array_intersect_key($this->attributes, array_flip((array) $GLOBALS['TL_AUTO_ITEM']));
 
-            switch (count($auto_item)) {
+            switch (\count($auto_item)) {
                 case 0:
                     $auto_item = null;
                     break;
@@ -189,7 +189,7 @@ class UrlParameterBag
             }
         }
 
-        if (0 !== count($attributes)) {
+        if (0 !== \count($attributes)) {
             array_walk(
                 $attributes,
                 function (&$v, $k) {
@@ -210,11 +210,11 @@ class UrlParameterBag
     /**
      * Generates a query string or returns null if empty.
      *
-     * @return null|string
+     * @return string|null
      */
     public function generateQueryString()
     {
-        if (0 === count($this->query)) {
+        if (0 === \count($this->query)) {
             return null;
         }
 
@@ -228,7 +228,7 @@ class UrlParameterBag
      */
     private function validateScalar($value)
     {
-        if (is_array($value)) {
+        if (\is_array($value)) {
             foreach ($value as $v) {
                 $this->validateScalar($v);
             }

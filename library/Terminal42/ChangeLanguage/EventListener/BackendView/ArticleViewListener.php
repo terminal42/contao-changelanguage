@@ -3,8 +3,8 @@
 /*
  * changelanguage Extension for Contao Open Source CMS
  *
- * @copyright  Copyright (c) 2008-2017, terminal42 gmbh
- * @author     terminal42 gmbh <info@terminal42.ch>
+ * @copyright  Copyright (c) 2008-2019, terminal42 gmbh
+ * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  * @link       http://github.com/terminal42/contao-changelanguage
  */
@@ -63,7 +63,7 @@ class ArticleViewListener extends AbstractViewListener
 
             $articles = $this->findArticlesForPage($model, $articleId);
 
-            if (1 === count($articles)) {
+            if (1 === \count($articles)) {
                 $options['tl_article.'.$articles[0]->id] = $this->getLanguageLabel($model->language);
             } else {
                 $options['tl_page.'.$model->id] = $this->getLanguageLabel($model->language);

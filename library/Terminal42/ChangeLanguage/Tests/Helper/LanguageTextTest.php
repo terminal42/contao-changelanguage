@@ -3,8 +3,8 @@
 /*
  * changelanguage Extension for Contao Open Source CMS
  *
- * @copyright  Copyright (c) CTS GmbH
- * @author     CTS GmbH <info@cts-media.eu>
+ * @copyright  Copyright (c) 2008-2019, terminal42 gmbh
+ * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  * @link       http://github.com/terminal42/contao-changelanguage
  */
@@ -18,12 +18,11 @@ use Terminal42\ChangeLanguage\Tests\ContaoTestCase;
 
 class LanguageTextTest extends ContaoTestCase
 {
-
     public function testHasLanguageInMap()
     {
         $map = [
-            'en'    => 'International',
-            'de'    => 'Germany',
+            'en' => 'International',
+            'de' => 'Germany',
             'de-CH' => 'Switzerland (German)',
         ];
 
@@ -63,11 +62,11 @@ class LanguageTextTest extends ContaoTestCase
     public function testOrdersNavigationItemsAccordingToCustomMap()
     {
         $map = [
-            'en'    => 'International',
+            'en' => 'International',
             'de-CH' => 'Switzerland (German)',
-            'de'    => 'Germany',
+            'de' => 'Germany',
             'fr-FR' => 'France',
-            'pl'    => 'Poland',
+            'pl' => 'Poland',
         ];
 
         $languageText = new LanguageText($map);
@@ -91,7 +90,7 @@ class LanguageTextTest extends ContaoTestCase
 
         foreach ($items as $i => $item) {
             //items order should be equal to the order in the map which was passed to LanguageText
-            $this->assertEquals($keys[$i], $item->getLanguageTag());
+            $this->assertSame($keys[$i], $item->getLanguageTag());
         }
     }
 
@@ -117,7 +116,7 @@ class LanguageTextTest extends ContaoTestCase
     public function testIsCreatedFromOptionWizard()
     {
         $config = [
-            ['label' => 'English', 'value' => 'en']
+            ['label' => 'English', 'value' => 'en'],
         ];
 
         $languageText = LanguageText::createFromOptionWizard(serialize($config));

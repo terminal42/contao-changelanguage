@@ -3,8 +3,8 @@
 /*
  * changelanguage Extension for Contao Open Source CMS
  *
- * @copyright  Copyright (c) 2008-2017, terminal42 gmbh
- * @author     terminal42 gmbh <info@terminal42.ch>
+ * @copyright  Copyright (c) 2008-2019, terminal42 gmbh
+ * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  * @link       http://github.com/terminal42/contao-changelanguage
  */
@@ -91,7 +91,7 @@ class LanguageText
      */
     public function orderNavigationItems(array &$items)
     {
-        if (0 === count($this->map)) {
+        if (0 === \count($this->map)) {
             return;
         }
 
@@ -116,7 +116,7 @@ class LanguageText
     {
         $config = deserialize($config);
 
-        if (!is_array($config)) {
+        if (!\is_array($config)) {
             return new static();
         }
 
