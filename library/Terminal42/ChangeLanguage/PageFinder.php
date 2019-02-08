@@ -3,8 +3,8 @@
 /*
  * changelanguage Extension for Contao Open Source CMS
  *
- * @copyright  Copyright (c) 2008-2017, terminal42 gmbh
- * @author     terminal42 gmbh <info@terminal42.ch>
+ * @copyright  Copyright (c) 2008-2019, terminal42 gmbh
+ * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  * @link       http://github.com/terminal42/contao-changelanguage
  */
@@ -119,7 +119,7 @@ class PageFinder
         $page->loadDetails();
         $t = $page::getTable();
 
-        if ($page->rootIsFallback && ($root = PageModel::findByPk($page->rootId)) !== null && !$root->languageRoot) {
+        if ($page->rootIsFallback && null !== ($root = PageModel::findByPk($page->rootId)) && !$root->languageRoot) {
             $values = [$page->id, $page->id];
         } elseif (!$page->languageMain) {
             return $skipCurrent ? [] : [$page];

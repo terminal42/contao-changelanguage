@@ -3,8 +3,8 @@
 /*
  * changelanguage Extension for Contao Open Source CMS
  *
- * @copyright  Copyright (c) 2008-2017, terminal42 gmbh
- * @author     terminal42 gmbh <info@terminal42.ch>
+ * @copyright  Copyright (c) 2008-2019, terminal42 gmbh
+ * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  * @link       http://github.com/terminal42/contao-changelanguage
  */
@@ -70,7 +70,7 @@ class ChangeLanguageModule extends AbstractFrontendModule
         $navigationItems = $navigationFactory->findNavigationItems($currentPage);
 
         // Do not generate module or header if there is none or only one link
-        if (count($navigationItems) < 2) {
+        if (\count($navigationItems) < 2) {
             return;
         }
 
@@ -184,7 +184,7 @@ class ChangeLanguageModule extends AbstractFrontendModule
 
             if (!array_key_exists($k, $currentQuery)) {
                 $attributes[$k] = $value;
-            } elseif (in_array($k, $queryParameters, false)) {
+            } elseif (\in_array($k, $queryParameters, false)) {
                 $query[$k] = $value;
             }
         }
@@ -204,7 +204,7 @@ class ChangeLanguageModule extends AbstractFrontendModule
     {
         // HOOK: allow extensions to modify url parameters
         if (isset($GLOBALS['TL_HOOKS']['changelanguageNavigation'])
-            && is_array($GLOBALS['TL_HOOKS']['changelanguageNavigation'])
+            && \is_array($GLOBALS['TL_HOOKS']['changelanguageNavigation'])
         ) {
             $event = new ChangelanguageNavigationEvent($navigationItem, $urlParameterBag);
 

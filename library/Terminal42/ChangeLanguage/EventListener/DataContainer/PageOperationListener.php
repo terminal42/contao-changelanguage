@@ -3,8 +3,8 @@
 /*
  * changelanguage Extension for Contao Open Source CMS
  *
- * @copyright  Copyright (c) 2008-2017, terminal42 gmbh
- * @author     terminal42 gmbh <info@terminal42.ch>
+ * @copyright  Copyright (c) 2008-2019, terminal42 gmbh
+ * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  * @link       http://github.com/terminal42/contao-changelanguage
  */
@@ -119,7 +119,7 @@ class PageOperationListener
         }
 
         // Reset languageMain if the current value is not a valid ID of the master tree
-        if (!in_array($page->languageMain, Database::getInstance()->getChildRecords($masterRoot->id, 'tl_page'), false)) {
+        if (!\in_array($page->languageMain, Database::getInstance()->getChildRecords($masterRoot->id, 'tl_page'), false)) {
             Database::getInstance()
                 ->prepare('UPDATE tl_page SET languageMain=0 WHERE id=?')
                 ->execute($page->id)
@@ -148,9 +148,9 @@ class PageOperationListener
     private function selfCallback($method)
     {
         return function () use ($method) {
-            return call_user_func_array(
+            return \call_user_func_array(
                 [$this, $method],
-                func_get_args()
+                \func_get_args()
             );
         };
     }

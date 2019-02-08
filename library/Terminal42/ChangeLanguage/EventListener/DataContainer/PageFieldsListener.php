@@ -3,8 +3,8 @@
 /*
  * changelanguage Extension for Contao Open Source CMS
  *
- * @copyright  Copyright (c) 2008-2017, terminal42 gmbh
- * @author     terminal42 gmbh <info@terminal42.ch>
+ * @copyright  Copyright (c) 2008-2019, terminal42 gmbh
+ * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  * @link       http://github.com/terminal42/contao-changelanguage
  */
@@ -37,7 +37,7 @@ class PageFieldsListener
         $root = PageModel::findByPk($page->rootId);
 
         if ($root->fallback
-            && (!$root->languageRoot || ($languageRoot = PageModel::findByPk($root->languageRoot)) === null)
+            && (!$root->languageRoot || null === ($languageRoot = PageModel::findByPk($root->languageRoot)))
         ) {
             return $value;
         }
@@ -126,7 +126,7 @@ class PageFieldsListener
             $options[$page->id] = sprintf(
                 '%s%s [%s]',
                 $page->title,
-                (strlen($page->dns) ? (' ('.$page->dns.')') : ''),
+                (\strlen($page->dns) ? (' ('.$page->dns.')') : ''),
                 $page->language
             );
         }

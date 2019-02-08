@@ -3,8 +3,8 @@
 /*
  * changelanguage Extension for Contao Open Source CMS
  *
- * @copyright  Copyright (c) 2008-2017, terminal42 gmbh
- * @author     terminal42 gmbh <info@terminal42.ch>
+ * @copyright  Copyright (c) 2008-2019, terminal42 gmbh
+ * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  * @link       http://github.com/terminal42/contao-changelanguage
  */
@@ -40,8 +40,8 @@ abstract class AbstractChildTableListener extends AbstractTableListener
 
     public function onLanguageMainOptions(DataContainer $dc)
     {
-        if (($current = $this->getModel($dc->id)) === null
-            || ($master = $current->getRelated('pid')->getRelated('master')) === null
+        if (null === ($current = $this->getModel($dc->id))
+            || null === ($master = $current->getRelated('pid')->getRelated('master'))
         ) {
             return [];
         }
