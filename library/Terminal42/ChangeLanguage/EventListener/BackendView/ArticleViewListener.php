@@ -106,6 +106,10 @@ class ArticleViewListener extends AbstractViewListener
      */
     private function findArticlesForPage(PageModel $page, $articleId)
     {
+        if ($articleId <= 0) {
+            $articleId = -1;
+        }
+        
         $articles = ArticleModel::findBy(
             [
                 'tl_article.pid=?',
