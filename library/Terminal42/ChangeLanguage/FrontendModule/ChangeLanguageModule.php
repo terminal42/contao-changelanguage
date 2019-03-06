@@ -39,6 +39,23 @@ class ChangeLanguageModule extends AbstractFrontendModule
     protected $strTemplate = 'mod_changelanguage';
 
     /**
+     * @var AlternateLinks
+     */
+    private static $alternateLinks;
+
+    /**
+     * @return AlternateLinks
+     */
+    public function getAlternateLinks()
+    {
+        if (null === self::$alternateLinks) {
+            self::$alternateLinks = new AlternateLinks();
+        }
+
+        return self::$alternateLinks;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function generate()
@@ -75,7 +92,7 @@ class ChangeLanguageModule extends AbstractFrontendModule
         }
 
         $templateItems = [];
-        $headerLinks = new AlternateLinks();
+        $headerLinks = $this->getAlternateLinks();
         $queryParameters = $currentPage->languageQuery ? trimsplit(',', $currentPage->languageQuery) : [];
         $defaultUrlParameters = $this->createUrlParameterBag($queryParameters);
 
@@ -88,7 +105,7 @@ class ChangeLanguageModule extends AbstractFrontendModule
                 continue;
             }
 
-            if ($item->isDirectFallback()) {
+            if ($item->isDirectFallback() && !$headerLinks->has($item->getLanguageTag())) {
                 $headerLinks->addFromNavigationItem($item, $urlParameters);
             }
 
@@ -101,7 +118,7 @@ class ChangeLanguageModule extends AbstractFrontendModule
         }
 
         $this->Template->items = $this->generateNavigationTemplate($templateItems);
-        $GLOBALS['TL_HEAD'][] = $headerLinks->generate();
+        $GLOBALS['TL_HEAD']['changelanguage_headers'] = $headerLinks->generate();
     }
 
     /**
