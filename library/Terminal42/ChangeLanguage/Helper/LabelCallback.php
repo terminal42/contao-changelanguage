@@ -35,7 +35,9 @@ class LabelCallback
             $args = \func_get_args();
             $result = null;
 
-            if (\is_callable($this->previous)) {
+            $isSymfonyCallback = version_compare(VERSION, '4.0', '>=') && is_array($this->previous) && \Contao\System::getContainer()->has($this->previous[0]);
+
+            if (\is_callable($this->previous) || $isSymfonyCallback) {
                 $result = $this->executeCallback($this->previous, $args);
             }
 
