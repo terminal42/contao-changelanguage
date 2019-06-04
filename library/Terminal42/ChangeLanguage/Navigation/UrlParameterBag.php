@@ -165,6 +165,10 @@ class UrlParameterBag
         $auto_item = null;
         $attributes = $this->attributes;
 
+        // Remove auto_item attributes to prevent wrong URLs
+        // see Issue #167
+        $attributes = \array_diff_key($attributes, \array_flip(explode(",", $GLOBALS['TL_AUTO_ITEM'])));
+
         if (0 === \count($attributes)) {
             return null;
         }
