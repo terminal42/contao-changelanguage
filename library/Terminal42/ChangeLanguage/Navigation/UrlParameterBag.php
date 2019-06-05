@@ -164,10 +164,10 @@ class UrlParameterBag
         $params = '';
         $auto_item = null;
         $attributes = $this->attributes;
+        $autoItemFlipped = \array_flip((array) $GLOBALS['TL_AUTO_ITEM']);
 
-        // Remove auto_item attributes to prevent wrong URLs
-        // see Issue #167
-        $attributes = \array_diff_key($attributes, \array_flip(explode(",", $GLOBALS['TL_AUTO_ITEM'])));
+        // Remove auto_item attributes to prevent wrong URLs. See #167
+        $attributes = \array_diff_key($attributes, $autoItemFlipped);
 
         if (0 === \count($attributes)) {
             return null;
@@ -178,7 +178,7 @@ class UrlParameterBag
         }
 
         if ($GLOBALS['TL_CONFIG']['useAutoItem']) {
-            $auto_item = array_intersect_key($this->attributes, array_flip((array) $GLOBALS['TL_AUTO_ITEM']));
+            $auto_item = array_intersect_key($this->attributes, $autoItemFlipped);
 
             switch (\count($auto_item)) {
                 case 0:
