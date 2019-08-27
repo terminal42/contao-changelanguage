@@ -35,7 +35,7 @@ class LabelCallback
             $args = \func_get_args();
             $result = null;
 
-            if (\is_callable($this->previous)) {
+            if (\is_callable($this->previous) || is_array($this->previous)) {
                 $result = $this->executeCallback($this->previous, $args);
             }
 
