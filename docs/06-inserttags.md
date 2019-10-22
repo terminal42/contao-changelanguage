@@ -19,7 +19,7 @@ supported with a `changelanguage_` prefix and language suffix.
 The page reference can either be the database ID or the page alias.
 
 ### Examples
-
+{% raw %}
 1. <code>{{changelanguage_link::15::fr}}</code>
 
     Generates a link to the french version of page ID 15.
@@ -39,6 +39,6 @@ The page reference can either be the database ID or the page alias.
 5. <code>{{changelanguage_link_name::15::es}}</code>
 
     Returns the name of the Spanish version of page ID 15.
-
+{% endraw %}
 
 [1]: https://docs.contao.org/books/manual/3.5/en/04-managing-content/insert-tags.html#link-elements
