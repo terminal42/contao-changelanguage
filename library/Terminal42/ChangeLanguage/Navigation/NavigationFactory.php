@@ -154,6 +154,10 @@ class NavigationFactory
      */
     private function isPagePublished(PageModel $page)
     {
+        if (\defined('BE_USER_LOGGED_IN') && true === BE_USER_LOGGED_IN) {
+            return true;
+        }
+
         $time = time();
 
         return $page->published
