@@ -52,7 +52,7 @@
             "Terminal42\\ChangeLanguage\\Tests\\": "tests/"
         }
     },
-    "config": {
-        "component-dir": "../assets/components"
+    "extra": {
+        "contao-manager-plugin": "Terminal42\\ChangeLanguage\\ContaoManager\\Plugin"
     }
 }
