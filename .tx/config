@@ -3,57 +3,57 @@ host = https://www.transifex.com
 type = XLIFF
 
 [contao-changelanguage.default]
-file_filter = languages/<lang>/default.xlf
-source_file = languages/en/default.xlf
+file_filter = contao/languages/<lang>/default.xlf
+source_file = contao/languages/en/default.xlf
 source_lang = en
 
 [contao-changelanguage.modules]
-file_filter = languages/<lang>/modules.xlf
-source_file = languages/en/modules.xlf
+file_filter = contao/languages/<lang>/modules.xlf
+source_file = contao/languages/en/modules.xlf
 source_lang = en
 
 [contao-changelanguage.tl_article]
-file_filter = languages/<lang>/tl_article.xlf
-source_file = languages/en/tl_article.xlf
+file_filter = contao/languages/<lang>/tl_article.xlf
+source_file = contao/languages/en/tl_article.xlf
 source_lang = en
 
 [contao-changelanguage.tl_calendar]
-file_filter = languages/<lang>/tl_calendar.xlf
-source_file = languages/en/tl_calendar.xlf
+file_filter = contao/languages/<lang>/tl_calendar.xlf
+source_file = contao/languages/en/tl_calendar.xlf
 source_lang = en
 
 [contao-changelanguage.tl_calendar_events]
-file_filter = languages/<lang>/tl_calendar_events.xlf
-source_file = languages/en/tl_calendar_events.xlf
+file_filter = contao/languages/<lang>/tl_calendar_events.xlf
+source_file = contao/languages/en/tl_calendar_events.xlf
 source_lang = en
 
 [contao-changelanguage.tl_faq]
-file_filter = languages/<lang>/tl_faq.xlf
-source_file = languages/en/tl_faq.xlf
+file_filter = contao/languages/<lang>/tl_faq.xlf
+source_file = contao/languages/en/tl_faq.xlf
 source_lang = en
 
 [contao-changelanguage.tl_faq_category]
-file_filter = languages/<lang>/tl_faq_category.xlf
-source_file = languages/en/tl_faq_category.xlf
+file_filter = contao/languages/<lang>/tl_faq_category.xlf
+source_file = contao/languages/en/tl_faq_category.xlf
 source_lang = en
 
 [contao-changelanguage.tl_module]
-file_filter = languages/<lang>/tl_module.xlf
-source_file = languages/en/tl_module.xlf
+file_filter = contao/languages/<lang>/tl_module.xlf
+source_file = contao/languages/en/tl_module.xlf
 source_lang = en
 
 [contao-changelanguage.tl_news]
-file_filter = languages/<lang>/tl_news.xlf
-source_file = languages/en/tl_news.xlf
+file_filter = contao/languages/<lang>/tl_news.xlf
+source_file = contao/languages/en/tl_news.xlf
 source_lang = en
 
 [contao-changelanguage.tl_news_archive]
-file_filter = languages/<lang>/tl_news_archive.xlf
-source_file = languages/en/tl_news_archive.xlf
+file_filter = contao/languages/<lang>/tl_news_archive.xlf
+source_file = contao/languages/en/tl_news_archive.xlf
 source_lang = en
 
 [contao-changelanguage.tl_page]
-file_filter = languages/<lang>/tl_page.xlf
-source_file = languages/en/tl_page.xlf
+file_filter = contao/languages/<lang>/tl_page.xlf
+source_file = contao/languages/en/tl_page.xlf
 source_lang = en
 
