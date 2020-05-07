@@ -32,10 +32,10 @@
         "contao/news-bundle": "~4.4",
         "contao/calendar-bundle": "~4.4",
         "contao/faq-bundle": "~4.4",
-        "friendsofphp/php-cs-fixer": "^2.1",
-        "phpunit/phpunit": "4.*",
-        "phpunit/dbunit": "~1.3",
-        "satooshi/php-coveralls": "~0.6"
+        "contao/php-cs-fixer": "^1.0",
+        "phpunit/phpunit": "^5.7.26",
+        "symfony/phpunit-bridge": "^3.3.11",
+        "phpunit/dbunit": "~1.3"
     },
     "conflict": {
         "contao/manager-plugin": "<2.0 || >=3.0",

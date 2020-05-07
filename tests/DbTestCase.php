@@ -11,51 +11,28 @@
 
 namespace Terminal42\ChangeLanguage\Tests;
 
+use Contao\System;
+use Doctrine\DBAL\Connection;
+
 abstract class DbTestCase extends \PHPUnit_Extensions_Database_TestCase
 {
-    private static $pdo = null;
-
-    private $conn = null;
-
     protected function setUp()
     {
-        // Empty table
-        $pdo = $this->getConnection()->getConnection();
-        $stmt = $pdo->prepare('SELECT table_name FROM information_schema.tables WHERE table_schema=:db');
-        $stmt->bindParam(':db', $GLOBALS['DB_DBNAME']);
+        $connection = $this->getConnection();
 
-        $stmt->execute();
-        $tables = $stmt->fetchAll(\PDO::FETCH_COLUMN);
-
-        foreach ((array) $tables as $table) {
-            $pdo->query('DROP TABLE IF EXISTS '.$table);
+        foreach ($connection->getSchemaManager()->listTableNames() as $table) {
+            $connection->query('DROP TABLE IF EXISTS '.$table);
         }
 
         parent::setUp();
     }
 
+    /**
+     * @return Connection
+     */
     final protected function getConnection()
     {
-        if (null === $this->conn) {
-            if (null === self::$pdo) {
-                self::$pdo = new \PDO(
-                    sprintf('mysql:host=%s;port=%s;dbname=%s;',
-                            $GLOBALS['DB_HOST'],
-                            $GLOBALS['DB_PORT'],
-                            $GLOBALS['DB_DBNAME']
-                    ),
-                    $GLOBALS['DB_USER'],
-                    $GLOBALS['DB_PASSWD'],
-                    [
-                        \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
-                    ]
-                );
-            }
-
-            $this->conn = $this->createDefaultDBConnection(self::$pdo, $GLOBALS['DB_DBNAME']);
-        }
-
-        return $this->conn;
+        return System::getContainer()->get('database_connection');
     }
 
     /**

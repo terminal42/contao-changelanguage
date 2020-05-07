@@ -12,6 +12,7 @@
 namespace Terminal42\ChangeLanguage\Helper;
 
 use Contao\Controller;
+use Contao\StringUtil;
 use Terminal42\ChangeLanguage\Navigation\NavigationItem;
 
 /**
@@ -114,7 +115,7 @@ class LanguageText
      */
     public static function createFromOptionWizard($config)
     {
-        $config = deserialize($config);
+        $config = StringUtil::deserialize($config);
 
         if (!\is_array($config)) {
             return new static();

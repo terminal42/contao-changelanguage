@@ -10,7 +10,15 @@
  */
 
 namespace {
-    include_once __DIR__.'/../../../../vendor/autoload.php';
+
+    use Contao\CoreBundle\Config\ResourceFinder;
+    use Doctrine\DBAL\DriverManager;
+    use Symfony\Component\Config\FileLocator;
+    use Symfony\Component\DependencyInjection\ContainerBuilder;
+    use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
+    use Symfony\Component\HttpKernel\Log\Logger;
+
+    include_once __DIR__.'/../vendor/autoload.php';
 
     ini_set('error_reporting', E_ALL & ~E_NOTICE);
     ini_set('display_errors', true);
@@ -35,40 +43,31 @@ namespace {
     );
 
     define('TL_ROOT', __DIR__.'/../../../../vendor/contao/core');
+    define('TL_MODE', '');
+    define('TL_ERROR', 'error');
+    define('BE_USER_LOGGED_IN', false);
     //require_once __DIR__ . '/../../../../vendor/contao/core/system/helper/ide_compat.php';
-    require_once TL_ROOT.'/system/helper/functions.php';
+//    require_once TL_ROOT.'/system/helper/functions.php';
 
-    // Container in Contao 4
-    if (method_exists('System', 'getContainer')) {
-        $container = new \Symfony\Component\DependencyInjection\ContainerBuilder(
-            new \Symfony\Component\DependencyInjection\ParameterBag\ParameterBag(
-                [
-                    'kernel.cache_dir' => sys_get_temp_dir(),
-                    'kernel.bundles' => ['ChangeLanguage'],
-                ]
-            )
-        );
+    $container = new ContainerBuilder(
+        new ParameterBag(
+            [
+                'kernel.cache_dir' => sys_get_temp_dir(),
+                'kernel.bundles' => ['ChangeLanguage'],
+            ]
+        )
+    );
 
-        $container->set('contao.resource_locator', new \Symfony\Component\Config\FileLocator([__DIR__.'/../../../../']));
-        $container->set('contao.resource_finder', new \Contao\CoreBundle\Config\ResourceFinder([__DIR__.'/../../../../']));
+    $container->setParameter('kernel.project_dir', __DIR__.'/../../');
+    $container->set('contao.resource_locator', new FileLocator([__DIR__.'/../../']));
+    $container->set('contao.resource_finder', new ResourceFinder([__DIR__.'/../../']));
+    $container->set('monolog.logger.contao', new Logger());
+    $container->set('database_connection', DriverManager::getConnection([
+        'driver' => 'pdo_mysql',
+        'url' => $_ENV['DATABASE_URL'],
+    ]));
 
-        System::setContainer($container);
-    }
-
-    class Config extends \Contao\Config
-    {
-        protected function initialize()
-        {
-            parent::initialize();
-
-            $GLOBALS['TL_CONFIG']['dbDriver'] = 'MySQLi';
-            $GLOBALS['TL_CONFIG']['dbUser'] = $GLOBALS['DB_USER'];
-            $GLOBALS['TL_CONFIG']['dbPass'] = $GLOBALS['DB_PASSWD'];
-            $GLOBALS['TL_CONFIG']['dbHost'] = $GLOBALS['DB_HOST'];
-            $GLOBALS['TL_CONFIG']['dbDatabase'] = $GLOBALS['DB_DBNAME'];
-            $GLOBALS['TL_CONFIG']['dbPort'] = $GLOBALS['DB_PORT'];
-        }
-    }
+    \Contao\System::setContainer($container);
 }
 
 namespace Model {
