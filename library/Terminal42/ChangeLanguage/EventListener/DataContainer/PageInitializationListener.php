@@ -80,7 +80,7 @@ class PageInitializationListener
         $this->addRegularLanguageFields(
             array_diff(
                 array_keys($GLOBALS['TL_DCA']['tl_page']['palettes']),
-                ['__selector__', 'root', 'folder']
+                ['__selector__', 'root', 'rootfallback', 'folder']
             )
         );
     }
@@ -91,6 +91,13 @@ class PageInitializationListener
             ->addField('languageRoot', 'fallback')
             ->applyToPalette('root', 'tl_page')
         ;
+
+        if (isset($GLOBALS['TL_DCA']['tl_page']['palettes']['rootfallback'])) {
+            PaletteManipulator::create()
+                ->addField('languageRoot', 'fallback')
+                ->applyToPalette('rootfallback', 'tl_page')
+            ;
+        }
     }
 
     /**
