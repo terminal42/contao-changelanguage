@@ -234,4 +234,12 @@ class NavigationItem
     {
         return $this->targetPage ? $this->targetPage->title : $this->rootPage->title;
     }
+    
+    /**
+     * @return string
+     */
+    public function getPageTitle()
+    {
+        return $this->targetPage ? $this->targetPage->pageTitle : $this->rootPage->pageTitle;
+    }
 }
