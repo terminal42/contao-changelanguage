@@ -194,14 +194,15 @@ class ChangeLanguageModule extends AbstractFrontendModule
         parse_str($_SERVER['QUERY_STRING'], $currentQuery);
 
         foreach ($input as $k => $value) {
-            $value = (string) Input::get($k, false, true);
+            // GET parameters can be an array
+            $value = Input::get($k, false, true);
 
-            if ('' === $value) {
+            if (empty($value)) {
                 continue;
             }
 
             if (!array_key_exists($k, $currentQuery)) {
-                $attributes[$k] = $value;
+                $attributes[$k] = (string) $value;
             } elseif (\in_array($k, $queryParameters, false)) {
                 $query[$k] = $value;
             }

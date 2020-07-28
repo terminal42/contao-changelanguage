@@ -170,6 +170,13 @@ class UrlParameterBagTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('foo=bar&bar=baz', $bag->generateQueryString());
     }
 
+    public function testGenerateArrayQuery()
+    {
+        $bag = new UrlParameterBag([], ['foo' => ['bar', 'baz']]);
+
+        $this->assertSame(rawurlencode('foo[0]').'=bar&'.rawurlencode('foo[1]').'=baz', $bag->generateQueryString());
+    }
+
     public function testReturnsNullOnEmptyQuery()
     {
         $bag = new UrlParameterBag();
