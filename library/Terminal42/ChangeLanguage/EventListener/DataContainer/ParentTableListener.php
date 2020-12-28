@@ -50,6 +50,7 @@ class ParentTableListener
             'eval' => [
                 'includeBlankOption' => true,
                 'blankOptionLabel' => &$GLOBALS['TL_LANG'][$this->table]['isMaster'],
+                'tl_class' => 'w50',
             ],
             'save_callback' => [function ($value, DataContainer $dc) {
                 $this->validateMaster($value, $dc);
