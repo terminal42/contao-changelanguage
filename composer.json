@@ -4,12 +4,22 @@
     "keywords":["contao", "change", "language"],
     "type":"contao-module",
     "license":"LGPL-3.0+",
-    "authors":[
-        {
-            "name":"terminal42 gmbh",
-            "homepage":"http://terminal42.ch"
-        }
-    ],
+    "authors":[{
+        "name":"terminal42 gmbh",
+        "homepage":"https://www.terminal42.ch"
+    }],
+    "funding": [{
+        "type": "github",
+        "url": "https://github.com/terminal42"
+    }, {
+        "type": "other",
+        "url": "https://ko-fi.com/terminal42"
+    }],
+    "support": {
+        "issues": "https://github.com/terminal42/contao-changelanguage/issues",
+        "source": "https://github.com/terminal42/contao-changelanguage",
+        "forum": "https://community.contao.org"
+    },
     "require":{
         "php":">=5.4",
         "contao/core-bundle":"^3.5.9 || ~4.1",
