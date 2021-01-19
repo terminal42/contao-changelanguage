@@ -169,12 +169,12 @@ class UrlParameterBag
             return null;
         }
 
-        if (isset($this->attributes['auto_item'])) {
+        if (isset($attributes['auto_item'])) {
             throw new \RuntimeException('Do not set auto_item parameter');
         }
 
         if ($GLOBALS['TL_CONFIG']['useAutoItem']) {
-            $auto_item = array_intersect_key($this->attributes, array_flip((array) $GLOBALS['TL_AUTO_ITEM']));
+            $auto_item = array_intersect_key($attributes, array_flip((array) $GLOBALS['TL_AUTO_ITEM']));
 
             switch (\count($auto_item)) {
                 case 0:

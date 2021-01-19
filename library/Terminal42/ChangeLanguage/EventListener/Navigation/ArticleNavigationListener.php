@@ -60,7 +60,7 @@ class ArticleNavigationListener
         if (null === $targetArticle) {
             $parameterBag->removeUrlAttribute('articles');
         } else {
-            $parameterBag->setUrlAttribute('articles', $targetArticle->alias);
+            $parameterBag->setUrlAttribute('articles', $targetArticle->alias ?: $targetArticle->id);
         }
     }
 

@@ -32,7 +32,7 @@ abstract class AbstractNavigationListener
         $navigationItem = $event->getNavigationItem();
 
         if ($navigationItem->isCurrentPage()) {
-            $event->getUrlParameterBag()->setUrlAttribute($this->getUrlKey(), $current->alias);
+            $event->getUrlParameterBag()->setUrlAttribute($this->getUrlKey(), $current->alias ?: $current->id);
 
             return;
         }
