@@ -29,6 +29,7 @@ trait LanguageMainTrait
                 'blankOptionLabel' => &$GLOBALS['TL_LANG'][$this->getTable()]['languageMain'][2],
                 'chosen' => true,
                 'tl_class' => 'w50',
+                'doNotCopy' => true,
             ],
             'sql' => "int(10) unsigned NOT NULL default '0'",
             'relation' => ['type' => 'hasOne', 'table' => $this->getTable()],
