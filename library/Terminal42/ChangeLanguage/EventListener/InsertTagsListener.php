@@ -12,6 +12,7 @@
 namespace Terminal42\ChangeLanguage\EventListener;
 
 use Contao\Controller;
+use Contao\PageModel;
 use Terminal42\ChangeLanguage\PageFinder;
 
 class InsertTagsListener
@@ -33,7 +34,12 @@ class InsertTagsListener
 
         try {
             $pageFinder = new PageFinder();
-            $currentPage = \PageModel::findByIdOrAlias($parts[1]);
+            $currentPage = PageModel::findByIdOrAlias($parts[1]);
+
+            if (null === $currentPage) {
+                return '';
+            }
+
             $targetPage = $pageFinder->findAssociatedForLanguage($currentPage, $parts[2]);
         } catch (\RuntimeException $e) {
             // parent page of current page not found or not published
