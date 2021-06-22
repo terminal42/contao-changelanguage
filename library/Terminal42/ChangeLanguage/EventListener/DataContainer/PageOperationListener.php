@@ -22,24 +22,8 @@ class PageOperationListener
     {
         $GLOBALS['TL_DCA']['tl_page']['config']['oncopy_callback'][] = $this->selfCallback('onCopy');
         $GLOBALS['TL_DCA']['tl_page']['config']['oncut_callback'][] = $this->selfCallback('onCut');
-        $GLOBALS['TL_DCA']['tl_page']['config']['onsubmit_callback'][] = $this->selfCallback('onSubmit');
         $GLOBALS['TL_DCA']['tl_page']['config']['ondelete_callback'][] = $this->selfCallback('onDelete');
         $GLOBALS['TL_DCA']['tl_page']['config']['onundo_callback'][] = $this->selfCallback('onUndo');
-    }
-
-    /**
-     * Handles submitting a page and resets tl_page.languageMain if necessary.
-     *
-     * @param DataContainer $dc
-     */
-    public function onSubmit(DataContainer $dc)
-    {
-        if ('root' === $dc->activeRecord->type
-            && $dc->activeRecord->fallback
-            && (!$dc->activeRecord->languageRoot || null === PageModel::findByPk($dc->activeRecord->languageRoot))
-        ) {
-            $this->resetPageAndChildren($dc->id);
-        }
     }
 
     /**
