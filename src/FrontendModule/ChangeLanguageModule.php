@@ -102,7 +102,7 @@ class ChangeLanguageModule extends AbstractFrontendModule
             if ($item->isDirectFallback() && !$headerLinks->has($item->getLanguageTag())) {
                 $headerLinks->addFromNavigationItem($item, $urlParameters);
 
-                if ($item->getRootPage()->fallback) {
+                if ($item->getRootPage()->fallback && !$item->getRootPage()->languageRoot) {
                     $headerLinks->setDefault($item->getHref($urlParameters), $item->getTitle());
                 }
             }
