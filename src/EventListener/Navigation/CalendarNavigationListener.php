@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\ChangeLanguage\EventListener\Navigation;
 
 use Contao\CalendarEventsModel;
 use Contao\CalendarModel;
-use Contao\PageModel;
 use Haste\Input\Input;
 
 /**
@@ -31,7 +32,7 @@ class CalendarNavigationListener extends AbstractNavigationListener
             return null;
         }
 
-        /* @var PageModel $objPage */
+        /** @var PageModel $objPage */
         global $objPage;
 
         if (null === ($calendars = CalendarModel::findBy('jumpTo', $objPage->id))) {

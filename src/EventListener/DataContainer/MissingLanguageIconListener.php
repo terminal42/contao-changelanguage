@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 
 use Contao\ArticleModel;
@@ -28,9 +30,9 @@ class MissingLanguageIconListener
      *
      * @param string $table
      */
-    public function register($table)
+    public function register($table): void
     {
-        if (array_key_exists($table, self::$callbacks)) {
+        if (\array_key_exists($table, self::$callbacks)) {
             LabelCallback::createAndRegister(
                 $table,
                 function (array $args, $previousResult) use ($table) {
@@ -43,14 +45,13 @@ class MissingLanguageIconListener
     /**
      * Adds missing translation warning to page tree.
      *
-     * @param array $args
      * @param mixed $previousResult
      *
      * @return string
      */
     public function onPageLabel(array $args, $previousResult = null)
     {
-        list($row, $label) = $args;
+        [$row, $label] = $args;
 
         if ($previousResult) {
             $label = $previousResult;
@@ -63,7 +64,8 @@ class MissingLanguageIconListener
         $page = PageModel::findWithDetails($row['id']);
         $root = PageModel::findByPk($page->rootId);
 
-        if ((!$root->fallback || $root->languageRoot > 0)
+        if (
+            (!$root->fallback || $root->languageRoot > 0)
             && (!$page->languageMain || null === PageModel::findByPk($page->languageMain))
         ) {
             return $this->generateLabelWithWarning($label);
@@ -75,14 +77,13 @@ class MissingLanguageIconListener
     /**
      * Adds missing translation warning to article tree.
      *
-     * @param array $args
      * @param mixed $previousResult
      *
      * @return string
      */
     public function onArticleLabel(array $args, $previousResult = null)
     {
-        list($row, $label) = $args;
+        [$row, $label] = $args;
 
         if ($previousResult) {
             $label = $previousResult;
@@ -92,7 +93,8 @@ class MissingLanguageIconListener
             $page = PageModel::findWithDetails($row['pid']);
             $root = PageModel::findByPk($page->rootId);
 
-            if ((!$root->fallback || $root->languageRoot > 0)
+            if (
+                (!$root->fallback || $root->languageRoot > 0)
                 && $page->languageMain > 0 && null !== PageModel::findByPk($page->languageMain)
                 && (!$row['languageMain'] || null === ArticleModel::findByPk($row['languageMain']))
             ) {
@@ -106,7 +108,6 @@ class MissingLanguageIconListener
     /**
      * Generate missing translation warning for news child records.
      *
-     * @param array $args
      * @param mixed $previousResult
      *
      * @return string
@@ -118,7 +119,8 @@ class MissingLanguageIconListener
 
         $archive = NewsArchiveModel::findByPk($row['pid']);
 
-        if ($archive->master &&
+        if (
+            $archive->master &&
             (!$row['languageMain'] || null === NewsModel::findByPk($row['languageMain']))
         ) {
             return $this->generateLabelWithWarning($label);
@@ -130,7 +132,6 @@ class MissingLanguageIconListener
     /**
      * Generate missing translation warning for calendar events child records.
      *
-     * @param array $args
      * @param mixed $previousResult
      *
      * @return string
@@ -142,7 +143,8 @@ class MissingLanguageIconListener
 
         $calendar = CalendarModel::findByPk($row['pid']);
 
-        if ($calendar->master
+        if (
+            $calendar->master
             && (!$row['languageMain'] || null === CalendarEventsModel::findByPk($row['languageMain']))
         ) {
             return $this->generateLabelWithWarning($label);
@@ -154,7 +156,6 @@ class MissingLanguageIconListener
     /**
      * Generate missing translation warning for faq child records.
      *
-     * @param array $args
      * @param mixed $previousResult
      *
      * @return string
@@ -166,7 +167,8 @@ class MissingLanguageIconListener
 
         $category = FaqCategoryModel::findByPk($row['pid']);
 
-        if ($category->master
+        if (
+            $category->master
             && (!$row['languageMain'] || null === FaqModel::findByPk($row['languageMain']))
         ) {
             return preg_replace(

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 
 use Contao\Database;
@@ -25,7 +27,7 @@ class ParentTableListener
         $this->table = $table;
     }
 
-    public function register()
+    public function register(): void
     {
         if (!isset($GLOBALS['TL_DCA'][$this->table]['palettes']['default'])) {
             return;
@@ -94,7 +96,7 @@ class ParentTableListener
         return $options;
     }
 
-    private function validateMaster($value, DataContainer $dc)
+    private function validateMaster($value, DataContainer $dc): void
     {
         if (!$value) {
             return;

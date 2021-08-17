@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\ChangeLanguage;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;

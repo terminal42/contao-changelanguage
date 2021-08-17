@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\ChangeLanguage\ContaoManager;
 
 use Contao\CalendarBundle\ContaoCalendarBundle;
@@ -24,8 +26,8 @@ class Plugin implements BundlePluginInterface
                     ContaoCalendarBundle::class,
                     ContaoFaqBundle::class,
                     MultiColumnWizardBundle::class,
-                    "haste",
-                ])
+                    'haste',
+                ]),
         ];
     }
 }

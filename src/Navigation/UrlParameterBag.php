@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\ChangeLanguage\Navigation;
 
 class UrlParameterBag
@@ -37,10 +39,7 @@ class UrlParameterBag
         return $this->attributes;
     }
 
-    /**
-     * @param array $attributes
-     */
-    public function setUrlAttributes(array $attributes)
+    public function setUrlAttributes(array $attributes): void
     {
         $this->validateScalar($attributes);
 
@@ -54,7 +53,7 @@ class UrlParameterBag
      */
     public function hasUrlAttribute($name)
     {
-        return array_key_exists($name, $this->attributes);
+        return \array_key_exists($name, $this->attributes);
     }
 
     /**
@@ -71,7 +70,7 @@ class UrlParameterBag
      * @param string $name
      * @param mixed  $value
      */
-    public function setUrlAttribute($name, $value)
+    public function setUrlAttribute($name, $value): void
     {
         $this->validateScalar($value);
 
@@ -81,7 +80,7 @@ class UrlParameterBag
     /**
      * @param string $name
      */
-    public function removeUrlAttribute($name)
+    public function removeUrlAttribute($name): void
     {
         unset($this->attributes[$name]);
     }
@@ -94,10 +93,7 @@ class UrlParameterBag
         return $this->query;
     }
 
-    /**
-     * @param array $query
-     */
-    public function setQueryParameters(array $query)
+    public function setQueryParameters(array $query): void
     {
         $this->validateScalar($query);
 
@@ -111,7 +107,7 @@ class UrlParameterBag
      */
     public function hasQueryParameter($name)
     {
-        return array_key_exists($name, $this->query);
+        return \array_key_exists($name, $this->query);
     }
 
     /**
@@ -128,7 +124,7 @@ class UrlParameterBag
      * @param string $name
      * @param mixed  $value
      */
-    public function setQueryParameter($name, $value)
+    public function setQueryParameter($name, $value): void
     {
         $this->validateScalar($value);
 
@@ -138,7 +134,7 @@ class UrlParameterBag
     /**
      * @param string $name
      */
-    public function removeQueryParameter($name)
+    public function removeQueryParameter($name): void
     {
         unset($this->query[$name]);
     }
@@ -171,10 +167,12 @@ class UrlParameterBag
                 case 0:
                     $auto_item = null;
                     break;
+
                 case 1:
                     unset($attributes[key($auto_item)]);
                     $auto_item = current($auto_item);
                     break;
+
                 default:
                     throw new \RuntimeException('You must not have more than one auto_item parameter');
             }
@@ -183,7 +181,7 @@ class UrlParameterBag
         if (0 !== \count($attributes)) {
             array_walk(
                 $attributes,
-                function (&$v, $k) {
+                static function (&$v, $k): void {
                     $v = $k.'/'.$v;
                 }
             );
@@ -217,7 +215,7 @@ class UrlParameterBag
      *
      * @param mixed $value
      */
-    private function validateScalar($value)
+    private function validateScalar($value): void
     {
         if (\is_array($value)) {
             foreach ($value as $v) {

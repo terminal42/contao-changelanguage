@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 
 use Contao\Date;
 use Contao\Model;
+use Contao\Model\Collection;
 use Contao\NewsModel;
 
 class NewsListener extends AbstractChildTableListener
@@ -27,10 +30,10 @@ class NewsListener extends AbstractChildTableListener
     /**
      * {@inheritdoc}
      *
-     * @param NewsModel   $current
-     * @param NewsModel[] $models
+     * @param NewsModel             $current
+     * @param Collection<NewsModel> $models
      */
-    protected function formatOptions(Model $current, Model\Collection $models)
+    protected function formatOptions(Model $current, Collection $models)
     {
         $sameDay = $GLOBALS['TL_LANG']['tl_news']['sameDay'];
         $otherDay = $GLOBALS['TL_LANG']['tl_news']['otherDay'];

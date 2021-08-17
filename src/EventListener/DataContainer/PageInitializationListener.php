@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 
 use Contao\DataContainer;
@@ -12,19 +14,17 @@ class PageInitializationListener
     /**
      * Register our own callbacks.
      */
-    public function register()
+    public function register(): void
     {
-        $GLOBALS['TL_DCA']['tl_page']['config']['onload_callback'][] = function (DataContainer $dc) {
+        $GLOBALS['TL_DCA']['tl_page']['config']['onload_callback'][] = function (DataContainer $dc): void {
             $this->onLoad($dc);
         };
     }
 
     /**
      * Load page data container configuration depending on current mode.
-     *
-     * @param DataContainer $dc
      */
-    public function onLoad(DataContainer $dc)
+    public function onLoad(DataContainer $dc): void
     {
         if ('page' !== Input::get('do')) {
             return;
@@ -34,13 +34,14 @@ class PageInitializationListener
             case 'edit':
                 $this->handleEditMode($dc);
                 break;
+
             case 'editAll':
                 $this->handleEditAllMode();
                 break;
         }
     }
 
-    private function handleEditMode(DataContainer $dc)
+    private function handleEditMode(DataContainer $dc): void
     {
         $page = PageModel::findByPk($dc->id);
 
@@ -66,7 +67,7 @@ class PageInitializationListener
         $this->addRegularLanguageFields($page->type, $addLanguageMain);
     }
 
-    private function handleEditAllMode()
+    private function handleEditAllMode(): void
     {
         $this->addRootLanguageFields();
         $this->addRegularLanguageFields(
@@ -77,7 +78,7 @@ class PageInitializationListener
         );
     }
 
-    private function addRootLanguageFields()
+    private function addRootLanguageFields(): void
     {
         PaletteManipulator::create()
             ->addField('languageRoot', 'fallback')
@@ -96,7 +97,7 @@ class PageInitializationListener
      * @param array|string $palettes
      * @param bool         $addLanguageMain
      */
-    private function addRegularLanguageFields($palettes, $addLanguageMain = true)
+    private function addRegularLanguageFields($palettes, $addLanguageMain = true): void
     {
         $pm = PaletteManipulator::create()
             ->addLegend('language_legend', 'title_legend', PaletteManipulator::POSITION_AFTER, true)

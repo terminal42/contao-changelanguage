@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\ChangeLanguage\EventListener\BackendView;
 
 use Contao\ArticleModel;
@@ -70,9 +72,9 @@ class ArticleViewListener extends AbstractViewListener
      *
      * @throws \InvalidArgumentException
      */
-    protected function doSwitchView($id)
+    protected function doSwitchView($id): void
     {
-        list($table, $id) = explode('.', $id);
+        [$table, $id] = explode('.', $id);
 
         $url = Url::removeQueryString(['switchLanguage']);
 
@@ -80,9 +82,11 @@ class ArticleViewListener extends AbstractViewListener
             case 'tl_article':
                 $url = Url::addQueryString('id='.$id, $url);
                 break;
+
             case 'tl_page':
                 Session::getInstance()->set('tl_page_node', (int) $id);
                 break;
+
             default:
                 throw new \InvalidArgumentException(sprintf('Table "%s" is not supported', $table));
         }
@@ -91,10 +95,9 @@ class ArticleViewListener extends AbstractViewListener
     }
 
     /**
-     * @param PageModel $page
-     * @param int       $articleId
+     * @param int $articleId
      *
-     * @return ArticleModel[]
+     * @return array<ArticleModel>
      */
     private function findArticlesForPage(PageModel $page, $articleId)
     {
@@ -120,7 +123,7 @@ class ArticleViewListener extends AbstractViewListener
             return [];
         }
 
-        /** @var ArticleModel[] $models */
+        /** @var array<ArticleModel> $models */
         $models = $articles->getModels();
 
         if ($articleId > 0 && ($models[0]->id === $articleId || $models[0]->languageMain === $articleId)) {

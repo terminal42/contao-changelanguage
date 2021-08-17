@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\ChangeLanguage\Helper;
 
 use Contao\Controller;
@@ -18,8 +20,6 @@ class LanguageText
 
     /**
      * Constructor.
-     *
-     * @param array $map
      */
     public function __construct(array $map = [])
     {
@@ -37,7 +37,7 @@ class LanguageText
      */
     public function has($language)
     {
-        return array_key_exists(strtolower($language), $this->map);
+        return \array_key_exists(strtolower($language), $this->map);
     }
 
     /**
@@ -71,7 +71,7 @@ class LanguageText
      * @param string $language
      * @param string $label
      */
-    public function set($language, $label)
+    public function set($language, $label): void
     {
         $this->map[strtolower($language)] = $label;
     }
@@ -79,9 +79,9 @@ class LanguageText
     /**
      * Order an array of NavigationItem's by our custom labels.
      *
-     * @param NavigationItem[] $items
+     * @param array<NavigationItem> $items
      */
-    public function orderNavigationItems(array &$items)
+    public function orderNavigationItems(array &$items): void
     {
         if (0 === \count($this->map)) {
             return;
@@ -89,12 +89,15 @@ class LanguageText
 
         $languages = array_keys($this->map);
 
-        usort($items, function (NavigationItem $a, NavigationItem $b) use ($languages) {
-            $key1 = array_search(strtolower($a->getLanguageTag()), $languages, true);
-            $key2 = array_search(strtolower($b->getLanguageTag()), $languages, true);
+        usort(
+            $items,
+            static function (NavigationItem $a, NavigationItem $b) use ($languages) {
+                $key1 = array_search(strtolower($a->getLanguageTag()), $languages, true);
+                $key2 = array_search(strtolower($b->getLanguageTag()), $languages, true);
 
-            return ($key1 < $key2) ? -1 : 1;
-        });
+                return $key1 < $key2 ? -1 : 1;
+            }
+        );
     }
 
     /**

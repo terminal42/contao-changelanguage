@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\ChangeLanguage;
 
 class Language
@@ -20,7 +22,7 @@ class Language
             throw new \InvalidArgumentException(sprintf('"%s" is not a supported language format.', $language));
         }
 
-        return strtolower($matches[1]).(isset($matches[4]) ? ($delimiter.strtoupper($matches[4])) : '');
+        return strtolower($matches[1]).(isset($matches[4]) ? $delimiter.strtoupper($matches[4]) : '');
     }
 
     /**

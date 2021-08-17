@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\ChangeLanguage\Helper;
 
 use Contao\Controller;
@@ -15,10 +17,9 @@ class LabelCallback
     /**
      * Registers callback for given table.
      *
-     * @param string   $table
-     * @param callable $callback
+     * @param string $table
      */
-    public function register($table, callable $callback)
+    public function register($table, callable $callback): void
     {
         Controller::loadDataContainer($table);
 
@@ -26,7 +27,7 @@ class LabelCallback
             $args = \func_get_args();
             $result = null;
 
-            if (\is_callable($this->previous) || is_array($this->previous)) {
+            if (\is_callable($this->previous) || \is_array($this->previous)) {
                 $result = $this->executeCallback($this->previous, $args);
             }
 
@@ -45,8 +46,7 @@ class LabelCallback
     /**
      * Creates and registers new LabelCallback.
      *
-     * @param string   $table
-     * @param callable $callback
+     * @param string $table
      *
      * @return static
      */
@@ -60,7 +60,6 @@ class LabelCallback
 
     /**
      * @param callable $callback
-     * @param array    $args
      *
      * @return mixed
      */

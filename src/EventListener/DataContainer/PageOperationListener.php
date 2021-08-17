@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 
 use Contao\Database;
@@ -9,7 +11,7 @@ use Terminal42\ChangeLanguage\PageFinder;
 
 class PageOperationListener
 {
-    public function register()
+    public function register(): void
     {
         $GLOBALS['TL_DCA']['tl_page']['config']['oncopy_callback'][] = $this->selfCallback('onCopy');
         $GLOBALS['TL_DCA']['tl_page']['config']['oncut_callback'][] = $this->selfCallback('onCut');
@@ -20,12 +22,11 @@ class PageOperationListener
 
     /**
      * Handles submitting a page and resets tl_page.languageMain if necessary.
-     *
-     * @param DataContainer $dc
      */
-    public function onSubmit(DataContainer $dc)
+    public function onSubmit(DataContainer $dc): void
     {
-        if ('root' === $dc->activeRecord->type
+        if (
+            'root' === $dc->activeRecord->type
             && $dc->activeRecord->fallback
             && (!$dc->activeRecord->languageRoot || null === PageModel::findByPk($dc->activeRecord->languageRoot))
         ) {
@@ -38,27 +39,23 @@ class PageOperationListener
      *
      * @param int $insertId
      */
-    public function onCopy($insertId)
+    public function onCopy($insertId): void
     {
         $this->validateLanguageMainForPage($insertId);
     }
 
     /**
      * Handles moving a page and resets tl_page.languageMain if necessary.
-     *
-     * @param DataContainer $dc
      */
-    public function onCut(DataContainer $dc)
+    public function onCut(DataContainer $dc): void
     {
         $this->validateLanguageMainForPage($dc->id);
     }
 
     /**
      * Handles deleting a page and resets tl_page.languageMain if necessary.
-     *
-     * @param DataContainer $dc
      */
-    public function onDelete(DataContainer $dc)
+    public function onDelete(DataContainer $dc): void
     {
         $this->resetPageAndChildren($dc->id);
     }
@@ -67,14 +64,13 @@ class PageOperationListener
      * Handles undo of a deleted page and resets tl_page.languageMain if necessary.
      *
      * @param string $table
-     * @param array  $row
      */
-    public function onUndo($table, array $row)
+    public function onUndo($table, array $row): void
     {
         $this->validateLanguageMainForPage($row['id']);
     }
 
-    private function validateLanguageMainForPage($pageId)
+    private function validateLanguageMainForPage($pageId): void
     {
         $page = PageModel::findWithDetails($pageId);
 
@@ -121,7 +117,7 @@ class PageOperationListener
     /**
      * @param int $pageId
      */
-    private function resetPageAndChildren($pageId)
+    private function resetPageAndChildren($pageId): void
     {
         $resetIds = Database::getInstance()->getChildRecords($pageId, 'tl_page');
         $resetIds[] = $pageId;

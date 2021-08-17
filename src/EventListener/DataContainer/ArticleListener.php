@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 
 use Contao\ArticleModel;
@@ -15,16 +17,16 @@ class ArticleListener extends AbstractTableListener
 {
     use LanguageMainTrait;
 
-    public function register()
+    public function register(): void
     {
-        $GLOBALS['TL_DCA'][$this->table]['config']['onload_callback'][] = function (DataContainer $dc) {
+        $GLOBALS['TL_DCA'][$this->table]['config']['onload_callback'][] = function (DataContainer $dc): void {
             $this->onLoad($dc);
         };
 
         $this->addLanguageMainField();
     }
 
-    public function onLoad(DataContainer $dc)
+    public function onLoad(DataContainer $dc): void
     {
         $action = Input::get('act');
 
@@ -70,7 +72,7 @@ class ArticleListener extends AbstractTableListener
         return $options;
     }
 
-    private function addFieldsToPalettes()
+    private function addFieldsToPalettes(): void
     {
         $GLOBALS['TL_DCA'][$this->table]['fields']['title']['eval']['tl_class'] = 'w50';
 

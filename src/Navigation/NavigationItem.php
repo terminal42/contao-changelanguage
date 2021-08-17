@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\ChangeLanguage\Navigation;
 
 use Contao\PageModel;
@@ -40,15 +42,12 @@ class NavigationItem
     /**
      * Constructor.
      *
-     * @param PageModel   $rootPage
      * @param string|null $label
      */
     public function __construct(PageModel $rootPage, $label = null)
     {
         if ('root' !== $rootPage->type) {
-            throw new \RuntimeException(
-                sprintf('Page ID "%s" has type "%s" but should be "root"', $rootPage->id, $rootPage->type)
-            );
+            throw new \RuntimeException(sprintf('Page ID "%s" has type "%s" but should be "root"', $rootPage->id, $rootPage->type));
         }
 
         $this->rootPage = $rootPage->loadDetails();
@@ -78,7 +77,7 @@ class NavigationItem
     /**
      * @param $isDirectFallback
      */
-    public function setIsDirectFallback($isDirectFallback)
+    public function setIsDirectFallback($isDirectFallback): void
     {
         $this->isDirectFallback = (bool) $isDirectFallback;
     }
@@ -107,7 +106,7 @@ class NavigationItem
         return $this->linkLabel;
     }
 
-    public function setLabel($label)
+    public function setLabel($label): void
     {
         $this->linkLabel = (string) $label;
     }
@@ -121,11 +120,10 @@ class NavigationItem
     }
 
     /**
-     * @param PageModel $targetPage
-     * @param bool      $isDirectFallback
-     * @param bool      $isCurrentPage
+     * @param bool $isDirectFallback
+     * @param bool $isCurrentPage
      */
-    public function setTargetPage(PageModel $targetPage, $isDirectFallback, $isCurrentPage = false)
+    public function setTargetPage(PageModel $targetPage, $isDirectFallback, $isCurrentPage = false): void
     {
         $this->targetPage = $targetPage->loadDetails();
         $this->isDirectFallback = (bool) $isDirectFallback;
@@ -135,7 +133,7 @@ class NavigationItem
     /**
      * @param bool $isCurrentPage
      */
-    public function setIsCurrentPage($isCurrentPage)
+    public function setIsCurrentPage($isCurrentPage): void
     {
         $this->isCurrentPage = $isCurrentPage;
     }
@@ -157,7 +155,7 @@ class NavigationItem
     /**
      * @param bool|null $newWindow
      */
-    public function setNewWindow($newWindow)
+    public function setNewWindow($newWindow): void
     {
         $this->newWindow = $newWindow;
     }
@@ -197,8 +195,6 @@ class NavigationItem
     }
 
     /**
-     * @param UrlParameterBag $urlParameterBag
-     *
      * @return string
      */
     public function getHref(UrlParameterBag $urlParameterBag)

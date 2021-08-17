@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\ChangeLanguage\EventListener\Navigation;
 
 use Contao\Date;
@@ -10,10 +12,8 @@ abstract class AbstractNavigationListener
 {
     /**
      * Find record based on languageMain field and parent master archive.
-     *
-     * @param ChangelanguageNavigationEvent $event
      */
-    public function onChangelanguageNavigation(ChangelanguageNavigationEvent $event)
+    public function onChangelanguageNavigation(ChangelanguageNavigationEvent $event): void
     {
         $current = $this->findCurrent();
 
@@ -72,7 +72,6 @@ abstract class AbstractNavigationListener
     /**
      * Adds publishing conditions to Model query columns if backend user is not logged in.
      *
-     * @param array  $columns
      * @param string $table
      * @param bool   $addStartStop
      *
@@ -104,10 +103,6 @@ abstract class AbstractNavigationListener
     abstract protected function findCurrent();
 
     /**
-     * @param array $columns
-     * @param array $values
-     * @param array $options
-     *
      * @return Model|null
      */
     abstract protected function findPublishedBy(array $columns, array $values = [], array $options = []);

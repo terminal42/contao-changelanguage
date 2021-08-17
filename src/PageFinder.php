@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\ChangeLanguage;
 
 use Contao\Date;
@@ -9,11 +11,10 @@ use Contao\PageModel;
 class PageFinder
 {
     /**
-     * @param PageModel $page
-     * @param bool      $skipCurrent
-     * @param bool      $publishedOnly
+     * @param bool $skipCurrent
+     * @param bool $publishedOnly
      *
-     * @return PageModel[]
+     * @return array<PageModel>
      */
     public function findRootPagesForPage(PageModel $page, $skipCurrent = false, $publishedOnly = true)
     {
@@ -65,8 +66,6 @@ class PageFinder
     /**
      * Finds the root page of fallback language for the given page.
      *
-     * @param PageModel $page
-     *
      * @return PageModel|null
      */
     public function findMasterRootForPage(PageModel $page)
@@ -92,10 +91,9 @@ class PageFinder
     }
 
     /**
-     * @param PageModel $page
-     * @param bool      $skipCurrent
+     * @param bool $skipCurrent
      *
-     * @return PageModel[]
+     * @return array<PageModel>
      */
     public function findAssociatedForPage(PageModel $page, $skipCurrent = false, array $rootPages = null)
     {
@@ -129,17 +127,16 @@ class PageFinder
 
         return array_filter(
             $this->findPages($columns, $values),
-            function (PageModel $page) use ($rootPages) {
+            static function (PageModel $page) use ($rootPages) {
                 $page->loadDetails();
 
-                return array_key_exists($page->rootId, $rootPages);
+                return \array_key_exists($page->rootId, $rootPages);
             }
         );
     }
 
     /**
-     * @param PageModel $page
-     * @param string    $language
+     * @param string $language
      *
      * @return PageModel
      */
@@ -161,8 +158,6 @@ class PageFinder
     }
 
     /**
-     * @param PageModel $page
-     *
      * @return PageModel|null
      */
     public function findAssociatedInMaster(PageModel $page)
@@ -188,8 +183,7 @@ class PageFinder
     }
 
     /**
-     * @param PageModel $page
-     * @param string    $language
+     * @param string $language
      *
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
@@ -208,9 +202,7 @@ class PageFinder
                 }
             }
 
-            throw new \InvalidArgumentException(
-                sprintf('There\'s no language "%s" related to root page ID "%s"', $language, $page->id)
-            );
+            throw new \InvalidArgumentException(sprintf('There\'s no language "%s" related to root page ID "%s"', $language, $page->id));
         }
 
         $parent = PageModel::findPublishedById($page->pid);
@@ -223,10 +215,9 @@ class PageFinder
     }
 
     /**
-     * @param array  $columns
      * @param string $table
      */
-    private function addPublishingConditions(array &$columns, $table)
+    private function addPublishingConditions(array &$columns, $table): void
     {
         if ('BE' !== TL_MODE && true !== BE_USER_LOGGED_IN) {
             $start = Date::floorToMinute();
@@ -239,11 +230,7 @@ class PageFinder
     }
 
     /**
-     * @param array $columns
-     * @param array $values
-     * @param array $options
-     *
-     * @return PageModel[]
+     * @return array<PageModel>
      */
     private function findPages(array $columns, array $values, array $options = [])
     {

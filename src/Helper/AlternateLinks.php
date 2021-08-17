@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\ChangeLanguage\Helper;
 
 use Contao\Environment;
@@ -27,7 +29,7 @@ class AlternateLinks
      */
     public function has($language)
     {
-        return array_key_exists(Language::toLanguageTag($language), $this->links);
+        return \array_key_exists(Language::toLanguageTag($language), $this->links);
     }
 
     /**
@@ -37,18 +39,15 @@ class AlternateLinks
      * @param string $href
      * @param string $title
      */
-    public function add($language, $href, $title = '')
+    public function add($language, $href, $title = ''): void
     {
         $this->store($language, $href, $title);
     }
 
     /**
      * Adds a link from a NavigationItem instance.
-     *
-     * @param NavigationItem  $item
-     * @param UrlParameterBag $urlParameterBag
      */
-    public function addFromNavigationItem(NavigationItem $item, UrlParameterBag $urlParameterBag)
+    public function addFromNavigationItem(NavigationItem $item, UrlParameterBag $urlParameterBag): void
     {
         $this->add($item->getLanguageTag(), $item->getHref($urlParameterBag), $item->getTitle());
     }
@@ -58,7 +57,7 @@ class AlternateLinks
      *
      * @param string $language
      */
-    public function remove($language)
+    public function remove($language): void
     {
         unset($this->links[Language::toLanguageTag($language)]);
     }
@@ -69,7 +68,7 @@ class AlternateLinks
      * @param string $href
      * @param string $title
      */
-    public function setDefault($href, $title = '')
+    public function setDefault($href, $title = ''): void
     {
         $this->store('x-default', $href, $title);
     }
@@ -99,7 +98,7 @@ class AlternateLinks
      * @param string $href
      * @param string $title
      */
-    private function store($language, $href, $title)
+    private function store($language, $href, $title): void
     {
         $language = Language::toLanguageTag($language);
 

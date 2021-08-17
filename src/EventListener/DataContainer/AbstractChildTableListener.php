@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 
 use Contao\DataContainer;
 use Contao\Input;
 use Contao\Model;
+use Contao\Model\Collection;
 use Haste\Dca\PaletteManipulator;
 use Terminal42\ChangeLanguage\EventListener\AbstractTableListener;
 
@@ -12,16 +15,16 @@ abstract class AbstractChildTableListener extends AbstractTableListener
 {
     use LanguageMainTrait;
 
-    public function register()
+    public function register(): void
     {
-        $GLOBALS['TL_DCA'][$this->table]['config']['onload_callback'][] = function (DataContainer $dc) {
+        $GLOBALS['TL_DCA'][$this->table]['config']['onload_callback'][] = function (DataContainer $dc): void {
             $this->onLoad($dc);
         };
 
         $this->addLanguageMainField();
     }
 
-    public function onLoad(DataContainer $dc)
+    public function onLoad(DataContainer $dc): void
     {
         $action = Input::get('act');
 
@@ -32,7 +35,8 @@ abstract class AbstractChildTableListener extends AbstractTableListener
 
     public function onLanguageMainOptions(DataContainer $dc)
     {
-        if (null === ($current = $this->getModel($dc->id))
+        if (
+            null === ($current = $this->getModel($dc->id))
             || null === ($master = $current->getRelated('pid')->getRelated('master'))
         ) {
             return [];
@@ -48,10 +52,10 @@ abstract class AbstractChildTableListener extends AbstractTableListener
             [$master->id, $current->pid, $current->id]
         );
 
-        return $models instanceof Model\Collection ? $this->formatOptions($current, $models) : [];
+        return $models instanceof Collection ? $this->formatOptions($current, $models) : [];
     }
 
-    protected function addFieldsToPalettes()
+    protected function addFieldsToPalettes(): void
     {
         $GLOBALS['TL_DCA'][$this->table]['fields'][$this->getTitleField()]['eval']['tl_class'] = 'w50';
 
@@ -88,10 +92,7 @@ abstract class AbstractChildTableListener extends AbstractTableListener
     abstract protected function getSorting();
 
     /**
-     * @param Model            $current
-     * @param Model\Collection $models
-     *
      * @return array
      */
-    abstract protected function formatOptions(Model $current, Model\Collection $models);
+    abstract protected function formatOptions(Model $current, Collection $models);
 }

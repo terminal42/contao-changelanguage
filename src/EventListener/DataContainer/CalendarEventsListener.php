@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 
 use Contao\CalendarEventsModel;
 use Contao\Date;
 use Contao\Model;
+use Contao\Model\Collection;
 
 class CalendarEventsListener extends AbstractChildTableListener
 {
@@ -27,10 +30,10 @@ class CalendarEventsListener extends AbstractChildTableListener
     /**
      * {@inheritdoc}
      *
-     * @param CalendarEventsModel   $current
-     * @param CalendarEventsModel[] $models
+     * @param CalendarEventsModel             $current
+     * @param Collection<CalendarEventsModel> $models
      */
-    protected function formatOptions(Model $current, Model\Collection $models)
+    protected function formatOptions(Model $current, Collection $models)
     {
         $options = [];
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\ChangeLanguage\EventListener;
 
 use Terminal42\ChangeLanguage\EventListener\DataContainer\MissingLanguageIconListener;
@@ -55,11 +57,11 @@ class CallbackSetupListener
      *
      * @param string $table
      */
-    public function onLoadDataContainer($table)
+    public function onLoadDataContainer($table): void
     {
         $this->labelListener->register($table);
 
-        if (array_key_exists($table, self::$listeners)) {
+        if (\array_key_exists($table, self::$listeners)) {
             foreach (self::$listeners[$table] as $class) {
                 /** @var AbstractTableListener $listener */
                 $listener = new $class($table);

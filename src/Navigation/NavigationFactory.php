@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\ChangeLanguage\Navigation;
 
 use Contao\PageModel;
@@ -25,10 +27,6 @@ class NavigationFactory
 
     /**
      * Constructor.
-     *
-     * @param PageFinder   $pageFinder
-     * @param LanguageText $languageText
-     * @param PageModel    $currentPage
      */
     public function __construct(PageFinder $pageFinder, LanguageText $languageText, PageModel $currentPage)
     {
@@ -38,11 +36,9 @@ class NavigationFactory
     }
 
     /**
-     * @param PageModel $currentPage
-     *
      * @throws \RuntimeException
      *
-     * @return NavigationItem[]
+     * @return array<NavigationItem>
      */
     public function findNavigationItems(PageModel $currentPage)
     {
@@ -55,7 +51,7 @@ class NavigationFactory
             $this->pageFinder->findAssociatedForPage($currentPage, false, $rootPages)
         );
 
-        foreach ($navigationItems as $k => $item) {
+        foreach ($navigationItems as $item) {
             if (!$item->hasTargetPage()) {
                 try {
                     $item->setTargetPage(
@@ -78,11 +74,11 @@ class NavigationFactory
     /**
      * Builds NavigationItem's from given root pages.
      *
-     * @param PageModel[] $rootPages
+     * @param array<PageModel> $rootPages
      *
      * @throws \RuntimeException if multiple root pages have the same language
      *
-     * @return NavigationItem[]
+     * @return array<NavigationItem>
      */
     private function createNavigationItemsForRootPages(array $rootPages)
     {
@@ -95,10 +91,8 @@ class NavigationFactory
 
             $language = strtolower($rootPage->language);
 
-            if (array_key_exists($language, $navigationItems)) {
-                throw new \RuntimeException(
-                    sprintf('Multiple root pages for the language "%s" found', $rootPage->language)
-                );
+            if (\array_key_exists($language, $navigationItems)) {
+                throw new \RuntimeException(sprintf('Multiple root pages for the language "%s" found', $rootPage->language));
             }
 
             $navigationItems[$language] = new NavigationItem($rootPage, $this->languageText->get($language));
@@ -110,18 +104,18 @@ class NavigationFactory
     /**
      * Sets the target page for navigation items based on list of associated pages.
      *
-     * @param NavigationItem[] $navigationItems
-     * @param PageModel[]      $rootPages
-     * @param PageModel[]      $associatedPages
+     * @param array<NavigationItem> $navigationItems
+     * @param array<PageModel>      $rootPages
+     * @param array<PageModel>      $associatedPages
      *
      * @throws \RuntimeException
      */
-    private function setTargetPageForNavigationItems(array $navigationItems, array $rootPages, array $associatedPages)
+    private function setTargetPageForNavigationItems(array $navigationItems, array $rootPages, array $associatedPages): void
     {
         foreach ($associatedPages as $page) {
             $page->loadDetails();
 
-            if (!array_key_exists($page->rootId, $rootPages)) {
+            if (!\array_key_exists($page->rootId, $rootPages)) {
                 throw new \RuntimeException(sprintf('Missing root page for language "%s"', $page->language));
             }
 
@@ -138,8 +132,6 @@ class NavigationFactory
 
     /**
      * Returns whether the given page is published.
-     *
-     * @param PageModel $page
      *
      * @return bool
      */

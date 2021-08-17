@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\ChangeLanguage\FrontendModule;
 
 use Contao\FrontendTemplate;
@@ -63,7 +65,7 @@ class ChangeLanguageModule extends AbstractFrontendModule
     /**
      * {@inheritdoc}
      */
-    protected function compile()
+    protected function compile(): void
     {
         $currentPage = $this->getCurrentPage();
         $pageFinder = new PageFinder();
@@ -90,7 +92,8 @@ class ChangeLanguageModule extends AbstractFrontendModule
         foreach ($navigationItems as $item) {
             $urlParameters = clone $defaultUrlParameters;
 
-            if (false === $this->executeHook($item, $urlParameters)
+            if (
+                false === $this->executeHook($item, $urlParameters)
                 || ($this->hideNoFallback && !$item->isDirectFallback())
             ) {
                 continue;
@@ -115,9 +118,6 @@ class ChangeLanguageModule extends AbstractFrontendModule
     /**
      * Generates array suitable for nav_default template.
      *
-     * @param NavigationItem  $item
-     * @param UrlParameterBag $urlParameterBag
-     *
      * @return array
      */
     protected function generateTemplateArray(NavigationItem $item, UrlParameterBag $urlParameterBag)
@@ -139,8 +139,6 @@ class ChangeLanguageModule extends AbstractFrontendModule
     }
 
     /**
-     * @param array $items
-     *
      * @return string
      */
     protected function generateNavigationTemplate(array $items)
@@ -192,7 +190,7 @@ class ChangeLanguageModule extends AbstractFrontendModule
                 continue;
             }
 
-            if (!array_key_exists($k, $currentQuery)) {
+            if (!\array_key_exists($k, $currentQuery)) {
                 $attributes[$k] = (string) $value;
             } elseif (\in_array($k, $queryParameters, false)) {
                 $query[$k] = $value;
@@ -205,15 +203,13 @@ class ChangeLanguageModule extends AbstractFrontendModule
     /**
      * Returns false if navigation item should be skipped.
      *
-     * @param NavigationItem  $navigationItem
-     * @param UrlParameterBag $urlParameterBag
-     *
      * @return bool
      */
     protected function executeHook(NavigationItem $navigationItem, UrlParameterBag $urlParameterBag)
     {
         // HOOK: allow extensions to modify url parameters
-        if (isset($GLOBALS['TL_HOOKS']['changelanguageNavigation'])
+        if (
+            isset($GLOBALS['TL_HOOKS']['changelanguageNavigation'])
             && \is_array($GLOBALS['TL_HOOKS']['changelanguageNavigation'])
         ) {
             $event = new ChangelanguageNavigationEvent($navigationItem, $urlParameterBag);

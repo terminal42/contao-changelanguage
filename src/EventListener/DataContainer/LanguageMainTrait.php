@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 
 use Contao\DataContainer;
 
 trait LanguageMainTrait
 {
-    protected function addLanguageMainField()
+    protected function addLanguageMainField(): void
     {
         $GLOBALS['TL_DCA'][$this->getTable()]['fields']['languageMain'] = [
             'label' => &$GLOBALS['TL_LANG'][$this->getTable()]['languageMain'],

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\ChangeLanguage\Event;
 
 use Terminal42\ChangeLanguage\Navigation\NavigationItem;
@@ -27,12 +29,6 @@ class ChangelanguageNavigationEvent
      */
     private $stopPropagation = false;
 
-    /**
-     * Constructor.
-     *
-     * @param NavigationItem  $navigationItem
-     * @param UrlParameterBag $urlParameters
-     */
     public function __construct(NavigationItem $navigationItem, UrlParameterBag $urlParameters)
     {
         $this->navigationItem = $navigationItem;
@@ -59,7 +55,7 @@ class ChangelanguageNavigationEvent
         return $this->urlParameterBag;
     }
 
-    public function skipInNavigation()
+    public function skipInNavigation(): void
     {
         $this->skipped = true;
         $this->stopPropagation();
@@ -75,7 +71,7 @@ class ChangelanguageNavigationEvent
         return $this->stopPropagation;
     }
 
-    public function stopPropagation()
+    public function stopPropagation(): void
     {
         $this->stopPropagation = true;
     }

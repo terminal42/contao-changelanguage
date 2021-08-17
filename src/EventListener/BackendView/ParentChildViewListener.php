@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\ChangeLanguage\EventListener\BackendView;
 
 use Contao\Controller;
@@ -68,11 +70,9 @@ class ParentChildViewListener extends AbstractViewListener
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @throws \InvalidArgumentException
      */
-    protected function doSwitchView($id)
+    protected function doSwitchView($id): void
     {
         $url = Url::removeQueryString(['switchLanguage']);
         $url = Url::addQueryString('id='.$id, $url);
@@ -83,8 +83,7 @@ class ParentChildViewListener extends AbstractViewListener
     /**
      * Finds related item for a given page.
      *
-     * @param PageModel $page
-     * @param int       $id
+     * @param int $id
      *
      * @return Model|null
      */

@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\ChangeLanguage\EventListener\Navigation;
 
 use Contao\ArticleModel;
 use Contao\Database;
 use Contao\Date;
-use Contao\PageModel;
 use Terminal42\ChangeLanguage\Event\ChangelanguageNavigationEvent;
 use Terminal42\ChangeLanguage\PageFinder;
 
@@ -13,19 +14,18 @@ class ArticleNavigationListener
 {
     /**
      * Translate URL parameters for articles.
-     *
-     * @param ChangelanguageNavigationEvent $event
      */
-    public function onChangelanguageNavigation(ChangelanguageNavigationEvent $event)
+    public function onChangelanguageNavigation(ChangelanguageNavigationEvent $event): void
     {
         // Try to find matching article
-        if ($event->getNavigationItem()->isCurrentPage()
+        if (
+            $event->getNavigationItem()->isCurrentPage()
             || !$event->getUrlParameterBag()->hasUrlAttribute('articles')
         ) {
             return;
         }
 
-        /* @var PageModel $objPage */
+        /** @var PageModel $objPage */
         global $objPage;
 
         $parameterBag = $event->getUrlParameterBag();
@@ -59,19 +59,14 @@ class ArticleNavigationListener
     /**
      * Find target article for a root page and current article.
      *
-     * @param ArticleModel $currentArticle
-     * @param int          $targetRootId
-     * @param bool         $currentIsFallback
-     * @param bool         $targetIsFallback
+     * @param int  $targetRootId
+     * @param bool $currentIsFallback
+     * @param bool $targetIsFallback
      *
      * @return ArticleModel|null
      */
-    private function findTargetArticle(
-        ArticleModel $currentArticle,
-        $targetRootId,
-        $currentIsFallback,
-        $targetIsFallback
-    ) {
+    private function findTargetArticle(ArticleModel $currentArticle, $targetRootId, $currentIsFallback, $targetIsFallback)
+    {
         // If the target root is fallback, the article ID will match our current "languageMain"
         if ($targetIsFallback) {
             return $this->findPublishedArticle(['tl_article.id = '.$currentArticle->languageMain]);
@@ -96,10 +91,6 @@ class ArticleNavigationListener
 
     /**
      * Find a published article with additional conditions.
-     *
-     * @param array $columns
-     * @param array $values
-     * @param array $options
      *
      * @return ArticleModel|null
      */

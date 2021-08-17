@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\ChangeLanguage\EventListener\Navigation;
 
 use Contao\NewsArchiveModel;
 use Contao\NewsModel;
-use Contao\PageModel;
 use Haste\Input\Input;
 
 /**
@@ -31,7 +32,7 @@ class NewsNavigationListener extends AbstractNavigationListener
             return null;
         }
 
-        /* @var PageModel $objPage */
+        /** @var PageModel $objPage */
         global $objPage;
 
         if (null === ($archives = NewsArchiveModel::findBy('jumpTo', $objPage->id))) {

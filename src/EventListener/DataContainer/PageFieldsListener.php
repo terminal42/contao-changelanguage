@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 
 use Contao\Database;
@@ -13,8 +15,7 @@ class PageFieldsListener
     /**
      * Sets rootNodes when initializing the languageMain field.
      *
-     * @param mixed         $value
-     * @param DataContainer $dc
+     * @param mixed $value
      *
      * @return mixed
      */
@@ -27,8 +28,9 @@ class PageFieldsListener
         $page = PageModel::findWithDetails($dc->id);
         $root = PageModel::findByPk($page->rootId);
 
-        if ($root->fallback
-            && (!$root->languageRoot || null === ($languageRoot = PageModel::findByPk($root->languageRoot)))
+        if (
+            $root->fallback
+            && (!$root->languageRoot || null === PageModel::findByPk($root->languageRoot))
         ) {
             return $value;
         }
@@ -50,8 +52,7 @@ class PageFieldsListener
     /**
      * Validate input value when saving tl_page.languageMain field.
      *
-     * @param mixed         $value
-     * @param DataContainer $dc
+     * @param mixed $value
      *
      * @throws \RuntimeException
      *
@@ -90,13 +91,11 @@ class PageFieldsListener
     /**
      * Gets list of options for language root selection (linking multiple fallback roots on different domains).
      *
-     * @param DataContainer $dc
-     *
      * @return array
      */
     public function onLanguageRootOptions(DataContainer $dc)
     {
-        /** @var PageModel[] $pages */
+        /** @var array<PageModel> $pages */
         $pages = PageModel::findBy(
             [
                 "tl_page.type='root'",

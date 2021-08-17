@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\ChangeLanguage\EventListener\BackendView;
 
 use Contao\Controller;
@@ -50,7 +52,7 @@ class PageViewListener extends AbstractViewListener
     /**
      * {@inheritdoc}
      */
-    protected function doSwitchView($id)
+    protected function doSwitchView($id): void
     {
         Session::getInstance()->set('tl_page_node', (int) $id);
 
