@@ -22,25 +22,19 @@ class AlternateLinks
 
     /**
      * Returns whether a link already exists for a language.
-     *
-     * @param string $language
-     *
-     * @return bool
      */
-    public function has($language)
+    public function has(string $language): bool
     {
         return \array_key_exists(Language::toLanguageTag($language), $this->links);
     }
 
     /**
      * Adds or replaces a link for a language.
-     *
-     * @param string $language
-     * @param string $href
-     * @param string $title
      */
-    public function add($language, $href, $title = ''): void
+    public function add(string $language, string $href, string $title = ''): void
     {
+        $language = Language::toLanguageTag($language);
+
         $this->store($language, $href, $title);
     }
 
@@ -54,33 +48,24 @@ class AlternateLinks
 
     /**
      * Removes link for a language if it exists.
-     *
-     * @param string $language
      */
-    public function remove($language): void
+    public function remove(string $language): void
     {
         unset($this->links[Language::toLanguageTag($language)]);
     }
 
     /**
      * Sets link for the x-default language.
-     *
-     * @param string $href
-     * @param string $title
      */
-    public function setDefault($href, $title = ''): void
+    public function setDefault(string $href, string $title = ''): void
     {
         $this->store('x-default', $href, $title);
     }
 
     /**
      * Generates template markup of links for the page header.
-     *
-     * @param string $templateName
-     *
-     * @return string
      */
-    public function generate($templateName = 'block_alternate_links')
+    public function generate(string $templateName = 'block_alternate_links'): string
     {
         if (0 === \count($this->links)) {
             return '';
@@ -93,15 +78,8 @@ class AlternateLinks
         return $template->parse();
     }
 
-    /**
-     * @param string $language
-     * @param string $href
-     * @param string $title
-     */
-    private function store($language, $href, $title): void
+    private function store(string $language, string $href, string $title): void
     {
-        $language = Language::toLanguageTag($language);
-
         // URLs must always be absolute
         if (0 !== strpos($href, 'http://') && 0 !== strpos($href, 'https://')) {
             $href = Environment::get('base').$href;

@@ -101,6 +101,10 @@ class ChangeLanguageModule extends AbstractFrontendModule
 
             if ($item->isDirectFallback() && !$headerLinks->has($item->getLanguageTag())) {
                 $headerLinks->addFromNavigationItem($item, $urlParameters);
+
+                if ($item->getRootPage()->fallback) {
+                    $headerLinks->setDefault($item->getHref($urlParameters), $item->getTitle());
+                }
             }
 
             // Remove active language from navigation but not from header links!
