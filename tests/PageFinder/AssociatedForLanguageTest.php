@@ -1,14 +1,5 @@
 <?php
 
-/*
- * changelanguage Extension for Contao Open Source CMS
- *
- * @copyright  Copyright (c) 2008-2019, terminal42 gmbh
- * @author     terminal42 gmbh <info@terminal42.ch>
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
- * @link       http://github.com/terminal42/contao-changelanguage
- */
-
 namespace Terminal42\ChangeLanguage\Tests\PageFinder;
 
 use Contao\PageModel;
@@ -86,9 +77,9 @@ class AssociatedForLanguageTest extends ContaoTestCase
         $published = $published ? '1' : '';
 
         return $this->query("
-            INSERT INTO tl_page 
-            (pid, type, languageMain, published) 
-            VALUES 
+            INSERT INTO tl_page
+            (pid, type, languageMain, published)
+            VALUES
             ($pid, 'regular', $languageMain, '$published')
         ");
     }
@@ -99,9 +90,9 @@ class AssociatedForLanguageTest extends ContaoTestCase
         $fallback = $fallback ? '1' : '';
 
         return $this->query("
-            INSERT INTO tl_page 
+            INSERT INTO tl_page
             (type, language, fallback, published)
-            VALUES 
+            VALUES
             ('root', '$language', '$fallback', '$published')
         ");
     }

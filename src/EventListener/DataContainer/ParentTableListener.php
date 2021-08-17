@@ -1,14 +1,5 @@
 <?php
 
-/*
- * changelanguage Extension for Contao Open Source CMS
- *
- * @copyright  Copyright (c) 2008-2019, terminal42 gmbh
- * @author     terminal42 gmbh <info@terminal42.ch>
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
- * @link       http://github.com/terminal42/contao-changelanguage
- */
-
 namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 
 use Contao\Database;
@@ -88,9 +79,9 @@ class ParentTableListener
         $options = [];
         $result = Database::getInstance()
             ->prepare('
-                SELECT id, title 
-                FROM '.$this->table.' 
-                WHERE jumpTo IN ('.implode(',', $associated).') AND master=0 
+                SELECT id, title
+                FROM '.$this->table.'
+                WHERE jumpTo IN ('.implode(',', $associated).') AND master=0
                 ORDER BY title
             ')
             ->execute($dc->activeRecord->language)
@@ -111,8 +102,8 @@ class ParentTableListener
 
         $result = Database::getInstance()
             ->prepare('
-                SELECT title 
-                FROM '.$this->table.' 
+                SELECT title
+                FROM '.$this->table.'
                 WHERE jumpTo=? AND master=? AND id!=?
             ')
             ->limit(1)
