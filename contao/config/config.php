@@ -23,14 +23,14 @@ $GLOBALS['TL_HOOKS']['replaceInsertTags'][]        = ['Terminal42\ChangeLanguage
 $GLOBALS['TL_HOOKS']['loadDataContainer'][]        = ['Terminal42\ChangeLanguage\EventListener\CallbackSetupListener', 'onLoadDataContainer'];
 $GLOBALS['TL_HOOKS']['changelanguageNavigation'][] = ['Terminal42\ChangeLanguage\EventListener\Navigation\ArticleNavigationListener', 'onChangelanguageNavigation'];
 
-if (in_array('calendar', ModuleLoader::getActive(), true)) {
+if (class_exists(Contao\CalendarBundle\ContaoCalendarBundle::class)) {
     $GLOBALS['TL_HOOKS']['changelanguageNavigation'][] = ['Terminal42\ChangeLanguage\EventListener\Navigation\CalendarNavigationListener', 'onChangelanguageNavigation'];
 }
 
-if (in_array('faq', ModuleLoader::getActive(), true)) {
+if (class_exists(Contao\FaqBundle\ContaoFaqBundle::class)) {
     $GLOBALS['TL_HOOKS']['changelanguageNavigation'][] = ['Terminal42\ChangeLanguage\EventListener\Navigation\FaqNavigationListener', 'onChangelanguageNavigation'];
 }
 
-if (in_array('news', ModuleLoader::getActive(), true)) {
+if (class_exists(Contao\NewsBundle\ContaoNewsBundle::class)) {
     $GLOBALS['TL_HOOKS']['changelanguageNavigation'][] = ['Terminal42\ChangeLanguage\EventListener\Navigation\NewsNavigationListener', 'onChangelanguageNavigation'];
 }
