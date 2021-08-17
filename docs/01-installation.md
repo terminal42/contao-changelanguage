@@ -14,30 +14,29 @@
 
 Minimum requirements:
 
- - Contao 3.5 or Contao 4.1
+ - Contao 4.9
  - Haste 4.13
  - MultiColumnWizard 3.3
 
 
-### Install using Composer (recommended)
+### Installation via Contao Manager
 
-[Composer][1] is our recommend way to install Contao modules.
-The Contao plugin will take care of copying the files to the correct place.
-
-    $ composer.phar require terminal42/contao-changelanguage ^3.0
-
-
-### Install from Extension Repository (in Contao 3.5)
-
-ChangeLanguage v3 can also be installed from the Contao Extension Repository.
-Follow the Contao manual on [how to install extensions][2].
-
+Search for `terminal42/contao-changelanguage` in the Contao Manager and add it
+to your installation. Apply changes to update the packages.
 
 ### Manual installation
 
-Download [`terminal42/contao-changelanguage`][3] and copy the folder to your Contao
-installation in `system/modules/changelanguage`. You must also download and
-install [`codefog/contao-haste`][4] and [`menatwork/contao-multicolumnwizard`][5].
+Add a composer dependency for this bundle. Therefore, change in the project root
+and run the following:
+
+```bash
+composer require terminal42/contao-changelanguage
+```
+
+Depending on your environment, the command can differ, i.e. starting with
+`php composer.phar …` if you do not have composer installed globally.
+
+Then, update the database via the `contao:migrate` command or the Contao install tool.
 
 
 
