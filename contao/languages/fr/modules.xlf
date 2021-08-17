@@ -1,0 +1,19 @@
+<?xml version="1.0" ?><xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+    <file datatype="plaintext" original="languages/en/modules.xlf" source-language="en" target-language="fr">
+        <body>
+            <trans-unit id="MOD.changelanguage.0">
+                <source>Change Language</source>
+                <target>Changer la langue</target>
+                <note>This is only used to translate the &quot;inactive modules&quot; in the backend.</note>
+            </trans-unit>
+            <trans-unit id="FMD.changelanguage.0">
+                <source>Change Language</source>
+                <target>Changer la langue</target>
+            </trans-unit>
+            <trans-unit id="FMD.changelanguage.1">
+                <source>This module allows you to switch between different language versions of a page.</source>
+                <target>Ce module vous permet de basculer d'une langue à l'autre pour une page donnée.</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

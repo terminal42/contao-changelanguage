@@ -1,36 +1,36 @@
 <?xml version="1.0" ?><xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
-    <file datatype="plaintext" original="languages/en/tl_faq_category.xlf" source-language="en" target-language="ru">
+    <file datatype="plaintext" original="languages/en/tl_faq_category.xlf" source-language="en" target-language="fr">
         <body>
             <trans-unit id="tl_faq_category.master.0">
                 <source>Master category</source>
-                <target>Основная категория</target>
+                <target>Catégorie de base</target>
             </trans-unit>
             <trans-unit id="tl_faq_category.master.1">
                 <source>Please define the master category to allow language switching.</source>
-                <target>Определите основную категорию, чтобы разрешить переключение языков.</target>
+                <target>Merci de sélectionner la catégorie de base pour permettre le changement de langue.</target>
             </trans-unit>
             <trans-unit id="tl_faq_category.master.2">
                 <source>This master has already been selected for the &quot;%s&quot; category!</source>
             </trans-unit>
             <trans-unit id="tl_faq_category.language.0">
                 <source>Language</source>
-                <target>Язык</target>
+                <target>Langue</target>
             </trans-unit>
             <trans-unit id="tl_faq_category.language.1">
                 <source>Please enter the page language according to the ISO-639-1 standard (e.g. &quot;en&quot; for English or &quot;en-US&quot; for American English).</source>
-                <target>Введите язык страницы в соответствии со стандартом ISO-639-1 (напр., &quot;en&quot; для Английского или &quot;en-US&quot; для Американского варианта английского).</target>
+                <target>Merci d'introduire la langue de la page conformément à la norme ISO-639-1 (par exemple &quot;en&quot; pour l'anglais  ou &quot;en-US&quot; pour l'anglais américain).</target>
             </trans-unit>
             <trans-unit id="tl_faq_category.language_legend">
                 <source>Language settings</source>
-                <target>Настройки языка</target>
+                <target>Paramètres de la langue</target>
             </trans-unit>
             <trans-unit id="tl_faq_category.isMaster">
                 <source>This is a master category</source>
-                <target>Это основная категория</target>
+                <target>Il s'agit d'une catégorie de base</target>
             </trans-unit>
             <trans-unit id="tl_faq_category.isSlave">
                 <source>Master category is &quot;%s&quot;</source>
-                <target>Основная категория &quot;%s&quot;</target>
+                <target>La catégorie de base est &quot;%s&quot;</target>
             </trans-unit>
         </body>
     </file>

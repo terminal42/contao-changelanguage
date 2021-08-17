@@ -3,6 +3,7 @@
         <body>
             <trans-unit id="MSC.duplicateMainLanguage">
                 <source>The selected page is already assigned to &quot;%s&quot; in the main language.</source>
+                <target>選択したページは既に主言語の&quot;%s&quot;に割り当てられています。</target>
             </trans-unit>
             <trans-unit id="MSC.noMainLanguage">
                 <source>Main language missing</source>

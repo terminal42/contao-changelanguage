@@ -7,7 +7,11 @@
             </trans-unit>
             <trans-unit id="tl_news_archive.master.1">
                 <source>Please define the master archive to allow language switching.</source>
-                <target>Wählen Sie das Hauptarchive um Sprachenwechel zu ermöglichen.</target>
+                <target>Wählen Sie das Hauptarchiv um Sprachenwechsel zu ermöglichen.</target>
+            </trans-unit>
+            <trans-unit id="tl_news_archive.master.2">
+                <source>This master has already been selected for the &quot;%s&quot; archive!</source>
+                <target>Dies ist bereits das Hauptarchiv für &quot;%s&quot;!</target>
             </trans-unit>
             <trans-unit id="tl_news_archive.language.0">
                 <source>Language</source>

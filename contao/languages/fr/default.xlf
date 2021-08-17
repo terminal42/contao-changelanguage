@@ -1,25 +1,25 @@
 <?xml version="1.0" ?><xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
-    <file datatype="plaintext" original="languages/en/default.xlf" source-language="en" target-language="ru">
+    <file datatype="plaintext" original="languages/en/default.xlf" source-language="en" target-language="fr">
         <body>
             <trans-unit id="MSC.duplicateMainLanguage">
                 <source>The selected page is already assigned to &quot;%s&quot; in the main language.</source>
-                <target>Выбранная страница уже назначена &quot;%s&quot; в основном языке.</target>
+                <target>La page sélectionnée est déjà attribuée en &quot;%s&quot; dans la langue principale.</target>
             </trans-unit>
             <trans-unit id="MSC.noMainLanguage">
                 <source>Main language missing</source>
-                <target>Основной язык отсутствует</target>
+                <target>Langue principale manquante</target>
             </trans-unit>
             <trans-unit id="MSC.switchLanguage">
                 <source>Language</source>
-                <target>Язык</target>
+                <target>Langue</target>
             </trans-unit>
             <trans-unit id="MSC.switchLanguageTo.0">
                 <source>Switch to</source>
-                <target>Переключить на</target>
+                <target>Basculer en</target>
             </trans-unit>
             <trans-unit id="MSC.switchLanguageTo.1">
                 <source>Switch to %s</source>
-                <target>Переключить на %s</target>
+                <target>Basculer en %s</target>
             </trans-unit>
         </body>
     </file>

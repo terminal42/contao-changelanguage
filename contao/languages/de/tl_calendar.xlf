@@ -9,6 +9,10 @@
                 <source>Please define the master calendar to allow language switching.</source>
                 <target>Wählen Sie den Hauptkalender um Sprachenwechel zu ermöglichen.</target>
             </trans-unit>
+            <trans-unit id="tl_calendar.master.2">
+                <source>This master has already been selected for the &quot;%s&quot; calendar!</source>
+                <target>Dies ist bereits der Hauptkalender für &quot;%s&quot;!</target>
+            </trans-unit>
             <trans-unit id="tl_calendar.language.0">
                 <source>Language</source>
                 <target>Sprache</target>

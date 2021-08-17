@@ -9,6 +9,9 @@
                 <source>Please define the master archive to allow language switching.</source>
                 <target>Определите основной архив, чтобы разрешить переключение языков.</target>
             </trans-unit>
+            <trans-unit id="tl_news_archive.master.2">
+                <source>This master has already been selected for the &quot;%s&quot; archive!</source>
+            </trans-unit>
             <trans-unit id="tl_news_archive.language.0">
                 <source>Language</source>
                 <target>Язык</target>
