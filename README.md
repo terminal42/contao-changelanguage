@@ -1,7 +1,7 @@
 # ChangeLanguage v3
 
 
-*ChangeLanguage* is an extension for the [Contao CMS][1] (version 3.5 and 4.x)
+*ChangeLanguage* is an extension for the [Contao CMS][1]
 which allows visitors to switch between different languages of your website.
 
 Contao itself provides multilingual support by default, you can create unlimited
