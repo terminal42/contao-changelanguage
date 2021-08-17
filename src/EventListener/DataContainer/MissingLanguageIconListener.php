@@ -192,7 +192,7 @@ class MissingLanguageIconListener
     {
         return $label.sprintf(
             '<span style="padding-left:3px"><img src="%s" alt="%s" title="%s" style="%s"></span>',
-            'system/modules/changelanguage/assets/language-warning.png',
+            'bundles/terminal42changelanguage/language-warning.png',
             $GLOBALS['TL_LANG']['MSC']['noMainLanguage'],
             $GLOBALS['TL_LANG']['MSC']['noMainLanguage'],
             $imgStyle

@@ -72,7 +72,7 @@ abstract class AbstractViewListener extends AbstractTableListener
             null !== ($page = $this->getCurrentPage())
             && 0 !== \count($languages = $this->getAvailableLanguages($page))
         ) {
-            $GLOBALS['TL_CSS'][] = 'system/modules/changelanguage/assets/backend.css';
+            $GLOBALS['TL_CSS'][] = 'bundles/terminal42changelanguage/backend.css';
 
             // Make sure we don't create a dublicate callback
             unset($GLOBALS['TL_DCA'][$this->table]['list']['global_operations']['switchLanguage']);
