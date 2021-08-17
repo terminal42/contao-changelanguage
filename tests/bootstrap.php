@@ -42,25 +42,24 @@ namespace {
         }
     );
 
-    define('TL_ROOT', __DIR__.'/../../../../vendor/contao/core');
+    define('TL_ROOT', __DIR__.'/../');
     define('TL_MODE', '');
     define('TL_ERROR', 'error');
     define('BE_USER_LOGGED_IN', false);
-    //require_once __DIR__ . '/../../../../vendor/contao/core/system/helper/ide_compat.php';
-//    require_once TL_ROOT.'/system/helper/functions.php';
 
     $container = new ContainerBuilder(
         new ParameterBag(
             [
+                'kernel.debug' => false,
                 'kernel.cache_dir' => sys_get_temp_dir(),
                 'kernel.bundles' => ['ChangeLanguage'],
             ]
         )
     );
 
-    $container->setParameter('kernel.project_dir', __DIR__.'/../../');
-    $container->set('contao.resource_locator', new FileLocator([__DIR__.'/../../']));
-    $container->set('contao.resource_finder', new ResourceFinder([__DIR__.'/../../']));
+    $container->setParameter('kernel.project_dir', __DIR__.'/../');
+    $container->set('contao.resource_locator', new FileLocator([__DIR__.'/../contao']));
+    $container->set('contao.resource_finder', new ResourceFinder([__DIR__.'/../contao/']));
     $container->set('monolog.logger.contao', new Logger());
     $container->set('database_connection', DriverManager::getConnection([
         'driver' => 'pdo_mysql',
@@ -68,17 +67,4 @@ namespace {
     ]));
 
     \Contao\System::setContainer($container);
-}
-
-namespace Model {
-    class Registry extends \Contao\Model\Registry
-    {
-        /**
-         * {@inheritdoc}
-         */
-        public function register(\Model $objModel)
-        {
-            // Do not register models
-        }
-    }
 }
