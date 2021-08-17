@@ -4,35 +4,40 @@
     "keywords": ["contao", "change", "language"],
     "type": "contao-bundle",
     "license": "LGPL-3.0+",
-    "authors": [{
-        "name": "terminal42 gmbh",
-        "homepage": "https://www.terminal42.ch"
-    }],
-    "funding": [{
-        "type": "github",
-        "url": "https://github.com/terminal42"
-    }, {
-        "type": "other",
-        "url": "https://ko-fi.com/terminal42"
-    }],
+    "authors": [
+        {
+            "name": "terminal42 gmbh",
+            "homepage": "https://www.terminal42.ch"
+        }
+    ],
+    "funding": [
+        {
+            "type": "github",
+            "url": "https://github.com/terminal42"
+        },
+        {
+            "type": "other",
+            "url": "https://ko-fi.com/terminal42"
+        }
+    ],
     "support": {
         "issues": "https://github.com/terminal42/contao-changelanguage/issues",
         "source": "https://github.com/terminal42/contao-changelanguage",
         "forum": "https://community.contao.org"
     },
     "require": {
-        "php": "^7.1",
-        "contao/core-bundle": "~4.4",
-        "codefog/contao-haste": "~4.13",
+        "php": "^7.1 || ^8.0",
+        "contao/core-bundle": "^4.9",
+        "codefog/contao-haste": "^4.13",
         "menatwork/contao-multicolumnwizard-bundle": "^3.3"
     },
     "require-dev": {
         "contao/manager-plugin": "^2.0",
-        "contao/core-bundle": "~4.4.0",
-        "contao/news-bundle": "~4.4",
-        "contao/calendar-bundle": "~4.4",
-        "contao/faq-bundle": "~4.4",
-        "contao/php-cs-fixer": "^1.0",
+        "contao/core-bundle": "~4.9.0",
+        "contao/news-bundle": "~4.9",
+        "contao/calendar-bundle": "~4.9",
+        "contao/faq-bundle": "~4.9",
+        "contao/easy-coding-standard": "^3.0",
         "phpunit/phpunit": "^5.7.26",
         "symfony/phpunit-bridge": "^3.3.11",
         "phpunit/dbunit": "~1.3"
@@ -54,5 +59,10 @@
     },
     "extra": {
         "contao-manager-plugin": "Terminal42\\ChangeLanguage\\ContaoManager\\Plugin"
+    },
+    "scripts": {
+        "cs-fixer": [
+            "vendor/bin/ecs check src/ --fix --ansi"
+        ]
     }
 }
