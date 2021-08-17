@@ -12,6 +12,7 @@
 namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 
 use Contao\DataContainer;
+use Contao\Input;
 use Contao\Model;
 use Haste\Dca\PaletteManipulator;
 use Terminal42\ChangeLanguage\EventListener\AbstractTableListener;
@@ -31,7 +32,7 @@ abstract class AbstractChildTableListener extends AbstractTableListener
 
     public function onLoad(DataContainer $dc)
     {
-        $action = \Input::get('act');
+        $action = Input::get('act');
 
         if ('editAll' === $action || ('edit' === $action && null !== ($model = $this->getModel($dc->id)) && $model->getRelated('pid')->master > 0)) {
             $this->addFieldsToPalettes();

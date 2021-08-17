@@ -12,6 +12,7 @@
 namespace Terminal42\ChangeLanguage\EventListener\BackendView;
 
 use Contao\Controller;
+use Contao\Input;
 use Contao\PageModel;
 use Contao\Session;
 use Haste\Util\Url;
@@ -23,7 +24,7 @@ class PageViewListener extends AbstractViewListener
      */
     protected function isSupported()
     {
-        return 'page' === \Input::get('do') || 'article' === \Input::get('do');
+        return 'page' === Input::get('do') || 'article' === Input::get('do');
     }
 
     /**

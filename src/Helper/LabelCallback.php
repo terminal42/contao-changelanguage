@@ -42,11 +42,11 @@ class LabelCallback
             return $this->executeCallback($callback, [$args, $result]);
         };
 
-        if (4 === $GLOBALS['TL_DCA'][$table]['list']['sorting']['mode']) {
-            $this->previous = $GLOBALS['TL_DCA'][$table]['list']['sorting']['child_record_callback'];
+        if (4 === ($GLOBALS['TL_DCA'][$table]['list']['sorting']['mode'] ?? null)) {
+            $this->previous = $GLOBALS['TL_DCA'][$table]['list']['sorting']['child_record_callback'] ?? null;
             $GLOBALS['TL_DCA'][$table]['list']['sorting']['child_record_callback'] = $chain;
         } else {
-            $this->previous = $GLOBALS['TL_DCA'][$table]['list']['label']['label_callback'];
+            $this->previous = $GLOBALS['TL_DCA'][$table]['list']['label']['label_callback'] ?? null;
             $GLOBALS['TL_DCA'][$table]['list']['label']['label_callback'] = $chain;
         }
     }

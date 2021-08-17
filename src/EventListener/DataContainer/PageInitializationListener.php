@@ -12,6 +12,7 @@
 namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 
 use Contao\DataContainer;
+use Contao\Input;
 use Contao\PageModel;
 use Haste\Dca\PaletteManipulator;
 
@@ -34,11 +35,11 @@ class PageInitializationListener
      */
     public function onLoad(DataContainer $dc)
     {
-        if ('page' !== \Input::get('do')) {
+        if ('page' !== Input::get('do')) {
             return;
         }
 
-        switch (\Input::get('act')) {
+        switch (Input::get('act')) {
             case 'edit':
                 $this->handleEditMode($dc);
                 break;

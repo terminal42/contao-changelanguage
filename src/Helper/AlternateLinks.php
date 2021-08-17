@@ -11,6 +11,7 @@
 
 namespace Terminal42\ChangeLanguage\Helper;
 
+use Contao\Environment;
 use Contao\FrontendTemplate;
 use Terminal42\ChangeLanguage\Language;
 use Terminal42\ChangeLanguage\Navigation\NavigationItem;
@@ -113,7 +114,7 @@ class AlternateLinks
 
         // URLs must always be absolute
         if (0 !== strpos($href, 'http://') && 0 !== strpos($href, 'https://')) {
-            $href = \Environment::get('base').$href;
+            $href = Environment::get('base').$href;
         }
 
         $this->links[$language] = ['language' => $language, 'href' => $href, 'title' => $title];

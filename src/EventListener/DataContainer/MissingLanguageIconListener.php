@@ -16,6 +16,7 @@ use Contao\CalendarEventsModel;
 use Contao\CalendarModel;
 use Contao\FaqCategoryModel;
 use Contao\FaqModel;
+use Contao\Input;
 use Contao\NewsArchiveModel;
 use Contao\NewsModel;
 use Contao\PageModel;
@@ -64,7 +65,7 @@ class MissingLanguageIconListener
             $label = $previousResult;
         }
 
-        if ('root' === $row['type'] || 'folder' === $row['type'] || 'page' !== \Input::get('do')) {
+        if ('root' === $row['type'] || 'folder' === $row['type'] || 'page' !== Input::get('do')) {
             return $label;
         }
 

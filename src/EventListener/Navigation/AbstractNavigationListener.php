@@ -11,6 +11,7 @@
 
 namespace Terminal42\ChangeLanguage\EventListener\Navigation;
 
+use Contao\Date;
 use Contao\Model;
 use Terminal42\ChangeLanguage\Event\ChangelanguageNavigationEvent;
 
@@ -92,7 +93,7 @@ abstract class AbstractNavigationListener
             $columns[] = "$table.published='1'";
 
             if ($addStartStop) {
-                $time = \Date::floorToMinute();
+                $time = Date::floorToMinute();
                 $columns[] = "($table.start='' OR $table.start<='$time')";
                 $columns[] = "($table.stop='' OR $table.stop>'".($time + 60)."')";
             }

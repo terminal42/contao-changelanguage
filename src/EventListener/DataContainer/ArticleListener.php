@@ -14,6 +14,7 @@ namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 use Contao\ArticleModel;
 use Contao\Database;
 use Contao\DataContainer;
+use Contao\Input;
 use Contao\PageModel;
 use Haste\Dca\PaletteManipulator;
 use Terminal42\ChangeLanguage\EventListener\AbstractTableListener;
@@ -34,7 +35,7 @@ class ArticleListener extends AbstractTableListener
 
     public function onLoad(DataContainer $dc)
     {
-        $action = \Input::get('act');
+        $action = Input::get('act');
 
         if ('editAll' === $action) {
             $this->addFieldsToPalettes();
@@ -62,8 +63,8 @@ class ArticleListener extends AbstractTableListener
         $options = [];
         $result = Database::getInstance()
             ->prepare('
-                SELECT id, title 
-                FROM tl_article 
+                SELECT id, title
+                FROM tl_article
                 WHERE pid=? AND id NOT IN (
                     SELECT languageMain FROM tl_article WHERE id!=? AND pid=? AND languageMain > 0
                 )

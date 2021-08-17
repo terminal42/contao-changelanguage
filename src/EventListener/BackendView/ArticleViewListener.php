@@ -13,6 +13,7 @@ namespace Terminal42\ChangeLanguage\EventListener\BackendView;
 
 use Contao\ArticleModel;
 use Contao\Controller;
+use Contao\Input;
 use Contao\Model\Collection;
 use Contao\PageModel;
 use Contao\Session;
@@ -30,7 +31,7 @@ class ArticleViewListener extends AbstractViewListener
      */
     protected function isSupported()
     {
-        return 'article' === (string) \Input::get('do');
+        return 'article' === (string) Input::get('do');
     }
 
     /**

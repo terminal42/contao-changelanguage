@@ -71,7 +71,7 @@ class PageFieldsListener
         // Validate that there is no other page in the current page tree with the same languageMain assigned
         if ($value > 0) {
             $currentPage = PageModel::findWithDetails($dc->id);
-            $childIds = \Database::getInstance()->getChildRecords($currentPage->rootId, 'tl_page');
+            $childIds = Database::getInstance()->getChildRecords($currentPage->rootId, 'tl_page');
 
             $duplicates = PageModel::findBy(
                 [

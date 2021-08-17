@@ -22,7 +22,7 @@ class PageFinder
      * @param bool      $skipCurrent
      * @param bool      $publishedOnly
      *
-     * @return \Contao\PageModel[]
+     * @return PageModel[]
      */
     public function findRootPagesForPage(PageModel $page, $skipCurrent = false, $publishedOnly = true)
     {
@@ -32,24 +32,24 @@ class PageFinder
         $columns = [
             "$t.type='root'",
             "(
-                $t.dns=? 
+                $t.dns=?
                 OR $t.dns IN (
-                    SELECT dns 
-                    FROM tl_page 
+                    SELECT dns
+                    FROM tl_page
                     WHERE type='root' AND fallback='1' AND id = (
                         SELECT languageRoot FROM tl_page WHERE type='root' AND fallback='1' AND dns=? LIMIT 1
                     )
-                ) 
+                )
                 OR $t.dns IN (
-                    SELECT dns 
-                    FROM tl_page 
+                    SELECT dns
+                    FROM tl_page
                     WHERE type='root' AND fallback='1' AND languageRoot = (
                         SELECT id FROM tl_page WHERE type='root' AND fallback='1' AND dns=? LIMIT 1
                     )
-                ) 
+                )
                 OR $t.dns IN (
-                    SELECT dns 
-                    FROM tl_page 
+                    SELECT dns
+                    FROM tl_page
                     WHERE type='root' AND fallback='1' AND languageRoot != 0 AND languageRoot = (
                         SELECT languageRoot FROM tl_page WHERE type='root' AND fallback='1' AND dns=? LIMIT 1
                     )
@@ -76,7 +76,7 @@ class PageFinder
      *
      * @param PageModel $page
      *
-     * @return \PageModel|null
+     * @return PageModel|null
      */
     public function findMasterRootForPage(PageModel $page)
     {
@@ -88,8 +88,8 @@ class PageFinder
             "$t.fallback='1'",
             "$t.languageRoot=0",
             "(
-                $t.dns=? 
-                OR $t.dns IN (SELECT dns FROM tl_page WHERE type='root' AND fallback='1' AND id IN (SELECT languageRoot FROM tl_page WHERE type='root' AND fallback='1' AND dns=?)) 
+                $t.dns=?
+                OR $t.dns IN (SELECT dns FROM tl_page WHERE type='root' AND fallback='1' AND id IN (SELECT languageRoot FROM tl_page WHERE type='root' AND fallback='1' AND dns=?))
                 OR $t.dns IN (SELECT dns FROM tl_page WHERE type='root' AND fallback='1' AND languageRoot IN (SELECT id FROM tl_page WHERE type='root' AND fallback='1' AND dns=?))
             )",
         ];
@@ -104,7 +104,7 @@ class PageFinder
      * @param PageModel $page
      * @param bool      $skipCurrent
      *
-     * @return \Contao\PageModel[]
+     * @return PageModel[]
      */
     public function findAssociatedForPage(PageModel $page, $skipCurrent = false, array $rootPages = null)
     {
@@ -252,7 +252,7 @@ class PageFinder
      * @param array $values
      * @param array $options
      *
-     * @return \Contao\PageModel[]
+     * @return PageModel[]
      */
     private function findPages(array $columns, array $values, array $options = [])
     {
