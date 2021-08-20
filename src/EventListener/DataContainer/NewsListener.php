@@ -37,7 +37,7 @@ class NewsListener extends AbstractChildTableListener
     {
         $sameDay = $GLOBALS['TL_LANG']['tl_news']['sameDay'];
         $otherDay = $GLOBALS['TL_LANG']['tl_news']['otherDay'];
-        $dayBegin = strtotime('0:00', $current->date);
+        $dayBegin = strtotime('0:00', (int) $current->date);
         $options = [$sameDay => [], $otherDay => []];
 
         foreach ($models as $model) {
