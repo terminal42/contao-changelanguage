@@ -20,6 +20,7 @@ class Plugin implements BundlePluginInterface
     {
         return [
             (new BundleConfig(Terminal42ChangeLanguageBundle::class))
+                ->setReplace(['changelanguage'])
                 ->setLoadAfter([
                     ContaoCoreBundle::class,
                     ContaoNewsBundle::class,
