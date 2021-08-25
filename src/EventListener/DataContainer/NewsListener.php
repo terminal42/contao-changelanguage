@@ -41,7 +41,7 @@ class NewsListener extends AbstractChildTableListener
         $options = [$sameDay => [], $otherDay => []];
 
         foreach ($models as $model) {
-            $group = strtotime('0:00', $model->date) === $dayBegin ? $sameDay : $otherDay;
+            $group = strtotime('0:00', (int) $model->date) === $dayBegin ? $sameDay : $otherDay;
 
             $options[$group][$model->id] = sprintf(
                 '%s [%s]',
