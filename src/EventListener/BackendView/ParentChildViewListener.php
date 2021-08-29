@@ -134,6 +134,6 @@ class ParentChildViewListener extends AbstractViewListener
 
         Controller::loadDataContainer($table);
 
-        return '' !== (string) $GLOBALS['TL_DCA'][$table]['config']['ptable'];
+        return !empty($GLOBALS['TL_DCA'][$table]['config']['ptable']);
     }
 }
