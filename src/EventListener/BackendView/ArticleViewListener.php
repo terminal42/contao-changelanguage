@@ -57,10 +57,25 @@ class ArticleViewListener extends AbstractViewListener
 
             $articles = $this->findArticlesForPage($model, $articleId);
 
+            // Add single article without title
             if (1 === \count($articles)) {
-                $options['tl_article.'.$articles[0]->id] = $this->getLanguageLabel($model->language);
-            } else {
-                $options['tl_page.'.$model->id] = $this->getLanguageLabel($model->language);
+                $options[$articles[0]->id] = $this->getLanguageLabel($model->language);
+                continue;
+            }
+
+            // Add only exact match if we have one
+            foreach ($articles as $article) {
+                if ($articleId > 0 && ($article->id === $articleId || $article->languageMain === $articleId)) {
+                    $options[$article->id] = $this->getLanguageLabel($model->language);
+                    continue 2;
+                }
+            }
+
+            // Otherwise add all articles
+            foreach ($articles as $article) {
+                if ($article->inColumn === $this->currentArticle->inColumn) {
+                    $options[$article->id] = $this->getLanguageLabel($model->language).': '.$article->title;
+                }
             }
         }
 
@@ -74,22 +89,8 @@ class ArticleViewListener extends AbstractViewListener
      */
     protected function doSwitchView($id): void
     {
-        [$table, $id] = explode('.', $id);
-
         $url = Url::removeQueryString(['switchLanguage']);
-
-        switch ($table) {
-            case 'tl_article':
-                $url = Url::addQueryString('id='.$id, $url);
-                break;
-
-            case 'tl_page':
-                Session::getInstance()->set('tl_page_node', (int) $id);
-                break;
-
-            default:
-                throw new \InvalidArgumentException(sprintf('Table "%s" is not supported', $table));
-        }
+        $url = Url::addQueryString('id='.$id, $url);
 
         Controller::redirect($url);
     }
@@ -99,7 +100,7 @@ class ArticleViewListener extends AbstractViewListener
      *
      * @return array<ArticleModel>
      */
-    private function findArticlesForPage(PageModel $page, $articleId)
+    private function findArticlesForPage(PageModel $page, $articleId): array
     {
         $articles = ArticleModel::findBy(
             [

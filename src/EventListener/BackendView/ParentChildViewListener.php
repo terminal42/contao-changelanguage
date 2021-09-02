@@ -26,13 +26,10 @@ class ParentChildViewListener extends AbstractViewListener
             && \in_array(Input::get('do'), ['calendar', 'faq', 'news'], true);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getCurrentPage()
     {
         if (false === $this->current) {
-            /** @var Model $class */
+            /** @var string|Model $class */
             $class = $this->getModelClass();
 
             $this->current = class_exists($class) ? $class::findByPk($this->dataContainer->id) : null;
@@ -47,9 +44,6 @@ class ParentChildViewListener extends AbstractViewListener
         return PageModel::findWithDetails($pageId);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getAvailableLanguages(PageModel $page)
     {
         $options = [];
