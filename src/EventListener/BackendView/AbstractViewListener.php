@@ -74,7 +74,7 @@ abstract class AbstractViewListener extends AbstractTableListener
         ) {
             $GLOBALS['TL_CSS'][] = 'bundles/terminal42changelanguage/backend.css';
 
-            // Make sure we don't create a dublicate callback
+            // Make sure we don't create a duplicate callback
             unset($GLOBALS['TL_DCA'][$this->table]['list']['global_operations']['switchLanguage']);
 
             array_insert(
@@ -84,11 +84,16 @@ abstract class AbstractViewListener extends AbstractTableListener
                     'switchLanguage' => [
                         'showOnSelect' => true,
                         'button_callback' => function () use ($page, $languages) {
-                            return $this->onSwitchButtonCallback($page, $languages);
+                            return $this->getSwitchButton($page, $languages);
                         },
                     ],
                 ]
             );
+
+            $clipboard = System::getContainer()->get('session')->get('CLIPBOARD');
+            if (!empty($clipboard[$dc->table])) {
+                $GLOBALS['TL_LANG']['MSC']['clearClipboard'] .= '</a>'.$this->getSwitchButton($page, $languages).'<a>';
+            }
         }
     }
 
@@ -144,10 +149,8 @@ abstract class AbstractViewListener extends AbstractTableListener
 
     /**
      * Returns HTML markup for the global operation.
-     *
-     * @return string
      */
-    private function onSwitchButtonCallback(PageModel $page, array $languages)
+    private function getSwitchButton(PageModel $page, array $languages): string
     {
         $page->loadDetails();
 
