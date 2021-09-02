@@ -71,11 +71,18 @@ class ArticleViewListener extends AbstractViewListener
                 }
             }
 
+            $articles = array_values(array_filter($articles, function (ArticleModel $article) {
+                return $article->inColumn === $this->currentArticle->inColumn;
+            }));
+
+            if (1 === \count($articles)) {
+                $options[$articles[0]->id] = $this->getLanguageLabel($model->language);
+                continue;
+            }
+
             // Otherwise add all articles
             foreach ($articles as $article) {
-                if ($article->inColumn === $this->currentArticle->inColumn) {
-                    $options[$article->id] = $this->getLanguageLabel($model->language).': '.$article->title;
-                }
+                $options[$article->id] = $this->getLanguageLabel($model->language).': '.$article->title;
             }
         }
 
