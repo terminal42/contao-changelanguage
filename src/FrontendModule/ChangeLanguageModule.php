@@ -184,7 +184,10 @@ class ChangeLanguageModule extends AbstractFrontendModule
         // the current page language is set in $_GET
         unset($input['language'], $input['auto_item']);
 
-        parse_str($_SERVER['QUERY_STRING'], $currentQuery);
+        $currentQuery = [];
+        if (!empty($_SERVER['QUERY_STRING'])) {
+            parse_str($_SERVER['QUERY_STRING'], $currentQuery);
+        }
 
         foreach ($input as $k => $value) {
             // GET parameters can be an array
