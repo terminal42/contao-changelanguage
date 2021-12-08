@@ -7,9 +7,11 @@ namespace Terminal42\ChangeLanguage\FrontendModule;
 use Contao\FrontendTemplate;
 use Contao\Input;
 use Contao\PageModel;
+use Contao\StringUtil;
 use Contao\System;
 use Haste\Frontend\AbstractFrontendModule;
 use Haste\Generator\RowClass;
+use Symfony\Component\Routing\Exception\ExceptionInterface;
 use Terminal42\ChangeLanguage\Event\ChangelanguageNavigationEvent;
 use Terminal42\ChangeLanguage\Helper\AlternateLinks;
 use Terminal42\ChangeLanguage\Helper\LanguageText;
@@ -100,10 +102,14 @@ class ChangeLanguageModule extends AbstractFrontendModule
             }
 
             if ($item->isDirectFallback() && !$headerLinks->has($item->getLanguageTag())) {
-                $headerLinks->addFromNavigationItem($item, $urlParameters);
+                try {
+                    $headerLinks->addFromNavigationItem($item, $urlParameters);
 
-                if ($item->getRootPage()->fallback && !$item->getRootPage()->languageRoot) {
-                    $headerLinks->setDefault($item->getHref($urlParameters), $item->getTitle());
+                    if ($item->getRootPage()->fallback && !$item->getRootPage()->languageRoot) {
+                        $headerLinks->setDefault($item->getHref($urlParameters), $item->getTitle());
+                    }
+                } catch (ExceptionInterface $e) {
+                    // Ignore unroutable pages
                 }
             }
 
@@ -131,9 +137,9 @@ class ChangeLanguageModule extends AbstractFrontendModule
             'class' => 'lang-'.$item->getNormalizedLanguage().($item->isDirectFallback() ? '' : ' nofallback').($item->isCurrentPage() ? ' active' : ''),
             'link' => $item->getLabel(),
             'subitems' => '',
-            'href' => specialchars($item->getHref($urlParameterBag)),
-            'title' => specialchars(strip_tags($item->getTitle())),
-            'pageTitle' => specialchars(strip_tags($item->getPageTitle())),
+            'href' => StringUtil::specialchars($item->getHref($urlParameterBag, true)),
+            'title' => StringUtil::specialchars(strip_tags($item->getTitle())),
+            'pageTitle' => StringUtil::specialchars(strip_tags($item->getPageTitle())),
             'accesskey' => '',
             'tabindex' => '',
             'nofollow' => false,

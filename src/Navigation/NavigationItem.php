@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Terminal42\ChangeLanguage\Navigation;
 
 use Contao\PageModel;
+use Symfony\Component\Routing\Exception\ExceptionInterface;
 use Terminal42\ChangeLanguage\Language;
 
 class NavigationItem
@@ -196,8 +197,10 @@ class NavigationItem
 
     /**
      * @return string
+     *
+     * @throws ExceptionInterface
      */
-    public function getHref(UrlParameterBag $urlParameterBag)
+    public function getHref(UrlParameterBag $urlParameterBag, bool $catch = false)
     {
         $targetPage = $this->targetPage ?: $this->rootPage;
 
@@ -205,7 +208,19 @@ class NavigationItem
             $targetPage = PageModel::findFirstPublishedRegularByPid($targetPage->id) ?: $targetPage;
         }
 
-        $href = $targetPage->getAbsoluteUrl($urlParameterBag->generateParameters());
+        try {
+            $href = $targetPage->getAbsoluteUrl($urlParameterBag->generateParameters());
+        } catch (ExceptionInterface $e) {
+            if (!$catch) {
+                throw $e;
+            }
+
+            $this->targetPage = null;
+            $this->isDirectFallback = false;
+            $this->isCurrentPage = false;
+
+            return $this->getHref($urlParameterBag);
+        }
 
         if (null !== ($queryString = $urlParameterBag->generateQueryString())) {
             $href .= '?'.$queryString;
