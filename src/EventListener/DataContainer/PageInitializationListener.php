@@ -80,16 +80,15 @@ class PageInitializationListener
 
     private function addRootLanguageFields(): void
     {
-        PaletteManipulator::create()
-            ->addField('languageRoot', 'fallback')
+        $hasLegacyRouting = isset($GLOBALS['TL_DCA']['tl_page']['fields']['disableLanguageRedirect']);
+
+        $pm = PaletteManipulator::create()
+            ->addField('languageRoot', $hasLegacyRouting ? 'language' : 'fallback')
             ->applyToPalette('root', 'tl_page')
         ;
 
         if (isset($GLOBALS['TL_DCA']['tl_page']['palettes']['rootfallback'])) {
-            PaletteManipulator::create()
-                ->addField('languageRoot', 'fallback')
-                ->applyToPalette('rootfallback', 'tl_page')
-            ;
+            $pm->applyToPalette('rootfallback', 'tl_page');
         }
     }
 
