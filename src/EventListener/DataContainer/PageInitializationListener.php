@@ -99,7 +99,7 @@ class PageInitializationListener
     private function addRegularLanguageFields($palettes, $addLanguageMain = true): void
     {
         $pm = PaletteManipulator::create()
-            ->addLegend('language_legend', 'title_legend', PaletteManipulator::POSITION_AFTER, true)
+            ->addLegend('language_legend', 'meta_legend', PaletteManipulator::POSITION_BEFORE, true)
             ->addField('languageQuery', 'language_legend', PaletteManipulator::POSITION_APPEND)
         ;
 
