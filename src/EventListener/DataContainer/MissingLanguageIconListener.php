@@ -7,6 +7,8 @@ namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 use Contao\ArticleModel;
 use Contao\CalendarEventsModel;
 use Contao\CalendarModel;
+use Contao\Config;
+use Contao\Date;
 use Contao\FaqCategoryModel;
 use Contao\FaqModel;
 use Contao\Input;
@@ -116,6 +118,10 @@ class MissingLanguageIconListener
     {
         $row = $args[0];
         $label = (string) $previousResult;
+
+        if (empty($label)) {
+            $label = '<div class="tl_content_left">' . $row['headline'] . ' <span style="color:#999;padding-left:3px">[' . Date::parse(Config::get('datimFormat'), $row['date']) . ']</span></div>';
+        }
 
         $archive = NewsArchiveModel::findByPk($row['pid']);
 
