@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 
 use Contao\ArticleModel;
+use Contao\Backend;
+use Contao\BackendUser;
 use Contao\CalendarEventsModel;
 use Contao\CalendarModel;
 use Contao\Config;
@@ -15,6 +17,7 @@ use Contao\Input;
 use Contao\NewsArchiveModel;
 use Contao\NewsModel;
 use Contao\PageModel;
+use Contao\StringUtil;
 use Terminal42\ChangeLanguage\Helper\LabelCallback;
 
 class MissingLanguageIconListener
@@ -67,9 +70,23 @@ class MissingLanguageIconListener
             ($page = PageModel::findWithDetails($row['id'])) !== null
             && ($root = PageModel::findByPk($page->rootId)) !== null
             && (!$root->fallback || $root->languageRoot > 0)
-            && (!$page->languageMain || null === PageModel::findByPk($page->languageMain))
+            && (!$page->languageMain || null === ($mainPage = PageModel::findByPk($page->languageMain)))
         ) {
             return $this->generateLabelWithWarning($label);
+        }
+
+        if (
+            isset($mainPage)
+            && $mainPage instanceof PageModel
+            && \in_array($page->rootId, BackendUser::getInstance()->pageLanguageLabels, false)
+        ) {
+            return sprintf(
+                '%s <span style="color:#999;padding-left:3px">(<a href="%s" title="%s" style="color:#999">%s</a>)</span>',
+                $label,
+                Backend::addToUrl('pn=' . $mainPage->id),
+                StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['selectNode']),
+                $mainPage->title
+            );
         }
 
         return $label;

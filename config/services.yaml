@@ -1,0 +1,6 @@
+services:
+    _defaults:
+        autoconfigure: true
+        autowire: true
+
+    Terminal42\ChangeLanguage\EventListener\DataContainer\UserLabelsListener: ~
