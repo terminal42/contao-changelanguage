@@ -60,7 +60,10 @@ class PageInitializationListener
         $root = PageModel::findByPk($page->loadDetails()->rootId);
         $addLanguageMain = true;
 
-        if ($root->fallback && (!$root->languageRoot || null === PageModel::findByPk($root->languageRoot))) {
+        if (
+            !$root
+            || ($root->fallback && (!$root->languageRoot || null === PageModel::findByPk($root->languageRoot)))
+        ) {
             $addLanguageMain = false;
         }
 

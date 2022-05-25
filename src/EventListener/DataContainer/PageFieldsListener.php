@@ -29,8 +29,8 @@ class PageFieldsListener
         $root = PageModel::findByPk($page->rootId);
 
         if (
-            $root->fallback
-            && (!$root->languageRoot || null === PageModel::findByPk($root->languageRoot))
+            !$root
+            || ($root->fallback && (!$root->languageRoot || null === PageModel::findByPk($root->languageRoot)))
         ) {
             return $value;
         }
