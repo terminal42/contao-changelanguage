@@ -78,6 +78,7 @@ class MissingLanguageIconListener
         if (
             isset($mainPage)
             && $mainPage instanceof PageModel
+            && \is_array(BackendUser::getInstance()->pageLanguageLabels)
             && \in_array($page->rootId, BackendUser::getInstance()->pageLanguageLabels, false)
         ) {
             return sprintf(
