@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 
+use Contao\CoreBundle\DataContainer\PaletteManipulator;
 use Contao\DataContainer;
 use Contao\Input;
 use Contao\PageModel;
-use Haste\Dca\PaletteManipulator;
 
 class PageInitializationListener
 {
@@ -97,9 +97,8 @@ class PageInitializationListener
 
     /**
      * @param array|string $palettes
-     * @param bool         $addLanguageMain
      */
-    private function addRegularLanguageFields($palettes, $addLanguageMain = true): void
+    private function addRegularLanguageFields($palettes, bool $addLanguageMain = true): void
     {
         $pm = PaletteManipulator::create()
             ->addLegend('language_legend', 'meta_legend', PaletteManipulator::POSITION_BEFORE, true)
@@ -111,6 +110,10 @@ class PageInitializationListener
         }
 
         foreach ((array) $palettes as $palette) {
+            if (!isset($GLOBALS['TL_DCA']['tl_page']['palettes'][$palette])) {
+                continue;
+            }
+
             $pm->applyToPalette($palette, 'tl_page');
         }
     }
