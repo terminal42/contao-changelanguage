@@ -49,7 +49,11 @@ class ParentChildViewListener extends AbstractViewListener
         $options = [];
         $masterRoot = $this->pageFinder->findMasterRootForPage($page);
         $parent = $this->hasParent() ? 'languageMain' : 'master';
-        $id = $page->rootId === $masterRoot->id ? $this->current->id : $this->current->{$parent};
+        $id = (int) ($page->rootId === $masterRoot->id ? $this->current->id : $this->current->{$parent});
+
+        if (0 === $id) {
+            return [];
+        }
 
         foreach ($this->pageFinder->findAssociatedForPage($page, true) as $associated) {
             $associated->loadDetails();

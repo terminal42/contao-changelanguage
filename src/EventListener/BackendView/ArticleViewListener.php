@@ -50,7 +50,7 @@ class ArticleViewListener extends AbstractViewListener
     {
         $options = [];
         $masterRoot = $this->pageFinder->findMasterRootForPage($page);
-        $articleId = $page->rootId === $masterRoot->id ? $this->currentArticle->id : $this->currentArticle->languageMain;
+        $articleId = (int) ($page->rootId === $masterRoot->id ? $this->currentArticle->id : $this->currentArticle->languageMain);
 
         foreach ($this->pageFinder->findAssociatedForPage($page, true) as $model) {
             $model->loadDetails();
