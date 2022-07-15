@@ -73,27 +73,7 @@ abstract class AbstractViewListener extends AbstractTableListener
             && 0 !== \count($languages = $this->getAvailableLanguages($page))
         ) {
             $GLOBALS['TL_CSS'][] = 'bundles/terminal42changelanguage/backend.css';
-
-            // Make sure we don't create a duplicate callback
-            unset($GLOBALS['TL_DCA'][$this->table]['list']['global_operations']['switchLanguage']);
-
-            array_insert(
-                $GLOBALS['TL_DCA'][$this->table]['list']['global_operations'],
-                0,
-                [
-                    'switchLanguage' => [
-                        'showOnSelect' => true,
-                        'button_callback' => function () use ($page, $languages) {
-                            return $this->getSwitchButton($page, $languages);
-                        },
-                    ],
-                ]
-            );
-
-            $clipboard = System::getContainer()->get('session')->get('CLIPBOARD');
-            if (!empty($clipboard[$dc->table])) {
-                $GLOBALS['TL_LANG']['MSC']['clearClipboard'] .= '</a>'.$this->getSwitchButton($page, $languages).'<a>';
-            }
+            $GLOBALS['TL_MOOTOOLS']['switchLanguage'] = $this->getSwitchButton($page, $languages);
         }
     }
 
@@ -166,6 +146,15 @@ abstract class AbstractViewListener extends AbstractTableListener
         </ul>
     </span>
 </div>
+<script>
+(function () {
+    if (document.querySelector('#tl_buttons')) {
+        document.querySelector('#tl_buttons').prepend(document.querySelector('.header_switchLanguage'));
+    } else {
+        document.querySelector('.header_switchLanguage').remove();
+    }
+})();
+</script>
 HTML;
 
         foreach ($languages as $id => $language) {
