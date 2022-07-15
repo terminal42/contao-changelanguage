@@ -35,7 +35,7 @@ class ParentChildViewListener extends AbstractViewListener
             if (!class_exists($class)) {
                 return null;
             }
-dump($class, $this->getTable());
+
             if ('paste' === Input::get('act') || ('edit' === Input::get('act') && 'tl_content' === $this->getTable())) {
                 $this->current = $class::findOneBy(['id=(SELECT pid FROM '.$this->getTable().' WHERE id=?)'], [$this->dataContainer->id]);
             } else {
