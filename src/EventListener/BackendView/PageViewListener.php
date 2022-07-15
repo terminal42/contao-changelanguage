@@ -17,7 +17,7 @@ class PageViewListener extends AbstractViewListener
      */
     protected function isSupported()
     {
-        return 'page' === Input::get('do') || 'article' === Input::get('do');
+        return 'page' === Input::get('do') || ('article' === Input::get('do') && 'edit' !== Input::get('act'));
     }
 
     /**

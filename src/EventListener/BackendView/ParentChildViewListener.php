@@ -32,7 +32,15 @@ class ParentChildViewListener extends AbstractViewListener
             /** @var string|Model $class */
             $class = $this->getModelClass();
 
-            $this->current = class_exists($class) ? $class::findByPk($this->dataContainer->id) : null;
+            if (!class_exists($class)) {
+                return null;
+            }
+dump($class, $this->getTable());
+            if ('paste' === Input::get('act') || ('edit' === Input::get('act') && 'tl_content' === $this->getTable())) {
+                $this->current = $class::findOneBy(['id=(SELECT pid FROM '.$this->getTable().' WHERE id=?)'], [$this->dataContainer->id]);
+            } else {
+                $this->current = $class::findByPk($this->dataContainer->id);
+            }
         }
 
         if (null === $this->current) {
@@ -72,7 +80,11 @@ class ParentChildViewListener extends AbstractViewListener
      */
     protected function doSwitchView($id): void
     {
-        $url = Url::removeQueryString(['switchLanguage']);
+        if ('edit' === Input::get('act') && 'tl_content' !== $this->getTable()) {
+            $url = Url::removeQueryString(['switchLanguage']);
+        } else {
+            $url = Url::removeQueryString(['switchLanguage', 'act', 'mode']);
+        }
         $url = Url::addQueryString('id='.$id, $url);
 
         Controller::redirect($url);
@@ -120,6 +132,10 @@ class ParentChildViewListener extends AbstractViewListener
     private function getModelClass()
     {
         Controller::loadDataContainer($this->getTable());
+
+        if ('edit' === Input::get('act') && 'tl_content' !== $this->getTable()) {
+            return Model::getClassFromTable($this->getTable());
+        }
 
         return Model::getClassFromTable($GLOBALS['TL_DCA'][$this->getTable()]['config']['ptable']);
     }

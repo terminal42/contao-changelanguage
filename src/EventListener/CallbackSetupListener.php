@@ -17,6 +17,7 @@ class CallbackSetupListener
         'tl_article' => [
             'Terminal42\ChangeLanguage\EventListener\DataContainer\ArticleListener',
             'Terminal42\ChangeLanguage\EventListener\BackendView\PageViewListener',
+            'Terminal42\ChangeLanguage\EventListener\BackendView\ArticleViewListener',
         ],
         'tl_content' => [
             'Terminal42\ChangeLanguage\EventListener\BackendView\ArticleViewListener',

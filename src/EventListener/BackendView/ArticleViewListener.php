@@ -7,6 +7,7 @@ namespace Terminal42\ChangeLanguage\EventListener\BackendView;
 use Contao\ArticleModel;
 use Contao\Controller;
 use Contao\Input;
+use Contao\Model;
 use Contao\Model\Collection;
 use Contao\PageModel;
 use Contao\Session;
@@ -24,7 +25,10 @@ class ArticleViewListener extends AbstractViewListener
      */
     protected function isSupported()
     {
-        return 'article' === (string) Input::get('do');
+        return 'article' === (string) Input::get('do')
+            && (('edit' === Input::get('act') && empty(Input::get('table')))
+                || ($this->getTable() === Input::get('table'))
+            );
     }
 
     /**
@@ -33,7 +37,15 @@ class ArticleViewListener extends AbstractViewListener
     protected function getCurrentPage()
     {
         if (false === $this->currentArticle) {
-            $this->currentArticle = ArticleModel::findByPk($this->dataContainer->id);
+            if (Input::get('table') === $this->getTable() && !empty(Input::get('act'))) {
+                if ('paste' !== Input::get('act')) {
+                    return null;
+                }
+
+                $this->currentArticle = ArticleModel::findOneBy(['tl_article.id=(SELECT pid FROM tl_content WHERE id=?)'], [$this->dataContainer->id]);
+            } else {
+                $this->currentArticle = ArticleModel::findByPk($this->dataContainer->id);
+            }
         }
 
         if (null === $this->currentArticle) {
@@ -96,7 +108,7 @@ class ArticleViewListener extends AbstractViewListener
      */
     protected function doSwitchView($id): void
     {
-        $url = Url::removeQueryString(['switchLanguage']);
+        $url = Url::removeQueryString(['switchLanguage', 'act', 'mode']);
         $url = Url::addQueryString('id='.$id, $url);
 
         Controller::redirect($url);
