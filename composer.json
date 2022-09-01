@@ -27,8 +27,8 @@
     },
     "require": {
         "php": "^7.1 || ^8.0",
-        "contao/core-bundle": "^4.9",
-        "codefog/contao-haste": "^4.13",
+        "contao/core-bundle": "^4.9 || ^5.0",
+        "codefog/contao-haste": "5.x-dev@dev",
         "menatwork/contao-multicolumnwizard-bundle": "^3.3"
     },
     "require-dev": {
