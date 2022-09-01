@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Terminal42\ChangeLanguage\ContaoManager;
 
+use Codefog\HasteBundle\CodefogHasteBundle;
 use Contao\CalendarBundle\ContaoCalendarBundle;
 use Contao\CoreBundle\ContaoCoreBundle;
 use Contao\FaqBundle\ContaoFaqBundle;
@@ -27,7 +28,7 @@ class Plugin implements BundlePluginInterface
                     ContaoCalendarBundle::class,
                     ContaoFaqBundle::class,
                     MultiColumnWizardBundle::class,
-                    'haste',
+                    CodefogHasteBundle::class,
                 ]),
         ];
     }

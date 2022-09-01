@@ -29,16 +29,16 @@
         "php": "^7.1 || ^8.0",
         "contao/core-bundle": "^4.9 || ^5.0",
         "codefog/contao-haste": "5.x-dev@dev",
-        "menatwork/contao-multicolumnwizard-bundle": "^3.3"
+        "menatwork/contao-multicolumnwizard-bundle": "^3.5"
     },
     "require-dev": {
         "contao/manager-plugin": "^2.0",
-        "contao/core-bundle": "~4.9.0",
-        "contao/news-bundle": "~4.9",
-        "contao/calendar-bundle": "~4.9",
-        "contao/faq-bundle": "~4.9",
+        "contao/core-bundle": "^4.9 || ^5.0",
+        "contao/news-bundle": "^4.9 || ^5.0",
+        "contao/calendar-bundle": "^4.9 || ^5.0",
+        "contao/faq-bundle": "^4.9 || ^5.0",
         "contao/easy-coding-standard": "^3.0",
-        "phpunit/phpunit": "^5.7.26",
+        "phpunit/phpunit": "^9.5.24",
         "symfony/phpunit-bridge": "^3.3.11",
         "phpunit/dbunit": "~1.3"
     },
@@ -64,5 +64,10 @@
         "cs-fixer": [
             "vendor/bin/ecs check src/ --fix --ansi"
         ]
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
     }
 }
