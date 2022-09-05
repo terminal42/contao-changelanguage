@@ -4,14 +4,24 @@ declare(strict_types=1);
 
 namespace Terminal42\ChangeLanguage\EventListener\BackendView;
 
+use Codefog\HasteBundle\UrlParser;
 use Contao\Controller;
 use Contao\Input;
 use Contao\PageModel;
 use Contao\Session;
-use Haste\Util\Url;
 
 class PageViewListener extends AbstractViewListener
 {
+    private UrlParser $urlParser;
+
+    /**
+     * @param UrlParser $urlParser
+     */
+    public function setUrlParser(UrlParser $urlParser): void
+    {
+        $this->urlParser = $urlParser;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -56,6 +66,6 @@ class PageViewListener extends AbstractViewListener
     {
         Session::getInstance()->set('tl_page_node', (int) $id);
 
-        Controller::redirect(Url::removeQueryString(['switchLanguage']));
+        Controller::redirect($this->urlParser->removeQueryString(['switchLanguage']));
     }
 }

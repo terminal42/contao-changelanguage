@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Terminal42\ChangeLanguage\EventListener\BackendView;
 
+use Codefog\HasteBundle\UrlParser;
 use Contao\Controller;
 use Contao\Input;
 use Contao\Model;
 use Contao\PageModel;
-use Haste\Util\Url;
 
 class ParentChildViewListener extends AbstractViewListener
 {
@@ -16,6 +16,16 @@ class ParentChildViewListener extends AbstractViewListener
      * @var Model
      */
     private $current = false;
+
+    private UrlParser $urlParser;
+
+    /**
+     * @param UrlParser $urlParser
+     */
+    public function setUrlParser(UrlParser $urlParser): void
+    {
+        $this->urlParser = $urlParser;
+    }
 
     /**
      * {@inheritdoc}
@@ -81,11 +91,11 @@ class ParentChildViewListener extends AbstractViewListener
     protected function doSwitchView($id): void
     {
         if ('edit' === Input::get('act') && 'tl_content' !== $this->getTable()) {
-            $url = Url::removeQueryString(['switchLanguage']);
+            $url = $this->urlParser->removeQueryString(['switchLanguage']);
         } else {
-            $url = Url::removeQueryString(['switchLanguage', 'act', 'mode']);
+            $url = $this->urlParser->removeQueryString(['switchLanguage', 'act', 'mode']);
         }
-        $url = Url::addQueryString('id='.$id, $url);
+        $url = $this->urlParser->addQueryString('id='.$id, $url);
 
         Controller::redirect($url);
     }

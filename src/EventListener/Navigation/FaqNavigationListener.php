@@ -6,7 +6,7 @@ namespace Terminal42\ChangeLanguage\EventListener\Navigation;
 
 use Contao\FaqCategoryModel;
 use Contao\FaqModel;
-use Haste\Input\Input;
+use Contao\Input;
 
 /**
  * Translate URL parameters for faq items.
@@ -26,7 +26,7 @@ class FaqNavigationListener extends AbstractNavigationListener
      */
     protected function findCurrent()
     {
-        $alias = (string) Input::getAutoItem($this->getUrlKey(), false, true);
+        $alias = (string) Input::get($this->getUrlKey(), false, true);
 
         if ('' === $alias) {
             return null;

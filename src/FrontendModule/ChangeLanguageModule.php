@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Terminal42\ChangeLanguage\FrontendModule;
 
+use Contao\BackendTemplate;
 use Contao\FrontendTemplate;
 use Contao\Input;
+use Contao\Module;
 use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
-use Haste\Frontend\AbstractFrontendModule;
-use Haste\Generator\RowClass;
 use Symfony\Component\Routing\Exception\ExceptionInterface;
 use Terminal42\ChangeLanguage\Event\ChangelanguageNavigationEvent;
 use Terminal42\ChangeLanguage\Helper\AlternateLinks;
@@ -26,7 +26,7 @@ use Terminal42\ChangeLanguage\PageFinder;
  * @property bool  $customLanguage
  * @property array $customLanguageText
  */
-class ChangeLanguageModule extends AbstractFrontendModule
+class ChangeLanguageModule extends Module
 {
     /**
      * @var string
@@ -56,7 +56,15 @@ class ChangeLanguageModule extends AbstractFrontendModule
     public function generate()
     {
         if ('BE' === TL_MODE) {
-            return $this->generateWildcard();
+            $template = new BackendTemplate('be_wildcard');
+
+            $template->wildcard = '### ' . mb_strtoupper($GLOBALS['TL_LANG']['FMD'][$this->type][0]) . ' ###';
+            $template->title = $this->headline;
+            $template->id = $this->id;
+            $template->link = $this->name;
+            $template->href = 'contao?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
+
+            return $template->parse();
         }
 
         $buffer = parent::generate();
@@ -153,8 +161,6 @@ class ChangeLanguageModule extends AbstractFrontendModule
      */
     protected function generateNavigationTemplate(array $items)
     {
-        RowClass::withKey('class')->addFirstLast()->applyTo($items);
-
         $objTemplate = new FrontendTemplate($this->navigationTpl ?: 'nav_default');
 
         $objTemplate->setData($this->arrData);

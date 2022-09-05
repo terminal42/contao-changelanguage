@@ -4,3 +4,15 @@ services:
         autowire: true
 
     Terminal42\ChangeLanguage\EventListener\DataContainer\UserLabelsListener: ~
+
+    Terminal42\ChangeLanguage\EventListener\DataContainer\ArticleViewListener:
+        calls:
+            - ['setUrlParser', ['@Codefog\HasteBundle\UrlParser']]
+
+    Terminal42\ChangeLanguage\EventListener\DataContainer\PageViewListener:
+        calls:
+            - ['setUrlParser', ['@Codefog\HasteBundle\UrlParser']]
+
+    Terminal42\ChangeLanguage\EventListener\DataContainer\ParentChildViewListener:
+        calls:
+            - ['setUrlParser', ['@Codefog\HasteBundle\UrlParser']]

@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 
 use Contao\ArticleModel;
+use Contao\CoreBundle\DataContainer\PaletteManipulator;
 use Contao\Database;
 use Contao\DataContainer;
 use Contao\Input;
 use Contao\PageModel;
-use Haste\Dca\PaletteManipulator;
 use Terminal42\ChangeLanguage\EventListener\AbstractTableListener;
 use Terminal42\ChangeLanguage\PageFinder;
 
