@@ -115,7 +115,7 @@ abstract class AbstractViewListener extends AbstractTableListener
         static $languages;
 
         if (null === $languages) {
-            $languages = System::getLanguages();
+            $languages = System::getContainer()->get('contao.intl.locales')->getLocales(null, true);
         }
 
         if (\array_key_exists($languageCode, $languages)) {
