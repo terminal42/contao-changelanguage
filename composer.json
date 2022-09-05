@@ -27,17 +27,15 @@
     },
     "require": {
         "php": "^7.4 || ^8.0",
-        "contao/core-bundle": "^4.9",
-        "doctrine/dbal": "^2.13 || ^3.0",
+        "contao/core-bundle": "^4.13",
         "league/uri": "^6.0",
         "league/uri-components": "^2.0"
     },
     "require-dev": {
         "contao/manager-plugin": "^2.0",
-        "contao/core-bundle": "~4.9.0",
-        "contao/news-bundle": "~4.9",
-        "contao/calendar-bundle": "~4.9",
-        "contao/faq-bundle": "~4.9",
+        "contao/news-bundle": "^4.13",
+        "contao/calendar-bundle": "^4.13",
+        "contao/faq-bundle": "^4.13",
         "phpunit/phpunit": "^9.5.24",
         "symfony/phpunit-bridge": "^3.3.11",
         "phpunit/dbunit": "~1.3"
