@@ -8,7 +8,7 @@ use Codefog\HasteBundle\UrlParser;
 use Contao\Controller;
 use Contao\Input;
 use Contao\PageModel;
-use Contao\Session;
+use Contao\System;
 
 class PageViewListener extends AbstractViewListener
 {
@@ -35,7 +35,7 @@ class PageViewListener extends AbstractViewListener
      */
     protected function getCurrentPage()
     {
-        $node = Session::getInstance()->get('tl_page_node');
+        $node = System::getContainer()->get('session')->getBag('contao_backend')->get('tl_page_node');
 
         if ($node < 1) {
             return null;
@@ -64,7 +64,7 @@ class PageViewListener extends AbstractViewListener
      */
     protected function doSwitchView($id): void
     {
-        Session::getInstance()->set('tl_page_node', (int) $id);
+        System::getContainer()->get('session')->getBag('contao_backend')->set('tl_page_node', (int) $id);
 
         Controller::redirect($this->urlParser->removeQueryString(['switchLanguage']));
     }
