@@ -6,6 +6,7 @@ namespace Terminal42\ChangeLanguage\Helper;
 
 use Contao\Controller;
 use Contao\StringUtil;
+use Contao\System;
 use Terminal42\ChangeLanguage\Navigation\NavigationItem;
 
 /**
@@ -59,7 +60,7 @@ class LanguageText
         $value = $this->map[$language];
 
         if ($replaceInsertTags) {
-            $value = Controller::replaceInsertTags($value);
+            $value = System::getContainer()->get('contao.insert_tag.parser')->replace($value);
         }
 
         return $value;

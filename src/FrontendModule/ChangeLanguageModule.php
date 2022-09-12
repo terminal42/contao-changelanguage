@@ -55,7 +55,10 @@ class ChangeLanguageModule extends Module
      */
     public function generate()
     {
-        if ('BE' === TL_MODE) {
+        $request = System::getContainer()->get('request_stack')->getCurrentRequest();
+        $scopeMatcher = System::getContainer()->get('contao.routing.scope_matcher');
+
+        if ($request !== null && $scopeMatcher->isBackendRequest($request)) {
             $template = new BackendTemplate('be_wildcard');
 
             $template->wildcard = '### ' . mb_strtoupper($GLOBALS['TL_LANG']['FMD'][$this->type][0]) . ' ###';
