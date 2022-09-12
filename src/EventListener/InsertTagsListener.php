@@ -6,6 +6,7 @@ namespace Terminal42\ChangeLanguage\EventListener;
 
 use Contao\Controller;
 use Contao\PageModel;
+use Contao\StringUtil;
 use Terminal42\ChangeLanguage\PageFinder;
 
 class InsertTagsListener
@@ -19,7 +20,7 @@ class InsertTagsListener
      */
     public function onReplaceInsertTags($insertTag)
     {
-        $parts = trimsplit('::', $insertTag);
+        $parts = StringUtil::trimsplit('::', $insertTag);
 
         if (0 !== strpos($parts[0], 'changelanguage')) {
             return false;
