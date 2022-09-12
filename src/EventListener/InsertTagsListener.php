@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Terminal42\ChangeLanguage\EventListener;
 
-use Contao\Controller;
 use Contao\PageModel;
+use Contao\System;
 use Terminal42\ChangeLanguage\PageFinder;
 
 class InsertTagsListener
@@ -39,7 +39,7 @@ class InsertTagsListener
             return '';
         }
 
-        return Controller::replaceInsertTags(
+        return System::getContainer()->get('contao.insert_tag.parser')->replace(
             sprintf(
                 '{{%s::%s}}',
                 substr($parts[0], 15),
