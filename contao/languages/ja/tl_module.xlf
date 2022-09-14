@@ -34,14 +34,6 @@
                 <source>Please enter a replacement for every language. Use lower case shortcuts.</source>
                 <target>各言語に代わりに置き換えて使用する文字列を入力してください。小文字のショートカットを使用してください。</target>
             </trans-unit>
-            <trans-unit id="tl_module.customLanguageText.value">
-                <source>Language shortcut</source>
-                <target>言語のショートカット</target>
-            </trans-unit>
-            <trans-unit id="tl_module.customLanguageText.label">
-                <source>Replacement text</source>
-                <target>置き換える文字列</target>
-            </trans-unit>
         </body>
     </file>
 </xliff>

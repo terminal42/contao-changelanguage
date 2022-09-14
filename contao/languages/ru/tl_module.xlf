@@ -35,14 +35,6 @@
                 <source>Please enter a replacement for every language. Use lower case shortcuts.</source>
                 <target>Введите замену для каждого языка. Используйте нижний регистр клавиш.</target>
             </trans-unit>
-            <trans-unit id="tl_module.customLanguageText.value">
-                <source>Language shortcut</source>
-                <target>Ярлык языка</target>
-            </trans-unit>
-            <trans-unit id="tl_module.customLanguageText.label">
-                <source>Replacement text</source>
-                <target>Текст замещения</target>
-            </trans-unit>
         </body>
     </file>
 </xliff>

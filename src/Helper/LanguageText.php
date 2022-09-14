@@ -119,11 +119,11 @@ class LanguageText
         $map = [];
 
         foreach ($config as $text) {
-            if (empty($text['value']) || empty($text['label'])) {
+            if (empty($text['key']) || empty($text['value'])) {
                 continue;
             }
 
-            $map[$text['value']] = $text['label'];
+            $map[$text['key']] = $text['value'];
         }
 
         return new static($map);

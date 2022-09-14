@@ -28,8 +28,7 @@
     "require": {
         "php": "^7.4 || ^8.0",
         "contao/core-bundle": "^4.9 || ^5.0",
-        "codefog/contao-haste": "5.x-dev@dev",
-        "menatwork/contao-multicolumnwizard-bundle": "^3.5"
+        "codefog/contao-haste": "5.x-dev@dev"
     },
     "require-dev": {
         "contao/manager-plugin": "^2.0",
