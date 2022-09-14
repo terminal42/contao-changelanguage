@@ -118,11 +118,17 @@ class LanguageText
         $map = [];
 
         foreach ($config as $text) {
-            if (empty($text['value']) || empty($text['label'])) {
+            // Backwards compatibility with Multicolumnwizard data
+            if (isset($text['value'], $text['label'])) {
+                $map[$text['value']] = $text['label'];
                 continue;
             }
 
-            $map[$text['value']] = $text['label'];
+            if (empty($text['key']) || empty($text['value'])) {
+                continue;
+            }
+
+            $map[$text['key']] = $text['value'];
         }
 
         return new static($map);

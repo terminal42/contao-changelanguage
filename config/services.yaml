@@ -4,3 +4,5 @@ services:
         autowire: true
 
     Terminal42\ChangeLanguage\EventListener\DataContainer\UserLabelsListener: ~
+
+    Terminal42\ChangeLanguage\Migration\CustomLanguageTextMigration: ~

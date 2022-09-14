@@ -26,9 +26,9 @@
         "forum": "https://community.contao.org"
     },
     "require": {
-        "php": "^7.1 || ^8.0",
+        "php": "^7.4 || ^8.0",
         "contao/core-bundle": "^4.9",
-        "menatwork/contao-multicolumnwizard-bundle": "^3.3",
+        "doctrine/dbal": "^2.13 || ^3.0",
         "league/uri": "^6.0",
         "league/uri-components": "^2.0"
     },
@@ -62,6 +62,5 @@
     },
     "scripts": {
         "cs-fixer": "@php tools/ecs/vendor/bin/ecs check src/ --config tools/ecs/config.php --fix --ansi"
-
     }
 }

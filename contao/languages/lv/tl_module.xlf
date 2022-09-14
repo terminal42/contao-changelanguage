@@ -35,14 +35,6 @@
                 <source>Please enter a replacement for every language. Use lower case shortcuts.</source>
                 <target>Lūdzu, ievadiet aizvietotāju katrai valodai. Izmantojiet mazo burtu saīsnes.</target>
             </trans-unit>
-            <trans-unit id="tl_module.customLanguageText.value">
-                <source>Language shortcut</source>
-                <target>Valodas saīsne</target>
-            </trans-unit>
-            <trans-unit id="tl_module.customLanguageText.label">
-                <source>Replacement text</source>
-                <target>Aizstājējteksts</target>
-            </trans-unit>
         </body>
     </file>
 </xliff>

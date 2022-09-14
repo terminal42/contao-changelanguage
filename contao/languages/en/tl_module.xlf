@@ -29,13 +29,7 @@
                 <source>Language texts</source>
             </trans-unit>
             <trans-unit id="tl_module.customLanguageText.1">
-                <source>Please enter a replacement for every language. Use lower case shortcuts.</source>
-            </trans-unit>
-            <trans-unit id="tl_module.customLanguageText.value">
-                <source>Language shortcut</source>
-            </trans-unit>
-            <trans-unit id="tl_module.customLanguageText.label">
-                <source>Replacement text</source>
+                <source>Enter the page language as key and a replacement text as value.</source>
             </trans-unit>
         </body>
     </file>

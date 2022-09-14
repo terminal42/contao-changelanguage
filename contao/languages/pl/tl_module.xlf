@@ -34,14 +34,6 @@
                 <source>Please enter a replacement for every language. Use lower case shortcuts.</source>
                 <target>Proszę wprowadzić zamiennik dla każdego języka. Użyj skrótów pisanych małymi literami.</target>
             </trans-unit>
-            <trans-unit id="tl_module.customLanguageText.value">
-                <source>Language shortcut</source>
-                <target>Skrót języka</target>
-            </trans-unit>
-            <trans-unit id="tl_module.customLanguageText.label">
-                <source>Replacement text</source>
-                <target>Zamiennik</target>
-            </trans-unit>
         </body>
     </file>
 </xliff>

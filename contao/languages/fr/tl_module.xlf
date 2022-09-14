@@ -35,14 +35,6 @@ abréviations).</target>
                 <source>Please enter a replacement for every language. Use lower case shortcuts.</source>
                 <target>Merci d'introduire un texte de remplacement pour chaque langue utilisée. Utilisez des minuscules pour les abréviations.</target>
             </trans-unit>
-            <trans-unit id="tl_module.customLanguageText.value">
-                <source>Language shortcut</source>
-                <target>Abréviation de la langue (petit)</target>
-            </trans-unit>
-            <trans-unit id="tl_module.customLanguageText.label">
-                <source>Replacement text</source>
-                <target>Texte de remplacement</target>
-            </trans-unit>
         </body>
     </file>
 </xliff>
