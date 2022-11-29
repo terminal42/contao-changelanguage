@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Terminal42\ChangeLanguage\EventListener\Navigation;
 
 use Contao\Date;
+use Contao\Input;
 use Contao\Model;
 use Terminal42\ChangeLanguage\Event\ChangelanguageNavigationEvent;
 
@@ -90,6 +91,24 @@ abstract class AbstractNavigationListener
         }
 
         return $columns;
+    }
+
+    protected function getAutoItem(): string
+    {
+        $strKey = $this->getUrlKey();
+
+        if (
+            !isset($GLOBALS['TL_CONFIG']['useAutoItem'])
+            || (
+                $GLOBALS['TL_CONFIG']['useAutoItem']
+                && isset($GLOBALS['TL_AUTO_ITEM'])
+                && in_array($strKey, $GLOBALS['TL_AUTO_ITEM'], true)
+            )
+        ) {
+            $strKey = 'auto_item';
+        }
+
+        return (string) Input::get($strKey, false, true);
     }
 
     /**

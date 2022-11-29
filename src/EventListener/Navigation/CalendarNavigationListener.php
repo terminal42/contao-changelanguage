@@ -6,7 +6,7 @@ namespace Terminal42\ChangeLanguage\EventListener\Navigation;
 
 use Contao\CalendarEventsModel;
 use Contao\CalendarModel;
-use Haste\Input\Input;
+use Contao\PageModel;
 
 /**
  * Translate URL parameters for calendar events.
@@ -26,7 +26,7 @@ class CalendarNavigationListener extends AbstractNavigationListener
      */
     protected function findCurrent()
     {
-        $alias = (string) Input::getAutoItem($this->getUrlKey(), false, true);
+        $alias = $this->getAutoItem();
 
         if ('' === $alias) {
             return null;

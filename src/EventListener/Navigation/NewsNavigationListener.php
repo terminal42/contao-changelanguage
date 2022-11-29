@@ -6,7 +6,6 @@ namespace Terminal42\ChangeLanguage\EventListener\Navigation;
 
 use Contao\NewsArchiveModel;
 use Contao\NewsModel;
-use Haste\Input\Input;
 
 /**
  * Translate URL parameters for news items.
@@ -26,7 +25,7 @@ class NewsNavigationListener extends AbstractNavigationListener
      */
     protected function findCurrent()
     {
-        $alias = (string) Input::getAutoItem($this->getUrlKey(), false, true);
+        $alias = $this->getAutoItem();
 
         if ('' === $alias) {
             return null;
