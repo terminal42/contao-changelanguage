@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 
+use Contao\CoreBundle\DataContainer\PaletteManipulator;
 use Contao\DataContainer;
 use Contao\Input;
 use Contao\Model;
 use Contao\Model\Collection;
-use Haste\Dca\PaletteManipulator;
 use Terminal42\ChangeLanguage\EventListener\AbstractTableListener;
 
 abstract class AbstractChildTableListener extends AbstractTableListener
