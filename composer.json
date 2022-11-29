@@ -28,8 +28,9 @@
     "require": {
         "php": "^7.1 || ^8.0",
         "contao/core-bundle": "^4.9",
-        "codefog/contao-haste": "^4.13",
-        "menatwork/contao-multicolumnwizard-bundle": "^3.3"
+        "menatwork/contao-multicolumnwizard-bundle": "^3.3",
+        "league/uri": "^6.0",
+        "league/uri-components": "^2.0"
     },
     "require-dev": {
         "contao/manager-plugin": "^2.0",
@@ -37,7 +38,7 @@
         "contao/news-bundle": "~4.9",
         "contao/calendar-bundle": "~4.9",
         "contao/faq-bundle": "~4.9",
-        "phpunit/phpunit": "^5.7.26",
+        "phpunit/phpunit": "^9.5.24",
         "symfony/phpunit-bridge": "^3.3.11",
         "phpunit/dbunit": "~1.3"
     },

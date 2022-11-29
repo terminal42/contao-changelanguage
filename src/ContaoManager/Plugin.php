@@ -27,7 +27,6 @@ class Plugin implements BundlePluginInterface
                     ContaoCalendarBundle::class,
                     ContaoFaqBundle::class,
                     MultiColumnWizardBundle::class,
-                    'haste',
                 ]),
         ];
     }

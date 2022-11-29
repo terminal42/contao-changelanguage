@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Terminal42\ChangeLanguage\EventListener\BackendView;
 
-use Contao\Controller;
+use Contao\CoreBundle\Exception\RedirectResponseException;
 use Contao\Input;
 use Contao\PageModel;
 use Contao\System;
-use Haste\Util\Url;
+use League\Uri\Uri;
+use League\Uri\UriModifier;
 
 class PageViewListener extends AbstractViewListener
 {
@@ -54,8 +55,12 @@ class PageViewListener extends AbstractViewListener
      */
     protected function doSwitchView($id): void
     {
-        System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend')->set('tl_page_node', (int) $id);
+        $requestStack = System::getContainer()->get('request_stack');
+        $requestStack->getSession()->getBag('contao_backend')->set('tl_page_node', (int) $id);
 
-        Controller::redirect(Url::removeQueryString(['switchLanguage']));
+        $uri = Uri::createFromString($requestStack->getCurrentRequest()->getUri());
+        $uri = UriModifier::removePairs($uri, 'switchLanguage');
+
+        throw new RedirectResponseException($uri->toString());
     }
 }

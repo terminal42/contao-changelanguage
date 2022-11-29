@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace Terminal42\ChangeLanguage\EventListener\BackendView;
 
 use Contao\Controller;
+use Contao\CoreBundle\Exception\RedirectResponseException;
 use Contao\Input;
 use Contao\Model;
 use Contao\PageModel;
-use Haste\Util\Url;
+use Contao\System;
+use League\Uri\Uri;
+use League\Uri\UriModifier;
 
 class ParentChildViewListener extends AbstractViewListener
 {
@@ -76,19 +79,19 @@ class ParentChildViewListener extends AbstractViewListener
         return $options;
     }
 
-    /**
-     * @throws \InvalidArgumentException
-     */
     protected function doSwitchView($id): void
     {
-        if ('edit' === Input::get('act') && 'tl_content' !== $this->getTable()) {
-            $url = Url::removeQueryString(['switchLanguage']);
-        } else {
-            $url = Url::removeQueryString(['switchLanguage', 'act', 'mode']);
-        }
-        $url = Url::addQueryString('id='.$id, $url);
+        $uri = Uri::createFromString(System::getContainer()->get('request_stack')->getCurrentRequest()->getUri());
 
-        Controller::redirect($url);
+        if ('edit' === Input::get('act') && 'tl_content' !== $this->getTable()) {
+            $uri = UriModifier::removeParams($uri, 'switchLanguage');
+        } else {
+            $uri = UriModifier::removeParams($uri, 'switchLanguage', 'act', 'mode');
+        }
+
+        $uri = UriModifier::mergeQuery($uri, 'id='.$id);
+
+        throw new RedirectResponseException($uri->toString());
     }
 
     /**
