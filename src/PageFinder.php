@@ -7,6 +7,7 @@ namespace Terminal42\ChangeLanguage;
 use Contao\Date;
 use Contao\Model\Collection;
 use Contao\PageModel;
+use Contao\System;
 
 class PageFinder
 {
@@ -219,7 +220,7 @@ class PageFinder
      */
     private function addPublishingConditions(array &$columns, $table): void
     {
-        if ('BE' !== TL_MODE && true !== BE_USER_LOGGED_IN) {
+        if (!System::getContainer()->get('contao.security.token_checker')->isPreviewMode()) {
             $start = Date::floorToMinute();
             $stop = $start + 60;
 
