@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Terminal42\ChangeLanguage\FrontendModule;
 
+use Contao\BackendTemplate;
 use Contao\FrontendTemplate;
 use Contao\Input;
+use Contao\Module;
 use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
-use Haste\Frontend\AbstractFrontendModule;
 use Haste\Generator\RowClass;
 use Symfony\Component\Routing\Exception\ExceptionInterface;
 use Terminal42\ChangeLanguage\Event\ChangelanguageNavigationEvent;
@@ -26,7 +27,7 @@ use Terminal42\ChangeLanguage\PageFinder;
  * @property bool  $customLanguage
  * @property array $customLanguageText
  */
-class ChangeLanguageModule extends AbstractFrontendModule
+class ChangeLanguageModule extends Module
 {
     /**
      * @var string
@@ -55,8 +56,22 @@ class ChangeLanguageModule extends AbstractFrontendModule
      */
     public function generate()
     {
-        if ('BE' === TL_MODE) {
-            return $this->generateWildcard();
+        $request = System::getContainer()->get('request_stack')->getCurrentRequest();
+        $scopeMatcher = System::getContainer()->get('contao.routing.scope_matcher');
+
+        if ($request !== null && $scopeMatcher->isBackendRequest($request)) {
+            $template = new BackendTemplate('be_wildcard');
+
+            $template->wildcard = '### ' . strtoupper($GLOBALS['TL_LANG']['FMD'][$this->type][0]) . ' ###';
+            $template->title = $this->headline;
+            $template->id = $this->id;
+            $template->link = $this->name;
+            $template->href = System::getContainer()->get('router')->generate(
+                'contao_backend',
+                ['do' => 'themes', 'table' => 'tl_module', 'act' => 'edit', 'id' => $this->id]
+            );
+
+            return $template->parse();
         }
 
         $buffer = parent::generate();
