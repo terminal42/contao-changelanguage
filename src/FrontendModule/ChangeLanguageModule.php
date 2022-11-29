@@ -11,7 +11,6 @@ use Contao\Module;
 use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
-use Haste\Generator\RowClass;
 use Symfony\Component\Routing\Exception\ExceptionInterface;
 use Terminal42\ChangeLanguage\Event\ChangelanguageNavigationEvent;
 use Terminal42\ChangeLanguage\Helper\AlternateLinks;
@@ -168,8 +167,6 @@ class ChangeLanguageModule extends Module
      */
     protected function generateNavigationTemplate(array $items)
     {
-        RowClass::withKey('class')->addFirstLast()->applyTo($items);
-
         $objTemplate = new FrontendTemplate($this->navigationTpl ?: 'nav_default');
 
         $objTemplate->setData($this->arrData);
