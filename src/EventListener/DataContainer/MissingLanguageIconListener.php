@@ -84,7 +84,7 @@ class MissingLanguageIconListener
             return sprintf(
                 '%s <span style="color:#999;padding-left:3px">(<a href="%s" title="%s" style="color:#999">%s</a>)</span>',
                 $label,
-                Backend::addToUrl('pn=' . $mainPage->id),
+                Backend::addToUrl('pn='.$mainPage->id),
                 StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['selectNode']),
                 $mainPage->title
             );
@@ -135,13 +135,13 @@ class MissingLanguageIconListener
         $label = (string) $previousResult;
 
         if (empty($label)) {
-            $label = '<div class="tl_content_left">' . $row['headline'] . ' <span style="color:#999;padding-left:3px">[' . Date::parse(Config::get('datimFormat'), $row['date']) . ']</span></div>';
+            $label = '<div class="tl_content_left">'.$row['headline'].' <span style="color:#999;padding-left:3px">['.Date::parse(Config::get('datimFormat'), $row['date']).']</span></div>';
         }
 
         $archive = NewsArchiveModel::findByPk($row['pid']);
 
         if (
-            $archive !== null
+            null !== $archive
             && $archive->master
             && (!$row['languageMain'] || null === NewsModel::findByPk($row['languageMain']))
         ) {
@@ -166,7 +166,7 @@ class MissingLanguageIconListener
         $calendar = CalendarModel::findByPk($row['pid']);
 
         if (
-            $calendar !== null
+            null !== $calendar
             && $calendar->master
             && (!$row['languageMain'] || null === CalendarEventsModel::findByPk($row['languageMain']))
         ) {
@@ -191,7 +191,7 @@ class MissingLanguageIconListener
         $category = FaqCategoryModel::findByPk($row['pid']);
 
         if (
-            $category !== null
+            null !== $category
             && $category->master
             && (!$row['languageMain'] || null === FaqModel::findByPk($row['languageMain']))
         ) {

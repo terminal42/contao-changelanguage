@@ -58,10 +58,10 @@ class ChangeLanguageModule extends Module
         $request = System::getContainer()->get('request_stack')->getCurrentRequest();
         $scopeMatcher = System::getContainer()->get('contao.routing.scope_matcher');
 
-        if ($request !== null && $scopeMatcher->isBackendRequest($request)) {
+        if (null !== $request && $scopeMatcher->isBackendRequest($request)) {
             $template = new BackendTemplate('be_wildcard');
 
-            $template->wildcard = '### ' . strtoupper($GLOBALS['TL_LANG']['FMD'][$this->type][0]) . ' ###';
+            $template->wildcard = '### '.strtoupper($GLOBALS['TL_LANG']['FMD'][$this->type][0]).' ###';
             $template->title = $this->headline;
             $template->id = $this->id;
             $template->link = $this->name;
@@ -203,6 +203,7 @@ class ChangeLanguageModule extends Module
         unset($input['language'], $input['auto_item']);
 
         $currentQuery = [];
+
         if (!empty($_SERVER['QUERY_STRING'])) {
             parse_str($_SERVER['QUERY_STRING'], $currentQuery);
         }

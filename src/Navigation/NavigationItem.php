@@ -196,9 +196,9 @@ class NavigationItem
     }
 
     /**
-     * @return string
-     *
      * @throws ExceptionInterface
+     *
+     * @return string
      */
     public function getHref(UrlParameterBag $urlParameterBag, bool $catch = false)
     {

@@ -26,7 +26,8 @@ class ArticleViewListener extends AbstractViewListener
     protected function isSupported()
     {
         return 'article' === (string) Input::get('do')
-            && (('edit' === Input::get('act') && empty(Input::get('table')))
+            && (
+                ('edit' === Input::get('act') && empty(Input::get('table')))
                 || ($this->getTable() === Input::get('table'))
             );
     }
@@ -83,9 +84,12 @@ class ArticleViewListener extends AbstractViewListener
                 }
             }
 
-            $articles = array_values(array_filter($articles, function (ArticleModel $article) {
-                return $article->inColumn === $this->currentArticle->inColumn;
-            }));
+            $articles = array_values(array_filter(
+                $articles,
+                function (ArticleModel $article) {
+                    return $article->inColumn === $this->currentArticle->inColumn;
+                }
+            ));
 
             if (1 === \count($articles)) {
                 $options[$articles[0]->id] = $this->getLanguageLabel($model->language);

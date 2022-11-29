@@ -108,7 +108,7 @@ abstract class AbstractNavigationListener
             || (
                 $GLOBALS['TL_CONFIG']['useAutoItem']
                 && isset($GLOBALS['TL_AUTO_ITEM'])
-                && in_array($strKey, $GLOBALS['TL_AUTO_ITEM'], true)
+                && \in_array($strKey, $GLOBALS['TL_AUTO_ITEM'], true)
             )
         ) {
             $strKey = 'auto_item';

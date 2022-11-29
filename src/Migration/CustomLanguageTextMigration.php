@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\ChangeLanguage\Migration;
 
 use Contao\CoreBundle\Framework\ContaoFramework;
@@ -38,7 +40,7 @@ class CustomLanguageTextMigration extends AbstractMigration
         foreach ($texts as $text) {
             $text = StringUtil::deserialize($text);
 
-            if (is_array($text) && isset($text[0]['label'])) {
+            if (\is_array($text) && isset($text[0]['label'])) {
                 return true;
             }
         }
@@ -55,7 +57,7 @@ class CustomLanguageTextMigration extends AbstractMigration
         foreach ($records as $record) {
             $data = StringUtil::deserialize($record['customLanguageText']);
 
-            if (is_array($data) && isset($data[0]['label'])) {
+            if (\is_array($data) && isset($data[0]['label'])) {
                 $newData = [];
 
                 foreach ($data as $datum) {

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Terminal42\ChangeLanguage\Helper;
 
-use Contao\Controller;
 use Contao\StringUtil;
 use Contao\System;
 use Terminal42\ChangeLanguage\Navigation\NavigationItem;

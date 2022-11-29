@@ -35,7 +35,7 @@ class ArticleListener extends AbstractTableListener
         } elseif ('edit' === $action) {
             $article = ArticleModel::findByPk($dc->id);
 
-            if ($article !== null) {
+            if (null !== $article) {
                 $page = PageModel::findByPk($article->pid);
 
                 if (null !== $page && null !== (new PageFinder())->findAssociatedInMaster($page)) {

@@ -225,7 +225,7 @@ class UrlParameterBag
             return;
         }
 
-        if (!is_scalar($value)) {
+        if (!\is_scalar($value)) {
             throw new \InvalidArgumentException('URL can only contain (array of) scalar values');
         }
     }
