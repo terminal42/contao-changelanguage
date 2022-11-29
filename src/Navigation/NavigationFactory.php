@@ -10,20 +10,11 @@ use Terminal42\ChangeLanguage\PageFinder;
 
 class NavigationFactory
 {
-    /**
-     * @var PageFinder
-     */
-    private $pageFinder;
+    private PageFinder $pageFinder;
 
-    /**
-     * @var LanguageText
-     */
-    private $languageText;
+    private LanguageText $languageText;
 
-    /**
-     * @var PageModel
-     */
-    private $currentPage;
+    private PageModel $currentPage;
 
     /**
      * Constructor.

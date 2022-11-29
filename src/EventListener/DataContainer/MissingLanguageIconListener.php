@@ -22,7 +22,7 @@ use Terminal42\ChangeLanguage\Helper\LabelCallback;
 
 class MissingLanguageIconListener
 {
-    private static $callbacks = [
+    private static array $callbacks = [
         'tl_page' => 'onPageLabel',
         'tl_article' => 'onArticleLabel',
         'tl_news' => 'onNewsChildRecords',
@@ -40,9 +40,7 @@ class MissingLanguageIconListener
         if (\array_key_exists($table, self::$callbacks)) {
             LabelCallback::createAndRegister(
                 $table,
-                function (array $args, $previousResult) use ($table) {
-                    return $this->{self::$callbacks[$table]}($args, $previousResult);
-                }
+                fn (array $args, $previousResult) => $this->{self::$callbacks[$table]}($args, $previousResult)
             );
         }
     }

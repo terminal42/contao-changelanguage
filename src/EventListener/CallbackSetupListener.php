@@ -4,46 +4,53 @@ declare(strict_types=1);
 
 namespace Terminal42\ChangeLanguage\EventListener;
 
+use Terminal42\ChangeLanguage\EventListener\BackendView\ArticleViewListener;
+use Terminal42\ChangeLanguage\EventListener\BackendView\PageViewListener;
+use Terminal42\ChangeLanguage\EventListener\BackendView\ParentChildViewListener;
+use Terminal42\ChangeLanguage\EventListener\DataContainer\ArticleListener;
+use Terminal42\ChangeLanguage\EventListener\DataContainer\CalendarEventsListener;
+use Terminal42\ChangeLanguage\EventListener\DataContainer\FaqListener;
 use Terminal42\ChangeLanguage\EventListener\DataContainer\MissingLanguageIconListener;
+use Terminal42\ChangeLanguage\EventListener\DataContainer\NewsListener;
+use Terminal42\ChangeLanguage\EventListener\DataContainer\PageInitializationListener;
+use Terminal42\ChangeLanguage\EventListener\DataContainer\PageOperationListener;
+use Terminal42\ChangeLanguage\EventListener\DataContainer\ParentTableListener;
 
 class CallbackSetupListener
 {
-    private static $listeners = [
+    private static array $listeners = [
         'tl_page' => [
-            'Terminal42\ChangeLanguage\EventListener\DataContainer\PageInitializationListener',
-            'Terminal42\ChangeLanguage\EventListener\DataContainer\PageOperationListener',
-            'Terminal42\ChangeLanguage\EventListener\BackendView\PageViewListener',
+            PageInitializationListener::class,
+            PageOperationListener::class,
+            PageViewListener::class,
         ],
         'tl_article' => [
-            'Terminal42\ChangeLanguage\EventListener\DataContainer\ArticleListener',
-            'Terminal42\ChangeLanguage\EventListener\BackendView\PageViewListener',
-            'Terminal42\ChangeLanguage\EventListener\BackendView\ArticleViewListener',
+            ArticleListener::class,
+            PageViewListener::class,
+            ArticleViewListener::class,
         ],
         'tl_content' => [
-            'Terminal42\ChangeLanguage\EventListener\BackendView\ArticleViewListener',
-            'Terminal42\ChangeLanguage\EventListener\BackendView\ParentChildViewListener',
+            ArticleViewListener::class,
+            ParentChildViewListener::class,
         ],
-        'tl_news_archive' => ['Terminal42\ChangeLanguage\EventListener\DataContainer\ParentTableListener'],
-        'tl_calendar' => ['Terminal42\ChangeLanguage\EventListener\DataContainer\ParentTableListener'],
-        'tl_faq_category' => ['Terminal42\ChangeLanguage\EventListener\DataContainer\ParentTableListener'],
+        'tl_news_archive' => [ParentTableListener::class],
+        'tl_calendar' => [ParentTableListener::class],
+        'tl_faq_category' => [ParentTableListener::class],
         'tl_news' => [
-            'Terminal42\ChangeLanguage\EventListener\DataContainer\NewsListener',
-            'Terminal42\ChangeLanguage\EventListener\BackendView\ParentChildViewListener',
+            NewsListener::class,
+            ParentChildViewListener::class,
         ],
         'tl_calendar_events' => [
-            'Terminal42\ChangeLanguage\EventListener\DataContainer\CalendarEventsListener',
-            'Terminal42\ChangeLanguage\EventListener\BackendView\ParentChildViewListener',
+            CalendarEventsListener::class,
+            ParentChildViewListener::class,
         ],
         'tl_faq' => [
-            'Terminal42\ChangeLanguage\EventListener\DataContainer\FaqListener',
-            'Terminal42\ChangeLanguage\EventListener\BackendView\ParentChildViewListener',
+            FaqListener::class,
+            ParentChildViewListener::class,
         ],
     ];
 
-    /**
-     * @var MissingLanguageIconListener
-     */
-    private $labelListener;
+    private MissingLanguageIconListener $labelListener;
 
     /**
      * Constructor.

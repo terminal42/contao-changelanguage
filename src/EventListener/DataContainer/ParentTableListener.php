@@ -12,10 +12,7 @@ use Terminal42\ChangeLanguage\PageFinder;
 
 class ParentTableListener
 {
-    /**
-     * @var string
-     */
-    private $table;
+    private string $table;
 
     /**
      * Constructor.
@@ -37,9 +34,7 @@ class ParentTableListener
             'label' => &$GLOBALS['TL_LANG'][$this->table]['master'],
             'exclude' => true,
             'inputType' => 'select',
-            'options_callback' => function (DataContainer $dc) {
-                return $this->onMasterOptions($dc);
-            },
+            'options_callback' => fn (DataContainer $dc) => $this->onMasterOptions($dc),
             'eval' => [
                 'includeBlankOption' => true,
                 'blankOptionLabel' => &$GLOBALS['TL_LANG'][$this->table]['isMaster'],

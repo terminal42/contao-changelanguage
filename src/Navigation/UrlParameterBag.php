@@ -6,15 +6,9 @@ namespace Terminal42\ChangeLanguage\Navigation;
 
 class UrlParameterBag
 {
-    /**
-     * @var array
-     */
-    private $attributes;
+    private array $attributes;
 
-    /**
-     * @var array
-     */
-    private $query;
+    private array $query;
 
     /**
      * Constructor.

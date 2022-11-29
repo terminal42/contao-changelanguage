@@ -59,6 +59,7 @@
         "contao-manager-plugin": "Terminal42\\ChangeLanguage\\ContaoManager\\Plugin"
     },
     "scripts": {
-        "cs-fixer": "@php tools/ecs/vendor/bin/ecs check src/ --config tools/ecs/config.php --fix --ansi"
+        "cs-fixer": "@php tools/ecs/vendor/bin/ecs check src/ --config tools/ecs/config.php --fix --ansi",
+        "rector": "@php tools/rector/vendor/bin/rector --config tools/rector/config.php --ansi"
     }
 }

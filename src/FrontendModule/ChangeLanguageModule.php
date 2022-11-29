@@ -33,10 +33,7 @@ class ChangeLanguageModule extends Module
      */
     protected $strTemplate = 'mod_changelanguage';
 
-    /**
-     * @var AlternateLinks
-     */
-    private static $alternateLinks;
+    private static ?AlternateLinks $alternateLinks = null;
 
     /**
      * @return AlternateLinks

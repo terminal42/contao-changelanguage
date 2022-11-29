@@ -14,9 +14,7 @@ trait LanguageMainTrait
             'label' => &$GLOBALS['TL_LANG'][$this->getTable()]['languageMain'],
             'exclude' => true,
             'inputType' => 'select',
-            'options_callback' => function (DataContainer $dc) {
-                return $this->onLanguageMainOptions($dc);
-            },
+            'options_callback' => fn (DataContainer $dc) => $this->onLanguageMainOptions($dc),
             'eval' => [
                 'includeBlankOption' => true,
                 'blankOptionLabel' => &$GLOBALS['TL_LANG'][$this->getTable()]['languageMain'][2],

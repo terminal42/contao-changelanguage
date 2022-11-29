@@ -86,9 +86,7 @@ class ArticleViewListener extends AbstractViewListener
 
             $articles = array_values(array_filter(
                 $articles,
-                function (ArticleModel $article) {
-                    return $article->inColumn === $this->currentArticle->inColumn;
-                }
+                fn (ArticleModel $article) => $article->inColumn === $this->currentArticle->inColumn
             ));
 
             if (1 === \count($articles)) {

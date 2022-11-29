@@ -10,35 +10,17 @@ use Terminal42\ChangeLanguage\Language;
 
 class NavigationItem
 {
-    /**
-     * @var PageModel
-     */
-    private $rootPage;
+    private PageModel $rootPage;
 
-    /**
-     * @var PageModel|null
-     */
-    private $targetPage;
+    private ?PageModel $targetPage = null;
 
-    /**
-     * @var string
-     */
-    private $linkLabel;
+    private string $linkLabel;
 
-    /**
-     * @var bool
-     */
-    private $newWindow;
+    private ?bool $newWindow = null;
 
-    /**
-     * @var bool
-     */
-    private $isDirectFallback = false;
+    private bool $isDirectFallback = false;
 
-    /**
-     * @var bool
-     */
-    private $isCurrentPage = false;
+    private bool $isCurrentPage = false;
 
     /**
      * Constructor.

@@ -15,10 +15,7 @@ use Terminal42\ChangeLanguage\Navigation\UrlParameterBag;
  */
 class AlternateLinks
 {
-    /**
-     * @var array
-     */
-    private $links = [];
+    private array $links = [];
 
     /**
      * Returns whether a link already exists for a language.

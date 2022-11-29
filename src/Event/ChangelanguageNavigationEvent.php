@@ -9,25 +9,10 @@ use Terminal42\ChangeLanguage\Navigation\UrlParameterBag;
 
 class ChangelanguageNavigationEvent
 {
-    /**
-     * @var NavigationItem
-     */
-    private $navigationItem;
-
-    /**
-     * @var UrlParameterBag
-     */
-    private $urlParameterBag;
-
-    /**
-     * @var bool
-     */
-    private $skipped = false;
-
-    /**
-     * @var bool
-     */
-    private $stopPropagation = false;
+    private NavigationItem $navigationItem;
+    private UrlParameterBag $urlParameterBag;
+    private bool $skipped = false;
+    private bool $stopPropagation = false;
 
     public function __construct(NavigationItem $navigationItem, UrlParameterBag $urlParameters)
     {

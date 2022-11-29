@@ -13,10 +13,7 @@ use Terminal42\ChangeLanguage\Navigation\NavigationItem;
  */
 class LanguageText
 {
-    /**
-     * @var array
-     */
-    private $map = [];
+    private array $map = [];
 
     /**
      * Constructor.
