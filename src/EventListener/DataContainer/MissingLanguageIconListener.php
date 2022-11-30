@@ -49,10 +49,8 @@ class MissingLanguageIconListener
      * Adds missing translation warning to page tree.
      *
      * @param mixed $previousResult
-     *
-     * @return string
      */
-    public function onPageLabel(array $args, $previousResult = null)
+    private function onPageLabel(array $args, $previousResult = null): string
     {
         [$row, $label] = $args;
 
@@ -95,10 +93,8 @@ class MissingLanguageIconListener
      * Adds missing translation warning to article tree.
      *
      * @param mixed $previousResult
-     *
-     * @return string
      */
-    public function onArticleLabel(array $args, $previousResult = null)
+    private function onArticleLabel(array $args, $previousResult = null): string
     {
         [$row, $label] = $args;
 
@@ -124,10 +120,8 @@ class MissingLanguageIconListener
      * Generate missing translation warning for news child records.
      *
      * @param mixed $previousResult
-     *
-     * @return string
      */
-    public function onNewsChildRecords(array $args, $previousResult = null)
+    private function onNewsChildRecords(array $args, $previousResult = null): string
     {
         $row = $args[0];
         $label = (string) $previousResult;
@@ -153,10 +147,8 @@ class MissingLanguageIconListener
      * Generate missing translation warning for calendar events child records.
      *
      * @param mixed $previousResult
-     *
-     * @return string
      */
-    public function onCalendarEventChildRecords(array $args, $previousResult = null)
+    private function onCalendarEventChildRecords(array $args, $previousResult = null): string
     {
         $row = $args[0];
         $label = (string) $previousResult;
@@ -178,10 +170,8 @@ class MissingLanguageIconListener
      * Generate missing translation warning for faq child records.
      *
      * @param mixed $previousResult
-     *
-     * @return string
      */
-    public function onFaqChildRecords(array $args, $previousResult = null)
+    private function onFaqChildRecords(array $args, $previousResult = null): string
     {
         $row = $args[0];
         $label = (string) $previousResult;

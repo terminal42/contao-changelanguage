@@ -13,18 +13,12 @@ use League\Uri\UriModifier;
 
 class PageViewListener extends AbstractViewListener
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function isSupported()
+    protected function isSupported(): bool
     {
         return 'page' === Input::get('do') || ('article' === Input::get('do') && 'edit' !== Input::get('act'));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getCurrentPage()
+    protected function getCurrentPage(): ?PageModel
     {
         $node = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend')->get('tl_page_node');
 
@@ -35,10 +29,7 @@ class PageViewListener extends AbstractViewListener
         return PageModel::findByPk($node);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getAvailableLanguages(PageModel $page)
+    protected function getAvailableLanguages(PageModel $page): array
     {
         $options = [];
 
@@ -50,9 +41,6 @@ class PageViewListener extends AbstractViewListener
         return $options;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function doSwitchView($id): void
     {
         $requestStack = System::getContainer()->get('request_stack');

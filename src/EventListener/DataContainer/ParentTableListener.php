@@ -14,12 +14,7 @@ class ParentTableListener
 {
     private string $table;
 
-    /**
-     * Constructor.
-     *
-     * @param string $table
-     */
-    public function __construct($table)
+    public function __construct(string $table)
     {
         $this->table = $table;
     }

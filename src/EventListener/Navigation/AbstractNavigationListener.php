@@ -78,13 +78,8 @@ abstract class AbstractNavigationListener
 
     /**
      * Adds publishing conditions to Model query columns if backend user is not logged in.
-     *
-     * @param string $table
-     * @param bool   $addStartStop
-     *
-     * @return array
      */
-    protected function addPublishedConditions(array $columns, $table, $addStartStop = true)
+    protected function addPublishedConditions(array $columns, string $table, bool $addStartStop = true): array
     {
         if (true !== BE_USER_LOGGED_IN) {
             $columns[] = "$table.published='1'";

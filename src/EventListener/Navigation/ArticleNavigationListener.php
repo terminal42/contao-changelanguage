@@ -7,6 +7,7 @@ namespace Terminal42\ChangeLanguage\EventListener\Navigation;
 use Contao\ArticleModel;
 use Contao\Database;
 use Contao\Date;
+use Contao\PageModel;
 use Terminal42\ChangeLanguage\Event\ChangelanguageNavigationEvent;
 use Terminal42\ChangeLanguage\PageFinder;
 
@@ -62,10 +63,8 @@ class ArticleNavigationListener
      * @param int  $targetRootId
      * @param bool $currentIsFallback
      * @param bool $targetIsFallback
-     *
-     * @return ArticleModel|null
      */
-    private function findTargetArticle(ArticleModel $currentArticle, $targetRootId, $currentIsFallback, $targetIsFallback)
+    private function findTargetArticle(ArticleModel $currentArticle, $targetRootId, $currentIsFallback, $targetIsFallback): ?ArticleModel
     {
         // If the target root is fallback, the article ID will match our current "languageMain"
         if ($targetIsFallback) {
@@ -91,10 +90,8 @@ class ArticleNavigationListener
 
     /**
      * Find a published article with additional conditions.
-     *
-     * @return ArticleModel|null
      */
-    private function findPublishedArticle(array $columns, array $values = [], array $options = [])
+    private function findPublishedArticle(array $columns, array $values = [], array $options = []): ?ArticleModel
     {
         if (true !== BE_USER_LOGGED_IN) {
             $time = Date::floorToMinute();

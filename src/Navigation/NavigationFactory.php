@@ -11,14 +11,9 @@ use Terminal42\ChangeLanguage\PageFinder;
 class NavigationFactory
 {
     private PageFinder $pageFinder;
-
     private LanguageText $languageText;
-
     private PageModel $currentPage;
 
-    /**
-     * Constructor.
-     */
     public function __construct(PageFinder $pageFinder, LanguageText $languageText, PageModel $currentPage)
     {
         $this->pageFinder = $pageFinder;
@@ -31,7 +26,7 @@ class NavigationFactory
      *
      * @return array<NavigationItem>
      */
-    public function findNavigationItems(PageModel $currentPage)
+    public function findNavigationItems(PageModel $currentPage): array
     {
         $rootPages = $this->pageFinder->findRootPagesForPage($currentPage, false, false);
         $navigationItems = $this->createNavigationItemsForRootPages($rootPages);
@@ -71,7 +66,7 @@ class NavigationFactory
      *
      * @return array<NavigationItem>
      */
-    private function createNavigationItemsForRootPages(array $rootPages)
+    private function createNavigationItemsForRootPages(array $rootPages): array
     {
         $navigationItems = [];
 
@@ -123,10 +118,8 @@ class NavigationFactory
 
     /**
      * Returns whether the given page is published.
-     *
-     * @return bool
      */
-    private function isPagePublished(PageModel $page)
+    private function isPagePublished(PageModel $page): bool
     {
         if (\defined('BE_USER_LOGGED_IN') && true === BE_USER_LOGGED_IN) {
             return true;

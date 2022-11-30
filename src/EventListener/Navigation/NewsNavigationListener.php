@@ -6,24 +6,19 @@ namespace Terminal42\ChangeLanguage\EventListener\Navigation;
 
 use Contao\NewsArchiveModel;
 use Contao\NewsModel;
+use Contao\PageModel;
 
 /**
  * Translate URL parameters for news items.
  */
 class NewsNavigationListener extends AbstractNavigationListener
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function getUrlKey()
+    protected function getUrlKey(): string
     {
         return 'items';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function findCurrent()
+    protected function findCurrent(): ?NewsModel
     {
         $alias = $this->getAutoItem();
 
@@ -44,10 +39,7 @@ class NewsNavigationListener extends AbstractNavigationListener
         return NewsModel::findPublishedByParentAndIdOrAlias($alias, $archives->fetchEach('id'), $options);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function findPublishedBy(array $columns, array $values = [], array $options = [])
+    protected function findPublishedBy(array $columns, array $values = [], array $options = []): ?NewsModel
     {
         return NewsModel::findOneBy(
             $this->addPublishedConditions($columns, NewsModel::getTable()),

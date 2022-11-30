@@ -11,23 +11,13 @@ use Terminal42\ChangeLanguage\Language;
 class NavigationItem
 {
     private PageModel $rootPage;
-
     private ?PageModel $targetPage = null;
-
     private string $linkLabel;
-
     private ?bool $newWindow = null;
-
     private bool $isDirectFallback = false;
-
     private bool $isCurrentPage = false;
 
-    /**
-     * Constructor.
-     *
-     * @param string|null $label
-     */
-    public function __construct(PageModel $rootPage, $label = null)
+    public function __construct(PageModel $rootPage, string $label = null)
     {
         if ('root' !== $rootPage->type) {
             throw new \RuntimeException(sprintf('Page ID "%s" has type "%s" but should be "root"', $rootPage->id, $rootPage->type));
@@ -41,90 +31,59 @@ class NavigationItem
         }
     }
 
-    /**
-     * @return bool
-     */
-    public function hasTargetPage()
+    public function hasTargetPage(): bool
     {
         return $this->targetPage instanceof PageModel;
     }
 
-    /**
-     * @return bool
-     */
-    public function isDirectFallback()
+    public function isDirectFallback(): bool
     {
         return $this->isDirectFallback;
     }
 
-    /**
-     * @param $isDirectFallback
-     */
     public function setIsDirectFallback($isDirectFallback): void
     {
         $this->isDirectFallback = (bool) $isDirectFallback;
     }
 
-    /**
-     * @return bool
-     */
-    public function isCurrentPage()
+    public function isCurrentPage(): bool
     {
         return $this->isCurrentPage;
     }
 
-    /**
-     * @return PageModel
-     */
-    public function getRootPage()
+    public function getRootPage(): PageModel
     {
         return $this->rootPage;
     }
 
-    /**
-     * @return string
-     */
-    public function getLabel()
+    public function getLabel(): string
     {
         return $this->linkLabel;
     }
 
-    public function setLabel($label): void
+    public function setLabel(string $label): void
     {
-        $this->linkLabel = (string) $label;
+        $this->linkLabel = $label;
     }
 
-    /**
-     * @return PageModel|null
-     */
-    public function getTargetPage()
+    public function getTargetPage(): ?PageModel
     {
         return $this->targetPage;
     }
 
-    /**
-     * @param bool $isDirectFallback
-     * @param bool $isCurrentPage
-     */
-    public function setTargetPage(PageModel $targetPage, $isDirectFallback, $isCurrentPage = false): void
+    public function setTargetPage(PageModel $targetPage, bool $isDirectFallback, bool $isCurrentPage = false): void
     {
         $this->targetPage = $targetPage->loadDetails();
-        $this->isDirectFallback = (bool) $isDirectFallback;
-        $this->isCurrentPage = (bool) $isCurrentPage;
+        $this->isDirectFallback = $isDirectFallback;
+        $this->isCurrentPage = $isCurrentPage;
     }
 
-    /**
-     * @param bool $isCurrentPage
-     */
-    public function setIsCurrentPage($isCurrentPage): void
+    public function setIsCurrentPage(bool $isCurrentPage): void
     {
         $this->isCurrentPage = $isCurrentPage;
     }
 
-    /**
-     * @return bool
-     */
-    public function isNewWindow()
+    public function isNewWindow(): ?bool
     {
         if (null === $this->newWindow) {
             $targetPage = $this->targetPage ?: $this->rootPage;
@@ -135,18 +94,12 @@ class NavigationItem
         return $this->newWindow;
     }
 
-    /**
-     * @param bool|null $newWindow
-     */
-    public function setNewWindow($newWindow): void
+    public function setNewWindow(?bool $newWindow): void
     {
         $this->newWindow = $newWindow;
     }
 
-    /**
-     * @return string
-     */
-    public function getNormalizedLanguage()
+    public function getNormalizedLanguage(): string
     {
         return strtolower($this->getLocaleId());
     }
@@ -155,11 +108,9 @@ class NavigationItem
      * Returns the language formatted as IETF Language Tag (BCP 47)
      * Example: en, en-US, de-CH.
      *
-     * @return string
-     *
      * @see http://www.w3.org/International/articles/language-tags/
      */
-    public function getLanguageTag()
+    public function getLanguageTag(): string
     {
         return Language::toLanguageTag($this->rootPage->language);
     }
@@ -168,21 +119,17 @@ class NavigationItem
      * Returns the language formatted as ICU Locale ID
      * Example: en, en_US, de_CH.
      *
-     * @return string
-     *
      * @see http://userguide.icu-project.org/locale
      */
-    public function getLocaleId()
+    public function getLocaleId(): string
     {
         return Language::toLocaleID($this->rootPage->language);
     }
 
     /**
      * @throws ExceptionInterface
-     *
-     * @return string
      */
-    public function getHref(UrlParameterBag $urlParameterBag, bool $catch = false)
+    public function getHref(UrlParameterBag $urlParameterBag, bool $catch = false): string
     {
         $targetPage = $this->targetPage ?: $this->rootPage;
 
@@ -211,19 +158,13 @@ class NavigationItem
         return $href;
     }
 
-    /**
-     * @return string
-     */
-    public function getTitle()
+    public function getTitle(): string
     {
-        return $this->targetPage ? $this->targetPage->title : $this->rootPage->title;
+        return $this->targetPage->title ?? $this->rootPage->title;
     }
 
-    /**
-     * @return string
-     */
-    public function getPageTitle()
+    public function getPageTitle(): string
     {
-        return $this->targetPage ? $this->targetPage->pageTitle : $this->rootPage->pageTitle;
+        return $this->targetPage->pageTitle ?? $this->rootPage->pageTitle;
     }
 }

@@ -19,7 +19,7 @@ class UserLabelsListener
         $this->connection = $connection;
     }
 
-    public function __invoke()
+    public function __invoke(): array
     {
         $pages = $this->connection->fetchAllAssociative("SELECT id, title FROM tl_page WHERE type='root' AND (fallback='' OR languageRoot!=0) ORDER BY pid, sorting");
 

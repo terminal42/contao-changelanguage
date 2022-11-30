@@ -13,18 +13,12 @@ use Contao\PageModel;
  */
 class CalendarNavigationListener extends AbstractNavigationListener
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function getUrlKey()
+    protected function getUrlKey(): string
     {
         return 'events';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function findCurrent()
+    protected function findCurrent(): ?CalendarEventsModel
     {
         $alias = $this->getAutoItem();
 
@@ -42,9 +36,6 @@ class CalendarNavigationListener extends AbstractNavigationListener
         return CalendarEventsModel::findPublishedByParentAndIdOrAlias($alias, $calendars->fetchEach('id'));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function findPublishedBy(array $columns, array $values = [], array $options = [])
     {
         return CalendarEventsModel::findOneBy(

@@ -93,7 +93,7 @@ class PageFieldsListener
      *
      * @return array
      */
-    public function onLanguageRootOptions(DataContainer $dc)
+    public function onLanguageRootOptions(DataContainer $dc): array
     {
         /** @var array<PageModel> $pages */
         $pages = PageModel::findBy(

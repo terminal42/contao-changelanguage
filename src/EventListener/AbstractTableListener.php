@@ -6,17 +6,12 @@ namespace Terminal42\ChangeLanguage\EventListener;
 
 abstract class AbstractTableListener
 {
-    /**
-     * @var string
-     */
-    protected $table;
+    protected string $table;
 
     /**
      * Constructor.
-     *
-     * @param string $table
      */
-    public function __construct($table)
+    public function __construct(string $table)
     {
         $this->table = $table;
     }
@@ -28,10 +23,8 @@ abstract class AbstractTableListener
 
     /**
      * Gets the table name for this listener.
-     *
-     * @return string
      */
-    protected function getTable()
+    protected function getTable(): string
     {
         return $this->table;
     }

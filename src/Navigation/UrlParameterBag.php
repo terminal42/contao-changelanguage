@@ -7,12 +7,9 @@ namespace Terminal42\ChangeLanguage\Navigation;
 class UrlParameterBag
 {
     private array $attributes;
-
     private array $query;
 
     /**
-     * Constructor.
-     *
      * @param array $attributes Route parameters (e.g. items=foobar in /alias/items/foobar.html)
      * @param array $query      The URL query parameters
      */
@@ -25,10 +22,7 @@ class UrlParameterBag
         $this->query = $query;
     }
 
-    /**
-     * @return array
-     */
-    public function getUrlAttributes()
+    public function getUrlAttributes(): array
     {
         return $this->attributes;
     }
@@ -40,49 +34,29 @@ class UrlParameterBag
         $this->attributes = $attributes;
     }
 
-    /**
-     * @param string $name
-     *
-     * @return bool
-     */
-    public function hasUrlAttribute($name)
+    public function hasUrlAttribute(string $name): bool
     {
         return \array_key_exists($name, $this->attributes);
     }
 
-    /**
-     * @param string $name
-     *
-     * @return mixed|null
-     */
-    public function getUrlAttribute($name)
+    public function getUrlAttribute(string $name)
     {
         return $this->hasUrlAttribute($name) ? $this->attributes[$name] : null;
     }
 
-    /**
-     * @param string $name
-     * @param mixed  $value
-     */
-    public function setUrlAttribute($name, $value): void
+    public function setUrlAttribute(string $name, $value): void
     {
         $this->validateScalar($value);
 
         $this->attributes[$name] = $value;
     }
 
-    /**
-     * @param string $name
-     */
-    public function removeUrlAttribute($name): void
+    public function removeUrlAttribute(string $name): void
     {
         unset($this->attributes[$name]);
     }
 
-    /**
-     * @return array
-     */
-    public function getQueryParameters()
+    public function getQueryParameters(): array
     {
         return $this->query;
     }
@@ -94,41 +68,24 @@ class UrlParameterBag
         $this->query = $query;
     }
 
-    /**
-     * @param string $name
-     *
-     * @return bool
-     */
-    public function hasQueryParameter($name)
+    public function hasQueryParameter(string $name): bool
     {
         return \array_key_exists($name, $this->query);
     }
 
-    /**
-     * @param string $name
-     *
-     * @return mixed|null
-     */
-    public function getQueryParameter($name)
+    public function getQueryParameter(string $name)
     {
         return $this->hasQueryParameter($name) ? $this->query[$name] : null;
     }
 
-    /**
-     * @param string $name
-     * @param mixed  $value
-     */
-    public function setQueryParameter($name, $value): void
+    public function setQueryParameter(string $name, $value): void
     {
         $this->validateScalar($value);
 
         $this->query[$name] = $value;
     }
 
-    /**
-     * @param string $name
-     */
-    public function removeQueryParameter($name): void
+    public function removeQueryParameter(string $name): void
     {
         unset($this->query[$name]);
     }
@@ -137,10 +94,8 @@ class UrlParameterBag
      * Generates parameter string to generate a Contao url.
      *
      * @throws \RuntimeException
-     *
-     * @return string|null
      */
-    public function generateParameters()
+    public function generateParameters(): ?string
     {
         $params = '';
         $auto_item = null;
@@ -192,10 +147,8 @@ class UrlParameterBag
 
     /**
      * Generates a query string or returns null if empty.
-     *
-     * @return string|null
      */
-    public function generateQueryString()
+    public function generateQueryString(): ?string
     {
         if (0 === \count($this->query)) {
             return null;

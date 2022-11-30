@@ -7,33 +7,20 @@ namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 use Contao\Date;
 use Contao\Model;
 use Contao\Model\Collection;
-use Contao\NewsModel;
 
 class NewsListener extends AbstractChildTableListener
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function getTitleField()
+    protected function getTitleField(): string
     {
         return 'headline';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getSorting()
+    protected function getSorting(): string
     {
         return 'date DESC, time DESC';
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @param NewsModel             $current
-     * @param Collection<NewsModel> $models
-     */
-    protected function formatOptions(Model $current, Collection $models)
+    protected function formatOptions(Model $current, Collection $models): array
     {
         $sameDay = $GLOBALS['TL_LANG']['tl_news']['sameDay'];
         $otherDay = $GLOBALS['TL_LANG']['tl_news']['otherDay'];

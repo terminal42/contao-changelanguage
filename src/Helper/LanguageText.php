@@ -15,37 +15,25 @@ class LanguageText
 {
     private array $map = [];
 
-    /**
-     * Constructor.
-     */
     public function __construct(array $map = [])
     {
         foreach ($map as $k => $v) {
-            $this->map[strtolower($k)] = $v;
+            $this->map[strtolower($k)] = (string) $v;
         }
     }
 
     /**
      * Returns whether a language has a label.
-     *
-     * @param string $language
-     *
-     * @return bool
      */
-    public function has($language)
+    public function has(string $language): bool
     {
         return \array_key_exists(strtolower($language), $this->map);
     }
 
     /**
      * Gets the label for a language, optionally replacing insert tags.
-     *
-     * @param string $language
-     * @param bool   $replaceInsertTags
-     *
-     * @return string
      */
-    public function get($language, $replaceInsertTags = true)
+    public function get(string $language, bool $replaceInsertTags = true): string
     {
         $language = strtolower($language);
 
@@ -64,11 +52,8 @@ class LanguageText
 
     /**
      * Adds a label for a language.
-     *
-     * @param string $language
-     * @param string $label
      */
-    public function set($language, $label): void
+    public function set(string $language, string $label): void
     {
         $this->map[strtolower($language)] = $label;
     }
@@ -101,10 +86,8 @@ class LanguageText
      * Create instance from serialized data of optionsWizard widget.
      *
      * @param mixed $config
-     *
-     * @return static
      */
-    public static function createFromOptionWizard($config)
+    public static function createFromOptionWizard($config): self
     {
         $config = StringUtil::deserialize($config);
 

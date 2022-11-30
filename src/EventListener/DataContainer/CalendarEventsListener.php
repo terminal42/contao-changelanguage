@@ -4,36 +4,23 @@ declare(strict_types=1);
 
 namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 
-use Contao\CalendarEventsModel;
 use Contao\Date;
 use Contao\Model;
 use Contao\Model\Collection;
 
 class CalendarEventsListener extends AbstractChildTableListener
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function getTitleField()
+    protected function getTitleField(): string
     {
         return 'title';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getSorting()
+    protected function getSorting(): string
     {
         return 'startTime DESC';
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @param CalendarEventsModel             $current
-     * @param Collection<CalendarEventsModel> $models
-     */
-    protected function formatOptions(Model $current, Collection $models)
+    protected function formatOptions(Model $current, Collection $models): array
     {
         $options = [];
 

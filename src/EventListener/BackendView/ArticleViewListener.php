@@ -16,14 +16,11 @@ use League\Uri\UriModifier;
 class ArticleViewListener extends AbstractViewListener
 {
     /**
-     * @var ArticleModel
+     * @var ArticleModel|false|null
      */
     private $currentArticle = false;
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function isSupported()
+    protected function isSupported(): bool
     {
         return 'article' === (string) Input::get('do')
             && (
@@ -32,10 +29,7 @@ class ArticleViewListener extends AbstractViewListener
             );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getCurrentPage()
+    protected function getCurrentPage(): ?PageModel
     {
         if (false === $this->currentArticle) {
             if (Input::get('table') === $this->getTable() && !empty(Input::get('act'))) {
@@ -56,10 +50,7 @@ class ArticleViewListener extends AbstractViewListener
         return PageModel::findWithDetails($this->currentArticle->pid);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getAvailableLanguages(PageModel $page)
+    protected function getAvailableLanguages(PageModel $page): array
     {
         $options = [];
         $masterRoot = $this->pageFinder->findMasterRootForPage($page);
@@ -103,11 +94,6 @@ class ArticleViewListener extends AbstractViewListener
         return $options;
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @throws \InvalidArgumentException
-     */
     protected function doSwitchView($id): void
     {
         $uri = Uri::createFromString(System::getContainer()->get('request_stack')->getCurrentRequest()->getUri());
@@ -118,11 +104,9 @@ class ArticleViewListener extends AbstractViewListener
     }
 
     /**
-     * @param int $articleId
-     *
      * @return array<ArticleModel>
      */
-    private function findArticlesForPage(PageModel $page, $articleId): array
+    private function findArticlesForPage(PageModel $page, int $articleId): array
     {
         $articles = ArticleModel::findBy(
             [

@@ -47,10 +47,7 @@ class ChangeLanguageModule extends Module
         return self::$alternateLinks;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function generate()
+    public function generate(): string
     {
         $request = System::getContainer()->get('request_stack')->getCurrentRequest();
         $scopeMatcher = System::getContainer()->get('contao.routing.scope_matcher');
@@ -75,9 +72,6 @@ class ChangeLanguageModule extends Module
         return '' === (string) $this->Template->items ? '' : $buffer;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function compile(): void
     {
         $currentPage = $this->getCurrentPage();
@@ -138,10 +132,8 @@ class ChangeLanguageModule extends Module
 
     /**
      * Generates array suitable for nav_default template.
-     *
-     * @return array
      */
-    protected function generateTemplateArray(NavigationItem $item, UrlParameterBag $urlParameterBag)
+    protected function generateTemplateArray(NavigationItem $item, UrlParameterBag $urlParameterBag): array
     {
         return [
             'isActive' => $item->isCurrentPage(),
@@ -159,10 +151,7 @@ class ChangeLanguageModule extends Module
         ];
     }
 
-    /**
-     * @return string
-     */
-    protected function generateNavigationTemplate(array $items)
+    protected function generateNavigationTemplate(array $items): string
     {
         $objTemplate = new FrontendTemplate($this->navigationTpl ?: 'nav_default');
 
@@ -173,10 +162,7 @@ class ChangeLanguageModule extends Module
         return $objTemplate->parse();
     }
 
-    /**
-     * @return PageModel
-     */
-    protected function getCurrentPage()
+    protected function getCurrentPage(): PageModel
     {
         global $objPage;
 
@@ -187,10 +173,8 @@ class ChangeLanguageModule extends Module
      * Creates an UrlParameterBag from the current environment.
      *
      * @param array $queryParameters An array of query parameters to keep
-     *
-     * @return UrlParameterBag
      */
-    protected function createUrlParameterBag(array $queryParameters = [])
+    protected function createUrlParameterBag(array $queryParameters = []): UrlParameterBag
     {
         $attributes = [];
         $query = [];
@@ -225,10 +209,8 @@ class ChangeLanguageModule extends Module
 
     /**
      * Returns false if navigation item should be skipped.
-     *
-     * @return bool
      */
-    protected function executeHook(NavigationItem $navigationItem, UrlParameterBag $urlParameterBag)
+    protected function executeHook(NavigationItem $navigationItem, UrlParameterBag $urlParameterBag): bool
     {
         // HOOK: allow extensions to modify url parameters
         if (

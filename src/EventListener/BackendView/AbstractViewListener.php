@@ -14,19 +14,9 @@ use Terminal42\ChangeLanguage\PageFinder;
 
 abstract class AbstractViewListener extends AbstractTableListener
 {
-    /**
-     * @var DataContainer
-     */
-    protected $dataContainer;
+    protected DataContainer $dataContainer;
+    protected PageFinder $pageFinder;
 
-    /**
-     * @var PageFinder
-     */
-    protected $pageFinder;
-
-    /**
-     * {@inheritdoc}
-     */
     public function __construct($table)
     {
         parent::__construct($table);

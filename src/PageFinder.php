@@ -12,12 +12,9 @@ use Contao\System;
 class PageFinder
 {
     /**
-     * @param bool $skipCurrent
-     * @param bool $publishedOnly
-     *
      * @return array<PageModel>
      */
-    public function findRootPagesForPage(PageModel $page, $skipCurrent = false, $publishedOnly = true)
+    public function findRootPagesForPage(PageModel $page, bool $skipCurrent = false, bool $publishedOnly = true): array
     {
         $page->loadDetails();
         $t = $page::getTable();
@@ -66,10 +63,8 @@ class PageFinder
 
     /**
      * Finds the root page of fallback language for the given page.
-     *
-     * @return PageModel|null
      */
-    public function findMasterRootForPage(PageModel $page)
+    public function findMasterRootForPage(PageModel $page): ?PageModel
     {
         $page->loadDetails();
         $t = $page::getTable();
@@ -92,11 +87,9 @@ class PageFinder
     }
 
     /**
-     * @param bool $skipCurrent
-     *
      * @return array<PageModel>
      */
-    public function findAssociatedForPage(PageModel $page, $skipCurrent = false, array $rootPages = null)
+    public function findAssociatedForPage(PageModel $page, bool $skipCurrent = false, array $rootPages = null): array
     {
         if ('root' === $page->type) {
             return $this->findRootPagesForPage($page, $skipCurrent);
@@ -136,12 +129,7 @@ class PageFinder
         );
     }
 
-    /**
-     * @param string $language
-     *
-     * @return PageModel
-     */
-    public function findAssociatedForLanguage(PageModel $page, $language)
+    public function findAssociatedForLanguage(PageModel $page, string $language): PageModel
     {
         $language = Language::toLocaleID($language);
         $associated = $this->findAssociatedForPage($page);
@@ -158,10 +146,7 @@ class PageFinder
         return $this->findAssociatedParentForLanguage($page, $language);
     }
 
-    /**
-     * @return PageModel|null
-     */
-    public function findAssociatedInMaster(PageModel $page)
+    public function findAssociatedInMaster(PageModel $page): ?PageModel
     {
         $page->loadDetails();
         $masterRoot = $this->findMasterRootForPage($page);
@@ -184,14 +169,10 @@ class PageFinder
     }
 
     /**
-     * @param string $language
-     *
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
-     *
-     * @return PageModel
      */
-    public function findAssociatedParentForLanguage(PageModel $page, $language)
+    public function findAssociatedParentForLanguage(PageModel $page, string $language): PageModel
     {
         // Stop loop if we're at the top
         if (0 === $page->pid || 'root' === $page->type) {
@@ -215,10 +196,7 @@ class PageFinder
         return $this->findAssociatedForLanguage($parent, $language);
     }
 
-    /**
-     * @param string $table
-     */
-    private function addPublishingConditions(array &$columns, $table): void
+    private function addPublishingConditions(array &$columns, string $table): void
     {
         if (!System::getContainer()->get('contao.security.token_checker')->isPreviewMode()) {
             $start = Date::floorToMinute();
@@ -233,7 +211,7 @@ class PageFinder
     /**
      * @return array<PageModel>
      */
-    private function findPages(array $columns, array $values, array $options = [])
+    private function findPages(array $columns, array $values, array $options = []): array
     {
         /** @var Collection $collection */
         $collection = PageModel::findBy($columns, $values, $options);

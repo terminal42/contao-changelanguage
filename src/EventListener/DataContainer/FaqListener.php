@@ -4,35 +4,22 @@ declare(strict_types=1);
 
 namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 
-use Contao\FaqModel;
 use Contao\Model;
 use Contao\Model\Collection;
 
 class FaqListener extends AbstractChildTableListener
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function getTitleField()
+    protected function getTitleField(): string
     {
         return 'question';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getSorting()
+    protected function getSorting(): string
     {
         return 'sorting';
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @param FaqModel             $current
-     * @param Collection<FaqModel> $models
-     */
-    protected function formatOptions(Model $current, Collection $models)
+    protected function formatOptions(Model $current, Collection $models): array
     {
         $options = [];
 

@@ -6,24 +6,19 @@ namespace Terminal42\ChangeLanguage\EventListener\Navigation;
 
 use Contao\FaqCategoryModel;
 use Contao\FaqModel;
+use Contao\PageModel;
 
 /**
  * Translate URL parameters for faq items.
  */
 class FaqNavigationListener extends AbstractNavigationListener
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function getUrlKey()
+    protected function getUrlKey(): string
     {
         return 'items';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function findCurrent()
+    protected function findCurrent(): ?FaqModel
     {
         $alias = $this->getAutoItem();
 
@@ -41,10 +36,7 @@ class FaqNavigationListener extends AbstractNavigationListener
         return FaqModel::findPublishedByParentAndIdOrAlias($alias, $calendars->fetchEach('id'));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function findPublishedBy(array $columns, array $values = [], array $options = [])
+    protected function findPublishedBy(array $columns, array $values = [], array $options = []): ?FaqModel
     {
         return FaqModel::findOneBy(
             $this->addPublishedConditions($columns, FaqModel::getTable(), false),
