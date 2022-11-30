@@ -4,33 +4,49 @@ declare(strict_types=1);
 
 namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 
+use Contao\CoreBundle\ServiceAnnotation\Hook;
 use Contao\Database;
 use Contao\DataContainer;
 use Contao\PageModel;
+use Doctrine\DBAL\Connection;
 use Terminal42\ChangeLanguage\PageFinder;
 
+/**
+ * @Hook("loadDataContainer")
+ */
 class PageOperationListener
 {
-    public function register(): void
+    private Connection $connection;
+
+    public function __construct(Connection $connection)
     {
-        $GLOBALS['TL_DCA']['tl_page']['config']['oncopy_callback'][] = $this->selfCallback('onCopy');
-        $GLOBALS['TL_DCA']['tl_page']['config']['oncut_callback'][] = $this->selfCallback('onCut');
-        $GLOBALS['TL_DCA']['tl_page']['config']['onsubmit_callback'][] = $this->selfCallback('onSubmit');
-        $GLOBALS['TL_DCA']['tl_page']['config']['ondelete_callback'][] = $this->selfCallback('onDelete');
-        $GLOBALS['TL_DCA']['tl_page']['config']['onundo_callback'][] = $this->selfCallback('onUndo');
+        $this->connection = $connection;
+    }
+
+    public function __invoke(string $table): void
+    {
+        if ('tl_page' !== $table) {
+            return;
+        }
+
+        $GLOBALS['TL_DCA']['tl_page']['config']['oncopy_callback'][] = fn (...$args) => $this->onCopy(...$args);
+        $GLOBALS['TL_DCA']['tl_page']['config']['oncut_callback'][] = fn (...$args) => $this->onCut(...$args);
+        $GLOBALS['TL_DCA']['tl_page']['config']['onsubmit_callback'][] = fn (...$args) => $this->onSubmit(...$args);
+        $GLOBALS['TL_DCA']['tl_page']['config']['ondelete_callback'][] = fn (...$args) => $this->onDelete(...$args);
+        $GLOBALS['TL_DCA']['tl_page']['config']['onundo_callback'][] = fn ($table, array $row) => $this->onUndo($row);
     }
 
     /**
      * Handles submitting a page and resets tl_page.languageMain if necessary.
      */
-    public function onSubmit(DataContainer $dc): void
+    private function onSubmit(DataContainer $dc): void
     {
         if (
             'root' === $dc->activeRecord->type
             && $dc->activeRecord->fallback
             && (!$dc->activeRecord->languageRoot || null === PageModel::findByPk($dc->activeRecord->languageRoot))
         ) {
-            $this->resetPageAndChildren($dc->id);
+            $this->resetPageAndChildren((int) $dc->id);
         }
     }
 
@@ -39,38 +55,36 @@ class PageOperationListener
      *
      * @param int $insertId
      */
-    public function onCopy($insertId): void
+    private function onCopy($insertId): void
     {
-        $this->validateLanguageMainForPage($insertId);
+        $this->validateLanguageMainForPage((int) $insertId);
     }
 
     /**
      * Handles moving a page and resets tl_page.languageMain if necessary.
      */
-    public function onCut(DataContainer $dc): void
+    private function onCut(DataContainer $dc): void
     {
-        $this->validateLanguageMainForPage($dc->id);
+        $this->validateLanguageMainForPage((int) $dc->id);
     }
 
     /**
      * Handles deleting a page and resets tl_page.languageMain if necessary.
      */
-    public function onDelete(DataContainer $dc): void
+    private function onDelete(DataContainer $dc): void
     {
-        $this->resetPageAndChildren($dc->id);
+        $this->resetPageAndChildren((int) $dc->id);
     }
 
     /**
      * Handles undo of a deleted page and resets tl_page.languageMain if necessary.
-     *
-     * @param string $table
      */
-    public function onUndo($table, array $row): void
+    private function onUndo(array $row): void
     {
-        $this->validateLanguageMainForPage($row['id']);
+        $this->validateLanguageMainForPage((int) $row['id']);
     }
 
-    private function validateLanguageMainForPage($pageId): void
+    private function validateLanguageMainForPage(int $pageId): void
     {
         $page = PageModel::findWithDetails($pageId);
 
@@ -90,7 +104,7 @@ class PageOperationListener
 
         // Reset languageMain if another page in the new page tree has the same languageMain
         if ($duplicates > 0) {
-            $this->resetPageAndChildren($page->id);
+            $this->resetPageAndChildren((int) $page->id);
 
             return;
         }
@@ -100,43 +114,27 @@ class PageOperationListener
 
         // Reset languageMain if current tree has no master or if it's the master tree
         if (null === $masterRoot || $masterRoot->id === $page->rootId) {
-            $this->resetPageAndChildren($page->id);
+            $this->resetPageAndChildren((int) $page->id);
 
             return;
         }
 
         // Reset languageMain if the current value is not a valid ID of the master tree
         if (!\in_array($page->languageMain, Database::getInstance()->getChildRecords($masterRoot->id, 'tl_page'), false)) {
-            Database::getInstance()
-                ->prepare('UPDATE tl_page SET languageMain=0 WHERE id=?')
-                ->execute($page->id)
-            ;
+            $this->connection->update('tl_page', ['languageMain' => 0], ['id' => $page->id]);
         }
     }
 
-    /**
-     * @param int $pageId
-     */
-    private function resetPageAndChildren($pageId): void
+    private function resetPageAndChildren(int $pageId): void
     {
         $resetIds = Database::getInstance()->getChildRecords($pageId, 'tl_page');
         $resetIds[] = $pageId;
 
-        Database::getInstance()->query(
-            'UPDATE tl_page SET languageMain=0 WHERE id IN ('.implode(',', $resetIds).')'
-        );
-    }
-
-    /**
-     * @param $method
-     *
-     * @return \Closure
-     */
-    private function selfCallback($method)
-    {
-        return fn () => \call_user_func_array(
-            [$this, $method],
-            \func_get_args()
+        $this->connection->update(
+            'tl_page',
+            ['languageMain' => 0],
+            ['id' => $resetIds],
+            ['id' => Connection::PARAM_INT_ARRAY]
         );
     }
 }

@@ -4,15 +4,29 @@ declare(strict_types=1);
 
 namespace Terminal42\ChangeLanguage\EventListener\Navigation;
 
+use Contao\CalendarBundle\ContaoCalendarBundle;
 use Contao\CalendarEventsModel;
 use Contao\CalendarModel;
+use Contao\CoreBundle\ServiceAnnotation\Hook;
 use Contao\PageModel;
+use Terminal42\ChangeLanguage\Event\ChangelanguageNavigationEvent;
 
 /**
  * Translate URL parameters for calendar events.
+ *
+ * @Hook("changelanguageNavigation")
  */
 class CalendarNavigationListener extends AbstractNavigationListener
 {
+    public function __invoke(ChangelanguageNavigationEvent $event): void
+    {
+        if (!class_exists(ContaoCalendarBundle::class)) {
+            return;
+        }
+
+        $this->onChangelanguageNavigation($event);
+    }
+
     protected function getUrlKey(): string
     {
         return 'events';

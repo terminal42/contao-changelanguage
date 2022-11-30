@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Terminal42\ChangeLanguage\EventListener\Navigation;
 
+use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Contao\Date;
 use Contao\Input;
 use Contao\Model;
@@ -11,6 +12,13 @@ use Terminal42\ChangeLanguage\Event\ChangelanguageNavigationEvent;
 
 abstract class AbstractNavigationListener
 {
+    private TokenChecker $tokenChecker;
+
+    public function __construct(TokenChecker $tokenChecker)
+    {
+        $this->tokenChecker = $tokenChecker;
+    }
+
     /**
      * Find record based on languageMain field and parent master archive.
      */
@@ -81,7 +89,7 @@ abstract class AbstractNavigationListener
      */
     protected function addPublishedConditions(array $columns, string $table, bool $addStartStop = true): array
     {
-        if (true !== BE_USER_LOGGED_IN) {
+        if (!$this->tokenChecker->isPreviewMode()) {
             $columns[] = "$table.published='1'";
 
             if ($addStartStop) {

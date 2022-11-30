@@ -8,9 +8,6 @@ abstract class AbstractTableListener
 {
     protected string $table;
 
-    /**
-     * Constructor.
-     */
     public function __construct(string $table)
     {
         $this->table = $table;

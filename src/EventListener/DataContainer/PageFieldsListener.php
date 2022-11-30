@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 
+use Contao\CoreBundle\ServiceAnnotation\Callback;
 use Contao\Database;
 use Contao\DataContainer;
 use Contao\Input;
@@ -18,6 +19,8 @@ class PageFieldsListener
      * @param mixed $value
      *
      * @return mixed
+     *
+     * @Callback(table="tl_page", target="fields.languageMain.load")
      */
     public function onLoadLanguageMain($value, DataContainer $dc)
     {
@@ -54,9 +57,9 @@ class PageFieldsListener
      *
      * @param mixed $value
      *
-     * @throws \RuntimeException
-     *
      * @return mixed
+     *
+     * @Callback(table="tl_page", target="fields.languageMain.save")
      */
     public function onSaveLanguageMain($value, DataContainer $dc)
     {
@@ -91,7 +94,7 @@ class PageFieldsListener
     /**
      * Gets list of options for language root selection (linking multiple fallback roots on different domains).
      *
-     * @return array
+     * @Callback(table="tl_page", target="fields.languageRoot.options")
      */
     public function onLanguageRootOptions(DataContainer $dc): array
     {

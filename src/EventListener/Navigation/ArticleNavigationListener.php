@@ -5,18 +5,30 @@ declare(strict_types=1);
 namespace Terminal42\ChangeLanguage\EventListener\Navigation;
 
 use Contao\ArticleModel;
+use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
+use Contao\CoreBundle\ServiceAnnotation\Hook;
 use Contao\Database;
 use Contao\Date;
 use Contao\PageModel;
 use Terminal42\ChangeLanguage\Event\ChangelanguageNavigationEvent;
 use Terminal42\ChangeLanguage\PageFinder;
 
+/**
+ * @Hook("changelanguageNavigation")
+ */
 class ArticleNavigationListener
 {
+    private TokenChecker $tokenChecker;
+
+    public function __construct(TokenChecker $tokenChecker)
+    {
+        $this->tokenChecker = $tokenChecker;
+    }
+
     /**
      * Translate URL parameters for articles.
      */
-    public function onChangelanguageNavigation(ChangelanguageNavigationEvent $event): void
+    public function __invoke(ChangelanguageNavigationEvent $event): void
     {
         // Try to find matching article
         if (
@@ -93,7 +105,7 @@ class ArticleNavigationListener
      */
     private function findPublishedArticle(array $columns, array $values = [], array $options = []): ?ArticleModel
     {
-        if (true !== BE_USER_LOGGED_IN) {
+        if (!$this->tokenChecker->isPreviewMode()) {
             $time = Date::floorToMinute();
             $columns[] = "(tl_article.start='' OR tl_article.start<='$time')";
             $columns[] = "(tl_article.stop='' OR tl_article.stop>'".($time + 60)."')";

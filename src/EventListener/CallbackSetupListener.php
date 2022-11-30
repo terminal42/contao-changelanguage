@@ -4,24 +4,23 @@ declare(strict_types=1);
 
 namespace Terminal42\ChangeLanguage\EventListener;
 
+use Contao\CoreBundle\ServiceAnnotation\Hook;
 use Terminal42\ChangeLanguage\EventListener\BackendView\ArticleViewListener;
 use Terminal42\ChangeLanguage\EventListener\BackendView\PageViewListener;
 use Terminal42\ChangeLanguage\EventListener\BackendView\ParentChildViewListener;
 use Terminal42\ChangeLanguage\EventListener\DataContainer\ArticleListener;
 use Terminal42\ChangeLanguage\EventListener\DataContainer\CalendarEventsListener;
 use Terminal42\ChangeLanguage\EventListener\DataContainer\FaqListener;
-use Terminal42\ChangeLanguage\EventListener\DataContainer\MissingLanguageIconListener;
 use Terminal42\ChangeLanguage\EventListener\DataContainer\NewsListener;
-use Terminal42\ChangeLanguage\EventListener\DataContainer\PageInitializationListener;
-use Terminal42\ChangeLanguage\EventListener\DataContainer\PageOperationListener;
 use Terminal42\ChangeLanguage\EventListener\DataContainer\ParentTableListener;
 
+/**
+ * @Hook("loadDataContainer")
+ */
 class CallbackSetupListener
 {
     private static array $listeners = [
         'tl_page' => [
-            PageInitializationListener::class,
-            PageOperationListener::class,
             PageViewListener::class,
         ],
         'tl_article' => [
@@ -50,28 +49,10 @@ class CallbackSetupListener
         ],
     ];
 
-    private MissingLanguageIconListener $labelListener;
-
-    /**
-     * Constructor.
-     */
-    public function __construct()
+    public function __invoke(string $table): void
     {
-        $this->labelListener = new MissingLanguageIconListener();
-    }
-
-    /**
-     * Callback for loadDataContainer hook.
-     *
-     * @param string $table
-     */
-    public function onLoadDataContainer($table): void
-    {
-        $this->labelListener->register($table);
-
         if (\array_key_exists($table, self::$listeners)) {
             foreach (self::$listeners[$table] as $class) {
-                /** @var AbstractTableListener $listener */
                 $listener = new $class($table);
                 $listener->register();
             }

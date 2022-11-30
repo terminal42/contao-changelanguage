@@ -10,6 +10,7 @@ use Contao\BackendUser;
 use Contao\CalendarEventsModel;
 use Contao\CalendarModel;
 use Contao\Config;
+use Contao\CoreBundle\ServiceAnnotation\Hook;
 use Contao\Date;
 use Contao\FaqCategoryModel;
 use Contao\FaqModel;
@@ -18,8 +19,12 @@ use Contao\NewsArchiveModel;
 use Contao\NewsModel;
 use Contao\PageModel;
 use Contao\StringUtil;
+use Symfony\Component\Security\Core\Security;
 use Terminal42\ChangeLanguage\Helper\LabelCallback;
 
+/**
+ * @Hook("loadDataContainer")
+ */
 class MissingLanguageIconListener
 {
     private static array $callbacks = [
@@ -30,12 +35,17 @@ class MissingLanguageIconListener
         'tl_faq' => 'onFaqChildRecords',
     ];
 
+    private Security $security;
+
+    public function __construct(Security $security)
+    {
+        $this->security = $security;
+    }
+
     /**
      * Override core labels to show missing language information.
-     *
-     * @param string $table
      */
-    public function register($table): void
+    public function __invoke(string $table): void
     {
         if (\array_key_exists($table, self::$callbacks)) {
             LabelCallback::createAndRegister(
@@ -71,11 +81,14 @@ class MissingLanguageIconListener
             return $this->generateLabelWithWarning($label);
         }
 
+        $user = $this->security->getUser();
+
         if (
             isset($mainPage)
             && $mainPage instanceof PageModel
-            && \is_array(BackendUser::getInstance()->pageLanguageLabels)
-            && \in_array($page->rootId, BackendUser::getInstance()->pageLanguageLabels, false)
+            && $user instanceof BackendUser
+            && \is_array($user->pageLanguageLabels)
+            && \in_array($page->rootId, $user->pageLanguageLabels, false)
         ) {
             return sprintf(
                 '%s <span style="color:#999;padding-left:3px">(<a href="%s" title="%s" style="color:#999">%s</a>)</span>',

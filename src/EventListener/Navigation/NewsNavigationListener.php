@@ -4,15 +4,29 @@ declare(strict_types=1);
 
 namespace Terminal42\ChangeLanguage\EventListener\Navigation;
 
+use Contao\CoreBundle\ServiceAnnotation\Hook;
 use Contao\NewsArchiveModel;
+use Contao\NewsBundle\ContaoNewsBundle;
 use Contao\NewsModel;
 use Contao\PageModel;
+use Terminal42\ChangeLanguage\Event\ChangelanguageNavigationEvent;
 
 /**
  * Translate URL parameters for news items.
+ *
+ * @Hook("changelanguageNavigation")
  */
 class NewsNavigationListener extends AbstractNavigationListener
 {
+    public function __invoke(ChangelanguageNavigationEvent $event): void
+    {
+        if (!class_exists(ContaoNewsBundle::class)) {
+            return;
+        }
+
+        $this->onChangelanguageNavigation($event);
+    }
+
     protected function getUrlKey(): string
     {
         return 'items';

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Terminal42\ChangeLanguage\Navigation;
 
 use Contao\PageModel;
+use Contao\System;
 use Terminal42\ChangeLanguage\Helper\LanguageText;
 use Terminal42\ChangeLanguage\PageFinder;
 
@@ -121,7 +122,7 @@ class NavigationFactory
      */
     private function isPagePublished(PageModel $page): bool
     {
-        if (\defined('BE_USER_LOGGED_IN') && true === BE_USER_LOGGED_IN) {
+        if (System::getContainer()->get('contao.security.token_checker')->isPreviewMode()) {
             return true;
         }
 

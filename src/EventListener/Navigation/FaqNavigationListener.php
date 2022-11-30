@@ -4,15 +4,29 @@ declare(strict_types=1);
 
 namespace Terminal42\ChangeLanguage\EventListener\Navigation;
 
+use Contao\CoreBundle\ServiceAnnotation\Hook;
+use Contao\FaqBundle\ContaoFaqBundle;
 use Contao\FaqCategoryModel;
 use Contao\FaqModel;
 use Contao\PageModel;
+use Terminal42\ChangeLanguage\Event\ChangelanguageNavigationEvent;
 
 /**
  * Translate URL parameters for faq items.
+ *
+ * @Hook("changelanguageNavigation")
  */
 class FaqNavigationListener extends AbstractNavigationListener
 {
+    public function __invoke(ChangelanguageNavigationEvent $event): void
+    {
+        if (!class_exists(ContaoFaqBundle::class)) {
+            return;
+        }
+
+        $this->onChangelanguageNavigation($event);
+    }
+
     protected function getUrlKey(): string
     {
         return 'items';

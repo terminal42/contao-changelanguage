@@ -5,17 +5,25 @@ declare(strict_types=1);
 namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 
 use Contao\CoreBundle\DataContainer\PaletteManipulator;
+use Contao\CoreBundle\ServiceAnnotation\Hook;
 use Contao\DataContainer;
 use Contao\Input;
 use Contao\PageModel;
 
+/**
+ * @Hook("loadDataContainer")
+ */
 class PageInitializationListener
 {
     /**
      * Register our own callbacks.
      */
-    public function register(): void
+    public function __invoke(string $table): void
     {
+        if ('tl_page' !== $table) {
+            return;
+        }
+
         $GLOBALS['TL_DCA']['tl_page']['config']['onload_callback'][] = function (DataContainer $dc): void {
             $this->onLoad($dc);
         };
