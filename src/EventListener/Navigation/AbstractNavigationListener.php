@@ -53,12 +53,18 @@ abstract class AbstractNavigationListener
             return;
         }
 
+        $targetPage = $navigationItem->getTargetPage();
+
+        if (null === $targetPage) {
+            return;
+        }
+
         $translated = $this->findPublishedBy(
             [
                 "($t.id=? OR $t.languageMain=?)",
                 sprintf('%s.pid=(SELECT id FROM %s WHERE (id=? OR master=?) AND jumpTo=?)', $t, $parent::getTable()),
             ],
-            [$mainId, $mainId, $masterId, $masterId, $navigationItem->getTargetPage()->id]
+            [$mainId, $mainId, $masterId, $masterId, $targetPage->id]
         );
 
         if (null === $translated) {
