@@ -132,9 +132,9 @@ class PageOperationListener
         $resetIds[] = $pageId;
 
         $this->connection->executeQuery(
-            'UPDATE tl_page SET languageMain = ? WHERE id IN (?)',
-            [0, $resetIds],
-            [ParameterType::INTEGER, Connection::PARAM_INT_ARRAY]
+            'UPDATE tl_page SET languageMain = 0 WHERE id IN (?)',
+            [$resetIds],
+            [Connection::PARAM_INT_ARRAY]
         );
     }
 }
