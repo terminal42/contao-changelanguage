@@ -9,6 +9,7 @@ use Contao\Database;
 use Contao\DataContainer;
 use Contao\PageModel;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\ParameterType;
 use Terminal42\ChangeLanguage\PageFinder;
 
 /**
@@ -130,11 +131,10 @@ class PageOperationListener
         $resetIds = Database::getInstance()->getChildRecords($pageId, 'tl_page');
         $resetIds[] = $pageId;
 
-        $this->connection->update(
-            'tl_page',
-            ['languageMain' => 0],
-            ['id' => $resetIds],
-            ['id' => Connection::PARAM_INT_ARRAY]
+        $this->connection->executeQuery(
+            'UPDATE tl_page SET languageMain = ? WHERE id IN (?)',
+            [0, $resetIds],
+            [ParameterType::INTEGER, Connection::PARAM_INT_ARRAY]
         );
     }
 }
