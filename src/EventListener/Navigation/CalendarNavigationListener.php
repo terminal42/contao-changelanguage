@@ -34,6 +34,10 @@ class CalendarNavigationListener extends AbstractNavigationListener
 
     protected function findCurrent(): ?CalendarEventsModel
     {
+        if (!class_exists(ContaoCalendarBundle::class)) {
+            return null;
+        }
+
         $alias = $this->getAutoItem();
 
         if ('' === $alias) {

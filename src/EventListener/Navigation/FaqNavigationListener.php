@@ -34,6 +34,10 @@ class FaqNavigationListener extends AbstractNavigationListener
 
     protected function findCurrent(): ?FaqModel
     {
+        if (!class_exists(ContaoFaqBundle::class)) {
+            return null;
+        }
+
         $alias = $this->getAutoItem();
 
         if ('' === $alias) {

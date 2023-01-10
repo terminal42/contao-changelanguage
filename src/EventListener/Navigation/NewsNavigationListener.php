@@ -34,6 +34,10 @@ class NewsNavigationListener extends AbstractNavigationListener
 
     protected function findCurrent(): ?NewsModel
     {
+        if (!class_exists(ContaoNewsBundle::class)) {
+            return null;
+        }
+
         $alias = $this->getAutoItem();
 
         if ('' === $alias) {
