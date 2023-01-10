@@ -9,7 +9,6 @@ use Contao\Database;
 use Contao\DataContainer;
 use Contao\PageModel;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\ParameterType;
 use Terminal42\ChangeLanguage\PageFinder;
 
 /**
