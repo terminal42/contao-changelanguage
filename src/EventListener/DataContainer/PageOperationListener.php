@@ -130,11 +130,10 @@ class PageOperationListener
         $resetIds = Database::getInstance()->getChildRecords($pageId, 'tl_page');
         $resetIds[] = $pageId;
 
-        $this->connection->update(
-            'tl_page',
-            ['languageMain' => 0],
-            ['id' => $resetIds],
-            ['id' => Connection::PARAM_INT_ARRAY]
+        $this->connection->executeStatement(
+            'UPDATE tl_page SET languageMain = 0 WHERE id IN (?)',
+            [$resetIds],
+            [Connection::PARAM_INT_ARRAY]
         );
     }
 }
