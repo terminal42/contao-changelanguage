@@ -18,15 +18,6 @@ use Terminal42\ChangeLanguage\Event\ChangelanguageNavigationEvent;
  */
 class NewsNavigationListener extends AbstractNavigationListener
 {
-    public function __invoke(ChangelanguageNavigationEvent $event): void
-    {
-        if (!class_exists(ContaoNewsBundle::class)) {
-            return;
-        }
-
-        $this->onChangelanguageNavigation($event);
-    }
-
     protected function getUrlKey(): string
     {
         return 'items';
