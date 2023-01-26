@@ -152,8 +152,7 @@ class ChangeLanguageModule extends Module
             'accesskey' => '',
             'tabindex' => '',
             'nofollow' => false,
-            'rel' => sprintf(' aria-label="%s"', sprintf($GLOBALS['TL_LANG']['MSC']['switchLanguageTo'][1], $languages[$item->getLocaleId()])),
-            'target' => ($item->isNewWindow() ? ' target="_blank"' : '').' hreflang="'.$item->getLanguageTag().'" lang="'.$item->getLanguageTag().'"',
+            'target' => ($item->isNewWindow() ? ' target="_blank"' : '').sprintf(' hreflang="%s" lang="%s" aria-label="%s"', $item->getLanguageTag(), $item->getLanguageTag(), sprintf($GLOBALS['TL_LANG']['MSC']['switchLanguageTo'][1], $languages[$item->getLocaleId()])),
             'item' => $item,
         ];
     }
