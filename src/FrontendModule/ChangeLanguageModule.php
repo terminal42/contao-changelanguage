@@ -135,6 +135,12 @@ class ChangeLanguageModule extends Module
      */
     protected function generateTemplateArray(NavigationItem $item, UrlParameterBag $urlParameterBag): array
     {
+        static $languages;
+
+        if (null === $languages) {
+            $languages = System::getContainer()->get('contao.intl.locales')->getLocales(null, true);
+        }
+
         return [
             'isActive' => $item->isCurrentPage(),
             'class' => 'lang-'.$item->getNormalizedLanguage().($item->isDirectFallback() ? '' : ' nofallback').($item->isCurrentPage() ? ' active' : ''),
@@ -146,6 +152,7 @@ class ChangeLanguageModule extends Module
             'accesskey' => '',
             'tabindex' => '',
             'nofollow' => false,
+            'rel' => sprintf(' aria-label="%s"', sprintf($GLOBALS['TL_LANG']['MSC']['switchLanguageTo'][1], $languages[$item->getLocaleId()])),
             'target' => ($item->isNewWindow() ? ' target="_blank"' : '').' hreflang="'.$item->getLanguageTag().'" lang="'.$item->getLanguageTag().'"',
             'item' => $item,
         ];
