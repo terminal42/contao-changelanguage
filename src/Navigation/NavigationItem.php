@@ -13,6 +13,7 @@ class NavigationItem
     private PageModel $rootPage;
     private ?PageModel $targetPage = null;
     private string $linkLabel;
+    private ?string $ariaLabel = null;
     private ?bool $newWindow = null;
     private bool $isDirectFallback = false;
     private bool $isCurrentPage = false;
@@ -64,6 +65,16 @@ class NavigationItem
     public function setLabel(string $label): void
     {
         $this->linkLabel = $label;
+    }
+
+    public function getAriaLabel(): ?string
+    {
+        return $this->ariaLabel;
+    }
+
+    public function setAriaLabel(?string $ariaLabel): void
+    {
+        $this->ariaLabel = $ariaLabel;
     }
 
     public function getTargetPage(): ?PageModel

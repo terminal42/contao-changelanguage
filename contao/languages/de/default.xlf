@@ -21,6 +21,9 @@
                 <source>Switch to %s</source>
                 <target>Zu %s wechseln</target>
             </trans-unit>
+            <trans-unit id="MSC.gotoLanguage">
+                <source>Zur aktuelle Seite auf %s wechseln</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>
