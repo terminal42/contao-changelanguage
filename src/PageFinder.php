@@ -89,14 +89,14 @@ class PageFinder
     /**
      * @return array<PageModel>
      */
-    public function findAssociatedForPage(PageModel $page, bool $skipCurrent = false, array $rootPages = null): array
+    public function findAssociatedForPage(PageModel $page, bool $skipCurrent = false, array $rootPages = null, bool $publishedOnly = true): array
     {
         if ('root' === $page->type) {
-            return $this->findRootPagesForPage($page, $skipCurrent);
+            return $this->findRootPagesForPage($page, $skipCurrent, $publishedOnly);
         }
 
         if (null === $rootPages) {
-            $rootPages = $this->findRootPagesForPage($page, $skipCurrent);
+            $rootPages = $this->findRootPagesForPage($page, $skipCurrent, $publishedOnly);
         }
 
         $page->loadDetails();
@@ -117,7 +117,9 @@ class PageFinder
             $values[] = $page->id;
         }
 
-        $this->addPublishingConditions($columns, $t);
+        if ($publishedOnly) {
+            $this->addPublishingConditions($columns, $t);
+        }
 
         return array_filter(
             $this->findPages($columns, $values),

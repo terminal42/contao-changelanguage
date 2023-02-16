@@ -67,7 +67,7 @@ class ParentChildViewListener extends AbstractViewListener
             return [];
         }
 
-        foreach ($this->pageFinder->findAssociatedForPage($page, true) as $associated) {
+        foreach ($this->pageFinder->findAssociatedForPage($page, true, null, false) as $associated) {
             $associated->loadDetails();
             $model = $this->findRelatedForPageAndId($associated, $id);
 

@@ -33,7 +33,7 @@ class PageViewListener extends AbstractViewListener
     {
         $options = [];
 
-        foreach ($this->pageFinder->findAssociatedForPage($page, true) as $model) {
+        foreach ($this->pageFinder->findAssociatedForPage($page, true, null, false) as $model) {
             $model->loadDetails();
             $options[$model->id] = $this->getLanguageLabel($model->language);
         }
