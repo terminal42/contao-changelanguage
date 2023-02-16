@@ -35,10 +35,7 @@ class ChangeLanguageModule extends Module
 
     private static ?AlternateLinks $alternateLinks = null;
 
-    /**
-     * @return AlternateLinks
-     */
-    public function getAlternateLinks()
+    public function getAlternateLinks(): AlternateLinks
     {
         if (null === self::$alternateLinks) {
             self::$alternateLinks = new AlternateLinks();
@@ -83,7 +80,7 @@ class ChangeLanguageModule extends Module
             $languageText = new LanguageText();
         }
 
-        $navigationFactory = new NavigationFactory($pageFinder, $languageText, $currentPage);
+        $navigationFactory = new NavigationFactory($pageFinder, $languageText, $currentPage, System::getContainer()->get('contao.intl.locales')->getLocales());
         $navigationItems = $navigationFactory->findNavigationItems($currentPage);
 
         // Do not generate module or header if there is none or only one link
@@ -146,8 +143,10 @@ class ChangeLanguageModule extends Module
             'accesskey' => '',
             'tabindex' => '',
             'nofollow' => false,
-            'target' => ($item->isNewWindow() ? ' target="_blank"' : '').' hreflang="'.$item->getLanguageTag().'" lang="'.$item->getLanguageTag().'"',
+            'rel' => ' hreflang="'.$item->getLanguageTag().'"'.(empty($item->getAriaLabel() ? '' : ' aria-label="'.$item->getAriaLabel().'"')),
+            'target' => ($item->isNewWindow() ? ' target="_blank"' : ''),
             'item' => $item,
+            'languageTag' => $item->getLanguageTag(),
         ];
     }
 

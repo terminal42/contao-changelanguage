@@ -14,12 +14,14 @@ class NavigationFactory
     private PageFinder $pageFinder;
     private LanguageText $languageText;
     private PageModel $currentPage;
+    private array $locales = [];
 
-    public function __construct(PageFinder $pageFinder, LanguageText $languageText, PageModel $currentPage)
+    public function __construct(PageFinder $pageFinder, LanguageText $languageText, PageModel $currentPage, array $locales = [])
     {
         $this->pageFinder = $pageFinder;
         $this->languageText = $languageText;
         $this->currentPage = $currentPage;
+        $this->locales = $locales;
     }
 
     /**
@@ -39,6 +41,14 @@ class NavigationFactory
         );
 
         foreach ($navigationItems as $item) {
+            if (isset($this->locales[$item->getLocaleId()])) {
+                $item->setAriaLabel(
+                    $item->isDirectFallback()
+                        ? sprintf($GLOBALS['TL_LANG']['MSC']['gotoLanguage'], $this->locales[$item->getLocaleId()])
+                        : sprintf($GLOBALS['TL_LANG']['MSC']['switchLanguageTo'][1], $this->locales[$item->getLocaleId()])
+                );
+            }
+
             if (!$item->hasTargetPage()) {
                 try {
                     $item->setTargetPage(
