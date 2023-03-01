@@ -76,3 +76,14 @@
 .header_switchLanguage a:before {
     content: "› ";
 }
+
+html[data-color-scheme="dark"] .header_switchLanguage ul {
+    background-color: #232529;
+    border-color: #3f4146;
+    list-style: none;
+}
+
+html[data-color-scheme="dark"] .header_switchLanguage ul:before,
+html[data-color-scheme="dark"] .header_switchLanguage ul:after {
+    border-color: #3f4146;
+}
