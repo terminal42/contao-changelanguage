@@ -85,5 +85,5 @@ html[data-color-scheme="dark"] .header_switchLanguage ul {
 
 html[data-color-scheme="dark"] .header_switchLanguage ul:before,
 html[data-color-scheme="dark"] .header_switchLanguage ul:after {
-    border-color: #3f4146;
+    border-bottom-color: #3f4146;
 }
