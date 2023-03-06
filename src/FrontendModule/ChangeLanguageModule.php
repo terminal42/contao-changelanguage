@@ -143,7 +143,7 @@ class ChangeLanguageModule extends Module
             'accesskey' => '',
             'tabindex' => '',
             'nofollow' => false,
-            'rel' => ' hreflang="'.$item->getLanguageTag().'"'.(empty($item->getAriaLabel() ? '' : ' aria-label="'.$item->getAriaLabel().'"')),
+            'rel' => ' hreflang="'.$item->getLanguageTag().'"'.(empty($item->getAriaLabel()) ? '' : ' aria-label="'.$item->getAriaLabel().'"'),
             'target' => ($item->isNewWindow() ? ' target="_blank"' : ''),
             'item' => $item,
             'languageTag' => $item->getLanguageTag(),
