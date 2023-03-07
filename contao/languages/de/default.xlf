@@ -22,7 +22,8 @@
                 <target>Zu %s wechseln</target>
             </trans-unit>
             <trans-unit id="MSC.gotoLanguage">
-                <source>Zur aktuelle Seite auf %s wechseln</source>
+                <source>Go to current page in %s</source>
+                <target>Zur aktuelle Seite auf %s wechseln</target>
             </trans-unit>
         </body>
     </file>
