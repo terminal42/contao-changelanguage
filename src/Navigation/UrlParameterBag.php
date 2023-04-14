@@ -109,7 +109,7 @@ class UrlParameterBag
             throw new \RuntimeException('Do not set auto_item parameter');
         }
 
-        if ($GLOBALS['TL_CONFIG']['useAutoItem'] ?? null) {
+        if ($GLOBALS['TL_CONFIG']['useAutoItem'] ?? true) {
             $auto_item = array_intersect_key($attributes, array_flip((array) ($GLOBALS['TL_AUTO_ITEM'] ?? [])));
 
             switch (\count($auto_item)) {
