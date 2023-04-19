@@ -76,7 +76,7 @@ class ParentTableListener
                 WHERE jumpTo IN ('.implode(',', $associated).') AND master=0
                 ORDER BY title
             ')
-            ->execute($dc->activeRecord->language)
+            ->execute()
         ;
 
         while ($result->next()) {
