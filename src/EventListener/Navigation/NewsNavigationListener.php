@@ -20,7 +20,7 @@ class NewsNavigationListener extends AbstractNavigationListener
 {
     protected function getUrlKey(): string
     {
-        return 'items';
+        return in_array('items', $GLOBALS['TL_AUTO_ITEM'] ?? []) ? 'items' : 'auto_item';
     }
 
     protected function findCurrent(): ?NewsModel
