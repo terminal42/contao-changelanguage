@@ -20,7 +20,7 @@ class CalendarNavigationListener extends AbstractNavigationListener
 {
     protected function getUrlKey(): string
     {
-        return 'events';
+        return isset($GLOBALS['TL_CONFIG']['useAutoItem']) ? 'events' : 'auto_item';
     }
 
     protected function findCurrent(): ?CalendarEventsModel
