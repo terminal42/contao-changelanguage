@@ -106,7 +106,7 @@ class UrlParameterBag
         }
 
         if ($GLOBALS['TL_CONFIG']['useAutoItem'] ?? true) {
-            $auto_item = array_intersect_key($attributes, array_flip((array) array_merge($GLOBALS['TL_AUTO_ITEM'] ?? [], ['auto_item'])));
+            $auto_item = array_intersect_key($attributes, array_flip(array_merge((array) ($GLOBALS['TL_AUTO_ITEM'] ?? []), ['auto_item'])));
 
             switch (\count($auto_item)) {
                 case 0:
