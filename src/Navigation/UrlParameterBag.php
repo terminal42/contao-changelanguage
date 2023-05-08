@@ -105,17 +105,8 @@ class UrlParameterBag
             return null;
         }
 
-        if (isset($attributes['auto_item'])) {
-            throw new \RuntimeException('Do not set auto_item parameter');
-        }
-
-        // Contao 5 always uses auto_item
-        if (!\array_key_exists('useAutoItem', $GLOBALS['TL_CONFIG'])) {
-            $key = key($attributes);
-            $auto_item = $attributes[$key];
-            unset($attributes[$key]);
-        } elseif ($GLOBALS['TL_CONFIG']['useAutoItem']) {
-            $auto_item = array_intersect_key($attributes, array_flip((array) ($GLOBALS['TL_AUTO_ITEM'] ?? [])));
+        if ($GLOBALS['TL_CONFIG']['useAutoItem'] ?? true) {
+            $auto_item = array_intersect_key($attributes, array_flip(array_merge((array) ($GLOBALS['TL_AUTO_ITEM'] ?? []), ['auto_item'])));
 
             switch (\count($auto_item)) {
                 case 0:
