@@ -32,7 +32,7 @@
     border-radius: 4px;
     z-index: 99999999;
     -webkit-transform: translateX(-50%);
-    transform: translateX(-50%)
+    transform: translateX(-50%);
     list-style: none;
 }
 
