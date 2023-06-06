@@ -17,3 +17,5 @@ services:
 
     Terminal42\ChangeLanguage\Migration\:
         resource: ../src/Migration/*
+
+    Terminal42\ChangeLanguage\PageFinder: ~
