@@ -82,6 +82,7 @@ abstract class AbstractNavigationListener
         }
 
         $event->getUrlParameterBag()->setUrlAttribute($this->getUrlKey(), $translated->alias ?: $translated->id);
+        $this->setTitles($event, $translated);        
     }
 
     /**
@@ -119,6 +120,11 @@ abstract class AbstractNavigationListener
 
         return (string) Input::get($strKey, false, true);
     }
+
+    /**
+     * @return void
+     */
+    abstract protected function setTitles(ChangelanguageNavigationEvent $event, Model $translated);
 
     /**
      * @return string

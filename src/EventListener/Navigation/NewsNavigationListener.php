@@ -52,4 +52,10 @@ class NewsNavigationListener extends AbstractNavigationListener
             $options
         );
     }
+
+    protected function setTitles($event, $translated): void
+    {
+        $event->getNavigationItem()->setTitle($translated->headline);
+        $event->getNavigationItem()->setPageTitle($translated->pageTitle);
+    }
 }

@@ -178,4 +178,14 @@ class NavigationItem
     {
         return $this->targetPage->pageTitle ?? $this->rootPage->pageTitle;
     }
+
+    public function setTitle(?string $title): void
+    {
+        $this->targetPage->title = $title;
+    }
+
+    public function setPageTitle(?string $pageTitle): void
+    {
+        $this->targetPage->pageTitle = $pageTitle;
+    }
 }

@@ -114,4 +114,9 @@ class ArticleNavigationListener
 
         return ArticleModel::findOneBy($columns, $values, $options);
     }
+
+    protected function setTitles($event, $translated): void
+    {
+        $event->getNavigationItem()->setTitle($translated->title);
+    }
 }

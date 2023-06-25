@@ -49,4 +49,10 @@ class CalendarNavigationListener extends AbstractNavigationListener
             $options
         );
     }
+
+    protected function setTitles($event, $translated): void
+    {
+        $event->getNavigationItem()->setTitle($translated->title);
+        $event->getNavigationItem()->setPageTitle($translated->pageTitle);
+    }
 }

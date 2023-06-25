@@ -49,4 +49,10 @@ class FaqNavigationListener extends AbstractNavigationListener
             $options
         );
     }
+
+    protected function setTitles($event, $translated): void
+    {
+        $event->getNavigationItem()->setTitle($translated->question);
+        $event->getNavigationItem()->setPageTitle($translated->pageTitle);
+    }
 }
