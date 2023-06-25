@@ -31,7 +31,7 @@
             </trans-unit>
             <trans-unit id="tl_news_archive.isSlave">
                 <source>Master archive is &quot;%s&quot;</source>
-                <target>Das Hauptachiv ist &quot;%s&quot;</target>
+                <target>Das Hauptarchiv ist &quot;%s&quot;</target>
             </trans-unit>
         </body>
     </file>
