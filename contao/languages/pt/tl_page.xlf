@@ -1,0 +1,38 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+    <file datatype="plaintext" original="languages/en/tl_page.xlf" source-language="en" target-language="pt">
+        <body>
+            <trans-unit id="tl_page.languageMain.0">
+                <source>Main language page</source>
+                <target>Página principal da língua</target>
+            </trans-unit>
+            <trans-unit id="tl_page.languageMain.1">
+                <source>Choose the page in the language marked as fallback equals this page.</source>
+                <target>Escolher a página na língua marcada como fallback é igual a esta página.</target>
+            </trans-unit>
+            <trans-unit id="tl_page.languageRoot.0">
+                <source>Foreign-Domain Root Page</source>
+                <target>Página de Raiz de Domínio Estrangeiro</target>
+            </trans-unit>
+            <trans-unit id="tl_page.languageRoot.1">
+                <source>Select the root page if this page tree is related to another domain.</source>
+                <target>Seleccionar a página raiz se esta árvore de páginas estiver relacionada com outro domínio.</target>
+            </trans-unit>
+            <trans-unit id="tl_page.languageRoot.2">
+                <source>This is a main language root site</source>
+                <target>Este é um site raiz principal de línguas</target>
+            </trans-unit>
+            <trans-unit id="tl_page.languageQuery.0">
+                <source>Keep query parameters</source>
+                <target>Manter parâmetros de consulta</target>
+            </trans-unit>
+            <trans-unit id="tl_page.languageQuery.1">
+                <source>Enter a comma separated list of query parameters that should be kept when switching to a translation of this page.</source>
+                <target>Introduza uma lista separada por vírgulas de parâmetros de consulta que devem ser mantidos ao mudar para uma tradução desta página.</target>
+            </trans-unit>
+            <trans-unit id="tl_page.language_legend">
+                <source>Language &amp; Translation</source>
+                <target>Língua &amp; Tradução</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

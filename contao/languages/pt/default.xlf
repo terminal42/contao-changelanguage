@@ -1,0 +1,29 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+    <file original="languages/en/default.xlf" source-language="en" datatype="plaintext" target-language="pt">
+        <body>
+            <trans-unit id="MSC.duplicateMainLanguage">
+                <source>The selected page is already assigned to &quot;%s&quot; in the main language.</source>
+                <target>A página seleccionada já está atribuída a &quot;%s&quot; na idioma principal.</target>
+            </trans-unit>
+            <trans-unit id="MSC.noMainLanguage">
+                <source>Main language missing</source>
+                <target>Falta o idioma principal</target>
+            </trans-unit>
+            <trans-unit id="MSC.switchLanguage">
+                <source>Language</source>
+                <target>Idioma</target>
+            </trans-unit>
+            <trans-unit id="MSC.switchLanguageTo.0">
+                <source>Switch to</source>
+                <target>Mudar para</target>
+            </trans-unit>
+            <trans-unit id="MSC.switchLanguageTo.1">
+                <source>Switch to %s</source>
+                <target>Mudar para %s</target>
+            </trans-unit>
+            <trans-unit id="MSC.gotoLanguage">
+                <source>Go to current page in %s</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

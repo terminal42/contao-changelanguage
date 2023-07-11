@@ -1,0 +1,22 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+    <file datatype="plaintext" original="languages/en/tl_news.xlf" source-language="en" target-language="cs">
+        <body>
+            <trans-unit id="tl_news.languageMain.0">
+                <source>Master article</source>
+                <target>Hlavní článek</target>
+            </trans-unit>
+            <trans-unit id="tl_news.languageMain.1">
+                <source>Choose the article in the master archive equaling this article.</source>
+                <target>Vyberte hlavní článek, který se rovná tomuto článku.</target>
+            </trans-unit>
+            <trans-unit id="tl_news.sameDay">
+                <source>Same day</source>
+                <target>Stejný den</target>
+            </trans-unit>
+            <trans-unit id="tl_news.otherDay">
+                <source>Other days</source>
+                <target>Ostatní dny</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

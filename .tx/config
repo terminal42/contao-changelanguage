@@ -2,58 +2,62 @@
 host = https://www.transifex.com
 type = XLIFF
 
-[contao-changelanguage.default]
+[o:terminal42:p:contao-changelanguage:r:default]
 file_filter = contao/languages/<lang>/default.xlf
 source_file = contao/languages/en/default.xlf
 source_lang = en
 
-[contao-changelanguage.modules]
+[o:terminal42:p:contao-changelanguage:r:modules]
 file_filter = contao/languages/<lang>/modules.xlf
 source_file = contao/languages/en/modules.xlf
 source_lang = en
 
-[contao-changelanguage.tl_article]
+[o:terminal42:p:contao-changelanguage:r:tl_article]
 file_filter = contao/languages/<lang>/tl_article.xlf
 source_file = contao/languages/en/tl_article.xlf
 source_lang = en
 
-[contao-changelanguage.tl_calendar]
+[o:terminal42:p:contao-changelanguage:r:tl_calendar]
 file_filter = contao/languages/<lang>/tl_calendar.xlf
 source_file = contao/languages/en/tl_calendar.xlf
 source_lang = en
 
-[contao-changelanguage.tl_calendar_events]
+[o:terminal42:p:contao-changelanguage:r:tl_calendar_events]
 file_filter = contao/languages/<lang>/tl_calendar_events.xlf
 source_file = contao/languages/en/tl_calendar_events.xlf
 source_lang = en
 
-[contao-changelanguage.tl_faq]
+[o:terminal42:p:contao-changelanguage:r:tl_faq]
 file_filter = contao/languages/<lang>/tl_faq.xlf
 source_file = contao/languages/en/tl_faq.xlf
 source_lang = en
 
-[contao-changelanguage.tl_faq_category]
+[o:terminal42:p:contao-changelanguage:r:tl_faq_category]
 file_filter = contao/languages/<lang>/tl_faq_category.xlf
 source_file = contao/languages/en/tl_faq_category.xlf
 source_lang = en
 
-[contao-changelanguage.tl_module]
+[o:terminal42:p:contao-changelanguage:r:tl_module]
 file_filter = contao/languages/<lang>/tl_module.xlf
 source_file = contao/languages/en/tl_module.xlf
 source_lang = en
 
-[contao-changelanguage.tl_news]
+[o:terminal42:p:contao-changelanguage:r:tl_news]
 file_filter = contao/languages/<lang>/tl_news.xlf
 source_file = contao/languages/en/tl_news.xlf
 source_lang = en
 
-[contao-changelanguage.tl_news_archive]
+[o:terminal42:p:contao-changelanguage:r:tl_news_archive]
 file_filter = contao/languages/<lang>/tl_news_archive.xlf
 source_file = contao/languages/en/tl_news_archive.xlf
 source_lang = en
 
-[contao-changelanguage.tl_page]
+[o:terminal42:p:contao-changelanguage:r:tl_page]
 file_filter = contao/languages/<lang>/tl_page.xlf
 source_file = contao/languages/en/tl_page.xlf
 source_lang = en
 
+[o:terminal42:p:contao-changelanguage:r:tl_user]
+file_filter = contao/languages/<lang>/tl_user.xlf
+source_file = contao/languages/en/tl_user.xlf
+source_lang = en

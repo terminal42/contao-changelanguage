@@ -1,0 +1,38 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+    <file datatype="plaintext" original="languages/en/tl_news_archive.xlf" source-language="en" target-language="pt">
+        <body>
+            <trans-unit id="tl_news_archive.master.0">
+                <source>Master archive</source>
+                <target>Arquivo principal</target>
+            </trans-unit>
+            <trans-unit id="tl_news_archive.master.1">
+                <source>Please define the master archive to allow language switching.</source>
+                <target>É favor definir o arquivo principal para permitir a mudança de idioma.</target>
+            </trans-unit>
+            <trans-unit id="tl_news_archive.master.2">
+                <source>This master has already been selected for the &quot;%s&quot; archive!</source>
+                <target>Este mestre já foi seleccionado para o arquivo &quot;%s&quot;!</target>
+            </trans-unit>
+            <trans-unit id="tl_news_archive.language.0">
+                <source>Language</source>
+                <target>Idioma</target>
+            </trans-unit>
+            <trans-unit id="tl_news_archive.language.1">
+                <source>Please enter the page language according to the ISO-639-1 standard (e.g. &quot;en&quot; for English or &quot;en-US&quot; for American English).</source>
+                <target>Por favor introduza a língua da página de acordo com a norma ISO-639-1 (por exemplo &quot;en&quot; para inglês ou &quot;en-US&quot; para inglês americano).</target>
+            </trans-unit>
+            <trans-unit id="tl_news_archive.language_legend">
+                <source>Language settings</source>
+                <target>Configurações de idioma</target>
+            </trans-unit>
+            <trans-unit id="tl_news_archive.isMaster">
+                <source>This is a master archive</source>
+                <target>Este é um arquivo principal</target>
+            </trans-unit>
+            <trans-unit id="tl_news_archive.isSlave">
+                <source>Master archive is &quot;%s&quot;</source>
+                <target>O arquivo principal é &quot;%s&quot;.</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

@@ -1,0 +1,38 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+    <file original="languages/en/tl_module.xlf" source-language="en" datatype="plaintext" target-language="pt">
+        <body>
+            <trans-unit id="tl_module.hideActiveLanguage.0">
+                <source>Hide active language</source>
+                <target>Esconder linguagem activa</target>
+            </trans-unit>
+            <trans-unit id="tl_module.hideActiveLanguage.1">
+                <source>Please check here if you want to hide the active language on your site.</source>
+                <target>Verifique aqui se pretende esconder a língua activa no seu site.</target>
+            </trans-unit>
+            <trans-unit id="tl_module.hideNoFallback.0">
+                <source>Hide languages without direct fallback</source>
+                <target>Esconder línguas sem recuo directo</target>
+            </trans-unit>
+            <trans-unit id="tl_module.hideNoFallback.1">
+                <source>Do not show languages that have no direct fallback assigned.</source>
+                <target>Não mostre línguas que não tenham sido atribuídas directamente a um fallback.</target>
+            </trans-unit>
+            <trans-unit id="tl_module.customLanguage.0">
+                <source>Custom language texts</source>
+                <target>Textos linguísticos personalizados</target>
+            </trans-unit>
+            <trans-unit id="tl_module.customLanguage.1">
+                <source>Please check here if you want to have custom texts for your languages (not uppercase language
+                    shortcuts).</source>
+                <target>Verifique aqui se deseja ter textos personalizados para as suas línguas (e não para a língua em maiúsculas atalhos).</target>
+            </trans-unit>
+            <trans-unit id="tl_module.customLanguageText.0">
+                <source>Language texts</source>
+                <target>Textos de idiomas</target>
+            </trans-unit>
+            <trans-unit id="tl_module.customLanguageText.1">
+                <source>Enter the page language as key and a replacement text as value.</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

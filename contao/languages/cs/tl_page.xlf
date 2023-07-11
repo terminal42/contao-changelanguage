@@ -1,0 +1,38 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+    <file datatype="plaintext" original="languages/en/tl_page.xlf" source-language="en" target-language="cs">
+        <body>
+            <trans-unit id="tl_page.languageMain.0">
+                <source>Main language page</source>
+                <target>Hlavní jazyková stránka</target>
+            </trans-unit>
+            <trans-unit id="tl_page.languageMain.1">
+                <source>Choose the page in the language marked as fallback equals this page.</source>
+                <target>Vyberte stránku v jazyce označeném jako záložní, která se rovná této stránce.</target>
+            </trans-unit>
+            <trans-unit id="tl_page.languageRoot.0">
+                <source>Foreign-Domain Root Page</source>
+                <target>Kořenová stránka cizí domény</target>
+            </trans-unit>
+            <trans-unit id="tl_page.languageRoot.1">
+                <source>Select the root page if this page tree is related to another domain.</source>
+                <target>Vyberte kořenovou stránku, pokud tento strom stránky souvisí s jinou doménou.</target>
+            </trans-unit>
+            <trans-unit id="tl_page.languageRoot.2">
+                <source>This is a main language root site</source>
+                <target>Toto je hlavní jazyk kořene webu</target>
+            </trans-unit>
+            <trans-unit id="tl_page.languageQuery.0">
+                <source>Keep query parameters</source>
+                <target>Zachovejte parametry dotazu</target>
+            </trans-unit>
+            <trans-unit id="tl_page.languageQuery.1">
+                <source>Enter a comma separated list of query parameters that should be kept when switching to a translation of this page.</source>
+                <target>Zadejte čárkami oddělený seznam parametrů dotazu, které by měly být zachovány při přechodu na překlad této stránky.</target>
+            </trans-unit>
+            <trans-unit id="tl_page.language_legend">
+                <source>Language &amp; Translation</source>
+                <target>Jazyk a překlady</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

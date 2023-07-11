@@ -1,0 +1,14 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+    <file datatype="plaintext" original="languages/en/tl_calendar_events.xlf" source-language="en" target-language="pt">
+        <body>
+            <trans-unit id="tl_calendar_events.languageMain.0">
+                <source>Master event</source>
+                <target>Evento principal</target>
+            </trans-unit>
+            <trans-unit id="tl_calendar_events.languageMain.1">
+                <source>Choose the event in the master calendar equaling this event.</source>
+                <target>Escolher o evento no calendário principal igualando este evento.</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

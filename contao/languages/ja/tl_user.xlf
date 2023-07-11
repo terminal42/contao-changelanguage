@@ -1,0 +1,15 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+    <file original="languages/en/tl_user.xlf" source-language="en" datatype="plaintext" target-language="ja">
+        <body>
+            <trans-unit id="tl_user.pageLanguageLabels.0">
+                <source>Fallback page titles</source>
+            </trans-unit>
+            <trans-unit id="tl_user.pageLanguageLabels.1">
+                <source>Select the root pages for which pages you want to show the fallback page title.</source>
+            </trans-unit>
+            <trans-unit id="tl_user.changelanguage_legend">
+                <source>ChangeLanguage</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
