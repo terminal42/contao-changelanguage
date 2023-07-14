@@ -3,12 +3,15 @@
         <body>
             <trans-unit id="tl_user.pageLanguageLabels.0">
                 <source>Fallback page titles</source>
+                <target>Заголовки резервных страниц</target>
             </trans-unit>
             <trans-unit id="tl_user.pageLanguageLabels.1">
                 <source>Select the root pages for which pages you want to show the fallback page title.</source>
+                <target>Выберите корневые страницы, для которых необходимо отображать заголовок резервной страницы.</target>
             </trans-unit>
             <trans-unit id="tl_user.changelanguage_legend">
                 <source>ChangeLanguage</source>
+                <target>Изменить язык</target>
             </trans-unit>
         </body>
     </file>

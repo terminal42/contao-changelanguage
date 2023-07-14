@@ -23,6 +23,7 @@
             </trans-unit>
             <trans-unit id="MSC.gotoLanguage">
                 <source>Go to current page in %s</source>
+                <target>%sの現在のページに移動</target>
             </trans-unit>
         </body>
     </file>
