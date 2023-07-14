@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\ChangeLanguage\Tests\PageFinder;
 
 use Contao\PageModel;
@@ -8,19 +10,16 @@ use Terminal42\ChangeLanguage\Tests\ContaoTestCase;
 
 class RootPagesTest extends ContaoTestCase
 {
-    /**
-     * @var PageFinder
-     */
-    private $pageFinder;
+    private PageFinder $pageFinder;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->pageFinder = new PageFinder();
     }
 
-    public function testFindsOneRoot()
+    public function testFindsOneRoot(): void
     {
         $this->createRootPage('', 'en');
 
@@ -36,7 +35,7 @@ class RootPagesTest extends ContaoTestCase
         $this->assertSame('en', $roots[1]->language);
     }
 
-    public function testFindRootsWithSameDns()
+    public function testFindRootsWithSameDns(): void
     {
         $this->createRootPage('', 'en');
         $this->createRootPage('', 'de', false);
@@ -50,7 +49,7 @@ class RootPagesTest extends ContaoTestCase
         $this->assertPageCount($roots, 2);
     }
 
-    public function testFindsMasterRoot()
+    public function testFindsMasterRoot(): void
     {
         $master = $this->createRootPage('foo.com', 'en');
         $this->createRootPage('bar.com', 'de', true, $master);
@@ -64,7 +63,7 @@ class RootPagesTest extends ContaoTestCase
         $this->assertPageCount($roots, 2);
     }
 
-    public function testFindsMasterAndNonFallbacks()
+    public function testFindsMasterAndNonFallbacks(): void
     {
         $master = $this->createRootPage('foo.com', 'en');
         $this->createRootPage('foo.com', 'de', false);
@@ -80,7 +79,7 @@ class RootPagesTest extends ContaoTestCase
         $this->assertPageCount($roots, 4);
     }
 
-    public function testFindsMasterFromSlave()
+    public function testFindsMasterFromSlave(): void
     {
         $master = $this->createRootPage('foo.com', 'en');
         $this->createRootPage('foo.com', 'de', false);
@@ -96,7 +95,7 @@ class RootPagesTest extends ContaoTestCase
         $this->assertPageCount($roots, 4);
     }
 
-    public function testFindsMasterFromMultipleDomains()
+    public function testFindsMasterFromMultipleDomains(): void
     {
         $master = $this->createRootPage('en.com', 'en');
         $this->createRootPage('de.com', 'de', true, $master);
@@ -118,7 +117,7 @@ class RootPagesTest extends ContaoTestCase
         $this->assertPageCount($roots, 3);
     }
 
-    public function testIgnoresNonRelated()
+    public function testIgnoresNonRelated(): void
     {
         $this->createRootPage('foo.com', 'en');
         $this->createRootPage('foo.com', 'de', false);
@@ -135,7 +134,7 @@ class RootPagesTest extends ContaoTestCase
         $this->assertSame('foo.com', $roots[1]->dns);
     }
 
-    public function testIgnoresUnpublished()
+    public function testIgnoresUnpublished(): void
     {
         $master = $this->createRootPage('foo.com', 'en');
         $this->createRootPage('foo.com', 'de', false);
@@ -151,7 +150,7 @@ class RootPagesTest extends ContaoTestCase
         $this->assertPageCount($roots, 3);
     }
 
-    public function testIncludesUnpublishedWhenEnabled()
+    public function testIncludesUnpublishedWhenEnabled(): void
     {
         $master = $this->createRootPage('foo.com', 'en');
         $this->createRootPage('foo.com', 'de', false);
@@ -167,7 +166,7 @@ class RootPagesTest extends ContaoTestCase
         $this->assertPageCount($roots, 4);
     }
 
-    public function testNonFallbackMaster()
+    public function testNonFallbackMaster(): void
     {
         $master = $this->createRootPage('foo.com', 'en');
         $this->createRootPage('foo.com', 'de', false);
@@ -183,7 +182,7 @@ class RootPagesTest extends ContaoTestCase
         $this->assertPageCount($roots, 2);
     }
 
-    public function testKeyEqualsPageId()
+    public function testKeyEqualsPageId(): void
     {
         $master = $this->createRootPage('foo.com', 'en');
         $this->createRootPage('foo.com', 'de', false);
@@ -216,12 +215,12 @@ class RootPagesTest extends ContaoTestCase
         ");
     }
 
-    private function assertPageCount($roots, $count)
+    private function assertPageCount($roots, $count): void
     {
         $this->assertCount($count, $roots);
 
         foreach ($roots as $instance) {
-            $this->assertInstanceOf('\Contao\PageModel', $instance);
+            $this->assertInstanceOf(PageModel::class, $instance);
         }
     }
 }

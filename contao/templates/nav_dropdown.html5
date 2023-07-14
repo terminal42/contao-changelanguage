@@ -1,30 +1,31 @@
 <?php
-    $blnHasActive = false;
-    $intLevel = (int) substr($this->level, 6);
+$blnHasActive = false;
+$intLevel = (int) substr($this->level, 6);
 
-    if ($intLevel < 1) {
-        $intLevel = 1;
-    }
+if ($intLevel < 1) {
+    $intLevel = 1;
+}
 
-    if ($intLevel == 1):
-        $arrLanguages = \Contao\System::getLanguages();
-        foreach ($this->items as $item) {
-            if ($item['isActive'] || strpos($item['subitems'], 'class="active') !== false) {
-                $blnHasActive = true;
-                break;
-            }
+if (1 == $intLevel):
+    $arrLanguages = \Contao\System::getLanguages();
+
+    foreach ($this->items as $item) {
+        if ($item['isActive'] || false !== strpos($item['subitems'], 'class="active')) {
+            $blnHasActive = true;
+            break;
         }
-?>
-<select class="<?php echo $this->level; ?>" onchange="window.location.href=this.value">
+    }
+    ?>
+<select class="<?= $this->level; ?>" onchange="window.location.href=this.value">
 <?php endif; ?>
-<?php if ($intLevel == 1 && !$blnHasActive): ?><option value="">-</option><?php endif; ?>
+<?php if (1 == $intLevel && !$blnHasActive): ?><option value="">-</option><?php endif; ?>
 <?php foreach ($this->items as $item): ?>
 <?php if ($item['isActive']): ?>
-<option class="active <?php echo $item['class']; ?>" selected><?php echo str_repeat('&nbsp;&nbsp;&nbsp;', $intLevel-1); ?><?php echo $arrLanguages[$item['item']->getLocaleId()] ?? $item['link']; ?><?php echo $item['subitems']; ?></option>
+<option class="active <?= $item['class']; ?>" selected><?= str_repeat('&nbsp;&nbsp;&nbsp;', $intLevel - 1); ?><?= $arrLanguages[$item['item']->getLocaleId()] ?? $item['link']; ?><?= $item['subitems']; ?></option>
 <?php else: ?>
-<option <?php if ($item['class']): ?> class="<?php echo $item['class']; ?>"<?php endif; ?> value="<?php echo $item['href']; ?>"><?php echo str_repeat('&nbsp;&nbsp;&nbsp;', $intLevel-1); ?><?php echo $arrLanguages[$item['item']->getLocaleId()] ?? $item['link']; ?><?php echo $item['subitems']; ?></option>
+<option <?php if ($item['class']): ?> class="<?= $item['class']; ?>"<?php endif; ?> value="<?= $item['href']; ?>"><?= str_repeat('&nbsp;&nbsp;&nbsp;', $intLevel - 1); ?><?= $arrLanguages[$item['item']->getLocaleId()] ?? $item['link']; ?><?= $item['subitems']; ?></option>
 <?php endif; ?>
 <?php endforeach; ?>
-<?php if ($intLevel == 1): ?>
+<?php if (1 == $intLevel): ?>
 </select>
 <?php endif; ?>

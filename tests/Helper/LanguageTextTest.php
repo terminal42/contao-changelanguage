@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\ChangeLanguage\Tests\Helper;
 
 use Contao\PageModel;
@@ -9,7 +11,7 @@ use Terminal42\ChangeLanguage\Tests\ContaoTestCase;
 
 class LanguageTextTest extends ContaoTestCase
 {
-    public function testHasLanguageInMap()
+    public function testHasLanguageInMap(): void
     {
         $map = [
             'en' => 'International',
@@ -25,7 +27,7 @@ class LanguageTextTest extends ContaoTestCase
         $this->assertFalse($languageText->has('fr'));
     }
 
-    public function testCanSetLabelForLanguage()
+    public function testCanSetLabelForLanguage(): void
     {
         $languageText = new LanguageText();
 
@@ -36,21 +38,21 @@ class LanguageTextTest extends ContaoTestCase
         $this->assertTrue($languageText->has('en'));
     }
 
-    public function testReturnsLabelForLanguage()
+    public function testReturnsLabelForLanguage(): void
     {
         $languageText = new LanguageText(['en' => 'English']);
 
         $this->assertSame('English', $languageText->get('en'));
     }
 
-    public function testReturnsUppercaseLanguageWhenNotInMap()
+    public function testReturnsUppercaseLanguageWhenNotInMap(): void
     {
         $languageText = new LanguageText();
 
         $this->assertSame('EN', $languageText->get('en'));
     }
 
-    public function testOrdersNavigationItemsAccordingToCustomMap()
+    public function testOrdersNavigationItemsAccordingToCustomMap(): void
     {
         $map = [
             'en' => 'International',
@@ -68,7 +70,7 @@ class LanguageTextTest extends ContaoTestCase
         $helloFrId = $this->createRootPage('hello.fr', 'fr-FR');
         $worldPlId = $this->createRootPage('world.pl', 'pl');
 
-        //items do not get added in "correct" order on purpose to test the sorting
+        // items do not get added in "correct" order on purpose to test the sorting
         $items = [];
         $items[] = new NavigationItem(PageModel::findById($barChId));
         $items[] = new NavigationItem(PageModel::findById($worldPlId));
@@ -80,19 +82,19 @@ class LanguageTextTest extends ContaoTestCase
         $keys = array_keys($map);
 
         foreach ($items as $i => $item) {
-            //items order should be equal to the order in the map which was passed to LanguageText
+            // items order should be equal to the order in the map which was passed to LanguageText
             $this->assertSame($keys[$i], $item->getLanguageTag());
         }
     }
 
-    public function testIgnoresOrderIfMapIsEmpty()
+    public function testIgnoresOrderIfMapIsEmpty(): void
     {
         $languageText = new LanguageText();
 
         $fooComId = $this->createRootPage('foo.com', 'en');
         $barChId = $this->createRootPage('bar.ch', 'de-CH');
 
-        /** @var NavigationItem[] $items */
+        /** @var array<NavigationItem> $items */
         $items = [
             new NavigationItem(PageModel::findById($fooComId)),
             new NavigationItem(PageModel::findById($barChId)),
@@ -104,7 +106,7 @@ class LanguageTextTest extends ContaoTestCase
         $this->assertSame('de-CH', $items[1]->getLanguageTag());
     }
 
-    public function testIsCreatedFromOptionWizard()
+    public function testIsCreatedFromOptionWizard(): void
     {
         $config = [
             ['label' => 'English', 'value' => 'en'],
@@ -115,14 +117,14 @@ class LanguageTextTest extends ContaoTestCase
         $this->assertTrue($languageText->has('en'));
     }
 
-    public function testIsCreatedFromEmptyOptionWizard()
+    public function testIsCreatedFromEmptyOptionWizard(): void
     {
         $languageText = LanguageText::createFromOptionWizard('');
 
         $this->assertFalse($languageText->has('en'));
     }
 
-    public function testIgnoresEmptyOptionWizardRows()
+    public function testIgnoresEmptyOptionWizardRows(): void
     {
         $config = [
             ['label' => 'English', 'value' => 'en'],

@@ -1,18 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\ChangeLanguage\Tests;
 
 use Contao\System;
 use Doctrine\DBAL\Connection;
+use PHPUnit\Extensions\Database\DataSet\DefaultDataSet;
+use PHPUnit\Extensions\Database\TestCase;
 
-abstract class DbTestCase extends \PHPUnit_Extensions_Database_TestCase
+abstract class DbTestCase extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         $connection = $this->getConnection();
 
         foreach ($connection->getSchemaManager()->listTableNames() as $table) {
-            $connection->query('DROP TABLE IF EXISTS '.$table);
+            $connection->executeQuery('DROP TABLE IF EXISTS '.$table);
         }
 
         parent::setUp();
@@ -34,6 +38,6 @@ abstract class DbTestCase extends \PHPUnit_Extensions_Database_TestCase
      */
     protected function getDataSet()
     {
-        return new \PHPUnit_Extensions_Database_DataSet_DefaultDataSet();
+        return new DefaultDataSet();
     }
 }

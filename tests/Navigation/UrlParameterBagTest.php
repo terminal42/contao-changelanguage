@@ -1,21 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\ChangeLanguage\Tests\Navigation;
 
+use PHPUnit\Framework\TestCase;
 use Terminal42\ChangeLanguage\Navigation\UrlParameterBag;
 
-class UrlParameterBagTest extends \PHPUnit_Framework_TestCase
+class UrlParameterBagTest extends TestCase
 {
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $GLOBALS['TL_CONFIG']['useAutoItem'] = true;
         unset($GLOBALS['TL_AUTO_ITEM']);
     }
 
-    public function testUrlAttributeGetterAndSetter()
+    public function testUrlAttributeGetterAndSetter(): void
     {
         $bag = new UrlParameterBag();
 
@@ -36,7 +39,7 @@ class UrlParameterBagTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(['foo' => 'bar'], $bag->getUrlAttributes());
     }
 
-    public function testQueryParameterGettersAndSetters()
+    public function testQueryParameterGettersAndSetters(): void
     {
         $bag = new UrlParameterBag();
 
@@ -57,21 +60,21 @@ class UrlParameterBagTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(['foo' => 'bar'], $bag->getQueryParameters());
     }
 
-    public function testGenerateOneParameters()
+    public function testGenerateOneParameters(): void
     {
         $bag = new UrlParameterBag(['foo' => 'bar']);
 
         $this->assertSame('/foo/bar', $bag->generateParameters());
     }
 
-    public function testGenerateMultipleParameters()
+    public function testGenerateMultipleParameters(): void
     {
         $bag = new UrlParameterBag(['foo' => 'bar', 'bar' => 'baz']);
 
         $this->assertSame('/foo/bar/bar/baz', $bag->generateParameters());
     }
 
-    public function testGenerateSingleAutoItemParameter()
+    public function testGenerateSingleAutoItemParameter(): void
     {
         $GLOBALS['TL_AUTO_ITEM'] = ['foo'];
         $bag = new UrlParameterBag(['foo' => 'bar']);
@@ -79,7 +82,7 @@ class UrlParameterBagTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('/bar', $bag->generateParameters());
     }
 
-    public function testGenerateMultipleWithAutoItem()
+    public function testGenerateMultipleWithAutoItem(): void
     {
         $GLOBALS['TL_AUTO_ITEM'] = ['bar'];
         $bag = new UrlParameterBag(['foo' => 'bar', 'bar' => 'baz']);
@@ -87,7 +90,7 @@ class UrlParameterBagTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('/baz/foo/bar', $bag->generateParameters());
     }
 
-    public function testIgnoresAutoItemIfDisabled()
+    public function testIgnoresAutoItemIfDisabled(): void
     {
         $GLOBALS['TL_CONFIG']['useAutoItem'] = false;
         $GLOBALS['TL_AUTO_ITEM'] = ['foo'];
@@ -96,25 +99,25 @@ class UrlParameterBagTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('/foo/bar', $bag->generateParameters());
     }
 
-    public function testReturnsNullOnEmptyParameters()
+    public function testReturnsNullOnEmptyParameters(): void
     {
         $bag = new UrlParameterBag();
 
         $this->assertNull($bag->generateParameters());
     }
 
-    public function testExceptionOnAutoItemKey()
+    public function testExceptionOnAutoItemKey(): void
     {
-        $this->setExpectedException('RuntimeException');
+        $this->expectException('RuntimeException');
 
         $bag = new UrlParameterBag(['auto_item' => 'baz']);
 
         $bag->generateParameters();
     }
 
-    public function testExceptionOnMulitpleAutoItems()
+    public function testExceptionOnMulitpleAutoItems(): void
     {
-        $this->setExpectedException('RuntimeException');
+        $this->expectException('RuntimeException');
 
         $GLOBALS['TL_AUTO_ITEM'] = ['foo', 'bar'];
         $bag = new UrlParameterBag(['foo' => 'bar', 'bar' => 'baz']);
@@ -122,78 +125,78 @@ class UrlParameterBagTest extends \PHPUnit_Framework_TestCase
         $bag->generateParameters();
     }
 
-    public function testExceptionOnConstructNonScalarParameter()
+    public function testExceptionOnConstructNonScalarParameter(): void
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
 
         new UrlParameterBag(['foo' => (object) ['bar']]);
     }
 
-    public function testExceptionOnSettingNonScalarParameter()
+    public function testExceptionOnSettingNonScalarParameter(): void
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
 
         $bag = new UrlParameterBag();
 
         $bag->setUrlAttribute('foo', (object) ['bar']);
     }
 
-    public function testExceptionOnSettingNonScalarParameters()
+    public function testExceptionOnSettingNonScalarParameters(): void
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
 
         $bag = new UrlParameterBag();
 
         $bag->setUrlAttributes(['foo' => (object) ['bar']]);
     }
 
-    public function testGenerateSingleQuery()
+    public function testGenerateSingleQuery(): void
     {
         $bag = new UrlParameterBag([], ['foo' => 'bar']);
 
         $this->assertSame('foo=bar', $bag->generateQueryString());
     }
 
-    public function testGenerateMultipleQuery()
+    public function testGenerateMultipleQuery(): void
     {
         $bag = new UrlParameterBag([], ['foo' => 'bar', 'bar' => 'baz']);
 
         $this->assertSame('foo=bar&bar=baz', $bag->generateQueryString());
     }
 
-    public function testGenerateArrayQuery()
+    public function testGenerateArrayQuery(): void
     {
         $bag = new UrlParameterBag([], ['foo' => ['bar', 'baz']]);
 
         $this->assertSame(rawurlencode('foo[0]').'=bar&'.rawurlencode('foo[1]').'=baz', $bag->generateQueryString());
     }
 
-    public function testReturnsNullOnEmptyQuery()
+    public function testReturnsNullOnEmptyQuery(): void
     {
         $bag = new UrlParameterBag();
 
         $this->assertNull($bag->generateQueryString());
     }
 
-    public function testExceptionOnConstructNonScalarQuery()
+    public function testExceptionOnConstructNonScalarQuery(): void
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
 
         new UrlParameterBag([], ['foo' => (object) ['bar']]);
     }
 
-    public function testExceptionOnSettingNonScalarQuery()
+    public function testExceptionOnSettingNonScalarQuery(): void
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
 
         $bag = new UrlParameterBag();
 
         $bag->setQueryParameter('foo', (object) ['bar']);
     }
 
-    public function testExceptionOnSettingNonScalarQuerys()
+    public function testExceptionOnSettingNonScalarQuerys(): void
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
 
         $bag = new UrlParameterBag();
 

@@ -25,9 +25,9 @@ class NavigationFactory
     }
 
     /**
-     * @throws \RuntimeException
-     *
      * @return array<NavigationItem>
+     *
+     * @throws \RuntimeException
      */
     public function findNavigationItems(PageModel $currentPage): array
     {
@@ -73,9 +73,9 @@ class NavigationFactory
      *
      * @param array<PageModel> $rootPages
      *
-     * @throws \RuntimeException if multiple root pages have the same language
-     *
      * @return array<NavigationItem>
+     *
+     * @throws \RuntimeException if multiple root pages have the same language
      */
     private function createNavigationItemsForRootPages(array $rootPages): array
     {
@@ -140,7 +140,6 @@ class NavigationFactory
 
         return $page->published
             && ('' === $page->start || $page->start < $time)
-            && ('' === $page->stop || $page->stop > $time)
-        ;
+            && ('' === $page->stop || $page->stop > $time);
     }
 }

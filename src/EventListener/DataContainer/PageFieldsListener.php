@@ -119,7 +119,7 @@ class PageFieldsListener
             $options[$page->id] = sprintf(
                 '%s%s [%s]',
                 $page->title,
-                (\strlen($page->dns) ? (' ('.$page->dns.')') : ''),
+                \strlen($page->dns) ? (' ('.$page->dns.')') : '',
                 $page->language
             );
         }

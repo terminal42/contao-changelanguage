@@ -32,6 +32,7 @@
         "league/uri-components": "^2.0"
     },
     "require-dev": {
+        "terminal42/contao-build-tools": "dev-main",
         "contao/manager-plugin": "^2.0",
         "contao/news-bundle": "^4.13 || ^5.0",
         "contao/calendar-bundle": "^4.13 || ^5.0",
@@ -58,8 +59,9 @@
     "extra": {
         "contao-manager-plugin": "Terminal42\\ChangeLanguage\\ContaoManager\\Plugin"
     },
-    "scripts": {
-        "cs-fixer": "@php tools/ecs/vendor/bin/ecs check src/ --config tools/ecs/config.php --fix --ansi",
-        "rector": "@php tools/rector/vendor/bin/rector --config tools/rector/config.php --ansi"
+    "config": {
+        "allow-plugins": {
+            "terminal42/contao-build-tools": true
+        }
     }
 }

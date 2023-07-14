@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\ChangeLanguage\Tests\PageFinder;
 
 use Contao\PageModel;
@@ -8,19 +10,16 @@ use Terminal42\ChangeLanguage\Tests\ContaoTestCase;
 
 class AssociatedForLanguageTest extends ContaoTestCase
 {
-    /**
-     * @var PageFinder
-     */
-    private $pageFinder;
+    private PageFinder $pageFinder;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->pageFinder = new PageFinder();
     }
 
-    public function testFindsOnePage()
+    public function testFindsOnePage(): void
     {
         $enRoot = $this->createRootPage('en', true);
         $deRoot = $this->createRootPage('de', false);
@@ -34,11 +33,11 @@ class AssociatedForLanguageTest extends ContaoTestCase
 
         $page = $this->pageFinder->findAssociatedForLanguage($dePage, 'en');
 
-        $this->assertInstanceOf('Contao\PageModel', $page);
+        $this->assertInstanceOf(PageModel::class, $page);
         $this->assertSame($en, $page->id);
     }
 
-    public function testReturnsRootWhenNoMatch()
+    public function testReturnsRootWhenNoMatch(): void
     {
         $enRoot = $this->createRootPage('en', true);
         $deRoot = $this->createRootPage('de', false);
@@ -51,13 +50,13 @@ class AssociatedForLanguageTest extends ContaoTestCase
 
         $page = $this->pageFinder->findAssociatedForLanguage($pageModel, 'en');
 
-        $this->assertInstanceOf('Contao\PageModel', $page);
+        $this->assertInstanceOf(PageModel::class, $page);
         $this->assertSame($enRoot, $page->id);
     }
 
-    public function testThrowsExceptionWhenLanguageDoesNotExist()
+    public function testThrowsExceptionWhenLanguageDoesNotExist(): void
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
 
         $enRoot = $this->createRootPage('en', true);
         $deRoot = $this->createRootPage('de', false);

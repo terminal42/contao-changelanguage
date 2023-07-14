@@ -20,17 +20,18 @@ class NavigationItem
     private bool $isDirectFallback = false;
     private bool $isCurrentPage = false;
 
-    public function __construct(PageModel $rootPage, string $label = null)
+    public function __construct(PageModel $rootPage, ?string $label = null)
     {
         if ('root' !== $rootPage->type) {
             throw new \RuntimeException(sprintf('Page ID "%s" has type "%s" but should be "root"', $rootPage->id, $rootPage->type));
         }
 
         $this->rootPage = $rootPage->loadDetails();
-        $this->linkLabel = $label;
 
         if (null === $label) {
             $this->linkLabel = strtoupper($this->getLanguageTag());
+        } else {
+            $this->linkLabel = $label;
         }
     }
 

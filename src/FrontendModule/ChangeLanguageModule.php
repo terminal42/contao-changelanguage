@@ -90,7 +90,7 @@ class ChangeLanguageModule extends Module
 
         $templateItems = [];
         $headerLinks = $this->getAlternateLinks();
-        $queryParameters = $currentPage->languageQuery ? trimsplit(',', $currentPage->languageQuery) : [];
+        $queryParameters = $currentPage->languageQuery ? StringUtil::trimsplit(',', $currentPage->languageQuery) : [];
         $defaultUrlParameters = $this->createUrlParameterBag($queryParameters);
 
         foreach ($navigationItems as $item) {

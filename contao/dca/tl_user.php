@@ -12,5 +12,5 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['pageLanguageLabels'] = [
     'exclude' => true,
     'inputType' => 'checkbox',
     'eval' => ['multiple' => true, 'tl_class' => 'w50'],
-    'sql' => "text NULL",
+    'sql' => 'text NULL',
 ];

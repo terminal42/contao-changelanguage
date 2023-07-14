@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\ChangeLanguage\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Terminal42\ChangeLanguage\Language;
 
-class LanguageTest extends \PHPUnit_Framework_TestCase
+class LanguageTest extends TestCase
 {
     /**
      * @param mixed $localeId
@@ -12,7 +15,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
      *
      * @dataProvider languagesProvider
      */
-    public function testConvertLocaleIdToLanguageTag($localeId, $languageTag)
+    public function testConvertLocaleIdToLanguageTag($localeId, $languageTag): void
     {
         $this->assertSame($languageTag, Language::toLanguageTag($localeId));
     }
@@ -23,7 +26,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
      *
      * @dataProvider languagesProvider
      */
-    public function testConvertLanguageTagToLocaleId($localeId, $languageTag)
+    public function testConvertLanguageTagToLocaleId($localeId, $languageTag): void
     {
         $this->assertSame($localeId, Language::toLocaleID($languageTag));
     }
@@ -33,9 +36,9 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
      *
      * @dataProvider invalidLanguagesProvider
      */
-    public function testInvalidLanguage($language)
+    public function testInvalidLanguage($language): void
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
 
         Language::normalize($language, '-');
     }

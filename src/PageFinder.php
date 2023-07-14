@@ -89,7 +89,7 @@ class PageFinder
     /**
      * @return array<PageModel>
      */
-    public function findAssociatedForPage(PageModel $page, bool $skipCurrent = false, array $rootPages = null, bool $publishedOnly = true): array
+    public function findAssociatedForPage(PageModel $page, bool $skipCurrent = false, ?array $rootPages = null, bool $publishedOnly = true): array
     {
         if ('root' === $page->type) {
             return $this->findRootPagesForPage($page, $skipCurrent, $publishedOnly);

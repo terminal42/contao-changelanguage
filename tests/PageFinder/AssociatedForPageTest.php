@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\ChangeLanguage\Tests\PageFinder;
 
 use Contao\PageModel;
@@ -8,19 +10,16 @@ use Terminal42\ChangeLanguage\Tests\ContaoTestCase;
 
 class AssociatedForPageTest extends ContaoTestCase
 {
-    /**
-     * @var PageFinder
-     */
-    private $pageFinder;
+    private PageFinder $pageFinder;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->pageFinder = new PageFinder();
     }
 
-    public function testFindsOnePage()
+    public function testFindsOnePage(): void
     {
         $pageModel = new PageModel();
         $pageModel->id = $this->createPage();
@@ -30,7 +29,7 @@ class AssociatedForPageTest extends ContaoTestCase
         $this->assertPageCount($pages, 1);
     }
 
-    public function testFindsAllFromFallback()
+    public function testFindsAllFromFallback(): void
     {
         $enRoot = $this->createRootPage('en');
         $deRoot = $this->createRootPage('de', '');
@@ -48,7 +47,7 @@ class AssociatedForPageTest extends ContaoTestCase
         $this->assertPageCount($pages, 3);
     }
 
-    public function testFindsAllFromRelated()
+    public function testFindsAllFromRelated(): void
     {
         $enRoot = $this->createRootPage('en');
         $deRoot = $this->createRootPage('de', '');
@@ -68,7 +67,7 @@ class AssociatedForPageTest extends ContaoTestCase
         $this->assertPageCount($pages, 3);
     }
 
-    public function testIgnoresEmptyMain()
+    public function testIgnoresEmptyMain(): void
     {
         $this->createPage();
         $this->createPage();
@@ -82,7 +81,7 @@ class AssociatedForPageTest extends ContaoTestCase
         $this->assertPageCount($pages, 1);
     }
 
-    public function testIgnoresLanguageMainOnFallback()
+    public function testIgnoresLanguageMainOnFallback(): void
     {
         $enRoot = $this->createRootPage('en');
         $deRoot = $this->createRootPage('de', '');
@@ -101,7 +100,7 @@ class AssociatedForPageTest extends ContaoTestCase
         $this->assertPageCount($pages, 1);
     }
 
-    public function testFindsRootsForRootPage()
+    public function testFindsRootsForRootPage(): void
     {
         $en = $this->createRootPage('en');
         $de = $this->createRootPage('de');
@@ -118,7 +117,7 @@ class AssociatedForPageTest extends ContaoTestCase
         $this->assertSame('root', $pages[$de]->type);
     }
 
-    public function testFindsAllOnDifferentDomains()
+    public function testFindsAllOnDifferentDomains(): void
     {
         $enRoot = $this->createRootPage('en', '1', 'www.example.com');
         $deRoot = $this->createRootPage('de', '1', 'www.example.org', $enRoot);
@@ -137,7 +136,7 @@ class AssociatedForPageTest extends ContaoTestCase
         $this->assertPageCount($pages, 2);
     }
 
-    public function testIgnoresPagesInWrongRoot()
+    public function testIgnoresPagesInWrongRoot(): void
     {
         $enRoot = $this->createRootPage('en', '1', 'www.example.com');
         $deRoot = $this->createRootPage('de', '', 'www.example.com');
@@ -178,12 +177,12 @@ class AssociatedForPageTest extends ContaoTestCase
         ");
     }
 
-    private function assertPageCount($pages, $count)
+    private function assertPageCount($pages, $count): void
     {
         $this->assertCount($count, $pages);
 
         foreach ($pages as $instance) {
-            $this->assertInstanceOf('\Contao\PageModel', $instance);
+            $this->assertInstanceOf(PageModel::class, $instance);
         }
     }
 }

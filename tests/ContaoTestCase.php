@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\ChangeLanguage\Tests;
 
 use Contao\System;
@@ -8,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 abstract class ContaoTestCase extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -16,20 +18,20 @@ abstract class ContaoTestCase extends TestCase
         $connection = System::getContainer()->get('database_connection');
 
         foreach ($connection->getSchemaManager()->listTableNames() as $table) {
-            $connection->query('DROP TABLE IF EXISTS '.$table);
+            $connection->executeQuery('DROP TABLE IF EXISTS '.$table);
         }
 
         $this->loadFixture('contao3.sql');
     }
 
-    protected function loadFixture($fileName)
+    protected function loadFixture($fileName): void
     {
         /** @var Connection $connection */
         $connection = System::getContainer()->get('database_connection');
 
         $query = file_get_contents(__DIR__.'/Fixtures/'.$fileName);
 
-        $connection->exec($query);
+        $connection->executeStatement($query);
     }
 
     protected function query($statement)
@@ -37,7 +39,7 @@ abstract class ContaoTestCase extends TestCase
         /** @var Connection $connection */
         $connection = System::getContainer()->get('database_connection');
 
-        $connection->query($statement);
+        $connection->executeQuery($statement);
 
         return $connection->lastInsertId();
     }
