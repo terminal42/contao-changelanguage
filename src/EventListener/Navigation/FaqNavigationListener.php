@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Terminal42\ChangeLanguage\EventListener\Navigation;
 
 use Contao\CoreBundle\ServiceAnnotation\Hook;
-use Contao\FaqBundle\ContaoFaqBundle;
 use Contao\FaqCategoryModel;
 use Contao\FaqModel;
+use Contao\Model;
 use Contao\PageModel;
 use Terminal42\ChangeLanguage\Event\ChangelanguageNavigationEvent;
 
@@ -16,8 +16,18 @@ use Terminal42\ChangeLanguage\Event\ChangelanguageNavigationEvent;
  *
  * @Hook("changelanguageNavigation")
  */
-class FaqNavigationListener extends AbstractNavigationListener
+class FaqNavigationListener extends AbstractNavigationListener implements NavigationHandlerInterface
 {
+    /**
+     * @param FaqModel $model
+     */
+    public function handleNavigation(ChangelanguageNavigationEvent $event, Model $model): void
+    {
+        $event->getUrlParameterBag()->setUrlAttribute($this->getUrlKey(), $model->alias ?: $model->id);
+        $event->getNavigationItem()->setTitle($model->question);
+        $event->getNavigationItem()->setPageTitle($model->pageTitle);
+    }
+
     protected function getUrlKey(): string
     {
         return isset($GLOBALS['TL_CONFIG']['useAutoItem']) ? 'items' : 'auto_item';

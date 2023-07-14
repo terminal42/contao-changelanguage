@@ -12,6 +12,8 @@ class NavigationItem
 {
     private PageModel $rootPage;
     private ?PageModel $targetPage = null;
+    private ?string $title = null;
+    private ?string $pageTitle = null;
     private string $linkLabel;
     private ?string $ariaLabel = null;
     private ?bool $newWindow = null;
@@ -171,11 +173,21 @@ class NavigationItem
 
     public function getTitle(): string
     {
-        return $this->targetPage->title ?? $this->rootPage->title;
+        return $this->title ?? $this->targetPage->title ?? $this->rootPage->title;
+    }
+
+    public function setTitle(?string $title): void
+    {
+        $this->title = $title;
     }
 
     public function getPageTitle(): string
     {
-        return $this->targetPage->pageTitle ?? $this->rootPage->pageTitle;
+        return $this->pageTitle ?? $this->targetPage->pageTitle ?? $this->rootPage->pageTitle;
+    }
+
+    public function setPageTitle(?string $pageTitle): void
+    {
+        $this->pageTitle = $pageTitle;
     }
 }

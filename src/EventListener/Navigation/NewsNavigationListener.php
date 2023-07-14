@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Terminal42\ChangeLanguage\EventListener\Navigation;
 
 use Contao\CoreBundle\ServiceAnnotation\Hook;
+use Contao\Model;
 use Contao\NewsArchiveModel;
-use Contao\NewsBundle\ContaoNewsBundle;
 use Contao\NewsModel;
 use Contao\PageModel;
 use Terminal42\ChangeLanguage\Event\ChangelanguageNavigationEvent;
@@ -18,6 +18,16 @@ use Terminal42\ChangeLanguage\Event\ChangelanguageNavigationEvent;
  */
 class NewsNavigationListener extends AbstractNavigationListener
 {
+    /**
+     * @param NewsModel $model
+     */
+    public function updateNavigation(ChangelanguageNavigationEvent $event, Model $model): void
+    {
+        $event->getUrlParameterBag()->setUrlAttribute($this->getUrlKey(), $model->alias ?: $model->id);
+        $event->getNavigationItem()->setTitle($model->headline);
+        $event->getNavigationItem()->setPageTitle($model->pageTitle);
+    }
+
     protected function getUrlKey(): string
     {
         return isset($GLOBALS['TL_CONFIG']['useAutoItem']) ? 'items' : 'auto_item';

@@ -33,7 +33,11 @@ abstract class AbstractNavigationListener
         $navigationItem = $event->getNavigationItem();
 
         if ($navigationItem->isCurrentPage()) {
-            $event->getUrlParameterBag()->setUrlAttribute($this->getUrlKey(), $current->alias ?: $current->id);
+            if ($this instanceof NavigationHandlerInterface) {
+                $this->handleNavigation($event, $current);
+            } else {
+                $event->getUrlParameterBag()->setUrlAttribute($this->getUrlKey(), $current->alias ?: $current->id);
+            }
 
             return;
         }
@@ -81,7 +85,11 @@ abstract class AbstractNavigationListener
             return;
         }
 
-        $event->getUrlParameterBag()->setUrlAttribute($this->getUrlKey(), $translated->alias ?: $translated->id);
+        if ($this instanceof NavigationHandlerInterface) {
+            $this->handleNavigation($event, $translated);
+        } else {
+            $event->getUrlParameterBag()->setUrlAttribute($this->getUrlKey(), $translated->alias ?: $translated->id);
+        }
     }
 
     /**
