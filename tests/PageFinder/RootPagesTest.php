@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace Terminal42\ChangeLanguage\Tests\PageFinder;
 
 use Contao\PageModel;
+use Contao\TestCase\ContaoDatabaseTrait;
 use Terminal42\ChangeLanguage\PageFinder;
 use Terminal42\ChangeLanguage\Tests\ContaoTestCase;
 
 class RootPagesTest extends ContaoTestCase
 {
+    use ContaoDatabaseTrait;
+
     private PageFinder $pageFinder;
 
     protected function setUp(): void
@@ -21,11 +24,7 @@ class RootPagesTest extends ContaoTestCase
 
     public function testFindsOneRoot(): void
     {
-        $this->createRootPage('', 'en');
-
-        $pageModel = new PageModel();
-        $pageModel->id = 1;
-        $pageModel->domain = '';
+        $pageModel = $this->createRootPage('', 'en');
 
         $roots = $this->pageFinder->findRootPagesForPage($pageModel);
 
@@ -37,12 +36,8 @@ class RootPagesTest extends ContaoTestCase
 
     public function testFindRootsWithSameDns(): void
     {
-        $this->createRootPage('', 'en');
+        $pageModel = $this->createRootPage('', 'en');
         $this->createRootPage('', 'de', false);
-
-        $pageModel = new PageModel();
-        $pageModel->id = 1;
-        $pageModel->domain = '';
 
         $roots = $this->pageFinder->findRootPagesForPage($pageModel);
 
@@ -51,12 +46,8 @@ class RootPagesTest extends ContaoTestCase
 
     public function testFindsMasterRoot(): void
     {
-        $master = $this->createRootPage('foo.com', 'en');
-        $this->createRootPage('bar.com', 'de', true, $master);
-
-        $pageModel = new PageModel();
-        $pageModel->id = 1;
-        $pageModel->domain = 'foo.com';
+        $pageModel = $this->createRootPage('foo.com', 'en');
+        $this->createRootPage('bar.com', 'de', true, $pageModel->id);
 
         $roots = $this->pageFinder->findRootPagesForPage($pageModel);
 
@@ -65,14 +56,10 @@ class RootPagesTest extends ContaoTestCase
 
     public function testFindsMasterAndNonFallbacks(): void
     {
-        $master = $this->createRootPage('foo.com', 'en');
+        $pageModel = $this->createRootPage('foo.com', 'en');
         $this->createRootPage('foo.com', 'de', false);
-        $this->createRootPage('bar.com', 'fr', true, $master);
+        $this->createRootPage('bar.com', 'fr', true, $pageModel->id);
         $this->createRootPage('bar.com', 'it', false);
-
-        $pageModel = new PageModel();
-        $pageModel->id = $master;
-        $pageModel->domain = 'foo.com';
 
         $roots = $this->pageFinder->findRootPagesForPage($pageModel);
 
@@ -83,12 +70,8 @@ class RootPagesTest extends ContaoTestCase
     {
         $master = $this->createRootPage('foo.com', 'en');
         $this->createRootPage('foo.com', 'de', false);
-        $this->createRootPage('bar.com', 'fr', true, $master);
-        $search = $this->createRootPage('bar.com', 'it', false);
-
-        $pageModel = new PageModel();
-        $pageModel->id = $search;
-        $pageModel->domain = 'bar.com';
+        $this->createRootPage('bar.com', 'fr', true, $master->id);
+        $pageModel = $this->createRootPage('bar.com', 'it', false);
 
         $roots = $this->pageFinder->findRootPagesForPage($pageModel);
 
@@ -98,19 +81,10 @@ class RootPagesTest extends ContaoTestCase
     public function testFindsMasterFromMultipleDomains(): void
     {
         $master = $this->createRootPage('en.com', 'en');
-        $this->createRootPage('de.com', 'de', true, $master);
-        $pid = $this->createRootPage('fr.com', 'fr', true, $master);
+        $this->createRootPage('de.com', 'de', true, $master->id);
+        $pid = $this->createRootPage('fr.com', 'fr', true, $master->id);
 
-        $search = $this->query("
-            INSERT INTO tl_page
-            (type, pid, published)
-            VALUES
-            ('regular', '$pid', '1')
-        ");
-
-        $pageModel = new PageModel();
-        $pageModel->id = $search;
-        $pageModel->pid = $pid;
+        $pageModel = $this->createPage($pid->id);
 
         $roots = $this->pageFinder->findRootPagesForPage($pageModel, false, false);
 
@@ -119,14 +93,10 @@ class RootPagesTest extends ContaoTestCase
 
     public function testIgnoresNonRelated(): void
     {
-        $this->createRootPage('foo.com', 'en');
+        $pageModel = $this->createRootPage('foo.com', 'en');
         $this->createRootPage('foo.com', 'de', false);
         $this->createRootPage('bar.com', 'fr');
         $this->createRootPage('bar.com', 'it', false);
-
-        $pageModel = new PageModel();
-        $pageModel->id = 1;
-        $pageModel->domain = 'foo.com';
 
         $roots = $this->pageFinder->findRootPagesForPage($pageModel);
 
@@ -136,14 +106,10 @@ class RootPagesTest extends ContaoTestCase
 
     public function testIgnoresUnpublished(): void
     {
-        $master = $this->createRootPage('foo.com', 'en');
+        $pageModel = $this->createRootPage('foo.com', 'en');
         $this->createRootPage('foo.com', 'de', false);
-        $this->createRootPage('bar.com', 'fr', true, $master);
+        $this->createRootPage('bar.com', 'fr', true, $pageModel->id);
         $this->createRootPage('bar.com', 'it', false, 0, false);
-
-        $pageModel = new PageModel();
-        $pageModel->id = 1;
-        $pageModel->domain = 'foo.com';
 
         $roots = $this->pageFinder->findRootPagesForPage($pageModel);
 
@@ -152,14 +118,10 @@ class RootPagesTest extends ContaoTestCase
 
     public function testIncludesUnpublishedWhenEnabled(): void
     {
-        $master = $this->createRootPage('foo.com', 'en');
+        $pageModel = $this->createRootPage('foo.com', 'en');
         $this->createRootPage('foo.com', 'de', false);
-        $this->createRootPage('bar.com', 'fr', true, $master);
+        $this->createRootPage('bar.com', 'fr', true, $pageModel->id);
         $this->createRootPage('bar.com', 'it', false, 0, false);
-
-        $pageModel = new PageModel();
-        $pageModel->id = 1;
-        $pageModel->domain = 'foo.com';
 
         $roots = $this->pageFinder->findRootPagesForPage($pageModel, false, false);
 
@@ -168,14 +130,10 @@ class RootPagesTest extends ContaoTestCase
 
     public function testNonFallbackMaster(): void
     {
-        $master = $this->createRootPage('foo.com', 'en');
+        $pageModel = $this->createRootPage('foo.com', 'en');
         $this->createRootPage('foo.com', 'de', false);
         $this->createRootPage('bar.com', 'fr', true, 0);
-        $this->createRootPage('bar.com', 'it', false, $master);
-
-        $pageModel = new PageModel();
-        $pageModel->id = 1;
-        $pageModel->domain = 'foo.com';
+        $this->createRootPage('bar.com', 'it', false, $pageModel->id);
 
         $roots = $this->pageFinder->findRootPagesForPage($pageModel);
 
@@ -186,33 +144,16 @@ class RootPagesTest extends ContaoTestCase
     {
         $master = $this->createRootPage('foo.com', 'en');
         $this->createRootPage('foo.com', 'de', false);
-        $this->createRootPage('bar.com', 'fr', true, $master);
+        $this->createRootPage('bar.com', 'fr', true, $master->id);
         $this->createRootPage('bar.com', 'it', false);
 
-        $pageModel = new PageModel();
-        $pageModel->id = $master;
-        $pageModel->domain = 'foo.com';
-
-        $roots = $this->pageFinder->findRootPagesForPage($pageModel);
+        $roots = $this->pageFinder->findRootPagesForPage($master);
 
         $this->assertPageCount($roots, 4);
 
         foreach ($roots as $id => $page) {
             $this->assertSame((int) $page->id, $id);
         }
-    }
-
-    private function createRootPage($dns, $language, $fallback = true, $master = 0, $published = true)
-    {
-        $fallback = $fallback ? '1' : '';
-        $published = $published ? '1' : '';
-
-        return $this->query("
-            INSERT INTO tl_page
-            (type, title, dns, language, fallback, languageRoot, published)
-            VALUES
-            ('root', 'foobar', '$dns', '$language', '$fallback', $master, '$published')
-        ");
     }
 
     private function assertPageCount($roots, $count): void

@@ -100,6 +100,10 @@ class LanguageText
         foreach ($config as $text) {
             // Backwards compatibility with Multicolumnwizard data
             if (isset($text['value'], $text['label'])) {
+                if (empty($text['label']) || empty($text['value'])) {
+                    continue;
+                }
+
                 $map[$text['value']] = $text['label'];
                 continue;
             }

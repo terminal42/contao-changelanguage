@@ -4,43 +4,68 @@ declare(strict_types=1);
 
 namespace Terminal42\ChangeLanguage\Tests;
 
+use Contao\Model\Registry;
+use Contao\PageModel;
 use Contao\System;
-use Doctrine\DBAL\Connection;
-use PHPUnit\Framework\TestCase;
+use Contao\TestCase\ContaoDatabaseTrait;
+use Contao\TestCase\FunctionalTestCase;
 
-abstract class ContaoTestCase extends TestCase
+abstract class ContaoTestCase extends FunctionalTestCase
 {
+    use ContaoDatabaseTrait;
+
     protected function setUp(): void
     {
         parent::setUp();
 
-        /** @var Connection $connection */
-        $connection = System::getContainer()->get('database_connection');
-
-        foreach ($connection->getSchemaManager()->listTableNames() as $table) {
-            $connection->executeQuery('DROP TABLE IF EXISTS '.$table);
-        }
-
-        $this->loadFixture('contao3.sql');
+        static::bootKernel();
+        System::setContainer(static::getContainer());
+        static::resetDatabaseSchema();
     }
 
-    protected function loadFixture($fileName): void
+    protected function tearDown(): void
     {
-        /** @var Connection $connection */
-        $connection = System::getContainer()->get('database_connection');
+        parent::tearDown();
 
-        $query = file_get_contents(__DIR__.'/Fixtures/'.$fileName);
-
-        $connection->executeStatement($query);
+        static::ensureKernelShutdown();
+        Registry::getInstance()->reset();
     }
 
     protected function query($statement)
     {
-        /** @var Connection $connection */
-        $connection = System::getContainer()->get('database_connection');
+        $connection = static::getConnection();
 
         $connection->executeQuery($statement);
 
-        return $connection->lastInsertId();
+        return (int) $connection->lastInsertId();
+    }
+
+    protected function createRootPage(string $dns = '', string $language = '', bool $fallback = true, $languageRoot = 0, bool $published = true): PageModel
+    {
+        $pageModel = new PageModel();
+        $pageModel->type = 'root';
+        $pageModel->title = 'foobar';
+        $pageModel->dns = $dns;
+        $pageModel->language = $language;
+        $pageModel->fallback = $fallback;
+        $pageModel->languageRoot = $languageRoot;
+        $pageModel->published = $published;
+
+        $pageModel->save();
+
+        return $pageModel;
+    }
+
+    protected function createPage($pid = 0, $languageMain = 0, bool $published = true): PageModel
+    {
+        $pageModel = new PageModel();
+        $pageModel->pid = $pid;
+        $pageModel->type = 'regular';
+        $pageModel->languageMain = $languageMain;
+        $pageModel->published = $published;
+
+        $pageModel->save();
+
+        return $pageModel;
     }
 }

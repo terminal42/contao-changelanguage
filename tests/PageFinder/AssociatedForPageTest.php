@@ -17,12 +17,12 @@ class AssociatedForPageTest extends ContaoTestCase
         parent::setUp();
 
         $this->pageFinder = new PageFinder();
+        $GLOBALS['TL_LANG'] = [];
     }
 
     public function testFindsOnePage(): void
     {
-        $pageModel = new PageModel();
-        $pageModel->id = $this->createPage();
+        $pageModel = $this->createPage();
 
         $pages = $this->pageFinder->findAssociatedForPage($pageModel);
 
@@ -31,16 +31,14 @@ class AssociatedForPageTest extends ContaoTestCase
 
     public function testFindsAllFromFallback(): void
     {
-        $enRoot = $this->createRootPage('en');
-        $deRoot = $this->createRootPage('de', '');
-        $frRoot = $this->createRootPage('fr', '');
+        $enRoot = $this->createRootPage('', 'en');
+        $deRoot = $this->createRootPage('', 'de', false);
+        $frRoot = $this->createRootPage('', 'fr', false);
 
-        $pageModel = new PageModel();
-        $pageModel->id = $this->createPage(0, $enRoot);
-        $pageModel->pid = $enRoot;
+        $pageModel = $this->createPage($enRoot->id);
 
-        $this->createPage($pageModel->id, $frRoot);
-        $this->createPage($pageModel->id, $deRoot);
+        $this->createPage($frRoot->id, $pageModel->id);
+        $this->createPage($deRoot->id, $pageModel->id);
 
         $pages = $this->pageFinder->findAssociatedForPage($pageModel);
 
@@ -49,18 +47,15 @@ class AssociatedForPageTest extends ContaoTestCase
 
     public function testFindsAllFromRelated(): void
     {
-        $enRoot = $this->createRootPage('en');
-        $deRoot = $this->createRootPage('de', '');
-        $frRoot = $this->createRootPage('fr', '');
+        $enRoot = $this->createRootPage('', 'en');
+        $deRoot = $this->createRootPage('', 'de', false);
+        $frRoot = $this->createRootPage('', 'fr', false);
 
-        $fallback = $this->createPage(0, $enRoot);
+        $fallback = $this->createPage($enRoot->id);
 
-        $pageModel = new PageModel();
-        $pageModel->id = $this->createPage($fallback, $deRoot);
-        $pageModel->pid = $deRoot;
-        $pageModel->languageMain = $fallback;
+        $pageModel = $this->createPage($deRoot->id, $fallback->id);
 
-        $this->createPage($fallback, $frRoot);
+        $this->createPage($frRoot->id, $fallback->id);
 
         $pages = $this->pageFinder->findAssociatedForPage($pageModel);
 
@@ -72,9 +67,7 @@ class AssociatedForPageTest extends ContaoTestCase
         $this->createPage();
         $this->createPage();
 
-        $pageModel = new PageModel();
-        $pageModel->id = $this->createPage();
-        $pageModel->languageMain = 0;
+        $pageModel = $this->createPage();
 
         $pages = $this->pageFinder->findAssociatedForPage($pageModel);
 
@@ -83,17 +76,14 @@ class AssociatedForPageTest extends ContaoTestCase
 
     public function testIgnoresLanguageMainOnFallback(): void
     {
-        $enRoot = $this->createRootPage('en');
-        $deRoot = $this->createRootPage('de', '');
+        $enRoot = $this->createRootPage('', 'en');
+        $deRoot = $this->createRootPage('', 'de', false);
 
-        $fallback = $this->createPage(0, $deRoot);
+        $fallback = $this->createPage($deRoot->id);
 
-        $pageModel = new PageModel();
-        $pageModel->id = $this->createPage($fallback, $enRoot);
-        $pageModel->pid = $enRoot;
-        $pageModel->languageMain = $fallback;
+        $pageModel = $this->createPage($enRoot->id, $fallback->id);
 
-        $this->createPage($fallback);
+        $this->createPage(0, $fallback->id);
 
         $pages = $this->pageFinder->findAssociatedForPage($pageModel);
 
@@ -102,79 +92,42 @@ class AssociatedForPageTest extends ContaoTestCase
 
     public function testFindsRootsForRootPage(): void
     {
-        $en = $this->createRootPage('en');
-        $de = $this->createRootPage('de');
+        $en = $this->createRootPage('', 'en');
+        $de = $this->createRootPage('', 'de');
 
-        $pageModel = new PageModel();
-        $pageModel->id = $de;
-        $pageModel->type = 'root';
-        $pageModel->dns = '';
-
-        $pages = $this->pageFinder->findAssociatedForPage($pageModel);
+        $pages = $this->pageFinder->findAssociatedForPage($de);
 
         $this->assertPageCount($pages, 2);
-        $this->assertSame('root', $pages[$en]->type);
-        $this->assertSame('root', $pages[$de]->type);
+        $this->assertSame('root', $pages[$en->id]->type);
+        $this->assertSame('root', $pages[$de->id]->type);
     }
 
     public function testFindsAllOnDifferentDomains(): void
     {
-        $enRoot = $this->createRootPage('en', '1', 'www.example.com');
-        $deRoot = $this->createRootPage('de', '1', 'www.example.org', $enRoot);
+        $enRoot = $this->createRootPage('www.example.com', 'en');
+        $deRoot = $this->createRootPage('www.example.org', 'de', true, $enRoot->id);
 
-        $en = $this->createPage(0, $enRoot);
-        $de = $this->createPage($en, $deRoot);
+        $en = $this->createPage($enRoot->id);
+        $de = $this->createPage($deRoot->id, $en->id);
 
-        $pageModel = new PageModel();
-        $pageModel->id = $de;
-        $pageModel->pid = $deRoot;
-        $pageModel->languageMain = $en;
-        $pageModel->type = 'regular';
-
-        $pages = $this->pageFinder->findAssociatedForPage($pageModel);
+        $pages = $this->pageFinder->findAssociatedForPage($de);
 
         $this->assertPageCount($pages, 2);
     }
 
     public function testIgnoresPagesInWrongRoot(): void
     {
-        $enRoot = $this->createRootPage('en', '1', 'www.example.com');
-        $deRoot = $this->createRootPage('de', '', 'www.example.com');
-        $frRoot = $this->createRootPage('fr', '1', 'www.example.org');
+        $enRoot = $this->createRootPage('www.example.com', 'en');
+        $deRoot = $this->createRootPage('www.example.com', 'de', false);
+        $frRoot = $this->createRootPage('www.example.org', 'fr');
 
-        $en = $this->createPage(0, $enRoot);
-        $de = $this->createPage($en, $deRoot);
-        $this->createPage($en, $frRoot);
+        $en = $this->createPage($enRoot->id);
+        $de = $this->createPage($deRoot->id, $en->id);
+        $this->createPage($frRoot->id, $en->id);
 
-        $pageModel = new PageModel();
-        $pageModel->id = $de;
-        $pageModel->pid = $deRoot;
-        $pageModel->languageMain = $en;
-        $pageModel->type = 'regular';
-
-        $pages = $this->pageFinder->findAssociatedForPage($pageModel);
+        $pages = $this->pageFinder->findAssociatedForPage($de);
 
         $this->assertPageCount($pages, 2);
-    }
-
-    private function createPage($languageMain = 0, $pid = 0)
-    {
-        return $this->query("
-            INSERT INTO tl_page
-            (type, pid, languageMain, published)
-            VALUES
-            ('regular', $pid, $languageMain, '1')
-        ");
-    }
-
-    private function createRootPage($language, $fallback = '1', $dns = '', $languageRoot = 0)
-    {
-        return $this->query("
-            INSERT INTO tl_page
-                (type, dns, fallback, language, languageRoot, published)
-            VALUES
-                ('root', '$dns', '$fallback', '$language', $languageRoot, '1')
-        ");
     }
 
     private function assertPageCount($pages, $count): void

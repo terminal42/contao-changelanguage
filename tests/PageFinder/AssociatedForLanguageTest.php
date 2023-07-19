@@ -21,78 +21,42 @@ class AssociatedForLanguageTest extends ContaoTestCase
 
     public function testFindsOnePage(): void
     {
-        $enRoot = $this->createRootPage('en', true);
-        $deRoot = $this->createRootPage('de', false);
+        $enRoot = $this->createRootPage('', 'en', true);
+        $deRoot = $this->createRootPage('', 'de', false);
 
-        $en = $this->createPage($enRoot);
-
-        $dePage = new PageModel();
-        $dePage->id = $this->createPage($deRoot, $en);
-        $dePage->pid = $deRoot;
-        $dePage->languageMain = $en;
+        $enPage = $this->createPage($enRoot->id);
+        $dePage = $this->createPage($deRoot->id, $enPage->id);
 
         $page = $this->pageFinder->findAssociatedForLanguage($dePage, 'en');
 
         $this->assertInstanceOf(PageModel::class, $page);
-        $this->assertSame($en, $page->id);
+        $this->assertSame($enPage->id, $page->id);
     }
 
     public function testReturnsRootWhenNoMatch(): void
     {
-        $enRoot = $this->createRootPage('en', true);
-        $deRoot = $this->createRootPage('de', false);
+        $enRoot = $this->createRootPage('', 'en', true);
+        $deRoot = $this->createRootPage('', 'de', false);
 
-        $pageModel = new PageModel();
-        $pageModel->id = $this->createPage($deRoot);
-        $pageModel->pid = $deRoot;
+        $pageModel = $this->createPage($deRoot->id);
         $pageModel->language = 'de';
-        $pageModel->dns = '';
 
         $page = $this->pageFinder->findAssociatedForLanguage($pageModel, 'en');
 
         $this->assertInstanceOf(PageModel::class, $page);
-        $this->assertSame($enRoot, $page->id);
+        $this->assertSame($enRoot->id, $page->id);
     }
 
     public function testThrowsExceptionWhenLanguageDoesNotExist(): void
     {
         $this->expectException('InvalidArgumentException');
 
-        $enRoot = $this->createRootPage('en', true);
-        $deRoot = $this->createRootPage('de', false);
+        $enRoot = $this->createRootPage('', 'en', true);
+        $deRoot = $this->createRootPage('', 'de', false);
 
-        $en = $this->createPage($enRoot);
-
-        $dePage = new PageModel();
-        $dePage->id = $this->createPage($deRoot, $en);
-        $dePage->pid = $deRoot;
-        $dePage->languageMain = $en;
+        $enPage = $this->createPage($enRoot->id);
+        $dePage = $this->createPage($deRoot->id, $enPage->id);
 
         $this->pageFinder->findAssociatedForLanguage($dePage, 'fr');
-    }
-
-    private function createPage($pid = 0, $languageMain = 0, $published = true)
-    {
-        $published = $published ? '1' : '';
-
-        return $this->query("
-            INSERT INTO tl_page
-            (pid, type, languageMain, published)
-            VALUES
-            ($pid, 'regular', $languageMain, '$published')
-        ");
-    }
-
-    private function createRootPage($language, $fallback, $published = true)
-    {
-        $published = $published ? '1' : '';
-        $fallback = $fallback ? '1' : '';
-
-        return $this->query("
-            INSERT INTO tl_page
-            (type, language, fallback, published)
-            VALUES
-            ('root', '$language', '$fallback', '$published')
-        ");
     }
 }

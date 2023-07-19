@@ -1,0 +1,105 @@
+parameters:
+    locale: en
+
+framework:
+    test: ~
+    esi: { enabled: true }
+    translator: { fallbacks: ['%locale%'] }
+    secret: '%env(APP_SECRET)%'
+    router:
+        utf8: true
+        resource: '%kernel.project_dir%/../src/Resources/config/routes.yml'
+        strict_requirements: '%kernel.debug%'
+    csrf_protection: ~
+    default_locale: '%locale%'
+    session:
+        storage_factory_id: session.storage.factory.mock_file
+        handler_id: ~
+    fragments: { path: /_fragment }
+
+security:
+    password_hashers:
+        Contao\User: auto
+
+    providers:
+        contao.security.backend_user_provider:
+            id: contao.security.backend_user_provider
+
+        contao.security.frontend_user_provider:
+            id: contao.security.frontend_user_provider
+
+    firewalls:
+        contao_backend:
+            request_matcher: contao.routing.backend_matcher
+            provider: contao.security.backend_user_provider
+            user_checker: contao.security.user_checker
+            switch_user: true
+
+            contao_login:
+                remember_me: false
+
+            logout:
+                path: contao_backend_logout
+
+        contao_frontend:
+            request_matcher: contao.routing.frontend_matcher
+            provider: contao.security.frontend_user_provider
+            user_checker: contao.security.user_checker
+            switch_user: false
+
+            contao_login:
+                remember_me: true
+
+            remember_me:
+                secret: '%kernel.secret%'
+                remember_me_parameter: autologin
+
+            logout:
+                path: contao_frontend_logout
+
+    access_control:
+        - { path: ^%contao.backend.route_prefix%/login$, roles: PUBLIC_ACCESS }
+        - { path: ^%contao.backend.route_prefix%/logout$, roles: PUBLIC_ACCESS }
+        - { path: ^%contao.backend.route_prefix%(/|$), roles: ROLE_USER }
+        - { path: ^/, roles: [PUBLIC_ACCESS] }
+
+twig:
+    debug: '%kernel.debug%'
+    strict_variables: '%kernel.debug%'
+
+doctrine:
+    dbal:
+        default_connection: default
+        connections:
+            default:
+                driver: pdo_mysql
+                url: '%env(DATABASE_URL)%'
+                charset: utf8mb4
+                default_table_options:
+                    charset: utf8mb4
+                    collation: utf8mb4_unicode_ci
+                    engine: InnoDB
+        types:
+            binary_string:
+                class: Contao\CoreBundle\Doctrine\DBAL\Types\BinaryStringType
+    orm:
+        auto_mapping: true
+        auto_generate_proxy_classes: true
+
+contao:
+    localconfig:
+        licenseAccepted: true
+        disableCron: true
+    search:
+        default_indexer:
+            enable: false
+
+scheb_two_factor:
+    trusted_device:
+        enabled: true
+    backup_codes:
+        enabled: true
+
+services:
+    doctrine.orm.default_entity_manager.validator_loader:
+        synthetic: true

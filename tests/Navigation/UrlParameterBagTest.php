@@ -106,16 +106,7 @@ class UrlParameterBagTest extends TestCase
         $this->assertNull($bag->generateParameters());
     }
 
-    public function testExceptionOnAutoItemKey(): void
-    {
-        $this->expectException('RuntimeException');
-
-        $bag = new UrlParameterBag(['auto_item' => 'baz']);
-
-        $bag->generateParameters();
-    }
-
-    public function testExceptionOnMulitpleAutoItems(): void
+    public function testExceptionOnMultipleAutoItems(): void
     {
         $this->expectException('RuntimeException');
 

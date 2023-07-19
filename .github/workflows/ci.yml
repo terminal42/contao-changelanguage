@@ -1,0 +1,73 @@
+name: CI
+
+on:
+    pull_request: ~
+    schedule:
+        - cron: 0 13 * * MON,THU
+
+permissions: read-all
+
+jobs:
+    ecs:
+        name: ECS
+        runs-on: ubuntu-latest
+        steps:
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: 8.1
+                  extensions: dom, fileinfo, filter, gd, hash, intl, json, mbstring, mysqli, pcre, pdo_mysql, zlib
+                  coverage: none
+
+            - name: Checkout
+              uses: actions/checkout@v3
+
+            - name: Install the dependencies
+              run: composer install --no-interaction --no-progress
+
+            - name: Run ECS
+              run: composer run check-cs
+
+    tests:
+        name: PHP ${{ matrix.php }} / Contao ${{ matrix.contao }}
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: false
+            matrix:
+                php: ['7.4', '8.0', '8.1', '8.2']
+                contao: ['4.13', '5.0', '5.1']
+                exclude:
+                    - php: '7.4'
+                      contao: '5.0'
+                    - php: '7.4'
+                      contao: '5.1'
+                    - php: '8.0'
+                      contao: '5.0'
+                    - php: '8.0'
+                      contao: '5.1'
+        steps:
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ matrix.php }}
+                  extensions: dom, fileinfo, filter, gd, hash, intl, json, mbstring, mysqli, pcre, pdo_mysql, zlib
+                  coverage: none
+
+            - name: Initialize the database
+              run: |
+                  sudo /etc/init.d/mysql start
+                  mysql -uroot -proot -e "CREATE database changelanguage"
+
+            - name: Checkout
+              uses: actions/checkout@v3
+
+            - name: Require Contao version for tests
+              run: composer require contao/core-bundle:${{ matrix.contao }}.* --dev --no-update
+
+            - name: Install the dependencies
+              run: composer install --no-interaction --no-progress
+
+            - name: Run the unit tests
+              run: composer run unit-tests
+              env:
+                  DATABASE_URL: mysql://root:root@127.0.0.1:3306/changelanguage

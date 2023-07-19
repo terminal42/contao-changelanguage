@@ -4,13 +4,34 @@ declare(strict_types=1);
 
 namespace Terminal42\ChangeLanguage\Tests\Helper;
 
+use Contao\CoreBundle\InsertTag\InsertTagParser;
 use Contao\PageModel;
+use Contao\System;
+use Contao\TestCase\ContaoTestCase;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Terminal42\ChangeLanguage\Helper\LanguageText;
 use Terminal42\ChangeLanguage\Navigation\NavigationItem;
-use Terminal42\ChangeLanguage\Tests\ContaoTestCase;
 
 class LanguageTextTest extends ContaoTestCase
 {
+    protected function setUp(): void
+    {
+        $insertTagParser = $this->createMock(InsertTagParser::class);
+        $insertTagParser
+            ->method('replace')
+            ->willReturnArgument(0)
+        ;
+
+        $container = $this->createMock(ContainerInterface::class);
+        $container
+            ->method('get')
+            ->with('contao.insert_tag.parser')
+            ->willReturn($insertTagParser)
+        ;
+
+        System::setContainer($container);
+    }
+
     public function testHasLanguageInMap(): void
     {
         $map = [
@@ -64,19 +85,13 @@ class LanguageTextTest extends ContaoTestCase
 
         $languageText = new LanguageText($map);
 
-        $fooComId = $this->createRootPage('foo.com', 'en');
-        $barChId = $this->createRootPage('bar.ch', 'de-CH');
-        $bazDeId = $this->createRootPage('baz.de', 'de');
-        $helloFrId = $this->createRootPage('hello.fr', 'fr-FR');
-        $worldPlId = $this->createRootPage('world.pl', 'pl');
-
         // items do not get added in "correct" order on purpose to test the sorting
         $items = [];
-        $items[] = new NavigationItem(PageModel::findById($barChId));
-        $items[] = new NavigationItem(PageModel::findById($worldPlId));
-        $items[] = new NavigationItem(PageModel::findById($fooComId));
-        $items[] = new NavigationItem(PageModel::findById($helloFrId));
-        $items[] = new NavigationItem(PageModel::findById($bazDeId));
+        $items[] = new NavigationItem($this->createRootPage('bar.ch', 'de-CH'));
+        $items[] = new NavigationItem($this->createRootPage('world.pl', 'pl'));
+        $items[] = new NavigationItem($this->createRootPage('foo.com', 'en'));
+        $items[] = new NavigationItem($this->createRootPage('hello.fr', 'fr-FR'));
+        $items[] = new NavigationItem($this->createRootPage('baz.de', 'de'));
 
         $languageText->orderNavigationItems($items);
         $keys = array_keys($map);
@@ -91,13 +106,10 @@ class LanguageTextTest extends ContaoTestCase
     {
         $languageText = new LanguageText();
 
-        $fooComId = $this->createRootPage('foo.com', 'en');
-        $barChId = $this->createRootPage('bar.ch', 'de-CH');
-
         /** @var array<NavigationItem> $items */
         $items = [
-            new NavigationItem(PageModel::findById($fooComId)),
-            new NavigationItem(PageModel::findById($barChId)),
+            new NavigationItem($this->createRootPage('foo.com', 'en')),
+            new NavigationItem($this->createRootPage('bar.ch', 'de-CH')),
         ];
 
         $languageText->orderNavigationItems($items);
@@ -141,11 +153,19 @@ class LanguageTextTest extends ContaoTestCase
 
     private function createRootPage($dns, $language)
     {
-        return $this->query("
-            INSERT INTO tl_page
-            (type, title, dns, language, published)
-            VALUES
-            ('root', 'foobar', '$dns', '$language', '1')
-        ");
+        $pageModel = $this->mockClassWithProperties(PageModel::class, [
+            'type' => 'root',
+            'title' => 'foobar',
+            'dns' => $dns,
+            'language' => $language,
+            'published' => '1',
+        ]);
+
+        $pageModel
+            ->method('loadDetails')
+            ->willReturnSelf()
+        ;
+
+        return $pageModel;
     }
 }

@@ -37,9 +37,10 @@
         "contao/news-bundle": "^4.13 || ^5.0",
         "contao/calendar-bundle": "^4.13 || ^5.0",
         "contao/faq-bundle": "^4.13 || ^5.0",
-        "phpunit/phpunit": "^9.5.24",
-        "symfony/phpunit-bridge": "^3.3.11",
-        "phpunit/dbunit": "~1.3"
+        "phpunit/phpunit": "^9.3",
+        "symfony/phpunit-bridge": "^5.4",
+        "contao/test-case": "^4.13 || ^5.0",
+        "symfony/monolog-bundle": "^3.1"
     },
     "conflict": {
         "contao/manager-plugin": "<2.0 || >=3.0",
@@ -59,8 +60,13 @@
     "extra": {
         "contao-manager-plugin": "Terminal42\\ChangeLanguage\\ContaoManager\\Plugin"
     },
+    "scripts": {
+        "unit-tests": "@php vendor/bin/phpunit --colors=always"
+    },
     "config": {
         "allow-plugins": {
+            "contao-components/installer": true,
+            "contao/manager-plugin": true,
             "terminal42/contao-build-tools": true
         }
     }
