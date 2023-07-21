@@ -16,12 +16,12 @@ use Terminal42\ChangeLanguage\Event\ChangelanguageNavigationEvent;
  *
  * @Hook("changelanguageNavigation")
  */
-class CalendarNavigationListener extends AbstractNavigationListener
+class CalendarNavigationListener extends AbstractNavigationListener implements NavigationHandlerInterface
 {
     /**
      * @param CalendarEventsModel $model
      */
-    public function updateNavigation(ChangelanguageNavigationEvent $event, Model $model): void
+    public function handleNavigation(ChangelanguageNavigationEvent $event, Model $model): void
     {
         $event->getUrlParameterBag()->setUrlAttribute($this->getUrlKey(), $model->alias ?: $model->id);
         $event->getNavigationItem()->setTitle($model->title);
