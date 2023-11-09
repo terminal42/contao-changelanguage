@@ -9,9 +9,6 @@ use Terminal42\ChangeLanguage\Navigation\UrlParameterBag;
 
 class UrlParameterBagTest extends TestCase
 {
-    /**
-     * {@inheritdoc}
-     */
     protected function setUp(): void
     {
         $GLOBALS['TL_CONFIG']['useAutoItem'] = true;

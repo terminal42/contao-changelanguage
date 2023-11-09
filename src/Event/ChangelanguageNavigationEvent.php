@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace Terminal42\ChangeLanguage\Event;
 
+use Symfony\Contracts\EventDispatcher\Event;
 use Terminal42\ChangeLanguage\Navigation\NavigationItem;
 use Terminal42\ChangeLanguage\Navigation\UrlParameterBag;
 
-class ChangelanguageNavigationEvent
+class ChangelanguageNavigationEvent extends Event
 {
     private NavigationItem $navigationItem;
+
     private UrlParameterBag $urlParameterBag;
+
     private bool $skipped = false;
-    private bool $stopPropagation = false;
 
     public function __construct(NavigationItem $navigationItem, UrlParameterBag $urlParameters)
     {
@@ -46,18 +48,8 @@ class ChangelanguageNavigationEvent
         $this->stopPropagation();
     }
 
-    public function isSkipped()
+    public function isSkipped(): bool
     {
         return $this->skipped;
-    }
-
-    public function isPropagationStopped()
-    {
-        return $this->stopPropagation;
-    }
-
-    public function stopPropagation(): void
-    {
-        $this->stopPropagation = true;
     }
 }

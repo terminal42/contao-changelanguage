@@ -11,13 +11,21 @@ use Terminal42\ChangeLanguage\Language;
 class NavigationItem
 {
     private PageModel $rootPage;
+
     private ?PageModel $targetPage = null;
+
     private ?string $title = null;
+
     private ?string $pageTitle = null;
+
     private string $linkLabel;
+
     private ?string $ariaLabel = null;
+
     private ?bool $newWindow = null;
+
     private bool $isDirectFallback = false;
+
     private bool $isCurrentPage = false;
 
     public function __construct(PageModel $rootPage, ?string $label = null)
@@ -45,6 +53,9 @@ class NavigationItem
         return $this->isDirectFallback;
     }
 
+    /**
+     * @param bool|string $isDirectFallback
+     */
     public function setIsDirectFallback($isDirectFallback): void
     {
         $this->isDirectFallback = (bool) $isDirectFallback;

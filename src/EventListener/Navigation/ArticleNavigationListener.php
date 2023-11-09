@@ -44,7 +44,7 @@ class ArticleNavigationListener
         $parameterBag = $event->getUrlParameterBag();
         $currentArticle = ArticleModel::findByIdOrAliasAndPid(
             $parameterBag->getUrlAttribute('articles'),
-            $objPage->id
+            $objPage->id,
         );
 
         if (null === $currentArticle) {
@@ -59,7 +59,7 @@ class ArticleNavigationListener
             $currentArticle,
             $targetRoot->id,
             $objPage->rootId === $masterRoot->id,
-            null !== $masterRoot && $targetRoot->id === $masterRoot->id
+            null !== $masterRoot && $targetRoot->id === $masterRoot->id,
         );
 
         if (null === $targetArticle) {
@@ -96,7 +96,7 @@ class ArticleNavigationListener
             ],
             [
                 $currentIsFallback ? $currentArticle->id : $currentArticle->languageMain,
-            ]
+            ],
         );
     }
 

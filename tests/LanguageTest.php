@@ -10,59 +10,47 @@ use Terminal42\ChangeLanguage\Language;
 class LanguageTest extends TestCase
 {
     /**
-     * @param mixed $localeId
-     * @param mixed $languageTag
-     *
      * @dataProvider languagesProvider
      */
-    public function testConvertLocaleIdToLanguageTag($localeId, $languageTag): void
+    public function testConvertLocaleIdToLanguageTag(string $localeId, string $languageTag): void
     {
         $this->assertSame($languageTag, Language::toLanguageTag($localeId));
     }
 
     /**
-     * @param mixed $localeId
-     * @param mixed $languageTag
-     *
      * @dataProvider languagesProvider
      */
-    public function testConvertLanguageTagToLocaleId($localeId, $languageTag): void
+    public function testConvertLanguageTagToLocaleId(string $localeId, string $languageTag): void
     {
         $this->assertSame($localeId, Language::toLocaleID($languageTag));
     }
 
     /**
-     * @param mixed $language
-     *
      * @dataProvider invalidLanguagesProvider
      */
-    public function testInvalidLanguage($language): void
+    public function testInvalidLanguage(string $language): void
     {
         $this->expectException('InvalidArgumentException');
 
         Language::normalize($language, '-');
     }
 
-    public function languagesProvider()
+    public function languagesProvider(): \Generator
     {
-        return [
-            ['en', 'en'],
-            ['de', 'de'],
-            ['en_US', 'en-US'],
-            ['de_DE', 'de-DE'],
-            ['de_CH', 'de-CH'],
-        ];
+        yield ['en', 'en'];
+        yield ['de', 'de'];
+        yield ['en_US', 'en-US'];
+        yield ['de_DE', 'de-DE'];
+        yield ['de_CH', 'de-CH'];
     }
 
-    public function invalidLanguagesProvider()
+    public function invalidLanguagesProvider(): \Generator
     {
-        return [
-            [''],
-            ['-'],
-            ['en-'],
-            ['en_'],
-            ['cn-Hant'],
-            ['cn-Hant-TW'],
-        ];
+        yield [''];
+        yield ['-'];
+        yield ['en-'];
+        yield ['en_'];
+        yield ['cn-Hant'];
+        yield ['cn-Hant-TW'];
     }
 }

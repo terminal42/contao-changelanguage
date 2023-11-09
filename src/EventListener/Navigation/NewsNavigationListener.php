@@ -59,7 +59,7 @@ class NewsNavigationListener extends AbstractNavigationListener implements Navig
         return NewsModel::findOneBy(
             $this->addPublishedConditions($columns, NewsModel::getTable()),
             $values,
-            $options
+            $options,
         );
     }
 }

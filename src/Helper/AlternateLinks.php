@@ -78,7 +78,7 @@ class AlternateLinks
     private function store(string $language, string $href, string $title): void
     {
         // URLs must always be absolute
-        if (0 !== strpos($href, 'http://') && 0 !== strpos($href, 'https://')) {
+        if (!str_starts_with($href, 'http://') && !str_starts_with($href, 'https://')) {
             $href = Environment::get('base').$href;
         }
 

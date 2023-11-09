@@ -8,6 +8,7 @@ use Contao\CoreBundle\InsertTag\InsertTagParser;
 use Contao\PageModel;
 use Contao\System;
 use Contao\TestCase\ContaoTestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Terminal42\ChangeLanguage\Helper\LanguageText;
 use Terminal42\ChangeLanguage\Navigation\NavigationItem;
@@ -151,7 +152,10 @@ class LanguageTextTest extends ContaoTestCase
         $this->assertFalse($languageText->has('fr'));
     }
 
-    private function createRootPage($dns, $language)
+    /**
+     * @return PageModel&MockObject
+     */
+    private function createRootPage(string $dns, string $language): PageModel
     {
         $pageModel = $this->mockClassWithProperties(PageModel::class, [
             'type' => 'root',

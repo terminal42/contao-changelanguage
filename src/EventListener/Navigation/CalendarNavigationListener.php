@@ -56,7 +56,7 @@ class CalendarNavigationListener extends AbstractNavigationListener implements N
         return CalendarEventsModel::findOneBy(
             $this->addPublishedConditions($columns, CalendarEventsModel::getTable()),
             $values,
-            $options
+            $options,
         );
     }
 }

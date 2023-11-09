@@ -33,6 +33,9 @@ abstract class AbstractChildTableListener extends AbstractTableListener
         }
     }
 
+    /**
+     * @return array
+     */
     public function onLanguageMainOptions(DataContainer $dc)
     {
         if (
@@ -49,7 +52,7 @@ abstract class AbstractChildTableListener extends AbstractTableListener
                 $this->table.'.pid=?',
                 sprintf('%s.id NOT IN (SELECT languageMain FROM %s WHERE pid=? AND id!=?)', $this->table, $this->table),
             ],
-            [$master->id, $current->pid, $current->id]
+            [$master->id, $current->pid, $current->id],
         );
 
         return $models instanceof Collection ? $this->formatOptions($current, $models) : [];
@@ -65,7 +68,7 @@ abstract class AbstractChildTableListener extends AbstractTableListener
 
         $palettes = array_diff(
             array_keys($GLOBALS['TL_DCA'][$this->table]['palettes']),
-            ['__selector__']
+            ['__selector__'],
         );
 
         foreach ($palettes as $palette) {
@@ -73,6 +76,11 @@ abstract class AbstractChildTableListener extends AbstractTableListener
         }
     }
 
+    /**
+     * @param int|string $id
+     *
+     * @return Model
+     */
     protected function getModel($id)
     {
         /** @var Model $class */
@@ -92,6 +100,8 @@ abstract class AbstractChildTableListener extends AbstractTableListener
     abstract protected function getSorting();
 
     /**
+     * @param Collection<Model> $models
+     *
      * @return array
      */
     abstract protected function formatOptions(Model $current, Collection $models);

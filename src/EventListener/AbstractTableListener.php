@@ -15,6 +15,8 @@ abstract class AbstractTableListener
 
     /**
      * Register necessary callbacks for this listener.
+     *
+     * @return void
      */
     abstract public function register();
 

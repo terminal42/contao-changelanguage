@@ -77,7 +77,7 @@ class ArticleViewListener extends AbstractViewListener
 
             $articles = array_values(array_filter(
                 $articles,
-                fn (ArticleModel $article) => $article->inColumn === $this->currentArticle->inColumn
+                fn (ArticleModel $article) => $article->inColumn === $this->currentArticle->inColumn,
             ));
 
             if (1 === \count($articles)) {
@@ -100,7 +100,7 @@ class ArticleViewListener extends AbstractViewListener
         $uri = UriModifier::removeParams($uri, 'switchLanguage', 'act', 'mode');
         $uri = UriModifier::mergeQuery($uri, 'id='.$id);
 
-        throw new RedirectResponseException($uri->toString());
+        throw new RedirectResponseException((string) $uri);
     }
 
     /**
@@ -123,7 +123,7 @@ class ArticleViewListener extends AbstractViewListener
                 $articleId,
                 $articleId,
             ],
-            ['order' => 'tl_article.id=? DESC, tl_article.languageMain=? DESC']
+            ['order' => 'tl_article.id=? DESC, tl_article.languageMain=? DESC'],
         );
 
         if (!$articles instanceof Collection) {

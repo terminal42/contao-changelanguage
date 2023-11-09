@@ -31,7 +31,7 @@ abstract class ContaoTestCase extends FunctionalTestCase
         Registry::getInstance()->reset();
     }
 
-    protected function query($statement)
+    protected function query(string $statement): int
     {
         $connection = static::getConnection();
 
@@ -40,7 +40,7 @@ abstract class ContaoTestCase extends FunctionalTestCase
         return (int) $connection->lastInsertId();
     }
 
-    protected function createRootPage(string $dns = '', string $language = '', bool $fallback = true, $languageRoot = 0, bool $published = true): PageModel
+    protected function createRootPage(string $dns = '', string $language = '', bool $fallback = true, int $languageRoot = 0, bool $published = true): PageModel
     {
         $pageModel = new PageModel();
         $pageModel->type = 'root';
@@ -56,7 +56,7 @@ abstract class ContaoTestCase extends FunctionalTestCase
         return $pageModel;
     }
 
-    protected function createPage($pid = 0, $languageMain = 0, bool $published = true): PageModel
+    protected function createPage(int $pid = 0, int $languageMain = 0, bool $published = true): PageModel
     {
         $pageModel = new PageModel();
         $pageModel->pid = $pid;

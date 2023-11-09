@@ -31,7 +31,7 @@ class InsertTagsListener
     {
         $parts = StringUtil::trimsplit('::', $insertTag);
 
-        if (0 !== strpos($parts[0], 'changelanguage')) {
+        if (!str_starts_with($parts[0], 'changelanguage')) {
             return false;
         }
 
@@ -53,8 +53,8 @@ class InsertTagsListener
             sprintf(
                 '{{%s::%s}}',
                 substr($parts[0], 15),
-                $targetPage->id
-            )
+                $targetPage->id,
+            ),
         );
     }
 }

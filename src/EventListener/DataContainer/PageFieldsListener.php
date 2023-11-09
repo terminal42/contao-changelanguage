@@ -74,7 +74,7 @@ class PageFieldsListener
                     'tl_page.languageMain=?',
                     'tl_page.id!=?',
                 ],
-                [$value, $dc->id]
+                [$value, $dc->id],
             );
 
             if (null !== $duplicates) {
@@ -106,7 +106,7 @@ class PageFieldsListener
                 'tl_page.languageRoot=0',
                 'tl_page.id!=?',
             ],
-            [$dc->id]
+            [$dc->id],
         );
 
         if (null === $pages) {
@@ -120,7 +120,7 @@ class PageFieldsListener
                 '%s%s [%s]',
                 $page->title,
                 \strlen($page->dns) ? (' ('.$page->dns.')') : '',
-                $page->language
+                $page->language,
             );
         }
 

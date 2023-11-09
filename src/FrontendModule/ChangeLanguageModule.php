@@ -58,7 +58,7 @@ class ChangeLanguageModule extends Module
             $template->link = $this->name;
             $template->href = System::getContainer()->get('router')->generate(
                 'contao_backend',
-                ['do' => 'themes', 'table' => 'tl_module', 'act' => 'edit', 'id' => $this->id]
+                ['do' => 'themes', 'table' => 'tl_module', 'act' => 'edit', 'id' => $this->id],
             );
 
             return $template->parse();

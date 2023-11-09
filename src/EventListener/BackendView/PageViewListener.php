@@ -49,6 +49,6 @@ class PageViewListener extends AbstractViewListener
         $uri = Uri::createFromString($requestStack->getCurrentRequest()->getUri());
         $uri = UriModifier::removePairs($uri, 'switchLanguage');
 
-        throw new RedirectResponseException($uri->toString());
+        throw new RedirectResponseException((string) $uri);
     }
 }

@@ -156,7 +156,7 @@ class RootPagesTest extends ContaoTestCase
         }
     }
 
-    private function assertPageCount($roots, $count): void
+    private function assertPageCount(array $roots, int $count): void
     {
         $this->assertCount($count, $roots);
 

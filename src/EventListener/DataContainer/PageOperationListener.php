@@ -99,7 +99,7 @@ class PageOperationListener
                 'languageMain=?',
                 'id!=?',
             ],
-            [$page->languageMain, $page->id]
+            [$page->languageMain, $page->id],
         );
 
         // Reset languageMain if another page in the new page tree has the same languageMain
@@ -133,7 +133,7 @@ class PageOperationListener
         $this->connection->executeStatement(
             'UPDATE tl_page SET languageMain = 0 WHERE id IN (?)',
             [$resetIds],
-            [Connection::PARAM_INT_ARRAY]
+            [Connection::PARAM_INT_ARRAY],
         );
     }
 }

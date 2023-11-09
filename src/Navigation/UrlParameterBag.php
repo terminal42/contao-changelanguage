@@ -7,6 +7,7 @@ namespace Terminal42\ChangeLanguage\Navigation;
 class UrlParameterBag
 {
     private array $attributes;
+
     private array $query;
 
     /**
@@ -39,11 +40,17 @@ class UrlParameterBag
         return \array_key_exists($name, $this->attributes);
     }
 
+    /**
+     * @return int|float|string|bool|null
+     */
     public function getUrlAttribute(string $name)
     {
         return $this->hasUrlAttribute($name) ? $this->attributes[$name] : null;
     }
 
+    /**
+     * @param int|float|string|bool $value
+     */
     public function setUrlAttribute(string $name, $value): void
     {
         $this->validateScalar($value);
@@ -73,11 +80,17 @@ class UrlParameterBag
         return \array_key_exists($name, $this->query);
     }
 
+    /**
+     * @return int|float|string|bool|null
+     */
     public function getQueryParameter(string $name)
     {
         return $this->hasQueryParameter($name) ? $this->query[$name] : null;
     }
 
+    /**
+     * @param int|float|string|bool $value
+     */
     public function setQueryParameter(string $name, $value): void
     {
         $this->validateScalar($value);
@@ -128,7 +141,7 @@ class UrlParameterBag
                 $attributes,
                 static function (&$v, $k): void {
                     $v = $k.'/'.$v;
-                }
+                },
             );
 
             $params = '/'.implode('/', $attributes);

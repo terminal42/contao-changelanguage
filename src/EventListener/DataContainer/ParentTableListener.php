@@ -51,6 +51,9 @@ class ParentTableListener
         ;
     }
 
+    /**
+     * @return array
+     */
     public function onMasterOptions(DataContainer $dc)
     {
         if (null === ($jumpTo = PageModel::findByPk($dc->activeRecord->jumpTo))) {

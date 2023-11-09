@@ -78,14 +78,12 @@ class LanguageText
                 $key2 = array_search(strtolower($b->getLanguageTag()), $languages, true);
 
                 return $key1 <=> $key2;
-            }
+            },
         );
     }
 
     /**
      * Create instance from serialized data of optionsWizard widget.
-     *
-     * @param mixed $config
      */
     public static function createFromOptionWizard($config): self
     {

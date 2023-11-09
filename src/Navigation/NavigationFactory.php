@@ -12,8 +12,11 @@ use Terminal42\ChangeLanguage\PageFinder;
 class NavigationFactory
 {
     private PageFinder $pageFinder;
+
     private LanguageText $languageText;
+
     private PageModel $currentPage;
+
     private array $locales = [];
 
     public function __construct(PageFinder $pageFinder, LanguageText $languageText, PageModel $currentPage, array $locales = [])
@@ -37,7 +40,7 @@ class NavigationFactory
         $this->setTargetPageForNavigationItems(
             $navigationItems,
             $rootPages,
-            $this->pageFinder->findAssociatedForPage($currentPage, false, $rootPages)
+            $this->pageFinder->findAssociatedForPage($currentPage, false, $rootPages),
         );
 
         foreach ($navigationItems as $item) {
@@ -45,7 +48,7 @@ class NavigationFactory
                 $item->setAriaLabel(
                     $item->isDirectFallback()
                         ? sprintf($GLOBALS['TL_LANG']['MSC']['gotoLanguage'], $this->locales[$item->getLocaleId()])
-                        : sprintf($GLOBALS['TL_LANG']['MSC']['switchLanguageTo'][1], $this->locales[$item->getLocaleId()])
+                        : sprintf($GLOBALS['TL_LANG']['MSC']['switchLanguageTo'][1], $this->locales[$item->getLocaleId()]),
                 );
             }
 
@@ -55,7 +58,7 @@ class NavigationFactory
                         $this
                             ->pageFinder
                             ->findAssociatedParentForLanguage($currentPage, $item->getLanguageTag()),
-                        false
+                        false,
                     );
                 } catch (\RuntimeException $e) {
                     // parent page of current page not found or not published

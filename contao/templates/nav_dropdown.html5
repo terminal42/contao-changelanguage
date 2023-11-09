@@ -10,7 +10,7 @@ if (1 == $intLevel):
     $arrLanguages = \Contao\System::getLanguages();
 
     foreach ($this->items as $item) {
-        if ($item['isActive'] || false !== strpos($item['subitems'], 'class="active')) {
+        if ($item['isActive'] || str_contains($item['subitems'], 'class="active')) {
             $blnHasActive = true;
             break;
         }

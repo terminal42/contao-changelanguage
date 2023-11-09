@@ -7,6 +7,7 @@ namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 use Contao\Date;
 use Contao\Model;
 use Contao\Model\Collection;
+use Contao\NewsModel;
 
 class NewsListener extends AbstractChildTableListener
 {
@@ -20,6 +21,9 @@ class NewsListener extends AbstractChildTableListener
         return 'date DESC, time DESC';
     }
 
+    /**
+     * @param Collection<NewsModel> $models
+     */
     protected function formatOptions(Model $current, Collection $models): array
     {
         $sameDay = $GLOBALS['TL_LANG']['tl_news']['sameDay'];
@@ -33,7 +37,7 @@ class NewsListener extends AbstractChildTableListener
             $options[$group][$model->id] = sprintf(
                 '%s [%s]',
                 $model->headline,
-                Date::parse($GLOBALS['TL_CONFIG']['datimFormat'], $model->time)
+                Date::parse($GLOBALS['TL_CONFIG']['datimFormat'], $model->time),
             );
         }
 

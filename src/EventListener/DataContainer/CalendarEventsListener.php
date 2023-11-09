@@ -28,7 +28,7 @@ class CalendarEventsListener extends AbstractChildTableListener
             $options[$model->id] = sprintf(
                 '%s [%s]',
                 $model->title,
-                Date::parse($GLOBALS['TL_CONFIG']['datimFormat'], $model->startTime)
+                Date::parse($GLOBALS['TL_CONFIG']['datimFormat'], $model->startTime),
             );
         }
 

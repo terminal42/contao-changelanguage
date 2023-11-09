@@ -20,9 +20,6 @@ class ParentChildViewListener extends AbstractViewListener
      */
     private $current = false;
 
-    /**
-     * {@inheritdoc}
-     */
     protected function isSupported()
     {
         return $this->getTable() === Input::get('table')
@@ -91,7 +88,7 @@ class ParentChildViewListener extends AbstractViewListener
 
         $uri = UriModifier::mergeQuery($uri, 'id='.$id);
 
-        throw new RedirectResponseException($uri->toString());
+        throw new RedirectResponseException((string) $uri);
     }
 
     /**
@@ -122,18 +119,15 @@ class ParentChildViewListener extends AbstractViewListener
             ];
         }
 
-        return $class::findOneBy(
-            $columns,
-            [
-                $page->id,
-                $this->current->id,
-                $id,
-                $id,
-            ]
-        );
+        return $class::findOneBy($columns, [
+            $page->id,
+            $this->current->id,
+            $id,
+            $id,
+        ]);
     }
 
-    private function getModelClass()
+    private function getModelClass(): string
     {
         Controller::loadDataContainer($this->getTable());
 

@@ -61,7 +61,7 @@ class LabelCallback
     /**
      * @param callable $callback
      *
-     * @return mixed
+     * @return string|int
      */
     private function executeCallback($callback, array $args)
     {
@@ -69,7 +69,7 @@ class LabelCallback
         if (\is_array($callback)) {
             return \call_user_func_array(
                 [System::importStatic($callback[0]), $callback[1]],
-                $args
+                $args,
             );
         }
 

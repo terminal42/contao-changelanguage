@@ -84,8 +84,8 @@ class PageInitializationListener
         $this->addRegularLanguageFields(
             array_diff(
                 array_keys($GLOBALS['TL_DCA']['tl_page']['palettes']),
-                ['__selector__', 'root', 'rootfallback', 'folder']
-            )
+                ['__selector__', 'root', 'rootfallback', 'folder'],
+            ),
         );
     }
 

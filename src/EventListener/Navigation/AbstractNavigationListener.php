@@ -76,7 +76,7 @@ abstract class AbstractNavigationListener
                 "($t.id=? OR $t.languageMain=?)",
                 sprintf('%s.pid=(SELECT id FROM %s WHERE (id=? OR master=?) AND jumpTo=?)', $t, $parent::getTable()),
             ],
-            [$mainId, $mainId, $masterId, $masterId, $targetPage->id]
+            [$mainId, $mainId, $masterId, $masterId, $targetPage->id],
         );
 
         if (null === $translated) {

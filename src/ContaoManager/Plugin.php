@@ -11,7 +11,6 @@ use Contao\ManagerPlugin\Bundle\BundlePluginInterface;
 use Contao\ManagerPlugin\Bundle\Config\BundleConfig;
 use Contao\ManagerPlugin\Bundle\Parser\ParserInterface;
 use Contao\NewsBundle\ContaoNewsBundle;
-use MenAtWork\MultiColumnWizardBundle\MultiColumnWizardBundle;
 use Terminal42\ChangeLanguage\Terminal42ChangeLanguageBundle;
 
 class Plugin implements BundlePluginInterface
@@ -26,7 +25,6 @@ class Plugin implements BundlePluginInterface
                     ContaoNewsBundle::class,
                     ContaoCalendarBundle::class,
                     ContaoFaqBundle::class,
-                    MultiColumnWizardBundle::class,
                 ]),
         ];
     }

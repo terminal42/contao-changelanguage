@@ -15,9 +15,10 @@ use Terminal42\ChangeLanguage\PageFinder;
 abstract class AbstractViewListener extends AbstractTableListener
 {
     protected DataContainer $dataContainer;
+
     protected PageFinder $pageFinder;
 
-    public function __construct($table)
+    public function __construct(string $table)
     {
         parent::__construct($table);
 
@@ -93,7 +94,7 @@ abstract class AbstractViewListener extends AbstractTableListener
      *
      * @param string $id
      */
-    abstract protected function doSwitchView($id);
+    abstract protected function doSwitchView($id): void;
 
     /**
      * @param string $languageCode
@@ -152,7 +153,7 @@ abstract class AbstractViewListener extends AbstractTableListener
                 '<li><a href="%s" title="%s">%s</a></li>',
                 Backend::addToUrl('&amp;switchLanguage='.$id),
                 sprintf($GLOBALS['TL_LANG']['MSC']['switchLanguageTo'][1], $language),
-                $language
+                $language,
             );
         }
 
@@ -161,7 +162,7 @@ abstract class AbstractViewListener extends AbstractTableListener
             $GLOBALS['TL_LANG']['MSC']['switchLanguage'],
             $this->getLanguageLabel($page->language),
             $GLOBALS['TL_LANG']['MSC']['switchLanguageTo'][0],
-            $list
+            $list,
         );
     }
 }

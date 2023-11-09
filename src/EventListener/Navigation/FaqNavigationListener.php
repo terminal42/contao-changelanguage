@@ -56,7 +56,7 @@ class FaqNavigationListener extends AbstractNavigationListener implements Naviga
         return FaqModel::findOneBy(
             $this->addPublishedConditions($columns, FaqModel::getTable(), false),
             $values,
-            $options
+            $options,
         );
     }
 }
