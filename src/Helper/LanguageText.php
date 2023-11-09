@@ -77,7 +77,7 @@ class LanguageText
                 $key1 = array_search(strtolower($a->getLanguageTag()), $languages, true);
                 $key2 = array_search(strtolower($b->getLanguageTag()), $languages, true);
 
-                return $key1 < $key2 ? -1 : 1;
+                return $key1 <=> $key2;
             }
         );
     }
