@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 
+use Composer\InstalledVersions;
 use Contao\ArticleModel;
 use Contao\Backend;
 use Contao\BackendUser;
@@ -27,13 +28,7 @@ use Terminal42\ChangeLanguage\Helper\LabelCallback;
  */
 class MissingLanguageIconListener
 {
-    private static array $callbacks = [
-        'tl_page' => 'onPageLabel',
-        'tl_article' => 'onArticleLabel',
-        'tl_news' => 'onNewsChildRecords',
-        'tl_calendar_events' => 'onCalendarEventChildRecords',
-        'tl_faq' => 'onFaqChildRecords',
-    ];
+    private static $callbacks;
 
     private Security $security;
 
@@ -47,10 +42,12 @@ class MissingLanguageIconListener
      */
     public function __invoke(string $table): void
     {
-        if (\array_key_exists($table, self::$callbacks)) {
+        $callbacks = self::getCallbacks();
+
+        if (\array_key_exists($table, $callbacks)) {
             LabelCallback::createAndRegister(
                 $table,
-                fn (array $args, $previousResult) => $this->{self::$callbacks[$table]}($args, $previousResult),
+                fn (array $args, $previousResult) => $this->{$callbacks[$table]}($args, $previousResult),
             );
         }
     }
@@ -212,5 +209,30 @@ class MissingLanguageIconListener
             $GLOBALS['TL_LANG']['MSC']['noMainLanguage'],
             $imgStyle,
         );
+    }
+
+    private static function getCallbacks(): array {
+        if (null !== self::$callbacks) {
+            return self::$callbacks;
+        }
+
+        $callbacks = [
+            'tl_page' => 'onPageLabel',
+            'tl_article' => 'onArticleLabel',
+        ];
+
+        if (InstalledVersions::isInstalled('contao/news-bundle')) {
+            $callbacks['tl_news'] = 'onNewsChildRecords';
+        }
+
+        if (InstalledVersions::isInstalled('contao/calendar-bundle')) {
+            $callbacks['tl_calendar_events'] = 'onCalendarEventChildRecords';
+        }
+
+        if (InstalledVersions::isInstalled('contao/faq-bundle')) {
+            $callbacks['tl_faq'] = 'onFaqChildRecords';
+        }
+
+        return self::$callbacks = $callbacks;
     }
 }
