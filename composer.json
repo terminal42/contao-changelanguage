@@ -28,8 +28,8 @@
     "require": {
         "php": "^7.4 || ^8.0",
         "contao/core-bundle": "^4.13 || ^5.0",
-        "league/uri": "^6.0",
-        "league/uri-components": "^2.0"
+        "league/uri": "^6.0 || ^7.0",
+        "league/uri-components": "^2.0 || ^7.0"
     },
     "require-dev": {
         "terminal42/contao-build-tools": "dev-main",
