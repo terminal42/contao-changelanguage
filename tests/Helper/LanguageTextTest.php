@@ -38,14 +38,14 @@ class LanguageTextTest extends ContaoTestCase
         $map = [
             'en' => 'International',
             'de' => 'Germany',
-            'de-CH' => 'Switzerland (German)',
+            'de_CH' => 'Switzerland (German)',
         ];
 
         $languageText = new LanguageText($map);
 
         $this->assertTrue($languageText->has('en'));
         $this->assertTrue($languageText->has('de'));
-        $this->assertTrue($languageText->has('de-CH'));
+        $this->assertTrue($languageText->has('de_CH'));
         $this->assertFalse($languageText->has('fr'));
     }
 
@@ -78,9 +78,9 @@ class LanguageTextTest extends ContaoTestCase
     {
         $map = [
             'en' => 'International',
-            'de-CH' => 'Switzerland (German)',
+            'de_CH' => 'Switzerland (German)',
             'de' => 'Germany',
-            'fr-FR' => 'France',
+            'fr_FR' => 'France',
             'pl' => 'Poland',
         ];
 
@@ -88,10 +88,10 @@ class LanguageTextTest extends ContaoTestCase
 
         // items do not get added in "correct" order on purpose to test the sorting
         $items = [];
-        $items[] = new NavigationItem($this->createRootPage('bar.ch', 'de-CH'));
+        $items[] = new NavigationItem($this->createRootPage('bar.ch', 'de_CH'));
         $items[] = new NavigationItem($this->createRootPage('world.pl', 'pl'));
         $items[] = new NavigationItem($this->createRootPage('foo.com', 'en'));
-        $items[] = new NavigationItem($this->createRootPage('hello.fr', 'fr-FR'));
+        $items[] = new NavigationItem($this->createRootPage('hello.fr', 'fr_FR'));
         $items[] = new NavigationItem($this->createRootPage('baz.de', 'de'));
 
         $languageText->orderNavigationItems($items);
@@ -99,7 +99,7 @@ class LanguageTextTest extends ContaoTestCase
 
         foreach ($items as $i => $item) {
             // items order should be equal to the order in the map which was passed to LanguageText
-            $this->assertSame($keys[$i], $item->getLanguageTag());
+            $this->assertSame($keys[$i], $item->getLocaleId());
         }
     }
 
@@ -110,13 +110,13 @@ class LanguageTextTest extends ContaoTestCase
         /** @var array<NavigationItem> $items */
         $items = [
             new NavigationItem($this->createRootPage('foo.com', 'en')),
-            new NavigationItem($this->createRootPage('bar.ch', 'de-CH')),
+            new NavigationItem($this->createRootPage('bar.ch', 'de_CH')),
         ];
 
         $languageText->orderNavigationItems($items);
 
-        $this->assertSame('en', $items[0]->getLanguageTag());
-        $this->assertSame('de-CH', $items[1]->getLanguageTag());
+        $this->assertSame('en', $items[0]->getLocaleId());
+        $this->assertSame('de_CH', $items[1]->getLocaleId());
     }
 
     public function testIsCreatedFromOptionWizard(): void
