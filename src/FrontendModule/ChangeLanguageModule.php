@@ -196,8 +196,8 @@ class ChangeLanguageModule extends Module
                 continue;
             }
 
-            if (!\array_key_exists($k, $currentQuery)) {
-                $attributes[$k] = (string) $value;
+            if (!\is_array($value) && !\array_key_exists($k, $currentQuery)) {
+                $attributes[$k] = $value;
             } elseif (\in_array($k, $queryParameters, false)) {
                 $query[$k] = $value;
             }
