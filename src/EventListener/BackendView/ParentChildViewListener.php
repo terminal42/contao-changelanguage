@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Terminal42\ChangeLanguage\EventListener\BackendView;
 
+use Composer\InstalledVersions;
 use Contao\Controller;
 use Contao\CoreBundle\Exception\RedirectResponseException;
 use Contao\Input;
@@ -22,8 +23,11 @@ class ParentChildViewListener extends AbstractViewListener
 
     protected function isSupported()
     {
-        return $this->getTable() === Input::get('table')
-            && \in_array(Input::get('do'), ['calendar', 'faq', 'news'], true);
+        return $this->getTable() === Input::get('table') && (
+                ('news' === Input::get('do') && InstalledVersions::isInstalled('contao/news-bundle'))
+                || ('calendar' === Input::get('do') && InstalledVersions::isInstalled('contao/calendar-bundle'))
+                || ('faq' === Input::get('do') && InstalledVersions::isInstalled('contao/faq-bundle'))
+            );
     }
 
     protected function getCurrentPage()
