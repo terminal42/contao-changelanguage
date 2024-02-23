@@ -10,7 +10,7 @@ domains. *ChangeLanguage* simply adds the functionality to link pages
 together and present the website visitor with a list of available languages.
 
 
-[Full Documentation](https://terminal42.github.io/contao-changelanguage)
+[Full Documentation](https://extensions.terminal42.ch/docs/changelanguage/)
 
 
 
