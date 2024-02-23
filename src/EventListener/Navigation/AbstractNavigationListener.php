@@ -42,7 +42,8 @@ abstract class AbstractNavigationListener
             return;
         }
 
-        // Remove the news/event/faq alias from the URL if there is no actual reader page assigned
+        // Remove the news/event/faq alias from the URL if there is no actual
+        // reader page assigned
         if (!$navigationItem->isDirectFallback()) {
             $event->getUrlParameterBag()->removeUrlAttribute($this->getUrlKey());
         }

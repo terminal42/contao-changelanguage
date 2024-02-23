@@ -16,10 +16,6 @@ class PageFieldsListener
     /**
      * Sets rootNodes when initializing the languageMain field.
      *
-     * @param mixed $value
-     *
-     * @return mixed
-     *
      * @Callback(table="tl_page", target="fields.languageMain.load")
      */
     public function onLoadLanguageMain($value, DataContainer $dc)
@@ -55,15 +51,12 @@ class PageFieldsListener
     /**
      * Validate input value when saving tl_page.languageMain field.
      *
-     * @param mixed $value
-     *
-     * @return mixed
-     *
      * @Callback(table="tl_page", target="fields.languageMain.save")
      */
     public function onSaveLanguageMain($value, DataContainer $dc)
     {
-        // Validate that there is no other page in the current page tree with the same languageMain assigned
+        // Validate that there is no other page in the current page tree with the same
+        // languageMain assigned
         if ($value > 0) {
             $currentPage = PageModel::findWithDetails($dc->id);
             $childIds = Database::getInstance()->getChildRecords($currentPage->rootId, 'tl_page');

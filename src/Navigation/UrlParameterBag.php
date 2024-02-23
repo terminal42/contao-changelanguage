@@ -168,8 +168,6 @@ class UrlParameterBag
 
     /**
      * Makes sure the given value is scalar or an array of scalar values.
-     *
-     * @param mixed $value
      */
     private function validateScalar($value): void
     {

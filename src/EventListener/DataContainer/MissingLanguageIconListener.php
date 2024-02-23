@@ -211,7 +211,8 @@ class MissingLanguageIconListener
         );
     }
 
-    private static function getCallbacks(): array {
+    private static function getCallbacks(): array
+    {
         if (null !== self::$callbacks) {
             return self::$callbacks;
         }

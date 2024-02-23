@@ -24,10 +24,10 @@ class ParentChildViewListener extends AbstractViewListener
     protected function isSupported()
     {
         return $this->getTable() === Input::get('table') && (
-                ('news' === Input::get('do') && InstalledVersions::isInstalled('contao/news-bundle'))
-                || ('calendar' === Input::get('do') && InstalledVersions::isInstalled('contao/calendar-bundle'))
-                || ('faq' === Input::get('do') && InstalledVersions::isInstalled('contao/faq-bundle'))
-            );
+            ('news' === Input::get('do') && InstalledVersions::isInstalled('contao/news-bundle'))
+            || ('calendar' === Input::get('do') && InstalledVersions::isInstalled('contao/calendar-bundle'))
+            || ('faq' === Input::get('do') && InstalledVersions::isInstalled('contao/faq-bundle'))
+        );
     }
 
     protected function getCurrentPage()

@@ -84,6 +84,8 @@ class LanguageText
 
     /**
      * Create instance from serialized data of optionsWizard widget.
+     *
+     * @param string|array|null $config
      */
     public static function createFromOptionWizard($config): self
     {

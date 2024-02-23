@@ -15,10 +15,8 @@ abstract class AbstractTableListener
 
     /**
      * Register necessary callbacks for this listener.
-     *
-     * @return void
      */
-    abstract public function register();
+    abstract public function register(): void;
 
     /**
      * Gets the table name for this listener.
