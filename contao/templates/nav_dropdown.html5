@@ -7,7 +7,7 @@ if ($intLevel < 1) {
 }
 
 if (1 == $intLevel):
-    $arrLanguages = \Contao\System::getLanguages();
+    $arrLanguages = Contao\System::getContainer()->get('contao.intl.locales')->getLocales(null, true);
 
     foreach ($this->items as $item) {
         if ($item['isActive'] || str_contains($item['subitems'], 'class="active')) {
