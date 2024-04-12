@@ -163,7 +163,13 @@ class NavigationItem
         }
 
         try {
-            $href = $targetPage->getAbsoluteUrl($urlParameterBag->generateParameters());
+            $parameters = $urlParameterBag->generateParameters();
+
+            if ($parameters === '/') {
+                $parameters = null;
+            }
+
+            $href = $targetPage->getAbsoluteUrl($parameters);
         } catch (ExceptionInterface $e) {
             if (!$catch) {
                 throw $e;
