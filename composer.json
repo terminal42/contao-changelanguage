@@ -23,7 +23,8 @@
     "support": {
         "issues": "https://github.com/terminal42/contao-changelanguage/issues",
         "source": "https://github.com/terminal42/contao-changelanguage",
-        "forum": "https://community.contao.org"
+        "forum": "https://community.contao.org",
+        "docs": "https://extensions.terminal42.ch/docs/changelanguage/"
     },
     "require": {
         "php": "^7.4 || ^8.0",
