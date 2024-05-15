@@ -12,6 +12,7 @@ services:
     Terminal42\ChangeLanguage\EventListener\DataContainer\PageFieldsListener: ~
     Terminal42\ChangeLanguage\EventListener\DataContainer\PageInitializationListener: ~
     Terminal42\ChangeLanguage\EventListener\DataContainer\PageOperationListener: ~
+    Terminal42\ChangeLanguage\EventListener\DataContainer\UserLabelsListener: ~
 
     Terminal42\ChangeLanguage\EventListener\CallbackSetupListener:
 
