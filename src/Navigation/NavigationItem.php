@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Terminal42\ChangeLanguage\Navigation;
 
 use Contao\PageModel;
+use Contao\System;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Exception\ExceptionInterface;
 use Terminal42\ChangeLanguage\Language;
 
@@ -163,7 +165,13 @@ class NavigationItem
         }
 
         try {
-            $href = $targetPage->getAbsoluteUrl($urlParameterBag->generateParameters());
+            $container = System::getContainer();
+
+            if ($urlGenerator = $container->get('contao.routing.content_url_generator', ContainerInterface::NULL_ON_INVALID_REFERENCE)) {
+                $href = $urlGenerator->generate($targetPage, ['parameters' => $urlParameterBag->generateParameters()]);
+            } else {
+                $href = $targetPage->getAbsoluteUrl($urlParameterBag->generateParameters());
+            }
         } catch (ExceptionInterface $e) {
             if (!$catch) {
                 throw $e;
