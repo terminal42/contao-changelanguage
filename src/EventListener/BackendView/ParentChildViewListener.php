@@ -52,7 +52,11 @@ class ParentChildViewListener extends AbstractViewListener
             return null;
         }
 
-        $pageId = $this->current->pid ? $this->current->getRelated('pid')->jumpTo : $this->current->jumpTo;
+        try {
+            $pageId = $this->current->pid ? $this->current->getRelated('pid')->jumpTo : $this->current->jumpTo;
+        } catch (\Exception $e) {
+            return null;
+        }
 
         return PageModel::findWithDetails($pageId);
     }

@@ -38,10 +38,14 @@ abstract class AbstractChildTableListener extends AbstractTableListener
      */
     public function onLanguageMainOptions(DataContainer $dc)
     {
-        if (
-            null === ($current = $this->getModel($dc->id))
-            || null === ($master = $current->getRelated('pid')->getRelated('master'))
-        ) {
+        try {
+            if (
+                null === ($current = $this->getModel($dc->id))
+                || null === ($master = $current->getRelated('pid')->getRelated('master'))
+            ) {
+                return [];
+            }
+        } catch (\Exception $e) {
             return [];
         }
 

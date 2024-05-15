@@ -48,8 +48,12 @@ abstract class AbstractNavigationListener
             $event->getUrlParameterBag()->removeUrlAttribute($this->getUrlKey());
         }
 
-        $t = $current::getTable();
-        $parent = $current->getRelated('pid');
+        try {
+            $t = $current::getTable();
+            $parent = $current->getRelated('pid');
+        } catch (\Exception $e) {
+            return;
+        }
 
         if (0 === (int) $parent->master) {
             $mainId = (int) $current->id;
