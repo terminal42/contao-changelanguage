@@ -5,36 +5,36 @@ declare(strict_types=1);
 namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 
 use Composer\InstalledVersions;
-use Contao\ArticleModel;
 use Contao\Backend;
 use Contao\BackendUser;
-use Contao\CalendarEventsModel;
-use Contao\CalendarModel;
 use Contao\Config;
 use Contao\CoreBundle\ServiceAnnotation\Hook;
 use Contao\Date;
-use Contao\FaqCategoryModel;
-use Contao\FaqModel;
 use Contao\Input;
-use Contao\NewsArchiveModel;
-use Contao\NewsModel;
-use Contao\PageModel;
 use Contao\StringUtil;
+use Doctrine\DBAL\ArrayParameterType;
+use Doctrine\DBAL\Connection;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Contracts\Service\ResetInterface;
 use Terminal42\ChangeLanguage\Helper\LabelCallback;
 
 /**
  * @Hook("loadDataContainer")
  */
-class MissingLanguageIconListener
+class MissingLanguageIconListener implements ResetInterface
 {
     private static $callbacks;
 
     private Security $security;
+    private Connection $connection;
 
-    public function __construct(Security $security)
+    private ?array $pageCache = null;
+    private ?array $translationCache = null;
+
+    public function __construct(Security $security, Connection $connection)
     {
         $this->security = $security;
+        $this->connection = $connection;
     }
 
     /**
@@ -52,6 +52,12 @@ class MissingLanguageIconListener
         }
     }
 
+    public function reset(): void
+    {
+        $this->pageCache = null;
+        $this->translationCache = null;
+    }
+
     /**
      * Adds missing translation warning to page tree.
      */
@@ -67,30 +73,26 @@ class MissingLanguageIconListener
             return $label;
         }
 
-        if (
-            ($page = PageModel::findWithDetails($row['id'])) !== null
-            && ($root = PageModel::findByPk($page->rootId)) !== null
-            && (!$root->fallback || $root->languageRoot > 0)
-            && (!$page->languageMain || null === ($mainPage = PageModel::findByPk($page->languageMain)))
-        ) {
+        $translation = $this->getPageTranslation((int) $row['id']);
+
+        if (0 === ($translation['languageMain'] ?? null)) {
             return $this->generateLabelWithWarning($label);
         }
 
         $user = $this->security->getUser();
 
         if (
-            isset($mainPage)
-            && $mainPage instanceof PageModel
+            ($translation['languageMain'] ?? null) > 0
             && $user instanceof BackendUser
             && \is_array($user->pageLanguageLabels)
-            && \in_array($page->rootId, $user->pageLanguageLabels, false)
+            && \in_array(($translation['rootId'] ?? null), $user->pageLanguageLabels, false)
         ) {
             return sprintf(
                 '%s <span style="color:#999;padding-left:3px">(<a href="%s" title="%s" style="color:#999">%s</a>)</span>',
                 $label,
-                Backend::addToUrl('pn='.$mainPage->id),
+                Backend::addToUrl('pn='.$translation['languageMain']),
                 StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['selectNode']),
-                $mainPage->title,
+                $translation['mainTitle'] ?? '',
             );
         }
 
@@ -108,14 +110,11 @@ class MissingLanguageIconListener
             $label = $previousResult;
         }
 
-        if (
-            $row['showTeaser']
-            && ($page = PageModel::findWithDetails($row['pid'])) !== null
-            && ($root = PageModel::findByPk($page->rootId)) !== null
-            && (!$root->fallback || $root->languageRoot > 0)
-            && $page->languageMain > 0 && null !== PageModel::findByPk($page->languageMain)
-            && (!$row['languageMain'] || null === ArticleModel::findByPk($row['languageMain']))
-        ) {
+        if (!$row['showTeaser']) {
+            return $label;
+        }
+
+        if (0 === $this->getChildTranslation((int) $row['id'], 'tl_article', 'tl_page', 'languageMain')) {
             return $this->generateLabelWithWarning($label);
         }
 
@@ -134,14 +133,13 @@ class MissingLanguageIconListener
             $label = '<div class="tl_content_left">'.$row['headline'].' <span style="color:#999;padding-left:3px">['.Date::parse(Config::get('datimFormat'), $row['date']).']</span></div>';
         }
 
-        $archive = NewsArchiveModel::findByPk($row['pid']);
-
-        if (
-            null !== $archive
-            && $archive->master
-            && (!$row['languageMain'] || null === NewsModel::findByPk($row['languageMain']))
-        ) {
-            return $this->generateLabelWithWarning($label);
+        if (0 === $this->getChildTranslation((int) $row['id'], 'tl_news', 'tl_news_archive', 'master')) {
+            return preg_replace(
+                '#</div>#',
+                $this->generateLabelWithWarning('').'</div>',
+                $label,
+                1,
+            );
         }
 
         return $label;
@@ -155,14 +153,14 @@ class MissingLanguageIconListener
         $row = $args[0];
         $label = (string) $previousResult;
 
-        $calendar = CalendarModel::findByPk($row['pid']);
-
-        if (
-            null !== $calendar
-            && $calendar->master
-            && (!$row['languageMain'] || null === CalendarEventsModel::findByPk($row['languageMain']))
-        ) {
-            return $this->generateLabelWithWarning($label);
+        if (0 === $this->getChildTranslation((int) $row['id'], 'tl_calendar_events', 'tl_calendar', 'master')) {
+            //return $this->generateLabelWithWarning($label);
+            return preg_replace(
+                '#</div>#',
+                $this->generateLabelWithWarning('', 'position:absolute;top:6px').'</div>',
+                $label,
+                1,
+            );
         }
 
         return $label;
@@ -176,16 +174,10 @@ class MissingLanguageIconListener
         $row = $args[0];
         $label = (string) $previousResult;
 
-        $category = FaqCategoryModel::findByPk($row['pid']);
-
-        if (
-            null !== $category
-            && $category->master
-            && (!$row['languageMain'] || null === FaqModel::findByPk($row['languageMain']))
-        ) {
+        if (0 === $this->getChildTranslation((int) $row['id'], 'tl_faq', 'tl_faq_category', 'master')) {
             return preg_replace(
                 '#</div>#',
-                $this->generateLabelWithWarning('', 'position:absolute;top:6px').'</div>',
+                $this->generateLabelWithWarning('').'</div>',
                 $label,
                 1,
             );
@@ -235,5 +227,68 @@ class MissingLanguageIconListener
         }
 
         return self::$callbacks = $callbacks;
+    }
+
+    /**
+     * @return array{languageMain: int, mainTitle: string|null}|null
+     */
+    private function getPageTranslation(int $id): ?array
+    {
+        if (null !== $this->pageCache) {
+            return $this->pageCache[$id] ?? null;
+        }
+
+        $childRecords = function (array $parentIds, int $rootId, $return = []) use (&$childRecords) {
+            $children = $this->connection->fetchAllAssociativeIndexed(
+                <<<SQL
+                    SELECT
+                        c.id,
+                        IFNULL(t.id, 0) AS languageMain,
+                        t.title AS mainTitle,
+                        $rootId as rootId
+                    FROM tl_page c
+                        LEFT JOIN tl_page t ON c.languageMain=t.id
+                    WHERE c.pid IN(?)
+                SQL,
+                [array_keys($parentIds)],
+                [ArrayParameterType::INTEGER]
+            );
+
+            if ($children) {
+                $return = $children + $childRecords($children, $rootId, $return);
+            }
+
+            return $return;
+        };
+
+        $rootIds = $this->connection->fetchFirstColumn("SELECT id FROM tl_page WHERE type='root' AND (fallback='' OR languageRoot>0)");
+
+        foreach ($rootIds as $rootId) {
+            $this->pageCache = $childRecords([$rootId => []], $rootId);
+        }
+
+        return $this->pageCache[$id] ?? null;
+    }
+
+    private function getChildTranslation(int $id, string $table, string $ptable, string $parentField): ?int
+    {
+        if (isset($this->translationCache[$table])) {
+            return $this->translationCache[$table][$id] ?? null;
+        }
+
+        $this->translationCache[$table] = $this->connection->fetchAllKeyValue(
+            <<<SQL
+                SELECT
+                    c.id,
+                    IFNULL(ct.id, 0)
+                FROM $table c
+                    JOIN $ptable p ON c.pid=p.id
+                    LEFT JOIN $table ct ON c.languageMain=ct.id
+                    LEFT JOIN $ptable pt ON p.$parentField=pt.id
+                WHERE pt.id > 0
+            SQL
+        );
+
+        return $this->translationCache[$table][$id] ?? null;
     }
 }
