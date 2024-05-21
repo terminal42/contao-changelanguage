@@ -7,7 +7,8 @@ namespace Terminal42\ChangeLanguage;
 class Language
 {
     /**
-     * Normalizes a language representation by splitting language and country with given delimiter.
+     * Normalizes a language representation by splitting language and country with
+     * given delimiter.
      *
      * @throws \InvalidArgumentException
      */
@@ -21,7 +22,7 @@ class Language
     }
 
     /**
-     * Returns the language formatted as IETF Language Tag (BCP 47)
+     * Returns the language formatted as IETF Language Tag (BCP 47).
      * Example: en, en-US, de-CH.
      *
      * @see http://www.w3.org/International/articles/language-tags/
@@ -34,7 +35,7 @@ class Language
     }
 
     /**
-     * Returns the language formatted as ICU Locale ID
+     * Returns the language formatted as ICU Locale ID.
      * Example: en, en_US, de_CH.
      *
      * @see http://userguide.icu-project.org/locale

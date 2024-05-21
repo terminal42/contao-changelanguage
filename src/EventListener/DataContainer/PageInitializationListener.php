@@ -51,7 +51,7 @@ class PageInitializationListener
 
     private function handleEditMode(DataContainer $dc): void
     {
-        $page = PageModel::findByPk($dc->id);
+        $page = PageModel::findById($dc->id);
 
         if (null === $page) {
             return;
@@ -65,12 +65,12 @@ class PageInitializationListener
             return;
         }
 
-        $root = PageModel::findByPk($page->loadDetails()->rootId);
+        $root = PageModel::findById($page->loadDetails()->rootId);
         $addLanguageMain = true;
 
         if (
             !$root
-            || ($root->fallback && (!$root->languageRoot || null === PageModel::findByPk($root->languageRoot)))
+            || ($root->fallback && (!$root->languageRoot || null === PageModel::findById($root->languageRoot)))
         ) {
             $addLanguageMain = false;
         }

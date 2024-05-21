@@ -49,7 +49,7 @@ class UrlParameterBag
     }
 
     /**
-     * @param int|float|string|bool $value
+     * @param string|int|object $value
      */
     public function setUrlAttribute(string $name, $value): void
     {
@@ -89,7 +89,7 @@ class UrlParameterBag
     }
 
     /**
-     * @param int|float|string|bool $value
+     * @param string|int|object $value
      */
     public function setQueryParameter(string $name, $value): void
     {
@@ -168,6 +168,8 @@ class UrlParameterBag
 
     /**
      * Makes sure the given value is scalar or an array of scalar values.
+     *
+     * @param mixed $value
      */
     private function validateScalar($value): void
     {

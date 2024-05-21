@@ -90,7 +90,7 @@ abstract class AbstractChildTableListener extends AbstractTableListener
         /** @var Model $class */
         $class = Model::getClassFromTable($this->table);
 
-        return $class::findByPk($id);
+        return $class::findById($id);
     }
 
     /**

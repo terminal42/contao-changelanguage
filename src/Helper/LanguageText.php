@@ -92,7 +92,7 @@ class LanguageText
         $config = StringUtil::deserialize($config);
 
         if (!\is_array($config)) {
-            return new static();
+            return new self();
         }
 
         $map = [];
@@ -115,6 +115,6 @@ class LanguageText
             $map[$text['key']] = $text['value'];
         }
 
-        return new static($map);
+        return new self($map);
     }
 }

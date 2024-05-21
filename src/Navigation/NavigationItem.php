@@ -132,7 +132,7 @@ class NavigationItem
     }
 
     /**
-     * Returns the language formatted as IETF Language Tag (BCP 47)
+     * Returns the language formatted as IETF Language Tag (BCP 47).
      * Example: en, en-US, de-CH.
      *
      * @see http://www.w3.org/International/articles/language-tags/
@@ -143,7 +143,7 @@ class NavigationItem
     }
 
     /**
-     * Returns the language formatted as ICU Locale ID
+     * Returns the language formatted as ICU Locale ID.
      * Example: en, en_US, de_CH.
      *
      * @see http://userguide.icu-project.org/locale

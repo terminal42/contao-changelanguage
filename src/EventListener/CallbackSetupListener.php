@@ -20,7 +20,7 @@ use Terminal42\ChangeLanguage\EventListener\DataContainer\ParentTableListener;
  */
 class CallbackSetupListener
 {
-    private static $listeners;
+    private static ?array $listeners = null;
 
     public function __invoke(string $table): void
     {

@@ -102,7 +102,7 @@ class PageFinder
         $page->loadDetails();
         $t = $page::getTable();
 
-        if ($page->rootIsFallback && null !== ($root = PageModel::findByPk($page->rootId)) && !$root->languageRoot) {
+        if ($page->rootIsFallback && null !== ($root = PageModel::findById($page->rootId)) && !$root->languageRoot) {
             $values = [$page->id, $page->id];
         } elseif (!$page->languageMain) {
             return $skipCurrent ? [] : [$page];

@@ -35,7 +35,7 @@ class LanguageTest extends TestCase
         Language::normalize($language, '-');
     }
 
-    public function languagesProvider(): \Generator
+    public static function languagesProvider(): iterable
     {
         yield ['en', 'en'];
         yield ['de', 'de'];
@@ -44,7 +44,7 @@ class LanguageTest extends TestCase
         yield ['de_CH', 'de-CH'];
     }
 
-    public function invalidLanguagesProvider(): \Generator
+    public static function invalidLanguagesProvider(): iterable
     {
         yield [''];
         yield ['-'];

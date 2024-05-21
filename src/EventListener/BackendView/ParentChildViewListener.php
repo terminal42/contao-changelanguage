@@ -17,7 +17,7 @@ use League\Uri\UriModifier;
 class ParentChildViewListener extends AbstractViewListener
 {
     /**
-     * @var Model
+     * @var Model|false
      */
     private $current = false;
 
@@ -44,7 +44,7 @@ class ParentChildViewListener extends AbstractViewListener
                 $t = $class::getTable();
                 $this->current = $class::findOneBy(["$t.id=(SELECT pid FROM ".$this->getTable().' WHERE id=?)'], [$this->dataContainer->id]);
             } else {
-                $this->current = $class::findByPk($this->dataContainer->id);
+                $this->current = $class::findById($this->dataContainer->id);
             }
         }
 
@@ -146,7 +146,7 @@ class ParentChildViewListener extends AbstractViewListener
         return Model::getClassFromTable($GLOBALS['TL_DCA'][$this->getTable()]['config']['ptable']);
     }
 
-    private function hasParent()
+    private function hasParent(): bool
     {
         /** @var Model $class */
         $class = $this->getModelClass();

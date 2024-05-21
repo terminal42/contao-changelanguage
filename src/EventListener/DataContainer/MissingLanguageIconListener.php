@@ -23,12 +23,14 @@ use Terminal42\ChangeLanguage\Helper\LabelCallback;
  */
 class MissingLanguageIconListener implements ResetInterface
 {
-    private static $callbacks;
+    private static ?array $callbacks = null;
 
     private Security $security;
+
     private Connection $connection;
 
     private ?array $pageCache = null;
+
     private ?array $translationCache = null;
 
     public function __construct(Security $security, Connection $connection)
@@ -60,6 +62,8 @@ class MissingLanguageIconListener implements ResetInterface
 
     /**
      * Adds missing translation warning to page tree.
+     *
+     * @param string|array|null $previousResult;
      */
     private function onPageLabel(array $args, $previousResult = null): string
     {
@@ -85,7 +89,7 @@ class MissingLanguageIconListener implements ResetInterface
             ($translation['languageMain'] ?? null) > 0
             && $user instanceof BackendUser
             && \is_array($user->pageLanguageLabels)
-            && \in_array(($translation['rootId'] ?? null), $user->pageLanguageLabels, false)
+            && \in_array($translation['rootId'] ?? null, $user->pageLanguageLabels, false)
         ) {
             return sprintf(
                 '%s <span style="color:#999;padding-left:3px">(<a href="%s" title="%s" style="color:#999">%s</a>)</span>',
@@ -101,6 +105,8 @@ class MissingLanguageIconListener implements ResetInterface
 
     /**
      * Adds missing translation warning to article tree.
+     *
+     * @param string|array|null $previousResult
      */
     private function onArticleLabel(array $args, $previousResult = null): string
     {
@@ -123,6 +129,8 @@ class MissingLanguageIconListener implements ResetInterface
 
     /**
      * Generate missing translation warning for news child records.
+     *
+     * @param string|array|null $previousResult
      */
     private function onNewsChildRecords(array $args, $previousResult = null): string
     {
@@ -147,6 +155,8 @@ class MissingLanguageIconListener implements ResetInterface
 
     /**
      * Generate missing translation warning for calendar events child records.
+     *
+     * @param string|array|null $previousResult
      */
     private function onCalendarEventChildRecords(array $args, $previousResult = null): string
     {
@@ -154,7 +164,6 @@ class MissingLanguageIconListener implements ResetInterface
         $label = (string) $previousResult;
 
         if (0 === $this->getChildTranslation((int) $row['id'], 'tl_calendar_events', 'tl_calendar', 'master')) {
-            //return $this->generateLabelWithWarning($label);
             return preg_replace(
                 '#</div>#',
                 $this->generateLabelWithWarning('', 'position:absolute;top:6px').'</div>',
@@ -168,6 +177,8 @@ class MissingLanguageIconListener implements ResetInterface
 
     /**
      * Generate missing translation warning for faq child records.
+     *
+     * @param string|array|null $previousResult
      */
     private function onFaqChildRecords(array $args, $previousResult = null): string
     {
@@ -186,13 +197,7 @@ class MissingLanguageIconListener implements ResetInterface
         return $label;
     }
 
-    /**
-     * @param string $label
-     * @param string $imgStyle
-     *
-     * @return string
-     */
-    private function generateLabelWithWarning($label, $imgStyle = '')
+    private function generateLabelWithWarning(string $label, string $imgStyle = ''): string
     {
         return $label.sprintf(
             '<span style="padding-left:3px"><img src="%s" alt="%s" title="%s" style="%s"></span>',
@@ -241,17 +246,17 @@ class MissingLanguageIconListener implements ResetInterface
         $childRecords = function (array $parentIds, int $rootId, $return = []) use (&$childRecords) {
             $children = $this->connection->fetchAllAssociativeIndexed(
                 <<<SQL
-                    SELECT
-                        c.id,
-                        IFNULL(t.id, 0) AS languageMain,
-                        t.title AS mainTitle,
-                        $rootId as rootId
-                    FROM tl_page c
-                        LEFT JOIN tl_page t ON c.languageMain=t.id
-                    WHERE c.pid IN(?)
-                SQL,
+                        SELECT
+                            c.id,
+                            IFNULL(t.id, 0) AS languageMain,
+                            t.title AS mainTitle,
+                            $rootId as rootId
+                        FROM tl_page c
+                            LEFT JOIN tl_page t ON c.languageMain=t.id
+                        WHERE c.pid IN(?)
+                    SQL,
                 [array_keys($parentIds)],
-                [ArrayParameterType::INTEGER]
+                [ArrayParameterType::INTEGER],
             );
 
             if ($children) {
@@ -278,15 +283,15 @@ class MissingLanguageIconListener implements ResetInterface
 
         $this->translationCache[$table] = $this->connection->fetchAllKeyValue(
             <<<SQL
-                SELECT
-                    c.id,
-                    IFNULL(ct.id, 0)
-                FROM $table c
-                    JOIN $ptable p ON c.pid=p.id
-                    LEFT JOIN $table ct ON c.languageMain=ct.id
-                    LEFT JOIN $ptable pt ON p.$parentField=pt.id
-                WHERE pt.id > 0
-            SQL
+                    SELECT
+                        c.id,
+                        IFNULL(ct.id, 0)
+                    FROM $table c
+                        JOIN $ptable p ON c.pid=p.id
+                        LEFT JOIN $table ct ON c.languageMain=ct.id
+                        LEFT JOIN $ptable pt ON p.$parentField=pt.id
+                    WHERE pt.id > 0
+                SQL,
         );
 
         return $this->translationCache[$table][$id] ?? null;

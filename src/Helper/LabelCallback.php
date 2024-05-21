@@ -16,10 +16,8 @@ class LabelCallback
 
     /**
      * Registers callback for given table.
-     *
-     * @param string $table
      */
-    public function register($table, callable $callback): void
+    public function register(string $table, callable $callback): void
     {
         Controller::loadDataContainer($table);
 
@@ -45,25 +43,19 @@ class LabelCallback
 
     /**
      * Creates and registers new LabelCallback.
-     *
-     * @param string $table
-     *
-     * @return static
      */
-    public static function createAndRegister($table, callable $callback)
+    public static function createAndRegister(string $table, callable $callback): self
     {
-        $instance = new static();
+        $instance = new self();
         $instance->register($table, $callback);
 
         return $instance;
     }
 
     /**
-     * @param callable $callback
-     *
-     * @return string|int
+     * @return mixed
      */
-    private function executeCallback($callback, array $args)
+    private function executeCallback(callable $callback, array $args)
     {
         // Support Contao's getInstance() method when callback is an array
         if (\is_array($callback)) {

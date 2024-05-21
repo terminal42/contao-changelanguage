@@ -16,6 +16,10 @@ class PageFieldsListener
     /**
      * Sets rootNodes when initializing the languageMain field.
      *
+     * @param string|int $value
+     *
+     * @return string|int
+     *
      * @Callback(table="tl_page", target="fields.languageMain.load")
      */
     public function onLoadLanguageMain($value, DataContainer $dc)
@@ -25,11 +29,11 @@ class PageFieldsListener
         }
 
         $page = PageModel::findWithDetails($dc->id);
-        $root = PageModel::findByPk($page->rootId);
+        $root = PageModel::findById($page->rootId);
 
         if (
             !$root
-            || ($root->fallback && (!$root->languageRoot || null === PageModel::findByPk($root->languageRoot)))
+            || ($root->fallback && (!$root->languageRoot || null === PageModel::findById($root->languageRoot)))
         ) {
             return $value;
         }
@@ -50,6 +54,10 @@ class PageFieldsListener
 
     /**
      * Validate input value when saving tl_page.languageMain field.
+     *
+     * @param string|int $value
+     *
+     * @return string|int
      *
      * @Callback(table="tl_page", target="fields.languageMain.save")
      */
@@ -85,7 +93,8 @@ class PageFieldsListener
     }
 
     /**
-     * Gets list of options for language root selection (linking multiple fallback roots on different domains).
+     * Gets list of options for language root selection (linking multiple fallback
+     * roots on different domains).
      *
      * @Callback(table="tl_page", target="fields.languageRoot.options")
      */

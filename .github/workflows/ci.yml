@@ -1,32 +1,16 @@
 name: CI
 
 on:
+    push: ~
     pull_request: ~
-    schedule:
-        - cron: 0 13 * * MON,THU
+#    schedule:
+#        - cron: 0 13 * * MON,THU
 
 permissions: read-all
 
 jobs:
-    ecs:
-        name: ECS
-        runs-on: ubuntu-latest
-        steps:
-            - name: Setup PHP
-              uses: shivammathur/setup-php@v2
-              with:
-                  php-version: 8.1
-                  extensions: dom, fileinfo, filter, gd, hash, intl, json, mbstring, mysqli, pcre, pdo_mysql, zlib
-                  coverage: none
-
-            - name: Checkout
-              uses: actions/checkout@v3
-
-            - name: Install the dependencies
-              run: composer install --no-interaction --no-progress
-
-            - name: Run ECS
-              run: composer run check-cs
+    build-tools:
+        uses: 'terminal42/contao-build-tools/.github/workflows/build-tools.yml@main'
 
     tests:
         name: PHP ${{ matrix.php }} / Contao ${{ matrix.contao }}

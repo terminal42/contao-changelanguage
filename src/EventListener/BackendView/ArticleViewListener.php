@@ -39,7 +39,7 @@ class ArticleViewListener extends AbstractViewListener
 
                 $this->currentArticle = ArticleModel::findOneBy(['tl_article.id=(SELECT pid FROM tl_content WHERE id=?)'], [$this->dataContainer->id]);
             } else {
-                $this->currentArticle = ArticleModel::findByPk($this->dataContainer->id);
+                $this->currentArticle = ArticleModel::findById($this->dataContainer->id);
             }
         }
 

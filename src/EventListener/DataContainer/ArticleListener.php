@@ -33,10 +33,10 @@ class ArticleListener extends AbstractTableListener
         if ('editAll' === $action) {
             $this->addFieldsToPalettes();
         } elseif ('edit' === $action) {
-            $article = ArticleModel::findByPk($dc->id);
+            $article = ArticleModel::findById($dc->id);
 
             if (null !== $article) {
-                $page = PageModel::findByPk($article->pid);
+                $page = PageModel::findById($article->pid);
 
                 if (null !== $page && null !== (new PageFinder())->findAssociatedInMaster($page)) {
                     $this->addFieldsToPalettes();
@@ -45,11 +45,11 @@ class ArticleListener extends AbstractTableListener
         }
     }
 
-    public function onLanguageMainOptions(DataContainer $dc)
+    public function onLanguageMainOptions(DataContainer $dc): array
     {
         $pageFinder = new PageFinder();
-        $current = ArticleModel::findByPk($dc->id);
-        $page = PageModel::findByPk($current->pid);
+        $current = ArticleModel::findById($dc->id);
+        $page = PageModel::findById($current->pid);
 
         if (null === $page || null === ($master = $pageFinder->findAssociatedInMaster($page))) {
             return [];

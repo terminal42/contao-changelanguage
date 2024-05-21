@@ -56,7 +56,7 @@ class ParentTableListener
      */
     public function onMasterOptions(DataContainer $dc)
     {
-        if (null === ($jumpTo = PageModel::findByPk($dc->activeRecord->jumpTo))) {
+        if (null === ($jumpTo = PageModel::findById($dc->activeRecord->jumpTo))) {
             return [];
         }
 
@@ -89,6 +89,9 @@ class ParentTableListener
         return $options;
     }
 
+    /**
+     * @param string|null $value
+     */
     private function validateMaster($value, DataContainer $dc): void
     {
         if (!$value) {

@@ -26,7 +26,7 @@ class PageViewListener extends AbstractViewListener
             return null;
         }
 
-        return PageModel::findByPk($node);
+        return PageModel::findById($node);
     }
 
     protected function getAvailableLanguages(PageModel $page): array
