@@ -294,6 +294,11 @@ class MissingLanguageIconListener implements ResetInterface
                 SQL,
         );
 
+        // Cast ID to integer due to return type (#249)
+        if (null !== ($this->translationCache[$table][$id] ?? null)) {
+            $this->translationCache[$table][$id] = (int) $this->translationCache[$table][$id];
+        }
+
         return $this->translationCache[$table][$id] ?? null;
     }
 }
