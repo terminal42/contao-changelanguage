@@ -282,7 +282,7 @@ class MissingLanguageIconListener implements ResetInterface
             return $this->translationCache[$table][$id] ?? null;
         }
 
-        $this->translationCache[$table] = $this->connection->fetchAllKeyValue(
+        $this->translationCache[$table] = array_map('intval', $this->connection->fetchAllKeyValue(
             <<<SQL
                     SELECT
                         c.id,
@@ -293,7 +293,7 @@ class MissingLanguageIconListener implements ResetInterface
                         LEFT JOIN $ptable pt ON p.$parentField=pt.id
                     WHERE pt.id > 0
                 SQL,
-        );
+        ));
 
         return $this->translationCache[$table][$id] ?? null;
     }
