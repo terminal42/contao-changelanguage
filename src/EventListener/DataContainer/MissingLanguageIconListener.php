@@ -266,10 +266,11 @@ class MissingLanguageIconListener implements ResetInterface
             return $return;
         };
 
+        $this->pageCache = [];
         $rootIds = $this->connection->fetchFirstColumn("SELECT id FROM tl_page WHERE type='root' AND (fallback='' OR languageRoot>0)");
 
         foreach ($rootIds as $rootId) {
-            $this->pageCache = $childRecords([$rootId => []], $rootId);
+            $this->pageCache += $childRecords([$rootId => []], $rootId);
         }
 
         return $this->pageCache[$id] ?? null;
