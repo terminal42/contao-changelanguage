@@ -15,7 +15,7 @@ use Terminal42\ChangeLanguage\Terminal42ChangeLanguageBundle;
 
 class Plugin implements BundlePluginInterface
 {
-    public function getBundles(ParserInterface $parser)
+    public function getBundles(ParserInterface $parser): array
     {
         return [
             (new BundleConfig(Terminal42ChangeLanguageBundle::class))
