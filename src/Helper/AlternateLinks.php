@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Terminal42\ChangeLanguage\Helper;
 
+use Contao\CoreBundle\Util\UrlUtil;
 use Contao\Environment;
 use Contao\FrontendTemplate;
 use Terminal42\ChangeLanguage\Language;
@@ -77,10 +78,7 @@ class AlternateLinks
 
     private function store(string $language, string $href, string $title): void
     {
-        // URLs must always be absolute
-        if (!str_starts_with($href, 'http://') && !str_starts_with($href, 'https://')) {
-            $href = Environment::get('base').$href;
-        }
+        $href = UrlUtil::makeAbsolute($href, Environment::get('base'));
 
         $this->links[$language] = ['language' => $language, 'href' => $href, 'title' => $title];
     }
