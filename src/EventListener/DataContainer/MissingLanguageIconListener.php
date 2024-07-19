@@ -14,7 +14,7 @@ use Contao\Input;
 use Contao\StringUtil;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Contracts\Service\ResetInterface;
 use Terminal42\ChangeLanguage\Helper\LabelCallback;
 
@@ -25,7 +25,7 @@ class MissingLanguageIconListener implements ResetInterface
 {
     private static ?array $callbacks = null;
 
-    private Security $security;
+    private TokenStorageInterface $tokenStorage;
 
     private Connection $connection;
 
@@ -33,9 +33,9 @@ class MissingLanguageIconListener implements ResetInterface
 
     private ?array $translationCache = null;
 
-    public function __construct(Security $security, Connection $connection)
+    public function __construct(TokenStorageInterface $tokenStorage, Connection $connection)
     {
-        $this->security = $security;
+        $this->tokenStorage = $tokenStorage;
         $this->connection = $connection;
     }
 
@@ -83,7 +83,8 @@ class MissingLanguageIconListener implements ResetInterface
             return $this->generateLabelWithWarning($label);
         }
 
-        $user = $this->security->getUser();
+        $token = $this->tokenStorage->getToken();
+        $user = $token ? $token->getUser() : null;
 
         if (
             ($translation['languageMain'] ?? null) > 0
