@@ -22,6 +22,8 @@ class FaqListener extends AbstractChildTableListener
 
     /**
      * @param Collection<FaqModel> $models
+     *
+     * @return array<int|string, string>
      */
     protected function formatOptions(Model $current, Collection $models): array
     {

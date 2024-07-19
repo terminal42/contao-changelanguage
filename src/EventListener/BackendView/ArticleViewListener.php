@@ -50,6 +50,9 @@ class ArticleViewListener extends AbstractViewListener
         return PageModel::findWithDetails($this->currentArticle->pid);
     }
 
+    /**
+     * @return array<int|string, string>
+     */
     protected function getAvailableLanguages(PageModel $page): array
     {
         $options = [];

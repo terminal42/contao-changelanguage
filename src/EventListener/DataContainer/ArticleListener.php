@@ -45,6 +45,9 @@ class ArticleListener extends AbstractTableListener
         }
     }
 
+    /**
+     * @return array<int|string, string>
+     */
     public function onLanguageMainOptions(DataContainer $dc): array
     {
         $pageFinder = new PageFinder();

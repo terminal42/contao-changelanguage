@@ -20,6 +20,9 @@ use Terminal42\ChangeLanguage\EventListener\DataContainer\ParentTableListener;
  */
 class CallbackSetupListener
 {
+    /**
+     * @var array<string, array<string>>|null
+     */
     private static ?array $listeners = null;
 
     public function __invoke(string $table): void
@@ -34,6 +37,9 @@ class CallbackSetupListener
         }
     }
 
+    /**
+     * @return array<string, array<string>>
+     */
     private static function getListeners(): array
     {
         if (null !== self::$listeners) {

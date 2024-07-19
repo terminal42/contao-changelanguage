@@ -78,6 +78,8 @@ class PageOperationListener
 
     /**
      * Handles undo of a deleted page and resets tl_page.languageMain if necessary.
+     *
+     * @param array<string, int|string> $row
      */
     private function onUndo(array $row): void
     {

@@ -13,8 +13,14 @@ use Terminal42\ChangeLanguage\Navigation\NavigationItem;
  */
 class LanguageText
 {
+    /**
+     * @var array<string, string>
+     */
     private array $map = [];
 
+    /**
+     * @param array<string, string> $map
+     */
     public function __construct(array $map = [])
     {
         foreach ($map as $k => $v) {
@@ -85,7 +91,7 @@ class LanguageText
     /**
      * Create instance from serialized data of optionsWizard widget.
      *
-     * @param string|array|null $config
+     * @param string|array{value: string, label: string, key?: string}|null $config
      */
     public static function createFromOptionWizard($config): self
     {

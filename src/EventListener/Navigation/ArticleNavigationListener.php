@@ -102,8 +102,11 @@ class ArticleNavigationListener
 
     /**
      * Find a published article with additional conditions.
+     *
+     * @param array<string> $columns
+     * @param array<string> $values
      */
-    private function findPublishedArticle(array $columns, array $values = [], array $options = []): ?ArticleModel
+    private function findPublishedArticle(array $columns, array $values = []): ?ArticleModel
     {
         if (!$this->tokenChecker->isPreviewMode()) {
             $time = Date::floorToMinute();
@@ -112,6 +115,6 @@ class ArticleNavigationListener
             $columns[] = "tl_article.published='1'";
         }
 
-        return ArticleModel::findOneBy($columns, $values, $options);
+        return ArticleModel::findOneBy($columns, $values);
     }
 }

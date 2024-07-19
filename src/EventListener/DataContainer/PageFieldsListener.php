@@ -96,6 +96,8 @@ class PageFieldsListener
      * Gets list of options for language root selection (linking multiple fallback
      * roots on different domains).
      *
+     * @return array<int|string, string>
+     *
      * @Callback(table="tl_page", target="fields.languageRoot.options")
      */
     public function onLanguageRootOptions(DataContainer $dc): array

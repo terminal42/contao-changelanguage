@@ -52,9 +52,9 @@ class ParentTableListener
     }
 
     /**
-     * @return array
+     * @return array<int|string, string>
      */
-    public function onMasterOptions(DataContainer $dc)
+    public function onMasterOptions(DataContainer $dc): array
     {
         if (null === ($jumpTo = PageModel::findById($dc->activeRecord->jumpTo))) {
             return [];

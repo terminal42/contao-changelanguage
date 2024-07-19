@@ -23,14 +23,23 @@ use Terminal42\ChangeLanguage\Helper\LabelCallback;
  */
 class MissingLanguageIconListener implements ResetInterface
 {
+    /**
+     * @var array<string, string>|null
+     */
     private static ?array $callbacks = null;
 
     private TokenStorageInterface $tokenStorage;
 
     private Connection $connection;
 
+    /**
+     * @var array<int|string, array>|null
+     */
     private ?array $pageCache = null;
 
+    /**
+     * @var array<string, array<int, int>>|null
+     */
     private ?array $translationCache = null;
 
     public function __construct(TokenStorageInterface $tokenStorage, Connection $connection)
@@ -63,6 +72,7 @@ class MissingLanguageIconListener implements ResetInterface
     /**
      * Adds missing translation warning to page tree.
      *
+     * @param array<string|array> $args
      * @param string|array|null $previousResult;
      */
     private function onPageLabel(array $args, $previousResult = null): string
@@ -107,6 +117,7 @@ class MissingLanguageIconListener implements ResetInterface
     /**
      * Adds missing translation warning to article tree.
      *
+     * @param array<int, string> $args
      * @param string|array|null $previousResult
      */
     private function onArticleLabel(array $args, $previousResult = null): string
@@ -131,6 +142,7 @@ class MissingLanguageIconListener implements ResetInterface
     /**
      * Generate missing translation warning for news child records.
      *
+     * @param array<int, string> $args
      * @param string|array|null $previousResult
      */
     private function onNewsChildRecords(array $args, $previousResult = null): string
@@ -157,6 +169,7 @@ class MissingLanguageIconListener implements ResetInterface
     /**
      * Generate missing translation warning for calendar events child records.
      *
+     * @param array<int, string> $args
      * @param string|array|null $previousResult
      */
     private function onCalendarEventChildRecords(array $args, $previousResult = null): string
@@ -179,6 +192,7 @@ class MissingLanguageIconListener implements ResetInterface
     /**
      * Generate missing translation warning for faq child records.
      *
+     * @param array<int, string> $args
      * @param string|array|null $previousResult
      */
     private function onFaqChildRecords(array $args, $previousResult = null): string
@@ -209,6 +223,9 @@ class MissingLanguageIconListener implements ResetInterface
         );
     }
 
+    /**
+     * @return array<string, string>
+     */
     private static function getCallbacks(): array
     {
         if (null !== self::$callbacks) {

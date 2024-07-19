@@ -16,6 +16,9 @@ use Terminal42\ChangeLanguage\Navigation\UrlParameterBag;
  */
 class AlternateLinks
 {
+    /**
+     * @var array<string, array{language: string, href: string, title: string}>
+     */
     private array $links = [];
 
     /**

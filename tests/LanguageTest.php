@@ -35,6 +35,9 @@ class LanguageTest extends TestCase
         Language::normalize($language, '-');
     }
 
+    /**
+     * @return iterable<int, string>
+     */
     public static function languagesProvider(): iterable
     {
         yield ['en', 'en'];
@@ -44,6 +47,9 @@ class LanguageTest extends TestCase
         yield ['de_CH', 'de-CH'];
     }
 
+    /**
+     * @return iterable<int, string>
+     */
     public static function invalidLanguagesProvider(): iterable
     {
         yield [''];

@@ -104,7 +104,7 @@ class PageInitializationListener
     }
 
     /**
-     * @param array|string $palettes
+     * @param array<string>|string $palettes
      */
     private function addRegularLanguageFields($palettes, bool $addLanguageMain = true): void
     {

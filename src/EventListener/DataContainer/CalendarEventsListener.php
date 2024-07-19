@@ -20,6 +20,9 @@ class CalendarEventsListener extends AbstractChildTableListener
         return 'startTime DESC';
     }
 
+    /**
+     * @return array<int|string, string>
+     */
     protected function formatOptions(Model $current, Collection $models): array
     {
         $options = [];

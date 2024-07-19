@@ -19,6 +19,9 @@ class UserLabelsListener
         $this->connection = $connection;
     }
 
+    /**
+     * @return array<int|string, string>
+     */
     public function __invoke(): array
     {
         return $this->connection->fetchAllKeyValue("SELECT id, title FROM tl_page WHERE type='root' AND (fallback='' OR languageRoot!=0) ORDER BY pid, sorting");

@@ -85,7 +85,7 @@ abstract class AbstractViewListener extends AbstractTableListener
     /**
      * Returns a list of languages the user can switch to.
      *
-     * @return array
+     * @return array<int|string, string>
      */
     abstract protected function getAvailableLanguages(PageModel $page);
 
@@ -120,6 +120,8 @@ abstract class AbstractViewListener extends AbstractTableListener
 
     /**
      * Returns HTML markup for the global operation.
+     *
+     * @param array<int|string, string> $languages
      */
     private function getSwitchButton(PageModel $page, array $languages): string
     {

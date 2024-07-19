@@ -130,6 +130,9 @@ class AssociatedForPageTest extends ContaoTestCase
         $this->assertPageCount($pages, 2);
     }
 
+    /**
+     * @param array<PageModel> $pages
+     */
     private function assertPageCount(array $pages, int $count): void
     {
         $this->assertCount($count, $pages);

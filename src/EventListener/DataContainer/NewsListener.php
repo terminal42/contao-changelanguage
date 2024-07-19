@@ -23,6 +23,8 @@ class NewsListener extends AbstractChildTableListener
 
     /**
      * @param Collection<NewsModel> $models
+     *
+     * @return array<string, array<int|string, string>>
      */
     protected function formatOptions(Model $current, Collection $models): array
     {

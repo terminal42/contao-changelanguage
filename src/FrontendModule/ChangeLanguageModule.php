@@ -129,6 +129,23 @@ class ChangeLanguageModule extends Module
 
     /**
      * Generates array suitable for nav_default template.
+     *
+     * @return array{
+     *     isActive: bool,
+     *     class: string,
+     *     link: string,
+     *     subitems: string,
+     *     href: string,
+     *     title: string,
+     *     pageTitle: string,
+     *     accesskey: string,
+     *     tabindex: string,
+     *     nofollow: bool,
+     *     rel: string,
+     *     target: string,
+     *     item: NavigationItem,
+     *     languageTag: string,
+     * }
      */
     protected function generateTemplateArray(NavigationItem $item, UrlParameterBag $urlParameterBag): array
     {

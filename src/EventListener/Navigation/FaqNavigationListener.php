@@ -51,6 +51,11 @@ class FaqNavigationListener extends AbstractNavigationListener implements Naviga
         return FaqModel::findPublishedByParentAndIdOrAlias($alias, $calendars->fetchEach('id'));
     }
 
+    /**
+     * @param array<string> $columns
+     * @param array<string> $values
+     * @param array<string, string> $options
+     */
     protected function findPublishedBy(array $columns, array $values = [], array $options = []): ?FaqModel
     {
         return FaqModel::findOneBy(

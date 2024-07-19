@@ -17,8 +17,14 @@ class NavigationFactory
 
     private PageModel $currentPage;
 
-    private array $locales = [];
+    /**
+     * @var array<string, string>
+     */
+    private array $locales;
 
+    /**
+     * @param array<string, string> $locales
+     */
     public function __construct(PageFinder $pageFinder, LanguageText $languageText, PageModel $currentPage, array $locales = [])
     {
         $this->pageFinder = $pageFinder;

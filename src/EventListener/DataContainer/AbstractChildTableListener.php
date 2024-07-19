@@ -34,9 +34,9 @@ abstract class AbstractChildTableListener extends AbstractTableListener
     }
 
     /**
-     * @return array
+     * @return array<int|string, string>
      */
-    public function onLanguageMainOptions(DataContainer $dc)
+    public function onLanguageMainOptions(DataContainer $dc): array
     {
         try {
             if (
@@ -106,7 +106,7 @@ abstract class AbstractChildTableListener extends AbstractTableListener
     /**
      * @param Collection<Model> $models
      *
-     * @return array
+     * @return array<int|string, string>
      */
-    abstract protected function formatOptions(Model $current, Collection $models);
+    abstract protected function formatOptions(Model $current, Collection $models): array;
 }

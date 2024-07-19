@@ -87,6 +87,8 @@ class PageFinder
     }
 
     /**
+     * @param array<PageModel>|null $rootPages
+     *
      * @return array<PageModel>
      */
     public function findAssociatedForPage(PageModel $page, bool $skipCurrent = false, ?array $rootPages = null, bool $publishedOnly = true): array
@@ -198,6 +200,9 @@ class PageFinder
         return $this->findAssociatedForLanguage($parent, $language);
     }
 
+    /**
+     * @param array<string> $columns
+     */
     private function addPublishingConditions(array &$columns, string $table): void
     {
         if (!System::getContainer()->get('contao.security.token_checker')->isPreviewMode()) {
@@ -211,6 +216,10 @@ class PageFinder
     }
 
     /**
+     * @param array<string> $columns
+     * @param array<string> $values
+     * @param array<string, string> $options
+     *
      * @return array<PageModel>
      */
     private function findPages(array $columns, array $values, array $options = []): array

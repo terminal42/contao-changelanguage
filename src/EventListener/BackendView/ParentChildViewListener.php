@@ -61,7 +61,10 @@ class ParentChildViewListener extends AbstractViewListener
         return PageModel::findWithDetails($pageId);
     }
 
-    protected function getAvailableLanguages(PageModel $page)
+    /**
+     * @return array<int|string, string>
+     */
+    protected function getAvailableLanguages(PageModel $page): array
     {
         $options = [];
         $masterRoot = $this->pageFinder->findMasterRootForPage($page);

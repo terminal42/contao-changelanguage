@@ -99,6 +99,10 @@ abstract class AbstractNavigationListener
 
     /**
      * Adds publishing conditions to Model query columns if backend user is not logged in.
+     *
+     * @param array<string> $columns
+     *
+     * @return array<string>
      */
     protected function addPublishedConditions(array $columns, string $table, bool $addStartStop = true): array
     {
@@ -144,6 +148,10 @@ abstract class AbstractNavigationListener
     abstract protected function findCurrent();
 
     /**
+     * @param array<string> $columns
+     * @param array<string> $values
+     * @param array<string, string> $options
+     *
      * @return Model|null
      */
     abstract protected function findPublishedBy(array $columns, array $values = [], array $options = []);

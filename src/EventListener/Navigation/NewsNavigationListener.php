@@ -54,6 +54,12 @@ class NewsNavigationListener extends AbstractNavigationListener implements Navig
         return NewsModel::findPublishedByParentAndIdOrAlias($alias, $archives->fetchEach('id'), $options);
     }
 
+    /**
+     * @param array<string> $columns
+     * @param array<string> $values
+     * @param array<string, string> $options
+     * @return NewsModel|null
+     */
     protected function findPublishedBy(array $columns, array $values = [], array $options = []): ?NewsModel
     {
         return NewsModel::findOneBy(

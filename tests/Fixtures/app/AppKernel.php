@@ -28,12 +28,16 @@ use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Cmf\Bundle\RoutingBundle\CmfRoutingBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\Kernel;
 use Terminal42\ChangeLanguage\Terminal42ChangeLanguageBundle;
 use Terminal42\ServiceAnnotationBundle\Terminal42ServiceAnnotationBundle;
 
 class AppKernel extends Kernel
 {
+    /**
+     * @return array<BundleInterface>
+     */
     public function registerBundles(): array
     {
         return [

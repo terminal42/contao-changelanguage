@@ -29,6 +29,9 @@ class PageViewListener extends AbstractViewListener
         return PageModel::findById($node);
     }
 
+    /**
+     * @return array<int|string, string>
+     */
     protected function getAvailableLanguages(PageModel $page): array
     {
         $options = [];

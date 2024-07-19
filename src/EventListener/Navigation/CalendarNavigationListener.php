@@ -51,6 +51,11 @@ class CalendarNavigationListener extends AbstractNavigationListener implements N
         return CalendarEventsModel::findPublishedByParentAndIdOrAlias($alias, $calendars->fetchEach('id'));
     }
 
+    /**
+     * @param array<string> $columns
+     * @param array<string> $values
+     * @param array<string, string> $options
+     */
     protected function findPublishedBy(array $columns, array $values = [], array $options = [])
     {
         return CalendarEventsModel::findOneBy(
