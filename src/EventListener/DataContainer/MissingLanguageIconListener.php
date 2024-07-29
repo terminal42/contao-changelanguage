@@ -88,8 +88,9 @@ class MissingLanguageIconListener implements ResetInterface
         }
 
         $translation = $this->getPageTranslation((int) $row['id']);
+        $languageMain = $translation['languageMain'] ?? null;
 
-        if (0 === ($translation['languageMain'] ?? null)) {
+        if (null !== $languageMain && 0 === (int) $languageMain) {
             return $this->generateLabelWithWarning($label);
         }
 
