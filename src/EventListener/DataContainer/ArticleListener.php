@@ -71,7 +71,7 @@ class ArticleListener extends AbstractTableListener
         ;
 
         while ($result->next()) {
-            $options[$result->id] = sprintf('%s [ID %s]', $result->title, $result->id);
+            $options[$result->id] = \sprintf('%s [ID %s]', $result->title, $result->id);
         }
 
         return $options;

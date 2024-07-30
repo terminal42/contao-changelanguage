@@ -83,7 +83,7 @@ class ParentTableListener
         ;
 
         while ($result->next()) {
-            $options[$result->id] = sprintf($GLOBALS['TL_LANG'][$this->table]['isSlave'], $result->title);
+            $options[$result->id] = \sprintf($GLOBALS['TL_LANG'][$this->table]['isSlave'], $result->title);
         }
 
         return $options;
@@ -109,7 +109,7 @@ class ParentTableListener
         ;
 
         if ($result->numRows > 0) {
-            throw new \RuntimeException(sprintf($GLOBALS['TL_LANG'][$this->table]['master'][2], $result->title));
+            throw new \RuntimeException(\sprintf($GLOBALS['TL_LANG'][$this->table]['master'][2], $result->title));
         }
     }
 }

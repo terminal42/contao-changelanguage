@@ -117,6 +117,7 @@ class UrlParameterBagTest extends TestCase
     {
         $this->expectException('InvalidArgumentException');
 
+        /** @phpstan-ignore argument.type */
         new UrlParameterBag(['foo' => (object) ['bar']]);
     }
 
@@ -126,6 +127,7 @@ class UrlParameterBagTest extends TestCase
 
         $bag = new UrlParameterBag();
 
+        /** @phpstan-ignore argument.type */
         $bag->setUrlAttribute('foo', (object) ['bar']);
     }
 
@@ -135,6 +137,7 @@ class UrlParameterBagTest extends TestCase
 
         $bag = new UrlParameterBag();
 
+        /** @phpstan-ignore argument.type */
         $bag->setUrlAttributes(['foo' => (object) ['bar']]);
     }
 
@@ -170,6 +173,7 @@ class UrlParameterBagTest extends TestCase
     {
         $this->expectException('InvalidArgumentException');
 
+        /** @phpstan-ignore argument.type */
         new UrlParameterBag([], ['foo' => (object) ['bar']]);
     }
 
@@ -179,6 +183,7 @@ class UrlParameterBagTest extends TestCase
 
         $bag = new UrlParameterBag();
 
+        /** @phpstan-ignore argument.type */
         $bag->setQueryParameter('foo', (object) ['bar']);
     }
 
@@ -188,6 +193,7 @@ class UrlParameterBagTest extends TestCase
 
         $bag = new UrlParameterBag();
 
+        /** @phpstan-ignore argument.type */
         $bag->setQueryParameters(['foo' => (object) ['bar']]);
     }
 }

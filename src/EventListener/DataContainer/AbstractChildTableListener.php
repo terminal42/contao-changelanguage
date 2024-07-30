@@ -34,7 +34,7 @@ abstract class AbstractChildTableListener extends AbstractTableListener
     }
 
     /**
-     * @return array<int|string, string>
+     * @return array<string, array<int|string, string>>
      */
     public function onLanguageMainOptions(DataContainer $dc): array
     {
@@ -54,7 +54,7 @@ abstract class AbstractChildTableListener extends AbstractTableListener
         $models = $class::findBy(
             [
                 $this->table.'.pid=?',
-                sprintf('%s.id NOT IN (SELECT languageMain FROM %s WHERE pid=? AND id!=?)', $this->table, $this->table),
+                \sprintf('%s.id NOT IN (SELECT languageMain FROM %s WHERE pid=? AND id!=?)', $this->table, $this->table),
             ],
             [$master->id, $current->pid, $current->id],
         );
@@ -106,7 +106,7 @@ abstract class AbstractChildTableListener extends AbstractTableListener
     /**
      * @param Collection<Model> $models
      *
-     * @return array<int|string, string>
+     * @return array<string, array<int|string, string>>|array<int|string, string>
      */
     abstract protected function formatOptions(Model $current, Collection $models): array;
 }

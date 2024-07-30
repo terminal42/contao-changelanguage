@@ -55,10 +55,9 @@ class NewsNavigationListener extends AbstractNavigationListener implements Navig
     }
 
     /**
-     * @param array<string> $columns
-     * @param array<string> $values
+     * @param array<string>         $columns
+     * @param array<string>         $values
      * @param array<string, string> $options
-     * @return NewsModel|null
      */
     protected function findPublishedBy(array $columns, array $values = [], array $options = []): ?NewsModel
     {

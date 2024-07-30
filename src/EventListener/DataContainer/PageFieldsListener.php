@@ -82,10 +82,10 @@ class PageFieldsListener
                 $labels = [];
 
                 foreach ($duplicates as $duplicate) {
-                    $labels[] = sprintf('%s (ID %s)', $duplicate->id, $duplicate->title);
+                    $labels[] = \sprintf('%s (ID %s)', $duplicate->id, $duplicate->title);
                 }
 
-                throw new \RuntimeException(sprintf($GLOBALS['TL_LANG']['MSC']['duplicateMainLanguage'], implode(', ', $labels)));
+                throw new \RuntimeException(\sprintf($GLOBALS['TL_LANG']['MSC']['duplicateMainLanguage'], implode(', ', $labels)));
             }
         }
 
@@ -120,7 +120,7 @@ class PageFieldsListener
         $options = [];
 
         foreach ($pages as $page) {
-            $options[$page->id] = sprintf(
+            $options[$page->id] = \sprintf(
                 '%s%s [%s]',
                 $page->title,
                 \strlen($page->dns) ? (' ('.$page->dns.')') : '',

@@ -188,13 +188,13 @@ class PageFinder
                 }
             }
 
-            throw new \InvalidArgumentException(sprintf('There\'s no language "%s" related to root page ID "%s"', $language, $page->id));
+            throw new \InvalidArgumentException(\sprintf('There\'s no language "%s" related to root page ID "%s"', $language, $page->id));
         }
 
         $parent = PageModel::findPublishedById($page->pid);
 
         if (!$parent instanceof PageModel) {
-            throw new \RuntimeException(sprintf('Parent page for page ID "%s" not found', $page->id));
+            throw new \RuntimeException(\sprintf('Parent page for page ID "%s" not found', $page->id));
         }
 
         return $this->findAssociatedForLanguage($parent, $language);
@@ -216,8 +216,8 @@ class PageFinder
     }
 
     /**
-     * @param array<string> $columns
-     * @param array<string> $values
+     * @param array<string>         $columns
+     * @param array<string>         $values
      * @param array<string, string> $options
      *
      * @return array<PageModel>

@@ -151,15 +151,15 @@ abstract class AbstractViewListener extends AbstractTableListener
             HTML;
 
         foreach ($languages as $id => $language) {
-            $list .= sprintf(
+            $list .= \sprintf(
                 '<li><a href="%s" title="%s">%s</a></li>',
                 Backend::addToUrl('&amp;switchLanguage='.$id),
-                sprintf($GLOBALS['TL_LANG']['MSC']['switchLanguageTo'][1], $language),
+                \sprintf($GLOBALS['TL_LANG']['MSC']['switchLanguageTo'][1], $language),
                 $language,
             );
         }
 
-        return sprintf(
+        return \sprintf(
             $markup,
             $GLOBALS['TL_LANG']['MSC']['switchLanguage'],
             $this->getLanguageLabel($page->language),

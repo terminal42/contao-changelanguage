@@ -36,7 +36,7 @@ class LanguageTest extends TestCase
     }
 
     /**
-     * @return iterable<int, string>
+     * @return iterable<array<int, string>>
      */
     public static function languagesProvider(): iterable
     {
@@ -48,7 +48,7 @@ class LanguageTest extends TestCase
     }
 
     /**
-     * @return iterable<int, string>
+     * @return iterable<array<int, string>>
      */
     public static function invalidLanguagesProvider(): iterable
     {

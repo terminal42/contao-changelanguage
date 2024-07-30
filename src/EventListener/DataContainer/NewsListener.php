@@ -36,7 +36,7 @@ class NewsListener extends AbstractChildTableListener
         foreach ($models as $model) {
             $group = strtotime('0:00', (int) $model->date) === $dayBegin ? $sameDay : $otherDay;
 
-            $options[$group][$model->id] = sprintf(
+            $options[$group][$model->id] = \sprintf(
                 '%s [%s]',
                 $model->headline,
                 Date::parse($GLOBALS['TL_CONFIG']['datimFormat'], $model->time),

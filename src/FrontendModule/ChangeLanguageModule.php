@@ -167,6 +167,9 @@ class ChangeLanguageModule extends Module
         ];
     }
 
+    /**
+     * @param array<array<string, int|string>> $items
+     */
     protected function generateNavigationTemplate(array $items): string
     {
         $objTemplate = new FrontendTemplate($this->navigationTpl ?: 'nav_default');
@@ -188,7 +191,7 @@ class ChangeLanguageModule extends Module
     /**
      * Creates an UrlParameterBag from the current environment.
      *
-     * @param array $queryParameters An array of query parameters to keep
+     * @param array<string, int|string> $queryParameters An array of query parameters to keep
      */
     protected function createUrlParameterBag(array $queryParameters = []): UrlParameterBag
     {

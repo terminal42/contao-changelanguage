@@ -53,8 +53,8 @@ class NavigationFactory
             if (isset($this->locales[$item->getLocaleId()])) {
                 $item->setAriaLabel(
                     $item->isDirectFallback()
-                        ? sprintf($GLOBALS['TL_LANG']['MSC']['gotoLanguage'], $this->locales[$item->getLocaleId()])
-                        : sprintf($GLOBALS['TL_LANG']['MSC']['switchLanguageTo'][1], $this->locales[$item->getLocaleId()]),
+                        ? \sprintf($GLOBALS['TL_LANG']['MSC']['gotoLanguage'], $this->locales[$item->getLocaleId()])
+                        : \sprintf($GLOBALS['TL_LANG']['MSC']['switchLanguageTo'][1], $this->locales[$item->getLocaleId()]),
                 );
             }
 
@@ -98,7 +98,7 @@ class NavigationFactory
             $language = strtolower($rootPage->language);
 
             if (\array_key_exists($language, $navigationItems)) {
-                throw new \RuntimeException(sprintf('Multiple root pages for the language "%s" found', $rootPage->language));
+                throw new \RuntimeException(\sprintf('Multiple root pages for the language "%s" found', $rootPage->language));
             }
 
             $navigationItems[$language] = new NavigationItem($rootPage, $this->languageText->get($language));
@@ -122,7 +122,7 @@ class NavigationFactory
             $page->loadDetails();
 
             if (!\array_key_exists($page->rootId, $rootPages)) {
-                throw new \RuntimeException(sprintf('Missing root page for language "%s"', $page->language));
+                throw new \RuntimeException(\sprintf('Missing root page for language "%s"', $page->language));
             }
 
             if (!$this->isPagePublished($rootPages[$page->rootId])) {

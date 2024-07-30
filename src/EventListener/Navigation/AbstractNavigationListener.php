@@ -79,7 +79,7 @@ abstract class AbstractNavigationListener
         $translated = $this->findPublishedBy(
             [
                 "($t.id=? OR $t.languageMain=?)",
-                sprintf('%s.pid=(SELECT id FROM %s WHERE (id=? OR master=?) AND jumpTo=?)', $t, $parent::getTable()),
+                \sprintf('%s.pid=(SELECT id FROM %s WHERE (id=? OR master=?) AND jumpTo=?)', $t, $parent::getTable()),
             ],
             [$mainId, $mainId, $masterId, $masterId, $targetPage->id],
         );
@@ -148,8 +148,8 @@ abstract class AbstractNavigationListener
     abstract protected function findCurrent();
 
     /**
-     * @param array<string> $columns
-     * @param array<string> $values
+     * @param array<string>         $columns
+     * @param array<string|int>     $values
      * @param array<string, string> $options
      *
      * @return Model|null

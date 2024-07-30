@@ -30,7 +30,7 @@ class FaqListener extends AbstractChildTableListener
         $options = [];
 
         foreach ($models as $model) {
-            $options[$model->id] = sprintf('%s [ID %s]', $model->question, $model->id);
+            $options[$model->id] = \sprintf('%s [ID %s]', $model->question, $model->id);
         }
 
         return $options;

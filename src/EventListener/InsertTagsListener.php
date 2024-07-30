@@ -50,7 +50,7 @@ class InsertTagsListener
         }
 
         return $this->parser->replace(
-            sprintf(
+            \sprintf(
                 '{{%s::%s}}',
                 substr($parts[0], 15),
                 $targetPage->id,

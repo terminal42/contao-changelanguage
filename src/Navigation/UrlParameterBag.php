@@ -7,15 +7,18 @@ namespace Terminal42\ChangeLanguage\Navigation;
 class UrlParameterBag
 {
     /**
-     * @var array<int|float|string|bool>
+     * @var array<string, int|float|string|bool>
      */
     private array $attributes;
 
+    /**
+     * @var array<string, int|float|string|bool|array<int|float|string|bool>>
+     */
     private array $query;
 
     /**
-     * @param array<string, int|float|string|bool> $attributes Route parameters (e.g. items=foobar in /alias/items/foobar.html)
-     * @param array<string, string> $query The URL query parameters
+     * @param array<string, int|float|string|bool>                              $attributes Route parameters (e.g. items=foobar in /alias/items/foobar.html)
+     * @param array<string, int|float|string|bool|array<int|float|string|bool>> $query      The URL query parameters
      */
     public function __construct(array $attributes = [], array $query = [])
     {
@@ -72,11 +75,17 @@ class UrlParameterBag
         unset($this->attributes[$name]);
     }
 
+    /**
+     * @return array<string, int|float|string|bool|array<int|float|string|bool>>
+     */
     public function getQueryParameters(): array
     {
         return $this->query;
     }
 
+    /**
+     * @param array<string, int|float|string|bool|array<int|float|string|bool>> $query
+     */
     public function setQueryParameters(array $query): void
     {
         $this->validateScalar($query);

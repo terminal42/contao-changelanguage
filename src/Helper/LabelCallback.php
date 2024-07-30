@@ -53,8 +53,8 @@ class LabelCallback
     }
 
     /**
-     * @param callable|array $callback
-     * @param array<mixed> $args
+     * @param callable|array<string, string> $callback
+     * @param array<mixed>                   $args
      *
      * @return mixed
      */

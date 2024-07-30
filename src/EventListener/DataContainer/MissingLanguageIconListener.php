@@ -33,7 +33,7 @@ class MissingLanguageIconListener implements ResetInterface
     private Connection $connection;
 
     /**
-     * @var array<int|string, array>|null
+     * @var array<int|string, array<int|string>>|null
      */
     private ?array $pageCache = null;
 
@@ -72,8 +72,8 @@ class MissingLanguageIconListener implements ResetInterface
     /**
      * Adds missing translation warning to page tree.
      *
-     * @param array<string|array> $args
-     * @param string|array|null $previousResult;
+     * @param array{0: array<string, int|string>, 1: string} $args
+     * @param mixed                                          $previousResult
      */
     private function onPageLabel(array $args, $previousResult = null): string
     {
@@ -103,7 +103,7 @@ class MissingLanguageIconListener implements ResetInterface
             && \is_array($user->pageLanguageLabels)
             && \in_array($translation['rootId'] ?? null, $user->pageLanguageLabels, false)
         ) {
-            return sprintf(
+            return \sprintf(
                 '%s <span style="color:#999;padding-left:3px">(<a href="%s" title="%s" style="color:#999">%s</a>)</span>',
                 $label,
                 Backend::addToUrl('pn='.$translation['languageMain']),
@@ -118,8 +118,8 @@ class MissingLanguageIconListener implements ResetInterface
     /**
      * Adds missing translation warning to article tree.
      *
-     * @param array<int, string> $args
-     * @param string|array|null $previousResult
+     * @param array{0: array<string, int|string>, 1: string} $args
+     * @param mixed                                          $previousResult
      */
     private function onArticleLabel(array $args, $previousResult = null): string
     {
@@ -143,8 +143,8 @@ class MissingLanguageIconListener implements ResetInterface
     /**
      * Generate missing translation warning for news child records.
      *
-     * @param array<int, string> $args
-     * @param string|array|null $previousResult
+     * @param array{0: array<string, int|string>} $args
+     * @param mixed                               $previousResult
      */
     private function onNewsChildRecords(array $args, $previousResult = null): string
     {
@@ -170,8 +170,8 @@ class MissingLanguageIconListener implements ResetInterface
     /**
      * Generate missing translation warning for calendar events child records.
      *
-     * @param array<int, string> $args
-     * @param string|array|null $previousResult
+     * @param array{0: array<string, int|string>} $args
+     * @param mixed                               $previousResult
      */
     private function onCalendarEventChildRecords(array $args, $previousResult = null): string
     {
@@ -193,8 +193,8 @@ class MissingLanguageIconListener implements ResetInterface
     /**
      * Generate missing translation warning for faq child records.
      *
-     * @param array<int, string> $args
-     * @param string|array|null $previousResult
+     * @param array{0: array<string, int|string>} $args
+     * @param mixed                               $previousResult
      */
     private function onFaqChildRecords(array $args, $previousResult = null): string
     {
@@ -215,7 +215,7 @@ class MissingLanguageIconListener implements ResetInterface
 
     private function generateLabelWithWarning(string $label, string $imgStyle = ''): string
     {
-        return $label.sprintf(
+        return $label.\sprintf(
             '<span style="padding-left:3px"><img src="%s" alt="%s" title="%s" style="%s"></span>',
             'bundles/terminal42changelanguage/language-warning.png',
             $GLOBALS['TL_LANG']['MSC']['noMainLanguage'],
