@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Terminal42\ChangeLanguage\FrontendModule;
 
+use Contao\ArrayUtil;
 use Contao\BackendTemplate;
 use Contao\FrontendTemplate;
 use Contao\Input;
@@ -195,20 +196,29 @@ class ChangeLanguageModule extends Module
      */
     protected function createUrlParameterBag(array $queryParameters = []): UrlParameterBag
     {
-        $attributes = [];
-        $query = [];
-        $input = $_GET;
+        $request = System::getContainer()->get('request_stack')->getCurrentRequest();
 
-        // the current page language is set in $_GET
-        unset($input['language'], $input['auto_item']);
-
-        $currentQuery = [];
-
-        if (!empty($_SERVER['QUERY_STRING'])) {
-            parse_str($_SERVER['QUERY_STRING'], $currentQuery);
+        if (!$request) {
+            return new UrlParameterBag();
         }
 
-        foreach ($input as $k => $value) {
+        $attributes = [];
+        $query = [];
+
+        if ($request->attributes->has('parameters')) {
+            $fragments = explode('/', ltrim($request->attributes->get('parameters'), '/'));
+
+            if (\count($fragments) % 2 > 0) {
+                array_unshift($fragments, 'auto_item');
+            }
+
+            for ($i=0, $c=\count($fragments); $i<$c; $i+=2) {
+                $attributes[$fragments[$i]] = $fragments[$i + 1];
+            }
+        }
+
+        // Use Contao input encoding
+        foreach (array_keys($request->query->all()) as $k) {
             // GET parameters can be an array
             $value = Input::get($k, false, true);
 
@@ -216,9 +226,7 @@ class ChangeLanguageModule extends Module
                 continue;
             }
 
-            if (!\is_array($value) && !\array_key_exists($k, $currentQuery)) {
-                $attributes[$k] = $value;
-            } elseif (\in_array($k, $queryParameters, false)) {
+            if (\in_array($k, $queryParameters, false)) {
                 $query[$k] = $value;
             }
         }
