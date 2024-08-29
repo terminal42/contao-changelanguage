@@ -125,7 +125,7 @@ class PageFinder
 
         return array_filter(
             $this->findPages($columns, $values),
-            static function (PageModel $page) use ($rootPages) {
+            static function (PageModel $page) use ($rootPages): bool {
                 $page->loadDetails();
 
                 return \array_key_exists($page->rootId, $rootPages);

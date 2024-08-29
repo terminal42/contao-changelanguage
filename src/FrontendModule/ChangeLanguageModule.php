@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Terminal42\ChangeLanguage\FrontendModule;
 
-use Contao\ArrayUtil;
 use Contao\BackendTemplate;
 use Contao\FrontendTemplate;
 use Contao\Input;
@@ -212,7 +211,7 @@ class ChangeLanguageModule extends Module
                 array_unshift($fragments, 'auto_item');
             }
 
-            for ($i=0, $c=\count($fragments); $i<$c; $i+=2) {
+            for ($i = 0, $c = \count($fragments); $i < $c; $i += 2) {
                 $attributes[$fragments[$i]] = $fragments[$i + 1];
             }
         }

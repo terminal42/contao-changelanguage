@@ -79,7 +79,7 @@ class LanguageText
 
         usort(
             $items,
-            static function (NavigationItem $a, NavigationItem $b) use ($languages) {
+            static function (NavigationItem $a, NavigationItem $b) use ($languages): int {
                 $key1 = array_search(strtolower($a->getLocaleId()), $languages, true);
                 $key2 = array_search(strtolower($b->getLocaleId()), $languages, true);
 

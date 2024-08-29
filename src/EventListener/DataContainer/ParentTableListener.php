@@ -29,7 +29,7 @@ class ParentTableListener
             'label' => &$GLOBALS['TL_LANG'][$this->table]['master'],
             'exclude' => true,
             'inputType' => 'select',
-            'options_callback' => fn (DataContainer $dc) => $this->onMasterOptions($dc),
+            'options_callback' => fn (DataContainer $dc): array => $this->onMasterOptions($dc),
             'eval' => [
                 'includeBlankOption' => true,
                 'blankOptionLabel' => &$GLOBALS['TL_LANG'][$this->table]['isMaster'],

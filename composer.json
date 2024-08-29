@@ -30,7 +30,15 @@
         "php": "^7.4 || ^8.0",
         "contao/core-bundle": "^4.13.25 || ^5.0",
         "league/uri": "^6.0 || ^7.0",
-        "league/uri-components": "^2.0 || ^7.0"
+        "league/uri-components": "^2.0 || ^7.0",
+        "doctrine/dbal": "^3.3",
+        "symfony/config": "^5.0 || ^6.0 || ^7.0",
+        "symfony/dependency-injection": "^5.0 || ^6.0 || ^7.0",
+        "symfony/event-dispatcher-contracts": "^2.0 || ^3.0",
+        "symfony/http-kernel": "^5.0 || ^6.0 || ^7.0",
+        "symfony/routing": "^5.0 || ^6.0 || ^7.0",
+        "symfony/security-core": "^5.0 || ^6.0 || ^7.0",
+        "symfony/service-contracts": "^1.1 || ^2.0 || ^3.0"
     },
     "require-dev": {
         "terminal42/contao-build-tools": "dev-main",

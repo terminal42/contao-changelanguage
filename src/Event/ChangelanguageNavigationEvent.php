@@ -24,20 +24,16 @@ class ChangelanguageNavigationEvent extends Event
 
     /**
      * Gets the navigation item for this event.
-     *
-     * @return NavigationItem
      */
-    public function getNavigationItem()
+    public function getNavigationItem(): NavigationItem
     {
         return $this->navigationItem;
     }
 
     /**
      * Gets the UrlParameterBag for this navigation item.
-     *
-     * @return UrlParameterBag
      */
-    public function getUrlParameterBag()
+    public function getUrlParameterBag(): UrlParameterBag
     {
         return $this->urlParameterBag;
     }

@@ -57,7 +57,7 @@ class ArticleNavigationListener
 
         $targetArticle = $this->findTargetArticle(
             $currentArticle,
-            $targetRoot->id,
+            (int) $targetRoot->id,
             $objPage->rootId === $masterRoot->id,
             null !== $masterRoot && $targetRoot->id === $masterRoot->id,
         );
@@ -71,12 +71,8 @@ class ArticleNavigationListener
 
     /**
      * Find target article for a root page and current article.
-     *
-     * @param int  $targetRootId
-     * @param bool $currentIsFallback
-     * @param bool $targetIsFallback
      */
-    private function findTargetArticle(ArticleModel $currentArticle, $targetRootId, $currentIsFallback, $targetIsFallback): ?ArticleModel
+    private function findTargetArticle(ArticleModel $currentArticle, int $targetRootId, bool $currentIsFallback, bool $targetIsFallback): ?ArticleModel
     {
         // If the target root is fallback, the article ID will match our current "languageMain"
         if ($targetIsFallback) {

@@ -21,7 +21,7 @@ class ParentChildViewListener extends AbstractViewListener
      */
     private $current = false;
 
-    protected function isSupported()
+    protected function isSupported(): bool
     {
         return $this->getTable() === Input::get('table') && (
             ('news' === Input::get('do') && InstalledVersions::isInstalled('contao/news-bundle'))
@@ -104,12 +104,8 @@ class ParentChildViewListener extends AbstractViewListener
 
     /**
      * Finds related item for a given page.
-     *
-     * @param int $id
-     *
-     * @return Model|null
      */
-    private function findRelatedForPageAndId(PageModel $page, $id)
+    private function findRelatedForPageAndId(PageModel $page, int $id): ?Model
     {
         /** @var Model $class */
         $class = $this->getModelClass();
