@@ -177,11 +177,12 @@ class NavigationItem
                 throw $e;
             }
 
-            $this->targetPage = null;
-            $this->isDirectFallback = false;
-            $this->isCurrentPage = false;
+            $clone = clone $this;
+            $clone->targetPage = null;
+            $clone->isDirectFallback = false;
+            $clone->isCurrentPage = false;
 
-            return $this->getHref($urlParameterBag);
+            return $clone->getHref($urlParameterBag);
         }
 
         if (null !== ($queryString = $urlParameterBag->generateQueryString())) {
