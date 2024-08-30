@@ -204,11 +204,12 @@ class ChangeLanguageModule extends Module
         $attributes = [];
         $query = [];
 
-        if ($request->attributes->has('parameters')) {
-            $fragments = explode('/', ltrim($request->attributes->get('parameters'), '/'));
+        if (!empty($parameters = $request->attributes->get('parameters'))) {
+            $fragments = explode('/', ltrim($parameters, '/'));
 
+            // The auto_item parameter must not be retained
             if (\count($fragments) % 2 > 0) {
-                array_unshift($fragments, 'auto_item');
+                array_shift($fragments);
             }
 
             for ($i = 0, $c = \count($fragments); $i < $c; $i += 2) {
