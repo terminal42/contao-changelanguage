@@ -11,6 +11,7 @@
             </trans-unit>
             <trans-unit id="tl_faq_category.master.2">
                 <source>This master has already been selected for the &quot;%s&quot; category!</source>
+                <target>Ten mistrz został już wybrany do kategorii &quot;%s&quot;!</target>
             </trans-unit>
             <trans-unit id="tl_faq_category.language.0">
                 <source>Language</source>
