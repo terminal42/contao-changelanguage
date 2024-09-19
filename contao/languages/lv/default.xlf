@@ -3,6 +3,7 @@
         <body>
             <trans-unit id="MSC.duplicateMainLanguage">
                 <source>The selected page is already assigned to &quot;%s&quot; in the main language.</source>
+                <target>Izvēlētā lapa jau ir piešķirta &quot;%s&quot; galvenajā valodā.</target>
             </trans-unit>
             <trans-unit id="MSC.noMainLanguage">
                 <source>Main language missing</source>
@@ -22,6 +23,7 @@
             </trans-unit>
             <trans-unit id="MSC.gotoLanguage">
                 <source>Go to current page in %s</source>
+                <target>Pāreja uz pašreizējo lapu %s</target>
             </trans-unit>
         </body>
     </file>

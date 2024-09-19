@@ -3,12 +3,15 @@
         <body>
             <trans-unit id="tl_user.pageLanguageLabels.0">
                 <source>Fallback page titles</source>
+                <target>Titres de page de remplacement</target>
             </trans-unit>
             <trans-unit id="tl_user.pageLanguageLabels.1">
                 <source>Select the root pages for which pages you want to show the fallback page title.</source>
+                <target>Sélectionnez les pages racines pour lesquelles vous souhaitez afficher le titre de la page de remplacement.</target>
             </trans-unit>
             <trans-unit id="tl_user.changelanguage_legend">
                 <source>ChangeLanguage</source>
+                <target>ChangeLanguage</target>
             </trans-unit>
         </body>
     </file>

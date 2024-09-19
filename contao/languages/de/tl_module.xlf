@@ -32,6 +32,7 @@
             </trans-unit>
             <trans-unit id="tl_module.customLanguageText.1">
                 <source>Enter the page language as key and a replacement text as value.</source>
+                <target>Geben Sie die Seitensprache als Schlüssel und einen Ersatztext als Wert ein.</target>
             </trans-unit>
         </body>
     </file>
