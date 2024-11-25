@@ -8,6 +8,7 @@ use Composer\InstalledVersions;
 use Contao\Backend;
 use Contao\BackendUser;
 use Contao\Config;
+use Contao\CoreBundle\Security\ContaoCorePermissions;
 use Contao\CoreBundle\ServiceAnnotation\Hook;
 use Contao\Date;
 use Contao\Input;
@@ -15,6 +16,7 @@ use Contao\StringUtil;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Service\ResetInterface;
 use Terminal42\ChangeLanguage\Helper\LabelCallback;
 
@@ -23,6 +25,8 @@ use Terminal42\ChangeLanguage\Helper\LabelCallback;
  */
 class MissingLanguageIconListener implements ResetInterface
 {
+    private AuthorizationCheckerInterface $authorizationChecker;
+
     /**
      * @var array<string, string>|null
      */
@@ -42,10 +46,11 @@ class MissingLanguageIconListener implements ResetInterface
      */
     private ?array $translationCache = null;
 
-    public function __construct(TokenStorageInterface $tokenStorage, Connection $connection)
+    public function __construct(TokenStorageInterface $tokenStorage, Connection $connection, AuthorizationCheckerInterface $authorizationChecker)
     {
         $this->tokenStorage = $tokenStorage;
         $this->connection = $connection;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -83,7 +88,12 @@ class MissingLanguageIconListener implements ResetInterface
             $label = $previousResult;
         }
 
-        if ('root' === $row['type'] || 'folder' === $row['type'] || 'page' !== Input::get('do')) {
+        if (
+            'root' === $row['type']
+            || 'folder' === $row['type']
+            || 'page' !== Input::get('do')
+            || !$this->authorizationChecker->isGranted(ContaoCorePermissions::USER_CAN_EDIT_FIELD_OF_TABLE, 'tl_page.languageMain')
+        ) {
             return $label;
         }
 
@@ -129,7 +139,10 @@ class MissingLanguageIconListener implements ResetInterface
             $label = $previousResult;
         }
 
-        if (!$row['showTeaser']) {
+        if (
+            !$row['showTeaser']
+            || !$this->authorizationChecker->isGranted(ContaoCorePermissions::USER_CAN_EDIT_FIELD_OF_TABLE, 'tl_article.languageMain')
+        ) {
             return $label;
         }
 
@@ -155,6 +168,10 @@ class MissingLanguageIconListener implements ResetInterface
             $label = '<div class="tl_content_left">'.$row['headline'].' <span style="color:#999;padding-left:3px">['.Date::parse(Config::get('datimFormat'), $row['date']).']</span></div>';
         }
 
+        if (!$this->authorizationChecker->isGranted(ContaoCorePermissions::USER_CAN_EDIT_FIELD_OF_TABLE, 'tl_news.languageMain')) {
+            return $label;
+        }
+
         if (0 === $this->getChildTranslation((int) $row['id'], 'tl_news', 'tl_news_archive', 'master')) {
             return preg_replace(
                 '#</div>#',
@@ -178,6 +195,10 @@ class MissingLanguageIconListener implements ResetInterface
         $row = $args[0];
         $label = (string) $previousResult;
 
+        if (!$this->authorizationChecker->isGranted(ContaoCorePermissions::USER_CAN_EDIT_FIELD_OF_TABLE, 'tl_calendar_events.languageMain')) {
+            return $label;
+        }
+
         if (0 === $this->getChildTranslation((int) $row['id'], 'tl_calendar_events', 'tl_calendar', 'master')) {
             return preg_replace(
                 '#</div>#',
@@ -200,6 +221,10 @@ class MissingLanguageIconListener implements ResetInterface
     {
         $row = $args[0];
         $label = (string) $previousResult;
+
+        if (!$this->authorizationChecker->isGranted(ContaoCorePermissions::USER_CAN_EDIT_FIELD_OF_TABLE, 'tl_faq.languageMain')) {
+            return $label;
+        }
 
         if (0 === $this->getChildTranslation((int) $row['id'], 'tl_faq', 'tl_faq_category', 'master')) {
             return preg_replace(
