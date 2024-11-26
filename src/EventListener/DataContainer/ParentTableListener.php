@@ -63,7 +63,7 @@ class ParentTableListener
         $associated = [];
         $pageFinder = new PageFinder();
 
-        foreach ($pageFinder->findAssociatedForPage($jumpTo, true) as $page) {
+        foreach ($pageFinder->findAssociatedForPage($jumpTo, true, null, false) as $page) {
             $associated[] = $page->id;
         }
 
