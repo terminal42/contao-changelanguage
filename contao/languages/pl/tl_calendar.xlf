@@ -11,6 +11,7 @@
             </trans-unit>
             <trans-unit id="tl_calendar.master.2">
                 <source>This master has already been selected for the &quot;%s&quot; calendar!</source>
+                <target>Ten mistrz został już wybrany do &quot;%s&quot; kalendarza!</target>
             </trans-unit>
             <trans-unit id="tl_calendar.language.0">
                 <source>Language</source>
