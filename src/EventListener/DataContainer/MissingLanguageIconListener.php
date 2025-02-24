@@ -92,7 +92,7 @@ class MissingLanguageIconListener implements ResetInterface
             'root' === $row['type']
             || 'folder' === $row['type']
             || 'page' !== Input::get('do')
-            || !$this->authorizationChecker->isGranted(ContaoCorePermissions::USER_CAN_EDIT_FIELD_OF_TABLE, 'tl_page.languageMain')
+            || !$this->authorizationChecker->isGranted(ContaoCorePermissions::USER_CAN_EDIT_FIELD_OF_TABLE, 'tl_page::languageMain')
         ) {
             return $label;
         }
@@ -141,7 +141,7 @@ class MissingLanguageIconListener implements ResetInterface
 
         if (
             !$row['showTeaser']
-            || !$this->authorizationChecker->isGranted(ContaoCorePermissions::USER_CAN_EDIT_FIELD_OF_TABLE, 'tl_article.languageMain')
+            || !$this->authorizationChecker->isGranted(ContaoCorePermissions::USER_CAN_EDIT_FIELD_OF_TABLE, 'tl_article::languageMain')
         ) {
             return $label;
         }
@@ -168,7 +168,7 @@ class MissingLanguageIconListener implements ResetInterface
             $label = '<div class="tl_content_left">'.$row['headline'].' <span style="color:#999;padding-left:3px">['.Date::parse(Config::get('datimFormat'), $row['date']).']</span></div>';
         }
 
-        if (!$this->authorizationChecker->isGranted(ContaoCorePermissions::USER_CAN_EDIT_FIELD_OF_TABLE, 'tl_news.languageMain')) {
+        if (!$this->authorizationChecker->isGranted(ContaoCorePermissions::USER_CAN_EDIT_FIELD_OF_TABLE, 'tl_news::languageMain')) {
             return $label;
         }
 
@@ -195,7 +195,7 @@ class MissingLanguageIconListener implements ResetInterface
         $row = $args[0];
         $label = (string) $previousResult;
 
-        if (!$this->authorizationChecker->isGranted(ContaoCorePermissions::USER_CAN_EDIT_FIELD_OF_TABLE, 'tl_calendar_events.languageMain')) {
+        if (!$this->authorizationChecker->isGranted(ContaoCorePermissions::USER_CAN_EDIT_FIELD_OF_TABLE, 'tl_calendar_events::languageMain')) {
             return $label;
         }
 
@@ -222,7 +222,7 @@ class MissingLanguageIconListener implements ResetInterface
         $row = $args[0];
         $label = (string) $previousResult;
 
-        if (!$this->authorizationChecker->isGranted(ContaoCorePermissions::USER_CAN_EDIT_FIELD_OF_TABLE, 'tl_faq.languageMain')) {
+        if (!$this->authorizationChecker->isGranted(ContaoCorePermissions::USER_CAN_EDIT_FIELD_OF_TABLE, 'tl_faq::languageMain')) {
             return $label;
         }
 
