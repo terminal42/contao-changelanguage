@@ -33,6 +33,7 @@ abréviations).</target>
             </trans-unit>
             <trans-unit id="tl_module.customLanguageText.1">
                 <source>Enter the page language as key and a replacement text as value.</source>
+                <target>Saisissez la langue de la page comme clé et un texte de remplacement comme valeur.</target>
             </trans-unit>
         </body>
     </file>

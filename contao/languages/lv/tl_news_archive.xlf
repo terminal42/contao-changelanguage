@@ -11,6 +11,7 @@
             </trans-unit>
             <trans-unit id="tl_news_archive.master.2">
                 <source>This master has already been selected for the &quot;%s&quot; archive!</source>
+                <target>Šis meistars jau ir atlasīts &quot;%s&quot; arhīvam!</target>
             </trans-unit>
             <trans-unit id="tl_news_archive.language.0">
                 <source>Language</source>

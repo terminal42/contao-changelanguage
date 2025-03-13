@@ -3,6 +3,7 @@
         <body>
             <trans-unit id="MSC.duplicateMainLanguage">
                 <source>The selected page is already assigned to &quot;%s&quot; in the main language.</source>
+                <target>Wybrana strona jest już przypisana do &quot;%s&quot; w języku głównym.</target>
             </trans-unit>
             <trans-unit id="MSC.noMainLanguage">
                 <source>Main language missing</source>
@@ -22,6 +23,7 @@
             </trans-unit>
             <trans-unit id="MSC.gotoLanguage">
                 <source>Go to current page in %s</source>
+                <target>Przejdź do bieżącej strony w %s</target>
             </trans-unit>
         </body>
     </file>
