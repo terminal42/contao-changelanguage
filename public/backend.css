@@ -3,6 +3,11 @@
     margin: 2px 0 0 12px;
 }
 
+/* Contao 5.6+ */
+.operations > .header_switchLanguage {
+    margin: 14px 0 0 15px;
+}
+
 .header_switchLanguage svg {
     float: left;
     width: 16px;
