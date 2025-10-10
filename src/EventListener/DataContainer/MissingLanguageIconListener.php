@@ -241,7 +241,7 @@ class MissingLanguageIconListener implements ResetInterface
     private function generateLabelWithWarning(string $label, string $imgStyle = ''): string
     {
         return $label.\sprintf(
-            '<span style="padding-left:3px"><img src="%s" alt="%s" title="%s" style="%s"></span>',
+            '<span style="padding-left:3px"><img src="%s" data-icon="language-warning.png" data-icon-disabled="language-warning.png" alt="%s" title="%s" style="%s"></span>',
             'bundles/terminal42changelanguage/language-warning.png',
             $GLOBALS['TL_LANG']['MSC']['noMainLanguage'],
             $GLOBALS['TL_LANG']['MSC']['noMainLanguage'],
