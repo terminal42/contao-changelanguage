@@ -8,6 +8,7 @@ use Contao\CoreBundle\ServiceAnnotation\Hook;
 use Contao\Database;
 use Contao\DataContainer;
 use Contao\PageModel;
+use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 use Terminal42\ChangeLanguage\PageFinder;
 
@@ -135,7 +136,7 @@ class PageOperationListener
         $this->connection->executeStatement(
             'UPDATE tl_page SET languageMain = 0 WHERE id IN (?)',
             [$resetIds],
-            [Connection::PARAM_INT_ARRAY],
+            [ArrayParameterType::INTEGER],
         );
     }
 }
