@@ -33,7 +33,7 @@ class ParentChildViewListener extends AbstractViewListener
     protected function getCurrentPage()
     {
         if (false === $this->current) {
-            /** @var string|Model $class */
+            /** @var class-string<Model> $class */
             $class = $this->getModelClass();
 
             if (!class_exists($class)) {
@@ -107,7 +107,7 @@ class ParentChildViewListener extends AbstractViewListener
      */
     private function findRelatedForPageAndId(PageModel $page, int $id): ?Model
     {
-        /** @var Model $class */
+        /** @var class-string<Model> $class */
         $class = $this->getModelClass();
         $table = $class::getTable();
 
@@ -147,7 +147,7 @@ class ParentChildViewListener extends AbstractViewListener
 
     private function hasParent(): bool
     {
-        /** @var Model $class */
+        /** @var class-string<Model> $class */
         $class = $this->getModelClass();
         $table = $class::getTable();
 

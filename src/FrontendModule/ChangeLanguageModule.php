@@ -21,10 +21,10 @@ use Terminal42\ChangeLanguage\Navigation\UrlParameterBag;
 use Terminal42\ChangeLanguage\PageFinder;
 
 /**
- * @property bool  $hideActiveLanguage
- * @property bool  $hideNoFallback
- * @property bool  $customLanguage
- * @property array $customLanguageText
+ * @property bool   $hideActiveLanguage
+ * @property bool   $hideNoFallback
+ * @property bool   $customLanguage
+ * @property string $customLanguageText
  */
 class ChangeLanguageModule extends Module
 {
