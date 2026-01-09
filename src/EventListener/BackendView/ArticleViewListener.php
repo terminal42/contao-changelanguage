@@ -56,7 +56,9 @@ class ArticleViewListener extends AbstractViewListener
     protected function getAvailableLanguages(PageModel $page): array
     {
         $options = [];
-        $masterRoot = $this->pageFinder->findMasterRootForPage($page);
+        if (null === ($masterRoot = $this->pageFinder->findMasterRootForPage($page))) {
+            return $options;
+        }
         $articleId = (int) ($page->rootId === $masterRoot->id ? $this->currentArticle->id : $this->currentArticle->languageMain);
 
         foreach ($this->pageFinder->findAssociatedForPage($page, true, null, false) as $model) {
