@@ -217,7 +217,7 @@ class PageFinder
 
     /**
      * @param array<string>         $columns
-     * @param array<string>         $values
+     * @param array<int|string>     $values
      * @param array<string, string> $options
      *
      * @return array<PageModel>

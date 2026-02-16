@@ -168,7 +168,7 @@ class ChangeLanguageModule extends Module
     }
 
     /**
-     * @param array<array<string, int|string>> $items
+     * @param array<array<string, mixed>> $items
      */
     protected function generateNavigationTemplate(array $items): string
     {
