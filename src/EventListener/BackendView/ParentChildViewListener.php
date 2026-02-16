@@ -15,7 +15,7 @@ use League\Uri\Modifier;
 
 class ParentChildViewListener extends AbstractViewListener
 {
-    private Model|bool $current = false;
+    private Model|bool|null $current = false;
 
     protected function isSupported(): bool
     {
