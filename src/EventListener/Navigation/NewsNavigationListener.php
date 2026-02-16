@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Terminal42\ChangeLanguage\EventListener\Navigation;
 
-use Contao\CoreBundle\ServiceAnnotation\Hook;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 use Contao\Model;
 use Contao\NewsArchiveModel;
 use Contao\NewsModel;
@@ -13,9 +13,8 @@ use Terminal42\ChangeLanguage\Event\ChangelanguageNavigationEvent;
 
 /**
  * Translate URL parameters for news items.
- *
- * @Hook("changelanguageNavigation")
  */
+#[AsHook('changelanguageNavigation')]
 class NewsNavigationListener extends AbstractNavigationListener implements NavigationHandlerInterface
 {
     /**

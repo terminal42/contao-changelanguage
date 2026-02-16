@@ -11,15 +11,11 @@ use Contao\Input;
 use Contao\Model;
 use Contao\PageModel;
 use Contao\System;
-use League\Uri\Uri;
-use League\Uri\UriModifier;
+use League\Uri\Modifier;
 
 class ParentChildViewListener extends AbstractViewListener
 {
-    /**
-     * @var Model|false
-     */
-    private $current = false;
+    private Model|bool $current = false;
 
     protected function isSupported(): bool
     {
@@ -30,7 +26,7 @@ class ParentChildViewListener extends AbstractViewListener
         );
     }
 
-    protected function getCurrentPage()
+    protected function getCurrentPage(): PageModel|null
     {
         if (false === $this->current) {
             /** @var class-string<Model> $class */
@@ -54,7 +50,7 @@ class ParentChildViewListener extends AbstractViewListener
 
         try {
             $pageId = $this->current->pid ? $this->current->getRelated('pid')->jumpTo : $this->current->jumpTo;
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             return null;
         }
 
@@ -89,15 +85,15 @@ class ParentChildViewListener extends AbstractViewListener
 
     protected function doSwitchView($id): void
     {
-        $uri = Uri::createFromString(System::getContainer()->get('request_stack')->getCurrentRequest()->getUri());
+        $uri = Modifier::wrap(System::getContainer()->get('request_stack')->getCurrentRequest()->getUri());
 
         if ('edit' === Input::get('act') && 'tl_content' !== $this->getTable()) {
-            $uri = UriModifier::removeParams($uri, 'switchLanguage');
+            $uri = $uri->removeQueryParameters('switchLanguage', 'act', 'mode');
         } else {
-            $uri = UriModifier::removeParams($uri, 'switchLanguage', 'act', 'mode');
+            $uri = $uri->removeQueryParameters('switchLanguage', 'act', 'mode');
         }
 
-        $uri = UriModifier::mergeQuery($uri, 'id='.$id);
+        $uri = $uri->mergeQueryParameters(['id' => $id])->unwrap();
 
         throw new RedirectResponseException((string) $uri);
     }

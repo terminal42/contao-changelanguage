@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 
-use Contao\CoreBundle\ServiceAnnotation\Callback;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Doctrine\DBAL\Connection;
 
-/**
- * @Callback(table="tl_user", target="fields.pageLanguageLabels.options")
- */
+#[AsCallback('tl_user', 'fields.pageLanguageLabels.options')]
 class UserLabelsListener
 {
     private Connection $connection;

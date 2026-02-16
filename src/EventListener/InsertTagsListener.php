@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace Terminal42\ChangeLanguage\EventListener;
 
+use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 use Contao\CoreBundle\InsertTag\InsertTagParser;
-use Contao\CoreBundle\ServiceAnnotation\Hook;
 use Contao\PageModel;
 use Contao\StringUtil;
 use Terminal42\ChangeLanguage\PageFinder;
 
-/**
- * @Hook("replaceInsertTags")
- */
+#[AsHook('replaceInsertTags')]
 class InsertTagsListener
 {
     private InsertTagParser $parser;

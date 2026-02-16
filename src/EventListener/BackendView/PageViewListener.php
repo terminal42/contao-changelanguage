@@ -8,8 +8,7 @@ use Contao\CoreBundle\Exception\RedirectResponseException;
 use Contao\Input;
 use Contao\PageModel;
 use Contao\System;
-use League\Uri\Uri;
-use League\Uri\UriModifier;
+use League\Uri\Modifier;
 
 class PageViewListener extends AbstractViewListener
 {
@@ -49,8 +48,10 @@ class PageViewListener extends AbstractViewListener
         $requestStack = System::getContainer()->get('request_stack');
         $requestStack->getSession()->getBag('contao_backend')->set('tl_page_node', (int) $id);
 
-        $uri = Uri::createFromString($requestStack->getCurrentRequest()->getUri());
-        $uri = UriModifier::removePairs($uri, 'switchLanguage');
+        $uri = Modifier::wrap($requestStack->getCurrentRequest()->getUri())
+            ->removeQueryPairsByKey('switchLanguage')
+            ->unwrap()
+        ;
 
         throw new RedirectResponseException((string) $uri);
     }

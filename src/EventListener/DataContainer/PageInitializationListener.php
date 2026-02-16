@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 
 use Contao\CoreBundle\DataContainer\PaletteManipulator;
-use Contao\CoreBundle\ServiceAnnotation\Hook;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 use Contao\DataContainer;
 use Contao\Input;
 use Contao\PageModel;
 
-/**
- * @Hook("loadDataContainer")
- */
+#[AsHook('loadDataContainer')]
 class PageInitializationListener
 {
     /**

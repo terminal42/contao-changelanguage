@@ -5,17 +5,15 @@ declare(strict_types=1);
 namespace Terminal42\ChangeLanguage\EventListener\Navigation;
 
 use Contao\ArticleModel;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
-use Contao\CoreBundle\ServiceAnnotation\Hook;
 use Contao\Database;
 use Contao\Date;
 use Contao\PageModel;
 use Terminal42\ChangeLanguage\Event\ChangelanguageNavigationEvent;
 use Terminal42\ChangeLanguage\PageFinder;
 
-/**
- * @Hook("changelanguageNavigation")
- */
+#[AsHook('changelanguageNavigation')]
 class ArticleNavigationListener
 {
     private TokenChecker $tokenChecker;

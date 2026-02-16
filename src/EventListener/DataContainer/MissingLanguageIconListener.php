@@ -8,8 +8,8 @@ use Composer\InstalledVersions;
 use Contao\Backend;
 use Contao\BackendUser;
 use Contao\Config;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 use Contao\CoreBundle\Security\ContaoCorePermissions;
-use Contao\CoreBundle\ServiceAnnotation\Hook;
 use Contao\Date;
 use Contao\Input;
 use Contao\StringUtil;
@@ -20,9 +20,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Service\ResetInterface;
 use Terminal42\ChangeLanguage\Helper\LabelCallback;
 
-/**
- * @Hook("loadDataContainer")
- */
+#[AsHook('loadDataContainer')]
 class MissingLanguageIconListener implements ResetInterface
 {
     private AuthorizationCheckerInterface $authorizationChecker;

@@ -165,13 +165,9 @@ class NavigationItem
         }
 
         try {
-            $container = System::getContainer();
-
-            if ($urlGenerator = $container->get('contao.routing.content_url_generator', ContainerInterface::NULL_ON_INVALID_REFERENCE)) {
-                $href = $urlGenerator->generate($targetPage, ['parameters' => $urlParameterBag->generateParameters()]);
-            } else {
-                $href = $targetPage->getAbsoluteUrl($urlParameterBag->generateParameters());
-            }
+            /** @var \Contao\CoreBundle\Routing\ContentUrlGenerator $urlGenerator */
+            $urlGenerator = System::getContainer()->get('contao.routing.content_url_generator');
+            $href = $urlGenerator->generate($targetPage, ['parameters' => $urlParameterBag->generateParameters()]);
         } catch (ExceptionInterface $e) {
             if (!$catch) {
                 throw $e;
