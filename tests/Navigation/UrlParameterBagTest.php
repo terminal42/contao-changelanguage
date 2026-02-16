@@ -7,7 +7,7 @@ namespace Terminal42\ChangeLanguage\Tests\Navigation;
 use PHPUnit\Framework\TestCase;
 use Terminal42\ChangeLanguage\Navigation\UrlParameterBag;
 
-class UrlParameterBagTest extends TestCase
+final class UrlParameterBagTest extends TestCase
 {
     protected function setUp(): void
     {

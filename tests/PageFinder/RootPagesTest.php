@@ -9,7 +9,7 @@ use Contao\TestCase\ContaoDatabaseTrait;
 use Terminal42\ChangeLanguage\PageFinder;
 use Terminal42\ChangeLanguage\Tests\ContaoTestCase;
 
-class RootPagesTest extends ContaoTestCase
+final class RootPagesTest extends ContaoTestCase
 {
     use ContaoDatabaseTrait;
 
@@ -163,8 +163,6 @@ class RootPagesTest extends ContaoTestCase
     {
         $this->assertCount($count, $roots);
 
-        foreach ($roots as $instance) {
-            $this->assertInstanceOf(PageModel::class, $instance);
-        }
+        $this->assertContainsOnlyInstancesOf(PageModel::class, $roots);
     }
 }

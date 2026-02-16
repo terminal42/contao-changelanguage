@@ -8,7 +8,7 @@ use Contao\PageModel;
 use Terminal42\ChangeLanguage\PageFinder;
 use Terminal42\ChangeLanguage\Tests\ContaoTestCase;
 
-class AssociatedForLanguageTest extends ContaoTestCase
+final class AssociatedForLanguageTest extends ContaoTestCase
 {
     private PageFinder $pageFinder;
 

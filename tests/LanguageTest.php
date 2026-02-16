@@ -7,7 +7,7 @@ namespace Terminal42\ChangeLanguage\Tests;
 use PHPUnit\Framework\TestCase;
 use Terminal42\ChangeLanguage\Language;
 
-class LanguageTest extends TestCase
+final class LanguageTest extends TestCase
 {
     /**
      * @dataProvider languagesProvider

@@ -85,15 +85,11 @@ class ParentChildViewListener extends AbstractViewListener
 
     protected function doSwitchView($id): void
     {
-        $uri = Modifier::wrap(System::getContainer()->get('request_stack')->getCurrentRequest()->getUri());
-
-        if ('edit' === Input::get('act') && 'tl_content' !== $this->getTable()) {
-            $uri = $uri->removeQueryParameters('switchLanguage', 'act', 'mode');
-        } else {
-            $uri = $uri->removeQueryParameters('switchLanguage', 'act', 'mode');
-        }
-
-        $uri = $uri->mergeQueryParameters(['id' => $id])->unwrap();
+        $uri = Modifier::wrap(System::getContainer()->get('request_stack')->getCurrentRequest()->getUri())
+            ->removeQueryParameters('switchLanguage', 'act', 'mode')
+            ->mergeQueryParameters(['id' => $id])
+            ->unwrap()
+        ;
 
         throw new RedirectResponseException((string) $uri);
     }
