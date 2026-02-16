@@ -240,7 +240,7 @@ class MissingLanguageIconListener implements ResetInterface
     {
         return $label.\sprintf(
             '<span style="padding-left:3px"><img src="%s" alt="%s" title="%s" style="%s"></span>',
-            'bundles/terminal42changelanguage/language-warning.png',
+            'bundles/terminal42changelanguage/language-warning.svg',
             $GLOBALS['TL_LANG']['MSC']['noMainLanguage'],
             $GLOBALS['TL_LANG']['MSC']['noMainLanguage'],
             $imgStyle,
