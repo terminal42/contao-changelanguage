@@ -20,13 +20,8 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                php: ['7.4', '8.1', '8.2', '8.3', '8.4']
-                contao: ['4.13', '5.3', '5.4']
-                exclude:
-                    - php: '7.4'
-                      contao: '5.3'
-                    - php: '7.4'
-                      contao: '5.4'
+                php: ['8.1', '8.2', '8.3', '8.4']
+                contao: ['5.3', '5.4'] # TODO: add Contao 5.7 soon
         steps:
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
