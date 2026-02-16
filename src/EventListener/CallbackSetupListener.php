@@ -21,7 +21,7 @@ class CallbackSetupListener
     /**
      * @var array<string, array<string>>|null
      */
-    private static ?array $listeners = null;
+    private static array|null $listeners = null;
 
     public function __invoke(string $table): void
     {

@@ -28,7 +28,7 @@ class MissingLanguageIconListener implements ResetInterface
     /**
      * @var array<string, string>|null
      */
-    private static ?array $callbacks = null;
+    private static array|null $callbacks = null;
 
     private TokenStorageInterface $tokenStorage;
 
@@ -37,12 +37,12 @@ class MissingLanguageIconListener implements ResetInterface
     /**
      * @var array<int|string, array<int|string>>|null
      */
-    private ?array $pageCache = null;
+    private array|null $pageCache = null;
 
     /**
      * @var array<string, array<int, int>>|null
      */
-    private ?array $translationCache = null;
+    private array|null $translationCache = null;
 
     public function __construct(TokenStorageInterface $tokenStorage, Connection $connection, AuthorizationCheckerInterface $authorizationChecker)
     {
@@ -279,7 +279,7 @@ class MissingLanguageIconListener implements ResetInterface
     /**
      * @return array{languageMain: int, mainTitle: string|null}|null
      */
-    private function getPageTranslation(int $id): ?array
+    private function getPageTranslation(int $id): array|null
     {
         if (null !== $this->pageCache) {
             return $this->pageCache[$id] ?? null;
@@ -319,7 +319,7 @@ class MissingLanguageIconListener implements ResetInterface
         return $this->pageCache[$id] ?? null;
     }
 
-    private function getChildTranslation(int $id, string $table, string $ptable, string $parentField): ?int
+    private function getChildTranslation(int $id, string $table, string $ptable, string $parentField): int|null
     {
         if (isset($this->translationCache[$table])) {
             return $this->translationCache[$table][$id] ?? null;

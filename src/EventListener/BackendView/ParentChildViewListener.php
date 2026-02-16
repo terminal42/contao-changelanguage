@@ -97,7 +97,7 @@ class ParentChildViewListener extends AbstractViewListener
     /**
      * Finds related item for a given page.
      */
-    private function findRelatedForPageAndId(PageModel $page, int $id): ?Model
+    private function findRelatedForPageAndId(PageModel $page, int $id): Model|null
     {
         /** @var class-string<Model> $class */
         $class = $this->getModelClass();

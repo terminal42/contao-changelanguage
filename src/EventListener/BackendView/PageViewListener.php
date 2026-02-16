@@ -17,7 +17,7 @@ class PageViewListener extends AbstractViewListener
         return 'page' === Input::get('do') || ('article' === Input::get('do') && 'edit' !== Input::get('act'));
     }
 
-    protected function getCurrentPage(): ?PageModel
+    protected function getCurrentPage(): PageModel|null
     {
         $node = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend')->get('tl_page_node');
 

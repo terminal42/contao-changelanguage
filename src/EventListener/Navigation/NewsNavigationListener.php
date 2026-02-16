@@ -32,7 +32,7 @@ class NewsNavigationListener extends AbstractNavigationListener implements Navig
         return isset($GLOBALS['TL_CONFIG']['useAutoItem']) ? 'items' : 'auto_item';
     }
 
-    protected function findCurrent(): ?NewsModel
+    protected function findCurrent(): NewsModel|null
     {
         $alias = $this->getAutoItem();
 
@@ -58,7 +58,7 @@ class NewsNavigationListener extends AbstractNavigationListener implements Navig
      * @param array<string>         $values
      * @param array<string, string> $options
      */
-    protected function findPublishedBy(array $columns, array $values = [], array $options = []): ?NewsModel
+    protected function findPublishedBy(array $columns, array $values = [], array $options = []): NewsModel|null
     {
         return NewsModel::findOneBy(
             $this->addPublishedConditions($columns, NewsModel::getTable()),

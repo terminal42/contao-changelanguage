@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Terminal42\ChangeLanguage\Navigation;
 
+use Contao\CoreBundle\Routing\ContentUrlGenerator;
 use Contao\PageModel;
 use Contao\System;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Exception\ExceptionInterface;
 use Terminal42\ChangeLanguage\Language;
 
@@ -14,23 +14,23 @@ class NavigationItem
 {
     private PageModel $rootPage;
 
-    private ?PageModel $targetPage = null;
+    private PageModel|null $targetPage = null;
 
-    private ?string $title = null;
+    private string|null $title = null;
 
-    private ?string $pageTitle = null;
+    private string|null $pageTitle = null;
 
     private string $linkLabel;
 
-    private ?string $ariaLabel = null;
+    private string|null $ariaLabel = null;
 
-    private ?bool $newWindow = null;
+    private bool|null $newWindow = null;
 
     private bool $isDirectFallback = false;
 
     private bool $isCurrentPage = false;
 
-    public function __construct(PageModel $rootPage, ?string $label = null)
+    public function __construct(PageModel $rootPage, string|null $label = null)
     {
         if ('root' !== $rootPage->type) {
             throw new \RuntimeException(\sprintf('Page ID "%s" has type "%s" but should be "root"', $rootPage->id, $rootPage->type));
@@ -83,17 +83,17 @@ class NavigationItem
         $this->linkLabel = $label;
     }
 
-    public function getAriaLabel(): ?string
+    public function getAriaLabel(): string|null
     {
         return $this->ariaLabel;
     }
 
-    public function setAriaLabel(?string $ariaLabel): void
+    public function setAriaLabel(string|null $ariaLabel): void
     {
         $this->ariaLabel = $ariaLabel;
     }
 
-    public function getTargetPage(): ?PageModel
+    public function getTargetPage(): PageModel|null
     {
         return $this->targetPage;
     }
@@ -110,7 +110,7 @@ class NavigationItem
         $this->isCurrentPage = $isCurrentPage;
     }
 
-    public function isNewWindow(): ?bool
+    public function isNewWindow(): bool|null
     {
         if (null === $this->newWindow) {
             $targetPage = $this->targetPage ?: $this->rootPage;
@@ -121,7 +121,7 @@ class NavigationItem
         return $this->newWindow;
     }
 
-    public function setNewWindow(?bool $newWindow): void
+    public function setNewWindow(bool|null $newWindow): void
     {
         $this->newWindow = $newWindow;
     }
@@ -165,7 +165,7 @@ class NavigationItem
         }
 
         try {
-            /** @var \Contao\CoreBundle\Routing\ContentUrlGenerator $urlGenerator */
+            /** @var ContentUrlGenerator $urlGenerator */
             $urlGenerator = System::getContainer()->get('contao.routing.content_url_generator');
             $href = $urlGenerator->generate($targetPage, ['parameters' => $urlParameterBag->generateParameters()]);
         } catch (ExceptionInterface $e) {
@@ -193,7 +193,7 @@ class NavigationItem
         return $this->title ?? $this->targetPage->title ?? $this->rootPage->title;
     }
 
-    public function setTitle(?string $title): void
+    public function setTitle(string|null $title): void
     {
         $this->title = $title;
     }
@@ -203,7 +203,7 @@ class NavigationItem
         return $this->pageTitle ?? $this->targetPage->pageTitle ?? $this->rootPage->pageTitle;
     }
 
-    public function setPageTitle(?string $pageTitle): void
+    public function setPageTitle(string|null $pageTitle): void
     {
         $this->pageTitle = $pageTitle;
     }

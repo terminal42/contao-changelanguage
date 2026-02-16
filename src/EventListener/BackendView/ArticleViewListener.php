@@ -11,7 +11,6 @@ use Contao\Model\Collection;
 use Contao\PageModel;
 use Contao\System;
 use League\Uri\Modifier;
-use League\Uri\Uri;
 
 class ArticleViewListener extends AbstractViewListener
 {
@@ -29,7 +28,7 @@ class ArticleViewListener extends AbstractViewListener
             );
     }
 
-    protected function getCurrentPage(): ?PageModel
+    protected function getCurrentPage(): PageModel|null
     {
         if (false === $this->currentArticle) {
             if (Input::get('table') === $this->getTable() && !empty(Input::get('act'))) {

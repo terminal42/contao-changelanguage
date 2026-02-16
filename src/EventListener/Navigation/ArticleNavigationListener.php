@@ -70,7 +70,7 @@ class ArticleNavigationListener
     /**
      * Find target article for a root page and current article.
      */
-    private function findTargetArticle(ArticleModel $currentArticle, int $targetRootId, bool $currentIsFallback, bool $targetIsFallback): ?ArticleModel
+    private function findTargetArticle(ArticleModel $currentArticle, int $targetRootId, bool $currentIsFallback, bool $targetIsFallback): ArticleModel|null
     {
         // If the target root is fallback, the article ID will match our current "languageMain"
         if ($targetIsFallback) {
@@ -100,7 +100,7 @@ class ArticleNavigationListener
      * @param array<string> $columns
      * @param array<string> $values
      */
-    private function findPublishedArticle(array $columns, array $values = []): ?ArticleModel
+    private function findPublishedArticle(array $columns, array $values = []): ArticleModel|null
     {
         if (!$this->tokenChecker->isPreviewMode()) {
             $time = Date::floorToMinute();

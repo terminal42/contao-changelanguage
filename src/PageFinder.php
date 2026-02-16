@@ -64,7 +64,7 @@ class PageFinder
     /**
      * Finds the root page of fallback language for the given page.
      */
-    public function findMasterRootForPage(PageModel $page): ?PageModel
+    public function findMasterRootForPage(PageModel $page): PageModel|null
     {
         $page->loadDetails();
         $t = $page::getTable();
@@ -91,7 +91,7 @@ class PageFinder
      *
      * @return array<PageModel>
      */
-    public function findAssociatedForPage(PageModel $page, bool $skipCurrent = false, ?array $rootPages = null, bool $publishedOnly = true): array
+    public function findAssociatedForPage(PageModel $page, bool $skipCurrent = false, array|null $rootPages = null, bool $publishedOnly = true): array
     {
         if ('root' === $page->type) {
             return $this->findRootPagesForPage($page, $skipCurrent, $publishedOnly);
@@ -150,7 +150,7 @@ class PageFinder
         return $this->findAssociatedParentForLanguage($page, $language);
     }
 
-    public function findAssociatedInMaster(PageModel $page): ?PageModel
+    public function findAssociatedInMaster(PageModel $page): PageModel|null
     {
         $page->loadDetails();
         $masterRoot = $this->findMasterRootForPage($page);

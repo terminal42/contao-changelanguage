@@ -32,7 +32,7 @@ class FaqNavigationListener extends AbstractNavigationListener implements Naviga
         return isset($GLOBALS['TL_CONFIG']['useAutoItem']) ? 'items' : 'auto_item';
     }
 
-    protected function findCurrent(): ?FaqModel
+    protected function findCurrent(): FaqModel|null
     {
         $alias = $this->getAutoItem();
 
@@ -55,7 +55,7 @@ class FaqNavigationListener extends AbstractNavigationListener implements Naviga
      * @param array<string>         $values
      * @param array<string, string> $options
      */
-    protected function findPublishedBy(array $columns, array $values = [], array $options = []): ?FaqModel
+    protected function findPublishedBy(array $columns, array $values = [], array $options = []): FaqModel|null
     {
         return FaqModel::findOneBy(
             $this->addPublishedConditions($columns, FaqModel::getTable(), false),
