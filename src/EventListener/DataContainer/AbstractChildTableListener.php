@@ -6,14 +6,19 @@ namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 
 use Contao\CoreBundle\DataContainer\PaletteManipulator;
 use Contao\DataContainer;
-use Contao\Input;
 use Contao\Model;
 use Contao\Model\Collection;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Terminal42\ChangeLanguage\EventListener\AbstractTableListener;
 
 abstract class AbstractChildTableListener extends AbstractTableListener
 {
     use LanguageMainTrait;
+
+    public function __construct(
+        protected readonly RequestStack $requestStack,
+    ) {
+    }
 
     public function register(string $table): void
     {
@@ -27,7 +32,11 @@ abstract class AbstractChildTableListener extends AbstractTableListener
 
     public function onLoad(DataContainer $dc): void
     {
-        $action = Input::get('act');
+        if (!$request = $this->requestStack->getCurrentRequest()) {
+            return;
+        }
+
+        $action = $request->query->get('act');
 
         if ('editAll' === $action || ('edit' === $action && null !== ($model = $this->getModel($dc->id)) && $model->getRelated('pid')->master > 0)) {
             $this->addFieldsToPalettes();

@@ -8,14 +8,19 @@ use Contao\ArticleModel;
 use Contao\CoreBundle\DataContainer\PaletteManipulator;
 use Contao\Database;
 use Contao\DataContainer;
-use Contao\Input;
 use Contao\PageModel;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Terminal42\ChangeLanguage\EventListener\AbstractTableListener;
 use Terminal42\ChangeLanguage\PageFinder;
 
 class ArticleListener extends AbstractTableListener
 {
     use LanguageMainTrait;
+
+    public function __construct(
+        protected readonly RequestStack $requestStack,
+    ) {
+    }
 
     public function register(string $table): void
     {
@@ -29,7 +34,11 @@ class ArticleListener extends AbstractTableListener
 
     public function onLoad(DataContainer $dc): void
     {
-        $action = Input::get('act');
+        if (!$request = $this->requestStack->getCurrentRequest()) {
+            return;
+        }
+
+        $action = $request->query->get('act');
 
         if ('editAll' === $action) {
             $this->addFieldsToPalettes();

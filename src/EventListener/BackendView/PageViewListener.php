@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Terminal42\ChangeLanguage\EventListener\BackendView;
 
 use Contao\CoreBundle\Exception\RedirectResponseException;
-use Contao\Input;
 use Contao\PageModel;
 use Contao\System;
 use League\Uri\Modifier;
@@ -14,7 +13,11 @@ class PageViewListener extends AbstractViewListener
 {
     protected function isSupported(): bool
     {
-        return 'page' === Input::get('do') || ('article' === Input::get('do') && 'edit' !== Input::get('act'));
+        if (!$request = $this->requestStack->getCurrentRequest()) {
+            return false;
+        }
+
+        return 'page' === $request->query->get('do') || ('article' === $request->query->get('do') && 'edit' !== $request->query->get('act'));
     }
 
     protected function getCurrentPage(): PageModel|null

@@ -7,12 +7,17 @@ namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\Database;
 use Contao\DataContainer;
-use Contao\Input;
 use Contao\PageModel;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Terminal42\ChangeLanguage\PageFinder;
 
 class PageFieldsListener
 {
+    public function __construct(
+        private readonly RequestStack $requestStack,
+    ) {
+    }
+
     /**
      * Sets rootNodes when initializing the languageMain field.
      *
@@ -23,7 +28,7 @@ class PageFieldsListener
     #[AsCallback('tl_page', 'fields.languageMain.load')]
     public function onLoadLanguageMain($value, DataContainer $dc)
     {
-        if (!$dc->id || 'page' !== Input::get('do')) {
+        if (!$dc->id || 'page' !== $this->requestStack->getCurrentRequest()?->query->get('do')) {
             return $value;
         }
 

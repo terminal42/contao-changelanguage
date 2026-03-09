@@ -7,7 +7,6 @@ namespace Terminal42\ChangeLanguage\EventListener\BackendView;
 use Composer\InstalledVersions;
 use Contao\Controller;
 use Contao\CoreBundle\Exception\RedirectResponseException;
-use Contao\Input;
 use Contao\Model;
 use Contao\PageModel;
 use Contao\System;
@@ -19,15 +18,23 @@ class ParentChildViewListener extends AbstractViewListener
 
     protected function isSupported(): bool
     {
-        return $this->getTable() === Input::get('table') && (
-            ('news' === Input::get('do') && InstalledVersions::isInstalled('contao/news-bundle'))
-            || ('calendar' === Input::get('do') && InstalledVersions::isInstalled('contao/calendar-bundle'))
-            || ('faq' === Input::get('do') && InstalledVersions::isInstalled('contao/faq-bundle'))
+        if (!$request = $this->requestStack->getCurrentRequest()) {
+            return false;
+        }
+
+        return $this->getTable() === $request->query->get('table') && (
+            ('news' === $request->query->get('do') && InstalledVersions::isInstalled('contao/news-bundle'))
+            || ('calendar' === $request->query->get('do') && InstalledVersions::isInstalled('contao/calendar-bundle'))
+            || ('faq' === $request->query->get('do') && InstalledVersions::isInstalled('contao/faq-bundle'))
         );
     }
 
     protected function getCurrentPage(): PageModel|null
     {
+        if (!$request = $this->requestStack->getCurrentRequest()) {
+            return null;
+        }
+
         if (false === $this->current) {
             /** @var class-string<Model> $class */
             $class = $this->getModelClass();
@@ -36,7 +43,7 @@ class ParentChildViewListener extends AbstractViewListener
                 return null;
             }
 
-            if ('paste' === Input::get('act') || ('edit' === Input::get('act') && 'tl_content' === $this->getTable())) {
+            if ('paste' === $request->query->get('act') || ('edit' === $request->query->get('act') && 'tl_content' === $this->getTable())) {
                 $t = $class::getTable();
                 $this->current = $class::findOneBy(["$t.id=(SELECT pid FROM ".$this->getTable().' WHERE id=?)'], [$this->dataContainer->id]);
             } else {
@@ -130,7 +137,7 @@ class ParentChildViewListener extends AbstractViewListener
     {
         Controller::loadDataContainer($this->getTable());
 
-        if ('edit' === Input::get('act') && 'tl_content' !== $this->getTable()) {
+        if ('edit' === $this->requestStack->getCurrentRequest()?->query->get('act') && 'tl_content' !== $this->getTable()) {
             return Model::getClassFromTable($this->getTable());
         }
 

@@ -7,7 +7,6 @@ namespace Terminal42\ChangeLanguage\EventListener\BackendView;
 use Contao\Backend;
 use Contao\CoreBundle\Util\LocaleUtil;
 use Contao\DataContainer;
-use Contao\Input;
 use Contao\PageModel;
 use Contao\System;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -20,6 +19,7 @@ abstract class AbstractViewListener extends AbstractTableListener
 
     public function __construct(
         protected readonly PageFinder $pageFinder,
+        protected readonly RequestStack $requestStack,
     ) {
     }
 
@@ -42,17 +42,17 @@ abstract class AbstractViewListener extends AbstractTableListener
      */
     public function onLoad($dc): void
     {
-        if (!$dc instanceof DataContainer) {
-            return;
-        }
-
-        if ($dc->table !== $this->table) {
+        if (
+            !$dc instanceof DataContainer
+            || $dc->table !== $this->table
+            || !($request = $this->requestStack->getCurrentRequest())
+        ) {
             return;
         }
 
         $this->dataContainer = $dc;
 
-        $id = (string) Input::get('switchLanguage');
+        $id = $request->query->getString('switchLanguage');
 
         if ('' !== $id) {
             $this->doSwitchView($id);

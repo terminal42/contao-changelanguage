@@ -6,7 +6,6 @@ namespace Terminal42\ChangeLanguage\EventListener\BackendView;
 
 use Contao\ArticleModel;
 use Contao\CoreBundle\Exception\RedirectResponseException;
-use Contao\Input;
 use Contao\Model\Collection;
 use Contao\PageModel;
 use Contao\System;
@@ -21,18 +20,26 @@ class ArticleViewListener extends AbstractViewListener
 
     protected function isSupported(): bool
     {
-        return 'article' === (string) Input::get('do')
+        if (!$request = $this->requestStack->getCurrentRequest()) {
+            return false;
+        }
+
+        return 'article' === $request->query->get('do')
             && (
-                ('edit' === Input::get('act') && empty(Input::get('table')))
-                || ($this->getTable() === Input::get('table'))
+                ('edit' === $request->query->get('act') && empty($request->query->get('table')))
+                || ($this->getTable() === $request->query->get('table'))
             );
     }
 
     protected function getCurrentPage(): PageModel|null
     {
+        if (!$request = $this->requestStack->getCurrentRequest()) {
+            return null;
+        }
+
         if (false === $this->currentArticle) {
-            if (Input::get('table') === $this->getTable() && !empty(Input::get('act'))) {
-                if ('paste' !== Input::get('act')) {
+            if ($request->query->get('table') === $this->getTable() && !empty($request->query->get('act'))) {
+                if ('paste' !== $request->query->get('act')) {
                     return null;
                 }
 

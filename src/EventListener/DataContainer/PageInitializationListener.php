@@ -7,12 +7,17 @@ namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 use Contao\CoreBundle\DataContainer\PaletteManipulator;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 use Contao\DataContainer;
-use Contao\Input;
 use Contao\PageModel;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 #[AsHook('loadDataContainer')]
 class PageInitializationListener
 {
+    public function __construct(
+        private readonly RequestStack $requestStack,
+    ) {
+    }
+
     /**
      * Register our own callbacks.
      */
@@ -32,11 +37,14 @@ class PageInitializationListener
      */
     public function onLoad(DataContainer $dc): void
     {
-        if ('page' !== Input::get('do')) {
+        if (
+            !($request = $this->requestStack->getCurrentRequest())
+            || 'page' !== $request->query->get('do')
+        ) {
             return;
         }
 
-        switch (Input::get('act')) {
+        switch ($request->query->get('act')) {
             case 'edit':
                 $this->handleEditMode($dc);
                 break;

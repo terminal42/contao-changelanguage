@@ -11,10 +11,10 @@ use Contao\Config;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 use Contao\CoreBundle\Security\ContaoCorePermissions;
 use Contao\Date;
-use Contao\Input;
 use Contao\StringUtil;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Service\ResetInterface;
@@ -37,6 +37,7 @@ class MissingLanguageIconListener implements ResetInterface
         private readonly TokenStorageInterface $tokenStorage,
         private readonly Connection $connection,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
+        private readonly RequestStack $requestStack,
     ) {
     }
 
@@ -98,7 +99,7 @@ class MissingLanguageIconListener implements ResetInterface
         if (
             'root' === $row['type']
             || 'folder' === $row['type']
-            || 'page' !== Input::get('do')
+            || 'page' !== $this->requestStack->getCurrentRequest()?->query->get('do')
             || !$this->authorizationChecker->isGranted(ContaoCorePermissions::USER_CAN_EDIT_FIELD_OF_TABLE, 'tl_page::languageMain')
         ) {
             return $label;
