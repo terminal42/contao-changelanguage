@@ -8,7 +8,7 @@ use Contao\PageModel;
 use Terminal42\ChangeLanguage\PageFinder;
 use Terminal42\ChangeLanguage\Tests\ContaoTestCase;
 
-class AssociatedForPageTest extends ContaoTestCase
+final class AssociatedForPageTest extends ContaoTestCase
 {
     private PageFinder $pageFinder;
 
@@ -137,8 +137,6 @@ class AssociatedForPageTest extends ContaoTestCase
     {
         $this->assertCount($count, $pages);
 
-        foreach ($pages as $instance) {
-            $this->assertInstanceOf(PageModel::class, $instance);
-        }
+        $this->assertContainsOnlyInstancesOf(PageModel::class, $pages);
     }
 }

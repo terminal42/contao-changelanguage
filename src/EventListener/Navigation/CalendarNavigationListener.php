@@ -6,16 +6,15 @@ namespace Terminal42\ChangeLanguage\EventListener\Navigation;
 
 use Contao\CalendarEventsModel;
 use Contao\CalendarModel;
-use Contao\CoreBundle\ServiceAnnotation\Hook;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 use Contao\Model;
 use Contao\PageModel;
 use Terminal42\ChangeLanguage\Event\ChangelanguageNavigationEvent;
 
 /**
  * Translate URL parameters for calendar events.
- *
- * @Hook("changelanguageNavigation")
  */
+#[AsHook('changelanguageNavigation')]
 class CalendarNavigationListener extends AbstractNavigationListener implements NavigationHandlerInterface
 {
     /**
@@ -33,7 +32,7 @@ class CalendarNavigationListener extends AbstractNavigationListener implements N
         return isset($GLOBALS['TL_CONFIG']['useAutoItem']) ? 'events' : 'auto_item';
     }
 
-    protected function findCurrent(): ?CalendarEventsModel
+    protected function findCurrent(): CalendarEventsModel|null
     {
         $alias = $this->getAutoItem();
 

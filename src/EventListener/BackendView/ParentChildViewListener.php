@@ -11,15 +11,11 @@ use Contao\Input;
 use Contao\Model;
 use Contao\PageModel;
 use Contao\System;
-use League\Uri\Uri;
-use League\Uri\UriModifier;
+use League\Uri\Modifier;
 
 class ParentChildViewListener extends AbstractViewListener
 {
-    /**
-     * @var Model|false
-     */
-    private $current = false;
+    private Model|null|false $current = false;
 
     protected function isSupported(): bool
     {
@@ -30,7 +26,7 @@ class ParentChildViewListener extends AbstractViewListener
         );
     }
 
-    protected function getCurrentPage()
+    protected function getCurrentPage(): PageModel|null
     {
         if (false === $this->current) {
             /** @var class-string<Model> $class */
@@ -54,7 +50,7 @@ class ParentChildViewListener extends AbstractViewListener
 
         try {
             $pageId = $this->current->pid ? $this->current->getRelated('pid')->jumpTo : $this->current->jumpTo;
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             return null;
         }
 
@@ -89,15 +85,11 @@ class ParentChildViewListener extends AbstractViewListener
 
     protected function doSwitchView($id): void
     {
-        $uri = Uri::createFromString(System::getContainer()->get('request_stack')->getCurrentRequest()->getUri());
-
-        if ('edit' === Input::get('act') && 'tl_content' !== $this->getTable()) {
-            $uri = UriModifier::removeParams($uri, 'switchLanguage');
-        } else {
-            $uri = UriModifier::removeParams($uri, 'switchLanguage', 'act', 'mode');
-        }
-
-        $uri = UriModifier::mergeQuery($uri, 'id='.$id);
+        $uri = Modifier::wrap(System::getContainer()->get('request_stack')->getCurrentRequest()->getUri())
+            ->removeQueryParameters('switchLanguage', 'act', 'mode')
+            ->mergeQueryParameters(['id' => $id])
+            ->unwrap()
+        ;
 
         throw new RedirectResponseException((string) $uri);
     }
@@ -105,7 +97,7 @@ class ParentChildViewListener extends AbstractViewListener
     /**
      * Finds related item for a given page.
      */
-    private function findRelatedForPageAndId(PageModel $page, int $id): ?Model
+    private function findRelatedForPageAndId(PageModel $page, int $id): Model|null
     {
         /** @var class-string<Model> $class */
         $class = $this->getModelClass();

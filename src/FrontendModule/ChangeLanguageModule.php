@@ -33,7 +33,7 @@ class ChangeLanguageModule extends Module
      */
     protected $strTemplate = 'mod_changelanguage';
 
-    private static ?AlternateLinks $alternateLinks = null;
+    private static AlternateLinks|null $alternateLinks = null;
 
     public function getAlternateLinks(): AlternateLinks
     {
@@ -168,7 +168,7 @@ class ChangeLanguageModule extends Module
     }
 
     /**
-     * @param array<array<string, int|string>> $items
+     * @param array<array<string, mixed>> $items
      */
     protected function generateNavigationTemplate(array $items): string
     {

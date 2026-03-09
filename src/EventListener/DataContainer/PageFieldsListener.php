@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Terminal42\ChangeLanguage\EventListener\DataContainer;
 
-use Contao\CoreBundle\ServiceAnnotation\Callback;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\Database;
 use Contao\DataContainer;
 use Contao\Input;
@@ -19,9 +19,8 @@ class PageFieldsListener
      * @param string|int $value
      *
      * @return string|int
-     *
-     * @Callback(table="tl_page", target="fields.languageMain.load")
      */
+    #[AsCallback('tl_page', 'fields.languageMain.load')]
     public function onLoadLanguageMain($value, DataContainer $dc)
     {
         if (!$dc->id || 'page' !== Input::get('do')) {
@@ -58,9 +57,8 @@ class PageFieldsListener
      * @param string|int $value
      *
      * @return string|int
-     *
-     * @Callback(table="tl_page", target="fields.languageMain.save")
      */
+    #[AsCallback('tl_page', 'fields.languageMain.save')]
     public function onSaveLanguageMain($value, DataContainer $dc)
     {
         // Validate that there is no other page in the current page tree with the same
@@ -97,9 +95,8 @@ class PageFieldsListener
      * roots on different domains).
      *
      * @return array<int|string, string>
-     *
-     * @Callback(table="tl_page", target="fields.languageRoot.options")
      */
+    #[AsCallback('tl_page', 'fields.languageRoot.options')]
     public function onLanguageRootOptions(DataContainer $dc): array
     {
         /** @var array<PageModel> $pages */

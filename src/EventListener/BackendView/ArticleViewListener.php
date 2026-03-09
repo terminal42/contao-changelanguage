@@ -10,8 +10,7 @@ use Contao\Input;
 use Contao\Model\Collection;
 use Contao\PageModel;
 use Contao\System;
-use League\Uri\Uri;
-use League\Uri\UriModifier;
+use League\Uri\Modifier;
 
 class ArticleViewListener extends AbstractViewListener
 {
@@ -29,7 +28,7 @@ class ArticleViewListener extends AbstractViewListener
             );
     }
 
-    protected function getCurrentPage(): ?PageModel
+    protected function getCurrentPage(): PageModel|null
     {
         if (false === $this->currentArticle) {
             if (Input::get('table') === $this->getTable() && !empty(Input::get('act'))) {
@@ -99,9 +98,11 @@ class ArticleViewListener extends AbstractViewListener
 
     protected function doSwitchView($id): void
     {
-        $uri = Uri::createFromString(System::getContainer()->get('request_stack')->getCurrentRequest()->getUri());
-        $uri = UriModifier::removeParams($uri, 'switchLanguage', 'act', 'mode');
-        $uri = UriModifier::mergeQuery($uri, 'id='.$id);
+        $uri = Modifier::wrap(System::getContainer()->get('request_stack')->getCurrentRequest()->getUri())
+            ->removeQueryParameters('switchLanguage', 'act', 'mode')
+            ->mergeQueryParameters(['id' => $id])
+            ->unwrap()
+        ;
 
         throw new RedirectResponseException((string) $uri);
     }

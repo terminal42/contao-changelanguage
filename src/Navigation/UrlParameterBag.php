@@ -126,7 +126,7 @@ class UrlParameterBag
      *
      * @throws \RuntimeException
      */
-    public function generateParameters(): ?string
+    public function generateParameters(): string|null
     {
         $params = '';
         $auto_item = null;
@@ -175,7 +175,7 @@ class UrlParameterBag
     /**
      * Generates a query string or returns null if empty.
      */
-    public function generateQueryString(): ?string
+    public function generateQueryString(): string|null
     {
         if (0 === \count($this->query)) {
             return null;

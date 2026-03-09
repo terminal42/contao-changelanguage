@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Terminal42\ChangeLanguage\Helper\LanguageText;
 use Terminal42\ChangeLanguage\Navigation\NavigationItem;
 
-class LanguageTextTest extends ContaoTestCase
+final class LanguageTextTest extends ContaoTestCase
 {
     protected function setUp(): void
     {

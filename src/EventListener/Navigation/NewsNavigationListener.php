@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Terminal42\ChangeLanguage\EventListener\Navigation;
 
-use Contao\CoreBundle\ServiceAnnotation\Hook;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 use Contao\Model;
 use Contao\NewsArchiveModel;
 use Contao\NewsModel;
@@ -13,9 +13,8 @@ use Terminal42\ChangeLanguage\Event\ChangelanguageNavigationEvent;
 
 /**
  * Translate URL parameters for news items.
- *
- * @Hook("changelanguageNavigation")
  */
+#[AsHook('changelanguageNavigation')]
 class NewsNavigationListener extends AbstractNavigationListener implements NavigationHandlerInterface
 {
     /**
@@ -33,7 +32,7 @@ class NewsNavigationListener extends AbstractNavigationListener implements Navig
         return isset($GLOBALS['TL_CONFIG']['useAutoItem']) ? 'items' : 'auto_item';
     }
 
-    protected function findCurrent(): ?NewsModel
+    protected function findCurrent(): NewsModel|null
     {
         $alias = $this->getAutoItem();
 
@@ -59,7 +58,7 @@ class NewsNavigationListener extends AbstractNavigationListener implements Navig
      * @param array<string>         $values
      * @param array<string, string> $options
      */
-    protected function findPublishedBy(array $columns, array $values = [], array $options = []): ?NewsModel
+    protected function findPublishedBy(array $columns, array $values = [], array $options = []): NewsModel|null
     {
         return NewsModel::findOneBy(
             $this->addPublishedConditions($columns, NewsModel::getTable()),

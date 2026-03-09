@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Terminal42\ChangeLanguage\EventListener;
 
 use Composer\InstalledVersions;
-use Contao\CoreBundle\ServiceAnnotation\Hook;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 use Terminal42\ChangeLanguage\EventListener\BackendView\ArticleViewListener;
 use Terminal42\ChangeLanguage\EventListener\BackendView\PageViewListener;
 use Terminal42\ChangeLanguage\EventListener\BackendView\ParentChildViewListener;
@@ -15,15 +15,13 @@ use Terminal42\ChangeLanguage\EventListener\DataContainer\FaqListener;
 use Terminal42\ChangeLanguage\EventListener\DataContainer\NewsListener;
 use Terminal42\ChangeLanguage\EventListener\DataContainer\ParentTableListener;
 
-/**
- * @Hook("loadDataContainer")
- */
+#[AsHook('loadDataContainer')]
 class CallbackSetupListener
 {
     /**
      * @var array<string, array<string>>|null
      */
-    private static ?array $listeners = null;
+    private static array|null $listeners = null;
 
     public function __invoke(string $table): void
     {

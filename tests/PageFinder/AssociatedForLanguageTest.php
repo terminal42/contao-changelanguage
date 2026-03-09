@@ -8,7 +8,7 @@ use Contao\PageModel;
 use Terminal42\ChangeLanguage\PageFinder;
 use Terminal42\ChangeLanguage\Tests\ContaoTestCase;
 
-class AssociatedForLanguageTest extends ContaoTestCase
+final class AssociatedForLanguageTest extends ContaoTestCase
 {
     private PageFinder $pageFinder;
 
@@ -29,6 +29,7 @@ class AssociatedForLanguageTest extends ContaoTestCase
 
         $page = $this->pageFinder->findAssociatedForLanguage($dePage, 'en');
 
+        /** @phpstan-ignore-next-line */
         $this->assertInstanceOf(PageModel::class, $page);
         $this->assertSame($enPage->id, $page->id);
     }
@@ -43,6 +44,7 @@ class AssociatedForLanguageTest extends ContaoTestCase
 
         $page = $this->pageFinder->findAssociatedForLanguage($pageModel, 'en');
 
+        /** @phpstan-ignore-next-line */
         $this->assertInstanceOf(PageModel::class, $page);
         $this->assertSame($enRoot->id, $page->id);
     }

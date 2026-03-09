@@ -8,8 +8,8 @@ use Composer\InstalledVersions;
 use Contao\Backend;
 use Contao\BackendUser;
 use Contao\Config;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 use Contao\CoreBundle\Security\ContaoCorePermissions;
-use Contao\CoreBundle\ServiceAnnotation\Hook;
 use Contao\Date;
 use Contao\Input;
 use Contao\StringUtil;
@@ -20,9 +20,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Service\ResetInterface;
 use Terminal42\ChangeLanguage\Helper\LabelCallback;
 
-/**
- * @Hook("loadDataContainer")
- */
+#[AsHook('loadDataContainer')]
 class MissingLanguageIconListener implements ResetInterface
 {
     private AuthorizationCheckerInterface $authorizationChecker;
@@ -30,7 +28,7 @@ class MissingLanguageIconListener implements ResetInterface
     /**
      * @var array<string, string>|null
      */
-    private static ?array $callbacks = null;
+    private static array|null $callbacks = null;
 
     private TokenStorageInterface $tokenStorage;
 
@@ -39,12 +37,12 @@ class MissingLanguageIconListener implements ResetInterface
     /**
      * @var array<int|string, array<int|string>>|null
      */
-    private ?array $pageCache = null;
+    private array|null $pageCache = null;
 
     /**
      * @var array<string, array<int, int>>|null
      */
-    private ?array $translationCache = null;
+    private array|null $translationCache = null;
 
     public function __construct(TokenStorageInterface $tokenStorage, Connection $connection, AuthorizationCheckerInterface $authorizationChecker)
     {
@@ -242,7 +240,7 @@ class MissingLanguageIconListener implements ResetInterface
     {
         return $label.\sprintf(
             '<span style="padding-left:3px"><img src="%s" alt="%s" title="%s" style="%s"></span>',
-            'bundles/terminal42changelanguage/language-warning.png',
+            'bundles/terminal42changelanguage/language-warning.svg',
             $GLOBALS['TL_LANG']['MSC']['noMainLanguage'],
             $GLOBALS['TL_LANG']['MSC']['noMainLanguage'],
             $imgStyle,
@@ -281,7 +279,7 @@ class MissingLanguageIconListener implements ResetInterface
     /**
      * @return array{languageMain: int, mainTitle: string|null}|null
      */
-    private function getPageTranslation(int $id): ?array
+    private function getPageTranslation(int $id): array|null
     {
         if (null !== $this->pageCache) {
             return $this->pageCache[$id] ?? null;
@@ -321,7 +319,7 @@ class MissingLanguageIconListener implements ResetInterface
         return $this->pageCache[$id] ?? null;
     }
 
-    private function getChildTranslation(int $id, string $table, string $ptable, string $parentField): ?int
+    private function getChildTranslation(int $id, string $table, string $ptable, string $parentField): int|null
     {
         if (isset($this->translationCache[$table])) {
             return $this->translationCache[$table][$id] ?? null;

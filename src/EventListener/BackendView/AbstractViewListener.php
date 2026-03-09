@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Terminal42\ChangeLanguage\EventListener\BackendView;
 
 use Contao\Backend;
+use Contao\CoreBundle\Util\LocaleUtil;
 use Contao\DataContainer;
 use Contao\Input;
 use Contao\PageModel;
@@ -112,7 +113,14 @@ abstract class AbstractViewListener extends AbstractTableListener
         if (\array_key_exists($languageCode, $languages)) {
             [$label] = explode(' - ', $languages[$languageCode], 2);
         } else {
-            $label = $languageCode;
+            $primaryLanguageCode = LocaleUtil::getPrimaryLanguage($languageCode);
+
+            // Check if primary language code exists (e.g. de_CH -> de)
+            if (\array_key_exists($primaryLanguageCode, $languages)) {
+                [$label] = explode(' - ', $languages[$primaryLanguageCode], 2);
+            } else {
+                $label = $languageCode;
+            }
         }
 
         return $label;

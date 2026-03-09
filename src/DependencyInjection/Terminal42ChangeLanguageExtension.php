@@ -14,7 +14,7 @@ use Terminal42\ChangeLanguage\EventListener\Navigation\NewsNavigationListener;
 
 class Terminal42ChangeLanguageExtension extends Extension
 {
-    public function load(array $config, ContainerBuilder $container): void
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new YamlFileLoader(
             $container,

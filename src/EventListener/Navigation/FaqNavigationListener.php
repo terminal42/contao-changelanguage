@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Terminal42\ChangeLanguage\EventListener\Navigation;
 
-use Contao\CoreBundle\ServiceAnnotation\Hook;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 use Contao\FaqCategoryModel;
 use Contao\FaqModel;
 use Contao\Model;
@@ -13,9 +13,8 @@ use Terminal42\ChangeLanguage\Event\ChangelanguageNavigationEvent;
 
 /**
  * Translate URL parameters for faq items.
- *
- * @Hook("changelanguageNavigation")
  */
+#[AsHook('changelanguageNavigation')]
 class FaqNavigationListener extends AbstractNavigationListener implements NavigationHandlerInterface
 {
     /**
@@ -33,7 +32,7 @@ class FaqNavigationListener extends AbstractNavigationListener implements Naviga
         return isset($GLOBALS['TL_CONFIG']['useAutoItem']) ? 'items' : 'auto_item';
     }
 
-    protected function findCurrent(): ?FaqModel
+    protected function findCurrent(): FaqModel|null
     {
         $alias = $this->getAutoItem();
 
@@ -56,7 +55,7 @@ class FaqNavigationListener extends AbstractNavigationListener implements Naviga
      * @param array<string>         $values
      * @param array<string, string> $options
      */
-    protected function findPublishedBy(array $columns, array $values = [], array $options = []): ?FaqModel
+    protected function findPublishedBy(array $columns, array $values = [], array $options = []): FaqModel|null
     {
         return FaqModel::findOneBy(
             $this->addPublishedConditions($columns, FaqModel::getTable(), false),
