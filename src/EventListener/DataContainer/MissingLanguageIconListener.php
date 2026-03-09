@@ -23,17 +23,6 @@ use Terminal42\ChangeLanguage\Helper\LabelCallback;
 #[AsHook('loadDataContainer')]
 class MissingLanguageIconListener implements ResetInterface
 {
-    private AuthorizationCheckerInterface $authorizationChecker;
-
-    /**
-     * @var array<string, string>|null
-     */
-    private static array|null $callbacks = null;
-
-    private TokenStorageInterface $tokenStorage;
-
-    private Connection $connection;
-
     /**
      * @var array<int|string, array<int|string>>|null
      */
@@ -44,11 +33,11 @@ class MissingLanguageIconListener implements ResetInterface
      */
     private array|null $translationCache = null;
 
-    public function __construct(TokenStorageInterface $tokenStorage, Connection $connection, AuthorizationCheckerInterface $authorizationChecker)
-    {
-        $this->tokenStorage = $tokenStorage;
-        $this->connection = $connection;
-        $this->authorizationChecker = $authorizationChecker;
+    public function __construct(
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly Connection $connection,
+        private readonly AuthorizationCheckerInterface $authorizationChecker,
+    ) {
     }
 
     /**
@@ -56,13 +45,33 @@ class MissingLanguageIconListener implements ResetInterface
      */
     public function __invoke(string $table): void
     {
-        $callbacks = self::getCallbacks();
+        switch ($table)
+        {
+            case 'tl_page':
+                LabelCallback::createAndRegister($table, $this->onPageLabel(...));
+                break;
 
-        if (\array_key_exists($table, $callbacks)) {
-            LabelCallback::createAndRegister(
-                $table,
-                fn (array $args, $previousResult) => $this->{$callbacks[$table]}($args, $previousResult),
-            );
+            case 'tl_article':
+                LabelCallback::createAndRegister($table, $this->onArticleLabel(...));
+                break;
+
+            case 'tl_news':
+                if (InstalledVersions::isInstalled('contao/news-bundle')) {
+                    LabelCallback::createAndRegister($table, $this->onNewsChildRecords(...));
+                }
+                break;
+
+            case 'tl_calendar_events':
+                if (InstalledVersions::isInstalled('contao/calendar-bundle')) {
+                    LabelCallback::createAndRegister($table, $this->onCalendarEventChildRecords(...));
+                }
+                break;
+
+            case 'tl_faq':
+                if (InstalledVersions::isInstalled('contao/faq-bundle')) {
+                    LabelCallback::createAndRegister($table, $this->onFaqChildRecords(...));
+                }
+                break;
         }
     }
 
@@ -245,35 +254,6 @@ class MissingLanguageIconListener implements ResetInterface
             $GLOBALS['TL_LANG']['MSC']['noMainLanguage'],
             $imgStyle,
         );
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    private static function getCallbacks(): array
-    {
-        if (null !== self::$callbacks) {
-            return self::$callbacks;
-        }
-
-        $callbacks = [
-            'tl_page' => 'onPageLabel',
-            'tl_article' => 'onArticleLabel',
-        ];
-
-        if (InstalledVersions::isInstalled('contao/news-bundle')) {
-            $callbacks['tl_news'] = 'onNewsChildRecords';
-        }
-
-        if (InstalledVersions::isInstalled('contao/calendar-bundle')) {
-            $callbacks['tl_calendar_events'] = 'onCalendarEventChildRecords';
-        }
-
-        if (InstalledVersions::isInstalled('contao/faq-bundle')) {
-            $callbacks['tl_faq'] = 'onFaqChildRecords';
-        }
-
-        return self::$callbacks = $callbacks;
     }
 
     /**
