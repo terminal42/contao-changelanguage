@@ -15,13 +15,14 @@ abstract class AbstractChildTableListener extends AbstractTableListener
 {
     use LanguageMainTrait;
 
-    public function register(): void
+    public function register(string $table): void
     {
-        $GLOBALS['TL_DCA'][$this->table]['config']['onload_callback'][] = function (DataContainer $dc): void {
-            $this->onLoad($dc);
-        };
+        $listener = clone $this;
+        $listener->table = $table;
 
-        $this->addLanguageMainField();
+        $GLOBALS['TL_DCA'][$table]['config']['onload_callback'][] = $listener->onLoad(...);
+
+        $listener->addLanguageMainField();
     }
 
     public function onLoad(DataContainer $dc): void

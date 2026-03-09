@@ -6,6 +6,8 @@ namespace Terminal42\ChangeLanguage\EventListener;
 
 use Composer\InstalledVersions;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
+use Psr\Container\ContainerInterface;
+use Symfony\Contracts\Service\ServiceSubscriberInterface;
 use Terminal42\ChangeLanguage\EventListener\BackendView\ArticleViewListener;
 use Terminal42\ChangeLanguage\EventListener\BackendView\PageViewListener;
 use Terminal42\ChangeLanguage\EventListener\BackendView\ParentChildViewListener;
@@ -16,12 +18,17 @@ use Terminal42\ChangeLanguage\EventListener\DataContainer\NewsListener;
 use Terminal42\ChangeLanguage\EventListener\DataContainer\ParentTableListener;
 
 #[AsHook('loadDataContainer')]
-class CallbackSetupListener
+class CallbackSetupListener implements ServiceSubscriberInterface
 {
     /**
      * @var array<string, array<string>>|null
      */
     private static array|null $listeners = null;
+
+    public function __construct(
+        private readonly ContainerInterface $container,
+    ) {
+    }
 
     public function __invoke(string $table): void
     {
@@ -29,10 +36,17 @@ class CallbackSetupListener
 
         if (\array_key_exists($table, $listeners)) {
             foreach ($listeners[$table] as $class) {
-                $listener = new $class($table);
-                $listener->register();
+                $listener = $this->container->get($class);
+                $listener->register($table);
             }
         }
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        $services = array_values(self::getListeners());
+
+        return array_merge(...$services);
     }
 
     /**

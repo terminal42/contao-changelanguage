@@ -10,6 +10,7 @@ use Contao\DataContainer;
 use Contao\Input;
 use Contao\PageModel;
 use Contao\System;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Terminal42\ChangeLanguage\EventListener\AbstractTableListener;
 use Terminal42\ChangeLanguage\PageFinder;
 
@@ -17,24 +18,21 @@ abstract class AbstractViewListener extends AbstractTableListener
 {
     protected DataContainer $dataContainer;
 
-    protected PageFinder $pageFinder;
-
-    public function __construct(string $table)
-    {
-        parent::__construct($table);
-
-        $this->pageFinder = new PageFinder();
+    public function __construct(
+        protected readonly PageFinder $pageFinder,
+    ) {
     }
 
-    public function register(): void
+    public function register(string $table): void
     {
-        if (!$this->isSupported()) {
+        $listener = clone $this;
+        $listener->table = $table;
+
+        if (!$listener->isSupported()) {
             return;
         }
 
-        $GLOBALS['TL_DCA'][$this->table]['config']['onload_callback'][] = function ($dc): void {
-            $this->onLoad($dc);
-        };
+        $GLOBALS['TL_DCA'][$table]['config']['onload_callback'][] = $listener->onLoad(...);
     }
 
     /**

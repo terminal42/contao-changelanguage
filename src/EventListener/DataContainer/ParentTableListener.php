@@ -14,40 +14,34 @@ class ParentTableListener
 {
     private string $table;
 
-    public function __construct(string $table)
+    public function register(string $table): void
     {
-        $this->table = $table;
-    }
+        $listener = clone $this;
+        $listener->table = $table;
 
-    public function register(): void
-    {
-        if (!isset($GLOBALS['TL_DCA'][$this->table]['palettes']['default'])) {
+        if (!isset($GLOBALS['TL_DCA'][$table]['palettes']['default'])) {
             return;
         }
 
-        $GLOBALS['TL_DCA'][$this->table]['fields']['master'] = [
-            'label' => &$GLOBALS['TL_LANG'][$this->table]['master'],
+        $GLOBALS['TL_DCA'][$table]['fields']['master'] = [
+            'label' => &$GLOBALS['TL_LANG'][$table]['master'],
             'exclude' => true,
             'inputType' => 'select',
-            'options_callback' => fn (DataContainer $dc): array => $this->onMasterOptions($dc),
+            'options_callback' => $listener->onMasterOptions(...),
             'eval' => [
                 'includeBlankOption' => true,
-                'blankOptionLabel' => &$GLOBALS['TL_LANG'][$this->table]['isMaster'],
+                'blankOptionLabel' => &$GLOBALS['TL_LANG'][$table]['isMaster'],
                 'tl_class' => 'w50',
             ],
-            'save_callback' => [function ($value, DataContainer $dc) {
-                $this->validateMaster($value, $dc);
-
-                return $value;
-            }],
+            'save_callback' => [$listener->validateMaster(...)],
             'sql' => "int(10) unsigned NOT NULL default '0'",
-            'relation' => ['type' => 'hasOne', 'table' => $this->table],
+            'relation' => ['type' => 'hasOne', 'table' => $table],
         ];
 
         PaletteManipulator::create()
             ->addLegend('language_legend', 'title_legend')
             ->addField('master', 'language_legend', PaletteManipulator::POSITION_APPEND)
-            ->applyToPalette('default', $this->table)
+            ->applyToPalette('default', $table)
         ;
     }
 
@@ -89,13 +83,10 @@ class ParentTableListener
         return $options;
     }
 
-    /**
-     * @param string|null $value
-     */
-    private function validateMaster($value, DataContainer $dc): void
+    private function validateMaster(mixed $value, DataContainer $dc): mixed
     {
         if (!$value) {
-            return;
+            return $value;
         }
 
         $result = Database::getInstance()
@@ -111,5 +102,7 @@ class ParentTableListener
         if ($result->numRows > 0) {
             throw new \RuntimeException(\sprintf($GLOBALS['TL_LANG'][$this->table]['master'][2], $result->title));
         }
+
+        return $value;
     }
 }

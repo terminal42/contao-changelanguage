@@ -8,15 +8,10 @@ abstract class AbstractTableListener
 {
     protected string $table;
 
-    public function __construct(string $table)
-    {
-        $this->table = $table;
-    }
-
     /**
      * Register necessary callbacks for this listener.
      */
-    abstract public function register(): void;
+    abstract public function register(string $table): void;
 
     /**
      * Gets the table name for this listener.
