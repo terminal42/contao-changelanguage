@@ -4,30 +4,25 @@ declare(strict_types=1);
 
 namespace Terminal42\ChangeLanguage\Tests;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Terminal42\ChangeLanguage\Language;
 
 final class LanguageTest extends TestCase
 {
-    /**
-     * @dataProvider languagesProvider
-     */
+    #[DataProvider('languagesProvider')]
     public function testConvertLocaleIdToLanguageTag(string $localeId, string $languageTag): void
     {
         $this->assertSame($languageTag, Language::toLanguageTag($localeId));
     }
 
-    /**
-     * @dataProvider languagesProvider
-     */
+    #[DataProvider('languagesProvider')]
     public function testConvertLanguageTagToLocaleId(string $localeId, string $languageTag): void
     {
         $this->assertSame($localeId, Language::toLocaleID($languageTag));
     }
 
-    /**
-     * @dataProvider invalidLanguagesProvider
-     */
+    #[DataProvider('invalidLanguagesProvider')]
     public function testInvalidLanguage(string $language): void
     {
         $this->expectException('InvalidArgumentException');

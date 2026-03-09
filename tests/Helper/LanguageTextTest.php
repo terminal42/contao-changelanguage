@@ -8,7 +8,7 @@ use Contao\CoreBundle\InsertTag\InsertTagParser;
 use Contao\PageModel;
 use Contao\System;
 use Contao\TestCase\ContaoTestCase;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Terminal42\ChangeLanguage\Helper\LanguageText;
 use Terminal42\ChangeLanguage\Navigation\NavigationItem;
@@ -17,16 +17,15 @@ final class LanguageTextTest extends ContaoTestCase
 {
     protected function setUp(): void
     {
-        $insertTagParser = $this->createMock(InsertTagParser::class);
+        $insertTagParser = $this->createStub(InsertTagParser::class);
         $insertTagParser
             ->method('replace')
             ->willReturnArgument(0)
         ;
 
-        $container = $this->createMock(ContainerInterface::class);
+        $container = $this->createStub(ContainerInterface::class);
         $container
             ->method('get')
-            ->with('contao.insert_tag.parser')
             ->willReturn($insertTagParser)
         ;
 
@@ -152,12 +151,9 @@ final class LanguageTextTest extends ContaoTestCase
         $this->assertFalse($languageText->has('fr'));
     }
 
-    /**
-     * @return PageModel&MockObject
-     */
-    private function createRootPage(string $dns, string $language): PageModel
+    private function createRootPage(string $dns, string $language): PageModel&Stub
     {
-        $pageModel = $this->mockClassWithProperties(PageModel::class, [
+        $pageModel = $this->createClassWithPropertiesStub(PageModel::class, [
             'type' => 'root',
             'title' => 'foobar',
             'dns' => $dns,

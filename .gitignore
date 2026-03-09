@@ -1,4 +1,4 @@
-/tools/*/vendor
+/var
 /vendor/
 /composer.lock
 /phpunit.xml

@@ -11,8 +11,6 @@ return (new Configuration())
 
     // Ignore test setup
     ->addPathToExclude(__DIR__ . '/tests/Fixtures')
-    ->addPathToExclude(__DIR__ . '/tests/ClearCachePhpunitExtension.php')
     ->ignoreErrorsOnPackage('symfony/var-exporter', [ErrorType::UNUSED_DEPENDENCY])
     ->ignoreErrorsOnPackage('symfony/monolog-bundle', [ErrorType::UNUSED_DEPENDENCY])
-    ->ignoreErrorsOnPackage('symfony/phpunit-bridge', [ErrorType::UNUSED_DEPENDENCY])
 ;

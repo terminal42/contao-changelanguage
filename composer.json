@@ -44,11 +44,10 @@
     "require-dev": {
         "terminal42/contao-build-tools": "dev-main",
         "contao/manager-plugin": "^2.0",
-        "contao/news-bundle": "^5.0",
-        "contao/calendar-bundle": "^5.0",
-        "contao/faq-bundle": "^5.0",
-        "phpunit/phpunit": "^9.3",
-        "symfony/phpunit-bridge": "^5.4",
+        "contao/news-bundle": "^5.3",
+        "contao/calendar-bundle": "^5.3",
+        "contao/faq-bundle": "^5.3",
+        "phpunit/phpunit": "^12.4",
         "contao/test-case": "^5.0",
         "symfony/monolog-bundle": "^3.1",
         "symfony/var-exporter": "^6.4 || ^7"
