@@ -85,9 +85,8 @@ class MissingLanguageIconListener implements ResetInterface
      * Adds missing translation warning to page tree.
      *
      * @param array{0: array<string, int|string>, 1: string} $args
-     * @param mixed                                          $previousResult
      */
-    private function onPageLabel(array $args, $previousResult = null): string
+    private function onPageLabel(array $args, mixed $previousResult = null): string
     {
         [$row, $label] = $args;
 
@@ -136,9 +135,8 @@ class MissingLanguageIconListener implements ResetInterface
      * Adds missing translation warning to article tree.
      *
      * @param array{0: array<string, int|string>, 1: string} $args
-     * @param mixed                                          $previousResult
      */
-    private function onArticleLabel(array $args, $previousResult = null): string
+    private function onArticleLabel(array $args, mixed $previousResult = null): string
     {
         [$row, $label] = $args;
 
@@ -164,9 +162,8 @@ class MissingLanguageIconListener implements ResetInterface
      * Generate missing translation warning for news child records.
      *
      * @param array{0: array<string, int|string>} $args
-     * @param mixed                               $previousResult
      */
-    private function onNewsChildRecords(array $args, $previousResult = null): string
+    private function onNewsChildRecords(array $args, mixed $previousResult = null): string
     {
         $row = $args[0];
         $label = (string) $previousResult;
@@ -195,9 +192,8 @@ class MissingLanguageIconListener implements ResetInterface
      * Generate missing translation warning for calendar events child records.
      *
      * @param array{0: array<string, int|string>} $args
-     * @param mixed                               $previousResult
      */
-    private function onCalendarEventChildRecords(array $args, $previousResult = null): string
+    private function onCalendarEventChildRecords(array $args, mixed $previousResult = null): string
     {
         $row = $args[0];
         $label = (string) $previousResult;
@@ -222,9 +218,8 @@ class MissingLanguageIconListener implements ResetInterface
      * Generate missing translation warning for faq child records.
      *
      * @param array{0: array<string, int|string>} $args
-     * @param mixed                               $previousResult
      */
-    private function onFaqChildRecords(array $args, $previousResult = null): string
+    private function onFaqChildRecords(array $args, mixed $previousResult = null): string
     {
         $row = $args[0];
         $label = (string) $previousResult;

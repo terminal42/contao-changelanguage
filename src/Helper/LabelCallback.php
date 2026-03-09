@@ -55,10 +55,8 @@ class LabelCallback
     /**
      * @param callable|array<string, string> $callback
      * @param array<mixed>                   $args
-     *
-     * @return mixed
      */
-    private function executeCallback($callback, array $args)
+    private function executeCallback(array|callable $callback, array $args): mixed
     {
         // Support Contao's getInstance() method when callback is an array
         if (\is_array($callback)) {
