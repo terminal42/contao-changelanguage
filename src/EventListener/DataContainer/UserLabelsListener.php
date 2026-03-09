@@ -10,11 +10,8 @@ use Doctrine\DBAL\Connection;
 #[AsCallback('tl_user', 'fields.pageLanguageLabels.options')]
 class UserLabelsListener
 {
-    private Connection $connection;
-
-    public function __construct(Connection $connection)
+    public function __construct(private readonly Connection $connection)
     {
-        $this->connection = $connection;
     }
 
     /**

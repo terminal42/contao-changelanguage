@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Terminal42\ChangeLanguage\Tests\Fixtures\app;
 
-use Composer\InstalledVersions;
-use Composer\Semver\VersionParser;
 use Contao\CoreBundle\ContaoCoreBundle;
 use Contao\NewsBundle\ContaoNewsBundle;
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
@@ -23,7 +21,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\Kernel;
 use Terminal42\ChangeLanguage\Terminal42ChangeLanguageBundle;
-use Terminal42\ServiceAnnotationBundle\Terminal42ServiceAnnotationBundle;
 
 class AppKernel extends Kernel
 {
@@ -42,7 +39,6 @@ class AppKernel extends Kernel
             new KnpTimeBundle(),
             new KnpMenuBundle(),
             new CmfRoutingBundle(),
-            new Terminal42ServiceAnnotationBundle(),
             new ContaoCoreBundle(),
             new ContaoNewsBundle(),
             new Terminal42ChangeLanguageBundle(),
@@ -66,11 +62,7 @@ class AppKernel extends Kernel
 
     public function registerContainerConfiguration(LoaderInterface $loader): void
     {
-        if (InstalledVersions::satisfies(new VersionParser(), 'contao/core-bundle', '^5')) {
-            $loader->load(__DIR__.'/config/config_5.yml');
-        } else {
-            $loader->load(__DIR__.'/config/config_4.yml');
-        }
+        $loader->load(__DIR__.'/config/config.yaml');
     }
 
     protected function build(ContainerBuilder $container): void

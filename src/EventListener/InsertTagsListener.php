@@ -13,11 +13,8 @@ use Terminal42\ChangeLanguage\PageFinder;
 #[AsHook('replaceInsertTags')]
 class InsertTagsListener
 {
-    private InsertTagParser $parser;
-
-    public function __construct(InsertTagParser $parser)
+    public function __construct(private readonly InsertTagParser $parser)
     {
-        $this->parser = $parser;
     }
 
     /**
@@ -29,7 +26,7 @@ class InsertTagsListener
     {
         $parts = StringUtil::trimsplit('::', $insertTag);
 
-        if (!str_starts_with($parts[0], 'changelanguage')) {
+        if (!str_starts_with((string) $parts[0], 'changelanguage')) {
             return false;
         }
 
@@ -42,7 +39,7 @@ class InsertTagsListener
             }
 
             $targetPage = $pageFinder->findAssociatedForLanguage($currentPage, $parts[2]);
-        } catch (\RuntimeException $e) {
+        } catch (\RuntimeException) {
             // parent page of current page not found or not published
             return '';
         }
@@ -50,7 +47,7 @@ class InsertTagsListener
         return $this->parser->replace(
             \sprintf(
                 '{{%s::%s}}',
-                substr($parts[0], 15),
+                substr((string) $parts[0], 15),
                 $targetPage->id,
             ),
         );

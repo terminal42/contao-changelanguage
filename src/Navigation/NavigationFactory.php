@@ -11,26 +11,15 @@ use Terminal42\ChangeLanguage\PageFinder;
 
 class NavigationFactory
 {
-    private PageFinder $pageFinder;
-
-    private LanguageText $languageText;
-
-    private PageModel $currentPage;
-
-    /**
-     * @var array<string, string>
-     */
-    private array $locales;
-
     /**
      * @param array<string, string> $locales
      */
-    public function __construct(PageFinder $pageFinder, LanguageText $languageText, PageModel $currentPage, array $locales = [])
-    {
-        $this->pageFinder = $pageFinder;
-        $this->languageText = $languageText;
-        $this->currentPage = $currentPage;
-        $this->locales = $locales;
+    public function __construct(
+        private readonly PageFinder $pageFinder,
+        private readonly LanguageText $languageText,
+        private readonly PageModel $currentPage,
+        private array $locales = [],
+    ) {
     }
 
     /**
@@ -66,7 +55,7 @@ class NavigationFactory
                             ->findAssociatedParentForLanguage($currentPage, $item->getLanguageTag()),
                         false,
                     );
-                } catch (\RuntimeException $e) {
+                } catch (\RuntimeException) {
                     // parent page of current page not found or not published
                 }
             }

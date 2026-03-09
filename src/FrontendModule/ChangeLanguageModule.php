@@ -52,7 +52,7 @@ class ChangeLanguageModule extends Module
         if (null !== $request && $scopeMatcher->isBackendRequest($request)) {
             $template = new BackendTemplate('be_wildcard');
 
-            $template->wildcard = '### '.strtoupper($GLOBALS['TL_LANG']['FMD'][$this->type][0]).' ###';
+            $template->wildcard = '### '.strtoupper((string) $GLOBALS['TL_LANG']['FMD'][$this->type][0]).' ###';
             $template->title = $this->headline;
             $template->id = $this->id;
             $template->link = $this->name;
@@ -110,7 +110,7 @@ class ChangeLanguageModule extends Module
                     if ($item->getRootPage()->fallback && !$item->getRootPage()->languageRoot) {
                         $headerLinks->setDefault($item->getHref($urlParameters), $item->getTitle());
                     }
-                } catch (ExceptionInterface $e) {
+                } catch (ExceptionInterface) {
                     // Ignore unroutable pages
                 }
             }

@@ -15,11 +15,8 @@ use Terminal42\ChangeLanguage\PageFinder;
 #[AsHook('loadDataContainer')]
 class PageOperationListener
 {
-    private Connection $connection;
-
-    public function __construct(Connection $connection)
+    public function __construct(private readonly Connection $connection)
     {
-        $this->connection = $connection;
     }
 
     public function __invoke(string $table): void

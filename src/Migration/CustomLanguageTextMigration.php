@@ -12,14 +12,10 @@ use Doctrine\DBAL\Connection;
 
 class CustomLanguageTextMigration extends AbstractMigration
 {
-    private Connection $connection;
-
-    private ContaoFramework $framework;
-
-    public function __construct(Connection $connection, ContaoFramework $framework)
-    {
-        $this->connection = $connection;
-        $this->framework = $framework;
+    public function __construct(
+        private readonly Connection $connection,
+        private readonly ContaoFramework $framework,
+    ) {
     }
 
     public function shouldRun(): bool

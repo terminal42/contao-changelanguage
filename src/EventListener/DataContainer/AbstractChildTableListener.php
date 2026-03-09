@@ -55,7 +55,7 @@ abstract class AbstractChildTableListener extends AbstractTableListener
             ) {
                 return [];
             }
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             return [];
         }
 

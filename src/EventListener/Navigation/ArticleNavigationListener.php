@@ -16,11 +16,8 @@ use Terminal42\ChangeLanguage\PageFinder;
 #[AsHook('changelanguageNavigation')]
 class ArticleNavigationListener
 {
-    private TokenChecker $tokenChecker;
-
-    public function __construct(TokenChecker $tokenChecker)
+    public function __construct(private readonly TokenChecker $tokenChecker)
     {
-        $this->tokenChecker = $tokenChecker;
     }
 
     /**

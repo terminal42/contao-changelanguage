@@ -46,8 +46,7 @@ class MissingLanguageIconListener implements ResetInterface
      */
     public function __invoke(string $table): void
     {
-        switch ($table)
-        {
+        switch ($table) {
             case 'tl_page':
                 LabelCallback::createAndRegister($table, $this->onPageLabel(...));
                 break;
@@ -291,7 +290,7 @@ class MissingLanguageIconListener implements ResetInterface
 
         $this->pageCache = [];
         $rootIds = $this->connection->fetchFirstColumn("SELECT id FROM tl_page WHERE type='root' AND (fallback='' OR languageRoot>0)");
-        $rootIds = array_map('intval', $rootIds);
+        $rootIds = array_map(intval(...), $rootIds);
 
         foreach ($rootIds as $rootId) {
             $this->pageCache += $childRecords([$rootId => []], $rootId);
@@ -306,7 +305,7 @@ class MissingLanguageIconListener implements ResetInterface
             return $this->translationCache[$table][$id] ?? null;
         }
 
-        $this->translationCache[$table] = array_map('intval', $this->connection->fetchAllKeyValue(
+        $this->translationCache[$table] = array_map(intval(...), $this->connection->fetchAllKeyValue(
             <<<SQL
                     SELECT
                         c.id,

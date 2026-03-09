@@ -12,11 +12,8 @@ use Terminal42\ChangeLanguage\Event\ChangelanguageNavigationEvent;
 
 abstract class AbstractNavigationListener
 {
-    private TokenChecker $tokenChecker;
-
-    public function __construct(TokenChecker $tokenChecker)
+    public function __construct(private readonly TokenChecker $tokenChecker)
     {
-        $this->tokenChecker = $tokenChecker;
     }
 
     /**
@@ -51,7 +48,7 @@ abstract class AbstractNavigationListener
         try {
             $t = $current::getTable();
             $parent = $current->getRelated('pid');
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             return;
         }
 

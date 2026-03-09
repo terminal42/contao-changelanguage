@@ -1,6 +1,6 @@
 <?php
 $blnHasActive = false;
-$intLevel = (int) substr($this->level, 6);
+$intLevel = (int) substr((string) $this->level, 6);
 
 if ($intLevel < 1) {
     $intLevel = 1;
@@ -10,7 +10,7 @@ if (1 == $intLevel):
     $arrLanguages = Contao\System::getContainer()->get('contao.intl.locales')->getLocales(null, true);
 
     foreach ($this->items as $item) {
-        if ($item['isActive'] || str_contains($item['subitems'], 'class="active')) {
+        if ($item['isActive'] || str_contains((string) $item['subitems'], 'class="active')) {
             $blnHasActive = true;
             break;
         }
