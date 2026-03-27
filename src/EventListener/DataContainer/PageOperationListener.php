@@ -87,13 +87,18 @@ class PageOperationListener
         $page = PageModel::findWithDetails($pageId);
 
         // Moving a root page does not affect language assignments
-        if (null === $page || !$page->languageMain || 'root' === $page->type) {
+        if (
+            null === $page
+            || !$page->languageMain
+            || 'root' === $page->type
+            || [] === ($childRecords = Database::getInstance()->getChildRecords($page->rootId, 'tl_page'))
+        ) {
             return;
         }
 
         $duplicates = PageModel::countBy(
             [
-                'id IN ('.implode(',', Database::getInstance()->getChildRecords($page->rootId, 'tl_page')).')',
+                'id IN ('.implode(',', $childRecords).')',
                 'languageMain=?',
                 'id!=?',
             ],
