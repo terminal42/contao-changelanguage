@@ -57,19 +57,19 @@ class MissingLanguageIconListener implements ResetInterface
 
             case 'tl_news':
                 if (InstalledVersions::isInstalled('contao/news-bundle')) {
-                    LabelCallback::createAndRegister($table, $this->onNewsChildRecords(...));
+                    LabelCallback::createAndRegister($table, $this->onNewsLabel(...));
                 }
                 break;
 
             case 'tl_calendar_events':
                 if (InstalledVersions::isInstalled('contao/calendar-bundle')) {
-                    LabelCallback::createAndRegister($table, $this->onCalendarEventChildRecords(...));
+                    LabelCallback::createAndRegister($table, $this->onCalendarEventLabel(...));
                 }
                 break;
 
             case 'tl_faq':
                 if (InstalledVersions::isInstalled('contao/faq-bundle')) {
-                    LabelCallback::createAndRegister($table, $this->onFaqChildRecords(...));
+                    LabelCallback::createAndRegister($table, $this->onFaqLabel(...));
                 }
                 break;
         }
@@ -163,10 +163,10 @@ class MissingLanguageIconListener implements ResetInterface
      *
      * @param array{0: array<string, int|string>} $args
      */
-    private function onNewsChildRecords(array $args, mixed $previousResult = null): string
+    private function onNewsLabel(array $args, mixed $previousResult = null): mixed
     {
         $row = $args[0];
-        $label = (string) $previousResult;
+        $label = $previousResult;
 
         if (empty($label)) {
             $label = '<div class="tl_content_left">'.$row['headline'].' <span style="color:#999;padding-left:3px">['.Date::parse(Config::get('datimFormat'), $row['date']).']</span></div>';
@@ -177,12 +177,17 @@ class MissingLanguageIconListener implements ResetInterface
         }
 
         if (0 === $this->getChildTranslation((int) $row['id'], 'tl_news', 'tl_news_archive', 'master')) {
-            return preg_replace(
-                '#</div>#',
-                $this->generateLabelWithWarning('').'</div>',
-                $label,
-                1,
-            );
+            // Before Contao 5.7
+            if (!\is_array($label)) {
+                return preg_replace(
+                    '#</div>#',
+                    $this->generateLabelWithWarning('').'</div>',
+                    (string) $label,
+                    1,
+                );
+            }
+
+            $label[0] = $this->generateLabelWithWarning($label[0]);
         }
 
         return $label;
@@ -193,7 +198,7 @@ class MissingLanguageIconListener implements ResetInterface
      *
      * @param array{0: array<string, int|string>} $args
      */
-    private function onCalendarEventChildRecords(array $args, mixed $previousResult = null): string
+    private function onCalendarEventLabel(array $args, mixed $previousResult = null): string
     {
         $row = $args[0];
         $label = (string) $previousResult;
@@ -203,12 +208,16 @@ class MissingLanguageIconListener implements ResetInterface
         }
 
         if (0 === $this->getChildTranslation((int) $row['id'], 'tl_calendar_events', 'tl_calendar', 'master')) {
-            return preg_replace(
-                '#</div>#',
-                $this->generateLabelWithWarning('', 'position:absolute;top:6px').'</div>',
-                $label,
-                1,
-            );
+            if (str_contains($label, '</div>')) {
+                return preg_replace(
+                    '#</div>#',
+                    $this->generateLabelWithWarning('', 'position:absolute;top:6px').'</div>',
+                    $label,
+                    1,
+                );
+            }
+
+            return $this->generateLabelWithWarning($label);
         }
 
         return $label;
@@ -219,22 +228,27 @@ class MissingLanguageIconListener implements ResetInterface
      *
      * @param array{0: array<string, int|string>} $args
      */
-    private function onFaqChildRecords(array $args, mixed $previousResult = null): string
+    private function onFaqLabel(array $args, mixed $previousResult = null): mixed
     {
         $row = $args[0];
-        $label = (string) $previousResult;
+        $label = $previousResult;
 
         if (!$this->authorizationChecker->isGranted(ContaoCorePermissions::USER_CAN_EDIT_FIELD_OF_TABLE, 'tl_faq::languageMain')) {
             return $label;
         }
 
         if (0 === $this->getChildTranslation((int) $row['id'], 'tl_faq', 'tl_faq_category', 'master')) {
-            return preg_replace(
-                '#</div>#',
-                $this->generateLabelWithWarning('').'</div>',
-                $label,
-                1,
-            );
+            // Before Contao 5.7
+            if (!\is_array($label)) {
+                return preg_replace(
+                    '#</div>#',
+                    $this->generateLabelWithWarning('').'</div>',
+                    (string) $label,
+                    1,
+                );
+            }
+
+            $label[0] = $this->generateLabelWithWarning($label[0]);
         }
 
         return $label;
