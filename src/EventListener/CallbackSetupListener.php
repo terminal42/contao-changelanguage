@@ -25,9 +25,8 @@ class CallbackSetupListener implements ServiceSubscriberInterface
      */
     private static array|null $listeners = null;
 
-    public function __construct(
-        private readonly ContainerInterface $container,
-    ) {
+    public function __construct(private readonly ContainerInterface $container)
+    {
     }
 
     public function __invoke(string $table): void

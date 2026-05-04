@@ -13,9 +13,8 @@ use Terminal42\ChangeLanguage\PageFinder;
 
 class PageFieldsListener
 {
-    public function __construct(
-        private readonly RequestStack $requestStack,
-    ) {
+    public function __construct(private readonly RequestStack $requestStack)
+    {
     }
 
     /**

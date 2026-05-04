@@ -17,9 +17,8 @@ class ArticleListener extends AbstractTableListener
 {
     use LanguageMainTrait;
 
-    public function __construct(
-        protected readonly RequestStack $requestStack,
-    ) {
+    public function __construct(protected readonly RequestStack $requestStack)
+    {
     }
 
     public function register(string $table): void

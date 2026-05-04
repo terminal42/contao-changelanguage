@@ -13,9 +13,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 #[AsHook('loadDataContainer')]
 class PageInitializationListener
 {
-    public function __construct(
-        private readonly RequestStack $requestStack,
-    ) {
+    public function __construct(private readonly RequestStack $requestStack)
+    {
     }
 
     /**
