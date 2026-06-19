@@ -22,11 +22,7 @@ class ParentChildViewListener extends AbstractViewListener
             return false;
         }
 
-        return $this->getTable() === $request->query->get('table') && (
-            ('news' === $request->query->get('do') && InstalledVersions::isInstalled('contao/news-bundle'))
-            || ('calendar' === $request->query->get('do') && InstalledVersions::isInstalled('contao/calendar-bundle'))
-            || ('faq' === $request->query->get('do') && InstalledVersions::isInstalled('contao/faq-bundle'))
-        );
+        return $this->getTable() === $request->query->get('table');
     }
 
     protected function getCurrentPage(): PageModel|null
