@@ -18,11 +18,18 @@ class ParentChildViewListener extends AbstractViewListener
 
     protected function isSupported(): bool
     {
-        if (!$request = $this->requestStack->getCurrentRequest()) {
+        if (
+            !($request = $this->requestStack->getCurrentRequest())
+            || $this->getTable() !== $request->query->get('table')
+        ) {
             return false;
         }
 
-        return $this->getTable() === $request->query->get('table');
+        /** @var class-string<Model> $class */
+        $class = $this->getModelClass();
+        $table = $class::getTable();
+
+        return isset($GLOBALS['TL_DCA'][$table]['fields'][$this->hasParent() ? 'languageMain' : 'master']);
     }
 
     protected function getCurrentPage(): PageModel|null
