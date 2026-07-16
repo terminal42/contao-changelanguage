@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Terminal42\ChangeLanguage\EventListener\BackendView;
 
-use Composer\InstalledVersions;
 use Contao\Controller;
 use Contao\CoreBundle\Exception\RedirectResponseException;
 use Contao\Model;
@@ -105,7 +104,7 @@ class ParentChildViewListener extends AbstractViewListener
         if ('edit' === $request->query->get('act') && 'tl_content' !== $this->getTable()) {
             $uri = $uri->removeQueryParameters('switchLanguage');
         } else {
-            $uri = $uri->removeQueryParameters('switchLanguage', 'act', 'mode');;
+            $uri = $uri->removeQueryParameters('switchLanguage', 'act', 'mode');
         }
 
         $uri = $uri->mergeQueryParameters(['id' => $id])->unwrap();
