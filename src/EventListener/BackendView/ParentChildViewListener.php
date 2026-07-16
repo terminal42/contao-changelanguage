@@ -25,9 +25,13 @@ class ParentChildViewListener extends AbstractViewListener
             return false;
         }
 
-        /** @var class-string<Model> $class */
-        $class = $this->getModelClass();
-        $table = $class::getTable();
+        try {
+            /** @var class-string<Model> $class */
+            $class = $this->getModelClass();
+            $table = $class::getTable();
+        } catch (\RuntimeException) {
+            return false;
+        }
 
         return isset($GLOBALS['TL_DCA'][$table]['fields'][$this->hasParent() ? 'languageMain' : 'master']);
     }
@@ -149,7 +153,7 @@ class ParentChildViewListener extends AbstractViewListener
             return Model::getClassFromTable($this->getTable());
         }
 
-        return Model::getClassFromTable($GLOBALS['TL_DCA'][$this->getTable()]['config']['ptable']);
+        return Model::getClassFromTable($GLOBALS['TL_DCA'][$this->getTable()]['config']['ptable'] ?? '');
     }
 
     private function hasParent(): bool
