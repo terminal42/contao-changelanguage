@@ -1,0 +1,41 @@
+{% set int_level = level|slice(6)|default(1) %}
+{% set int_level = int_level < 1 ? 1 : int_level %}
+{% set has_active = false %}
+
+{% if int_level == 1 %}
+    {% for item in items %}
+        {% if item.isActive or 'class="active' in item.subitems|default('') %}
+            {% set has_active = true %}
+        {% endif %}
+    {% endfor %}
+
+    <select class="{{ level }}" onchange="window.location.href = this.value">
+{% endif %}
+
+{% if int_level == 1 and not has_active %}
+    <option value="">-</option>
+{% endif %}
+
+{% for item in items %}
+    {% set indentation = '' %}
+
+    {% for i in 1..(int_level - 1) %}
+        {% set indentation = indentation ~ '&nbsp;&nbsp;&nbsp;' %}
+    {% endfor %}
+
+    {% set label = locales.(item.item.localeId)|default(item.link) %}
+
+    {% if item.isActive %}
+        <option class="active {{ item.class }}" selected>
+            {{ indentation|raw }}{{ label }}{{ item.subitems|default('')|raw }}
+        </option>
+    {% else %}
+        <option{% if item.class %} class="{{ item.class }}"{% endif %} value="{{ item.href }}">
+            {{ indentation|raw }}{{ label }}{{ item.subitems|default('')|raw }}
+        </option>
+    {% endif %}
+{% endfor %}
+
+{% if int_level == 1 %}
+    </select>
+{% endif %}

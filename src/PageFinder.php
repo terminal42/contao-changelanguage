@@ -97,9 +97,7 @@ class PageFinder
             return $this->findRootPagesForPage($page, $skipCurrent, $publishedOnly);
         }
 
-        if (null === $rootPages) {
-            $rootPages = $this->findRootPagesForPage($page, $skipCurrent, $publishedOnly);
-        }
+        $rootPages ??= $this->findRootPagesForPage($page, $skipCurrent, $publishedOnly);
 
         $page->loadDetails();
         $t = $page::getTable();

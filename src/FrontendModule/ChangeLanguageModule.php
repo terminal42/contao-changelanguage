@@ -37,9 +37,7 @@ class ChangeLanguageModule extends Module
 
     public function getAlternateLinks(): AlternateLinks
     {
-        if (null === self::$alternateLinks) {
-            self::$alternateLinks = new AlternateLinks();
-        }
+        self::$alternateLinks ??= new AlternateLinks();
 
         return self::$alternateLinks;
     }
@@ -123,6 +121,7 @@ class ChangeLanguageModule extends Module
             $templateItems[] = $this->generateTemplateArray($item, $urlParameters);
         }
 
+        $this->Template->locales = System::getContainer()->get('contao.intl.locales')->getLocales(null, true);
         $this->Template->items = $this->generateNavigationTemplate($templateItems);
         $GLOBALS['TL_HEAD']['changelanguage_headers'] = $headerLinks->generate();
     }
@@ -191,7 +190,7 @@ class ChangeLanguageModule extends Module
     /**
      * Creates an UrlParameterBag from the current environment.
      *
-     * @param array<string, int|string> $queryParameters An array of query parameters to keep
+     * @param list<string> $queryParameters An array of query parameters to keep
      */
     protected function createUrlParameterBag(array $queryParameters = []): UrlParameterBag
     {

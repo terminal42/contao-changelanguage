@@ -8,7 +8,7 @@ framework:
     secret: '%env(APP_SECRET)%'
     router:
         utf8: true
-        resource: '%kernel.project_dir%/../src/Resources/config/routes.yml'
+        resource: '%kernel.project_dir%/../config/routes.yml'
         strict_requirements: '%kernel.debug%'
     csrf_protection: ~
     default_locale: '%locale%'
@@ -24,8 +24,6 @@ framework:
     uid:
         default_uuid_version: 7
         time_based_uuid_version: 7
-    annotations:
-        enabled: false
     handle_all_throwables: true
 
 security:
@@ -104,17 +102,15 @@ doctrine:
                 class: Contao\CoreBundle\Doctrine\DBAL\Types\BinaryStringType
     orm:
         auto_mapping: true
-        auto_generate_proxy_classes: true
 
 contao:
-    localconfig:
-        licenseAccepted: true
-        disableCron: true
     cron:
         web_listener: false
     search:
         default_indexer:
             enable: false
+    messenger:
+        workers: [{ transports: [contao_test] }]
 
 scheb_two_factor:
     trusted_device:

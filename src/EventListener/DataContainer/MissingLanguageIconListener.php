@@ -8,6 +8,7 @@ use Composer\InstalledVersions;
 use Contao\Backend;
 use Contao\BackendUser;
 use Contao\Config;
+use Contao\CoreBundle\DataContainer\RecordLabel;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 use Contao\CoreBundle\Security\ContaoCorePermissions;
 use Contao\Date;
@@ -86,7 +87,7 @@ class MissingLanguageIconListener implements ResetInterface
      *
      * @param array{0: array<string, int|string>, 1: string} $args
      */
-    private function onPageLabel(array $args, mixed $previousResult = null): string
+    private function onPageLabel(array $args, mixed $previousResult = null): RecordLabel|string
     {
         [$row, $label] = $args;
 
@@ -136,7 +137,7 @@ class MissingLanguageIconListener implements ResetInterface
      *
      * @param array{0: array<string, int|string>, 1: string} $args
      */
-    private function onArticleLabel(array $args, mixed $previousResult = null): string
+    private function onArticleLabel(array $args, mixed $previousResult = null): RecordLabel|string
     {
         [$row, $label] = $args;
 
