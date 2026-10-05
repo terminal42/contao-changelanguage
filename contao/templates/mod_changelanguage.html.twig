@@ -1,11 +1,13 @@
-<!-- indexer::stop -->
-<nav class="{{ class }} block"{{ cssID }}{% if style %} style="{{ style }}"{% endif %}>
+{% if items|default %}
+    <!-- indexer::stop -->
+    <nav class="{{ class }} block"{{ cssID }}{% if style %} style="{{ style }}"{% endif %}>
 
-    {% if headline %}
-    <{{ hl }}>{{ headline }}</{{ hl }}>
+        {% if headline %}
+        <{{ hl }}>{{ headline }}</{{ hl }}>
+    {% endif %}
+
+      {{ items|raw }}
+
+    </nav>
+    <!-- indexer::continue -->
 {% endif %}
-
-  {{ items|raw }}
-
-</nav>
-<!-- indexer::continue -->
