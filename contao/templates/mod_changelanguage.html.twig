@@ -5,7 +5,7 @@
     <{{ hl }}>{{ headline }}</{{ hl }}>
 {% endif %}
 
-  {{ items|raw }}
+  {{ items|default|raw }}
 
 </nav>
 <!-- indexer::continue -->
