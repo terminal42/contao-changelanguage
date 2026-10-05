@@ -45,7 +45,7 @@ class UserLabelsListener
 
         return $this->connection->fetchAllKeyValue(
             "SELECT id, title FROM tl_page WHERE type='root' AND (fallback='' OR languageRoot!=0) AND id IN (?) ORDER BY pid, sorting",
-            [array_merge($pagemounts)],
+            [array_unique(array_merge(...$pagemounts))],
             [ArrayParameterType::INTEGER]
         );
     }
