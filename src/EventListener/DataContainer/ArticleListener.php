@@ -61,7 +61,7 @@ class ArticleListener extends AbstractTableListener
     {
         $pageFinder = new PageFinder();
         $current = ArticleModel::findById($dc->id);
-        $page = PageModel::findById($current->pid);
+        $page = null === $current ? null : PageModel::findById($current->pid);
 
         if (null === $page || null === ($master = $pageFinder->findAssociatedInMaster($page))) {
             return [];
