@@ -1,6 +1,6 @@
 {% if items|default %}
     <!-- indexer::stop -->
-    <nav class="{{ class }} block"{{ cssID }}{% if style %} style="{{ style }}"{% endif %}>
+    <nav class="{{ class }} block"{{ cssID|raw }}{% if style %} style="{{ style }}"{% endif %}>
 
         {% if headline %}
         <{{ hl }}>{{ headline }}</{{ hl }}>
