@@ -37,6 +37,7 @@ class ArticleNavigationListener
         global $objPage;
 
         $parameterBag = $event->getUrlParameterBag();
+
         $currentArticle = ArticleModel::findByIdOrAliasAndPid(
             $parameterBag->getUrlAttribute('articles'),
             $objPage->id,
@@ -85,9 +86,7 @@ class ArticleNavigationListener
                 'tl_article.languageMain = ?',
                 'tl_article.pid IN ('.implode(',', $subpages).')',
             ],
-            [
-                $currentIsFallback ? $currentArticle->id : $currentArticle->languageMain,
-            ],
+            [$currentIsFallback ? $currentArticle->id : $currentArticle->languageMain],
         );
     }
 
@@ -101,6 +100,7 @@ class ArticleNavigationListener
     {
         if (!$this->tokenChecker->isPreviewMode()) {
             $time = Date::floorToMinute();
+
             $columns[] = "(tl_article.start='' OR tl_article.start<='$time')";
             $columns[] = "(tl_article.stop='' OR tl_article.stop>'".($time + 60)."')";
             $columns[] = "tl_article.published='1'";

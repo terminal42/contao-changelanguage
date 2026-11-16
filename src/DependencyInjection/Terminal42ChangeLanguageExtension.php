@@ -29,6 +29,7 @@ class Terminal42ChangeLanguageExtension extends Extension
     private function removeExtensionListeners(ContainerBuilder $container): void
     {
         $bundles = $container->getParameter('kernel.bundles');
+
         $conditions = [
             'ContaoCalendarBundle' => [CalendarNavigationListener::class],
             'ContaoNewsBundle' => [NewsNavigationListener::class],

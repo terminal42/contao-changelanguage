@@ -22,6 +22,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\Kernel;
 use Terminal42\ChangeLanguage\Terminal42ChangeLanguageBundle;
+use Webauthn\Bundle\WebauthnBundle;
 
 class AppKernel extends Kernel
 {
@@ -38,6 +39,7 @@ class AppKernel extends Kernel
             new FlysystemBundle(),
             new DoctrineBundle(),
             new SchebTwoFactorBundle(),
+            new WebauthnBundle(),
             new KnpTimeBundle(),
             new KnpMenuBundle(),
             new CmfRoutingBundle(),

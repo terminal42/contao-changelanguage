@@ -66,6 +66,7 @@ class ParentTableListener
         }
 
         $options = [];
+
         $result = Database::getInstance()
             ->prepare('
                 SELECT id, title

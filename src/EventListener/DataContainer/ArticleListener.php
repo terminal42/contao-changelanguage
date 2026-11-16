@@ -68,6 +68,7 @@ class ArticleListener extends AbstractTableListener
         }
 
         $options = [];
+
         $result = Database::getInstance()
             ->prepare('
                 SELECT id, title

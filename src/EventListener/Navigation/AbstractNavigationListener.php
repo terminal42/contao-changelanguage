@@ -108,6 +108,7 @@ abstract class AbstractNavigationListener
 
             if ($addStartStop) {
                 $time = Date::floorToMinute();
+
                 $columns[] = "($table.start='' OR $table.start<='$time')";
                 $columns[] = "($table.stop='' OR $table.stop>'".($time + 60)."')";
             }

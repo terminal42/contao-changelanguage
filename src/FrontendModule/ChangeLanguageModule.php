@@ -49,11 +49,11 @@ class ChangeLanguageModule extends Module
 
         if (null !== $request && $scopeMatcher->isBackendRequest($request)) {
             $template = new BackendTemplate('be_wildcard');
-
             $template->wildcard = '### '.strtoupper((string) $GLOBALS['TL_LANG']['FMD'][$this->type][0]).' ###';
             $template->title = $this->headline;
             $template->id = $this->id;
             $template->link = $this->name;
+
             $template->href = System::getContainer()->get('router')->generate(
                 'contao_backend',
                 ['do' => 'themes', 'table' => 'tl_module', 'act' => 'edit', 'id' => $this->id],
@@ -123,6 +123,7 @@ class ChangeLanguageModule extends Module
 
         $this->Template->locales = System::getContainer()->get('contao.intl.locales')->getLocales(null, true);
         $this->Template->items = $this->generateNavigationTemplate($templateItems);
+
         $GLOBALS['TL_HEAD']['changelanguage_headers'] = $headerLinks->generate();
     }
 
@@ -172,7 +173,6 @@ class ChangeLanguageModule extends Module
     protected function generateNavigationTemplate(array $items): string
     {
         $objTemplate = new FrontendTemplate($this->navigationTpl ?: 'nav_default');
-
         $objTemplate->setData($this->arrData);
         $objTemplate->level = 'level_1';
         $objTemplate->items = $items;

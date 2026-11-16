@@ -108,8 +108,8 @@ final class UrlParameterBagTest extends TestCase
         $this->expectException('RuntimeException');
 
         $GLOBALS['TL_AUTO_ITEM'] = ['foo', 'bar'];
-        $bag = new UrlParameterBag(['foo' => 'bar', 'bar' => 'baz']);
 
+        $bag = new UrlParameterBag(['foo' => 'bar', 'bar' => 'baz']);
         $bag->generateParameters();
     }
 

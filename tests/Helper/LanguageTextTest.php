@@ -160,7 +160,6 @@ final class LanguageTextTest extends ContaoTestCase
             'language' => $language,
             'published' => '1',
         ]);
-
         $pageModel
             ->method('loadDetails')
             ->willReturnSelf()

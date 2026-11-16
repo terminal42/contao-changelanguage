@@ -86,6 +86,7 @@ class PageInitializationListener
     private function handleEditAllMode(): void
     {
         $this->addRootLanguageFields();
+
         $this->addRegularLanguageFields(
             array_diff(
                 array_keys($GLOBALS['TL_DCA']['tl_page']['palettes']),

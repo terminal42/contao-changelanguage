@@ -73,7 +73,6 @@ class AlternateLinks
         }
 
         $template = new FrontendTemplate($templateName);
-
         $template->links = $this->links;
 
         return $template->parse();

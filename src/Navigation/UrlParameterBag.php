@@ -146,6 +146,7 @@ class UrlParameterBag
 
                 case 1:
                     unset($attributes[key($auto_item)]);
+
                     $auto_item = current($auto_item);
                     break;
 

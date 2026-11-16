@@ -34,7 +34,6 @@ abstract class ContaoTestCase extends FunctionalTestCase
     protected function query(string $statement): int
     {
         $connection = static::getConnection();
-
         $connection->executeQuery($statement);
 
         return (int) $connection->lastInsertId();
@@ -53,7 +52,6 @@ abstract class ContaoTestCase extends FunctionalTestCase
         $pageModel->fallback = $fallback;
         $pageModel->languageRoot = $languageRoot;
         $pageModel->published = $published;
-
         $pageModel->save();
 
         return $pageModel;
@@ -70,7 +68,6 @@ abstract class ContaoTestCase extends FunctionalTestCase
         $pageModel->type = 'regular';
         $pageModel->languageMain = $languageMain;
         $pageModel->published = $published;
-
         $pageModel->save();
 
         return $pageModel;

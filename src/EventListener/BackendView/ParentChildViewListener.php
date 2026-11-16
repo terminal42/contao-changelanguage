@@ -123,6 +123,7 @@ class ParentChildViewListener extends AbstractViewListener
 
         if ($this->hasParent()) {
             $ptable = $GLOBALS['TL_DCA'][$table]['config']['ptable'];
+
             $columns = [
                 "$table.pid IN (SELECT id FROM $ptable WHERE jumpTo=?)",
                 "$table.id!=?",

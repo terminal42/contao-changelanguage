@@ -123,6 +123,7 @@ final class AssociatedForPageTest extends ContaoTestCase
 
         $en = $this->createPage($enRoot->id);
         $de = $this->createPage($deRoot->id, $en->id);
+
         $this->createPage($frRoot->id, $en->id);
 
         $pages = $this->pageFinder->findAssociatedForPage($de);

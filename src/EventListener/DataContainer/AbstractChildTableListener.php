@@ -60,6 +60,7 @@ abstract class AbstractChildTableListener extends AbstractTableListener
 
         /** @var Model $class */
         $class = Model::getClassFromTable($this->table);
+
         $models = $class::findBy(
             [
                 $this->table.'.pid=?',

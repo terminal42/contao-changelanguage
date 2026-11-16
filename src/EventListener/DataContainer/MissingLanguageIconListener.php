@@ -299,6 +299,7 @@ class MissingLanguageIconListener implements ResetInterface
         };
 
         $this->pageCache = [];
+
         $rootIds = $this->connection->fetchFirstColumn("SELECT id FROM tl_page WHERE type='root' AND (fallback='' OR languageRoot>0)");
         $rootIds = array_map(intval(...), $rootIds);
 
@@ -315,18 +316,21 @@ class MissingLanguageIconListener implements ResetInterface
             return $this->translationCache[$table][$id] ?? null;
         }
 
-        $this->translationCache[$table] = array_map(intval(...), $this->connection->fetchAllKeyValue(
-            <<<SQL
-                    SELECT
-                        c.id,
-                        IFNULL(ct.id, 0)
-                    FROM $table c
-                        JOIN $ptable p ON c.pid=p.id
-                        LEFT JOIN $table ct ON c.languageMain=ct.id
-                        LEFT JOIN $ptable pt ON p.$parentField=pt.id
-                    WHERE pt.id > 0
-                SQL,
-        ));
+        $this->translationCache[$table] = array_map(
+            intval(...),
+            $this->connection->fetchAllKeyValue(
+                <<<SQL
+                        SELECT
+                            c.id,
+                            IFNULL(ct.id, 0)
+                        FROM $table c
+                            JOIN $ptable p ON c.pid=p.id
+                            LEFT JOIN $table ct ON c.languageMain=ct.id
+                            LEFT JOIN $ptable pt ON p.$parentField=pt.id
+                        WHERE pt.id > 0
+                    SQL,
+            ),
+        );
 
         return $this->translationCache[$table][$id] ?? null;
     }

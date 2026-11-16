@@ -1,7 +1,6 @@
 <?php
 
 $GLOBALS['TL_DCA']['tl_page']['config']['sql']['keys']['languageMain'] = 'index';
-
 $GLOBALS['TL_DCA']['tl_page']['fields']['fallback']['eval']['submitOnChange'] = true;
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['languageMain'] = [

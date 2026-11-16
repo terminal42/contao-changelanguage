@@ -37,6 +37,7 @@ class ChangelanguageNavigationEvent extends Event
     public function skipInNavigation(): void
     {
         $this->skipped = true;
+
         $this->stopPropagation();
     }
 

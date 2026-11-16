@@ -37,6 +37,7 @@ final class RootPagesTest extends ContaoTestCase
     public function testFindRootsWithSameDns(): void
     {
         $pageModel = $this->createRootPage('', 'en');
+
         $this->createRootPage('', 'de', false);
 
         $roots = $this->pageFinder->findRootPagesForPage($pageModel);
@@ -57,6 +58,7 @@ final class RootPagesTest extends ContaoTestCase
     public function testFindsMasterAndNonFallbacks(): void
     {
         $pageModel = $this->createRootPage('foo.com', 'en');
+
         $this->createRootPage('foo.com', 'de', false);
         $this->createRootPage('bar.com', 'fr', true, $pageModel->id);
         $this->createRootPage('bar.com', 'it', false);
@@ -69,8 +71,10 @@ final class RootPagesTest extends ContaoTestCase
     public function testFindsMasterFromSlave(): void
     {
         $master = $this->createRootPage('foo.com', 'en');
+
         $this->createRootPage('foo.com', 'de', false);
         $this->createRootPage('bar.com', 'fr', true, $master->id);
+
         $pageModel = $this->createRootPage('bar.com', 'it', false);
 
         $roots = $this->pageFinder->findRootPagesForPage($pageModel);
@@ -82,6 +86,7 @@ final class RootPagesTest extends ContaoTestCase
     {
         $master = $this->createRootPage('en.com', 'en');
         $this->createRootPage('de.com', 'de', true, $master->id);
+
         $pid = $this->createRootPage('fr.com', 'fr', true, $master->id);
 
         $pageModel = $this->createPage($pid->id);
@@ -94,6 +99,7 @@ final class RootPagesTest extends ContaoTestCase
     public function testIgnoresNonRelated(): void
     {
         $pageModel = $this->createRootPage('foo.com', 'en');
+
         $this->createRootPage('foo.com', 'de', false);
         $this->createRootPage('bar.com', 'fr');
         $this->createRootPage('bar.com', 'it', false);
@@ -107,6 +113,7 @@ final class RootPagesTest extends ContaoTestCase
     public function testIgnoresUnpublished(): void
     {
         $pageModel = $this->createRootPage('foo.com', 'en');
+
         $this->createRootPage('foo.com', 'de', false);
         $this->createRootPage('bar.com', 'fr', true, $pageModel->id);
         $this->createRootPage('bar.com', 'it', false, 0, false);
@@ -119,6 +126,7 @@ final class RootPagesTest extends ContaoTestCase
     public function testIncludesUnpublishedWhenEnabled(): void
     {
         $pageModel = $this->createRootPage('foo.com', 'en');
+
         $this->createRootPage('foo.com', 'de', false);
         $this->createRootPage('bar.com', 'fr', true, $pageModel->id);
         $this->createRootPage('bar.com', 'it', false, 0, false);
@@ -131,6 +139,7 @@ final class RootPagesTest extends ContaoTestCase
     public function testNonFallbackMaster(): void
     {
         $pageModel = $this->createRootPage('foo.com', 'en');
+
         $this->createRootPage('foo.com', 'de', false);
         $this->createRootPage('bar.com', 'fr', true, 0);
         $this->createRootPage('bar.com', 'it', false, $pageModel->id);
@@ -143,6 +152,7 @@ final class RootPagesTest extends ContaoTestCase
     public function testKeyEqualsPageId(): void
     {
         $master = $this->createRootPage('foo.com', 'en');
+
         $this->createRootPage('foo.com', 'de', false);
         $this->createRootPage('bar.com', 'fr', true, $master->id);
         $this->createRootPage('bar.com', 'it', false);
