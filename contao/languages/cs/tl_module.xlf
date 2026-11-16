@@ -33,6 +33,7 @@ zkratky).</target>
             </trans-unit>
             <trans-unit id="tl_module.customLanguageText.1">
                 <source>Enter the page language as key and a replacement text as value.</source>
+                <target>Zadejte jazyk stránky jako klíč a náhradní text jako hodnotu.</target>
             </trans-unit>
         </body>
     </file>

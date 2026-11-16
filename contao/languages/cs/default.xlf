@@ -23,6 +23,7 @@
             </trans-unit>
             <trans-unit id="MSC.gotoLanguage">
                 <source>Go to current page in %s</source>
+                <target>Přejít na aktuální stránku v %s</target>
             </trans-unit>
         </body>
     </file>
