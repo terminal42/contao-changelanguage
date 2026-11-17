@@ -255,7 +255,7 @@ class MissingLanguageIconListener implements ResetInterface
         return $label;
     }
 
-    private function generateLabelWithWarning(string $label, string $imgStyle = ''): string
+    private function generateLabelWithWarning(RecordLabel|string $label, string $imgStyle = ''): string
     {
         return $label.\sprintf(
             '<span style="padding-left:3px"><img src="%s" alt="%s" title="%s" style="%s"></span>',
