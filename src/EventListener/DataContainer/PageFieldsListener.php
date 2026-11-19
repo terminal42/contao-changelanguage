@@ -84,7 +84,7 @@ class PageFieldsListener
                 $labels = [];
 
                 foreach ($duplicates as $duplicate) {
-                    $labels[] = \sprintf('%s (ID %s)', $duplicate->id, $duplicate->title);
+                    $labels[] = \sprintf('%s (ID %s)', $duplicate->title, $duplicate->id);
                 }
 
                 throw new \RuntimeException(\sprintf($GLOBALS['TL_LANG']['MSC']['duplicateMainLanguage'], implode(', ', $labels)));
